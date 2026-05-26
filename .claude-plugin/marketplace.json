@@ -2,8 +2,8 @@
   "name": "upflame-marketplace",
   "description": "Production-grade engineering intelligence plugins and autonomous cognition runtimes.",
   "owner": {
-    "name": "UpFlame",
-    "email": "hello@upflame.in"
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
   },
   "plugins": [
     {
