@@ -1,5 +1,5 @@
 ---
-title: Synarc v3 — Live Examples
+title: Synarc — Live Examples
 type: reference
 status: active
 version: 4.0.0
@@ -11,7 +11,7 @@ tags:
   - real-world
 ---
 
-# Synarc v3 — Live Examples
+# Synarc — Live Examples
 
 Three real engineering scenarios showing exactly what Synarc auto-produces.
 
