@@ -1,7 +1,7 @@
 {
   "schema": "claude-plugin/v2",
   "id": "synarc",
-  "name": "Synarc",
+  "name": "synarc",
   "displayName": "Synarc — Autonomous Engineering Intelligence Runtime",
   "version": "5.0.0",
   "publisher": {

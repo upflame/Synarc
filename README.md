@@ -126,14 +126,25 @@ Full walkthrough: [docs/QUICKSTART.md](docs/QUICKSTART.md)
 ### Claude Code (Recommended)
 
 ```bash
-# Install from UpFlame Marketplace
-/plugin install upflame/synarc
+# Step 1: Add the marketplace from the GitHub repo
+/plugin marketplace add upflame/Synarc
+
+# Step 2: Install Synarc from the marketplace
+/plugin install synarc@upflame-marketplace
 
 # Verify
 > Classify: ANALYSIS | Risk: INFO | Scale: auto
 ```
 
-Synarc auto-detects `/brain/` or `.claude/` directories. Full brain directory, hooks, and session continuity enabled. The plugin registers automatically - no manual configuration needed.
+Alternatively, add via full URL or local path:
+
+```bash
+/plugin marketplace add https://github.com/upflame/Synarc.git
+# or from a local clone:
+/plugin marketplace add ./path/to/Synarc
+```
+
+Synarc auto-detects `/brain/` or `.claude/` directories. Full brain directory, hooks, and session continuity enabled. The plugin registers automatically — no manual configuration needed.
 
 ---
 
