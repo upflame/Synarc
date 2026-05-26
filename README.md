@@ -1,6 +1,6 @@
 # Synarc - Autonomous Engineering Intelligence Runtime
 
-![Synarc Banner](assets/img/synarc-banner.png)
+![Synarc Banner](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790150/synarc-banner_lytvq5.png)
 
 
 [![Version](https://img.shields.io/badge/version-5.0.0-blue)](https://github.com/upflame-labs/synarc/releases)
@@ -41,7 +41,7 @@ When something breaks, every engineering team needs answers to three critical qu
 
 **3. What happens when I close this session?** The agent holds your project's current state in its context window. When the session ends, that state is gone. The next session starts from zero. Every decision, every risk, every architectural assumption - lost.
 
-![The Problem](assets/img/synarc-02.png)
+![The Problem](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790150/synarc-02_jracl6.png)
 
 Prompt-level safety ("please track what you change") is not a control surface. It is a polite request to a stochastic system. OWASP LLM01:2025 states this explicitly: deterministic controls must exist outside the prompt.
 
@@ -51,7 +51,7 @@ Synarc does not ask agents to behave. It interposes deterministic classification
 
 ## Architecture
 
-![Architecture](assets/img/synarc-03.png)
+![Architecture](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790149/synarc-03_jfssp5.png)
 
 Every layer runs on every tool call. Classify → Inject → Execute → Log → Aggregate → Checkpoint → Emit. ~50-100ms overhead. Prevents misclassifications, scope violations, and unrecoverable changes. The architecture is **runtime-agnostic** - the same 7-step pipeline executes identically across Claude Code, Codex CLI, Cursor, Windsurf, and any other AI coding tool.
 
@@ -59,7 +59,7 @@ Every layer runs on every tool call. Classify → Inject → Execute → Log →
 
 ## Change Classification Flow
 
-![Classification Flow](assets/img/synarc-04.png)
+![Classification Flow](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790149/synarc-04_t1lbcu.png)
 
 12 WorkTypes. 7 classification dimensions. Deterministic risk floors. Every change classified before the first byte is written.
 
@@ -158,7 +158,7 @@ Then point your runtime to `plugins/synarc/skills/SKILL.md`:
 
 ## Runtime Support
 
-![Runtime Support](assets/img/synarc-05.png)
+![Runtime Support](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790149/synarc-05_myqoew.png)
 
 
 | Runtime | Persistence | Detection Signal | Injection Level | Brain Dir |
@@ -174,7 +174,7 @@ Then point your runtime to `plugins/synarc/skills/SKILL.md`:
 
 ## Error Intelligence Protocol
 
-![Error Intelligence Protocol](assets/img/synarc-06.png)
+![Error Intelligence Protocol](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790148/synarc-06_ojy443.png)
 
 
 6-step protocol on every FIX: **Classify → Locate → Assess → Apply → Verify → Track**. Every error becomes a permanent entry in `/brain/ERROR_INTELLIGENCE.md` - past errors inform future fix strategies.
@@ -183,7 +183,7 @@ Then point your runtime to `plugins/synarc/skills/SKILL.md`:
 
 ## Session Lifecycle
 
-![Session Lifecycle](assets/img/synarc-07.png)
+![Session Lifecycle](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790148/synarc-07_tfpnnq.png)
 
 Sessions persist across interruptions. Ledger survives context resets. Handoff protocol enables seamless agent-to-agent transfer.
 
@@ -191,7 +191,7 @@ Sessions persist across interruptions. Ledger survives context resets. Handoff p
 
 ## Risk Aggregation Model
 
-![Risk Aggregation Model](assets/img/synarc-08.png)
+![Risk Aggregation Model](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790148/synarc-08_kgvohw.png)
 
 
 | Component | Rule |
@@ -222,7 +222,7 @@ Auto-detected. Zero configuration. Transitions are seamless - Synarc scales up a
 
 ## Quality Gates
 
-![Quality Gates](assets/img/synarc-06.png)
+![Quality Gates](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790792/ChatGPT_Image_May_26_2026_03_49_30_PM_ron4rw.png)
 
 Every interaction passes through these gates before execution.
 
@@ -232,7 +232,7 @@ Zero-tolerance: no execution before classification, no invented context, no miss
 
 ## Agent Handoff Protocol
 
-![Agent Handoff Protocol](assets/img/synarc-09.png)
+![Agent Handoff Protocol](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790148/synarc-09_oragks.png)
 
 ---
 
