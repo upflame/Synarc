@@ -1,6 +1,6 @@
 ---
 name: synarc
-title: Synarc — Autonomous Engineering Intelligence Runtime
+title: Synarc - Autonomous Engineering Intelligence Runtime
 
 description: Autonomous engineering cognition for architecture reasoning, change propagation analysis, deployment risk intelligence, and cross-platform code-state awareness across modern AI development environments.
 
