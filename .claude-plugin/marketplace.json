@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "upflame-marketplace",
+  "name": "UpFlame Marketplace",
+
+  "displayName": "UpFlame AI Engineering Marketplace",
+  "description": "A curated marketplace of production-grade engineering intelligence plugins, autonomous cognition runtimes, architecture analyzers, and cross-platform AI development systems.",
+
+  "owner": {
+    "name": "UpFlame Labs",
+    "id": "upflame-labs",
+    "verified": false,
+    "website": "https://github.com/upflame-labs"
+  },
+
+  "visibility": "public",
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/upflame-labs/synarc-marketplace"
+  },
+
+  "categories": [
+    "engineering-intelligence",
+    "architecture-analysis",
+    "developer-productivity",
+    "code-cognition",
+    "deployment-safety"
+  ],
+
+  "plugins": [
+    {
+      "id": "synarc",
+      "name": "Synarc",
+      "displayName": "Synarc — Autonomous Engineering Intelligence Runtime",
+      "version": "5.0.0",
+      "description": "An always-on engineering cognition runtime for architecture reasoning, change impact tracing, deployment risk evaluation, and adaptive cross-platform code intelligence.",
+      "category": "engineering-intelligence",
+      "source": "./plugins/synarc",
+      "install": {
+        "command": "/plugin install synarc@upflame-marketplace",
+        "autoDiscover": true
+      },
+      "tags": [
+        "always-on",
+        "architecture",
+        "diff-analysis",
+        "risk-analysis",
+        "cross-platform",
+        "engineering-runtime"
+      ],
+
+      "featured": true
+    }
+  ],
+  "featured": [
+    "synarc"
+  ],
+  "updated": "2026-05-25T00:00:00Z"
+}

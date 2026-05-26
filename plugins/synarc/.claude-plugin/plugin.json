@@ -1,0 +1,38 @@
+{
+  "schema": "claude-plugin/v2",
+  "id": "synarc",
+  "name": "Synarc",
+  "displayName": "Synarc — Autonomous Engineering Intelligence Runtime",
+  "version": "5.0.0",
+  "publisher": {
+    "name": "UpFlame Labs",
+    "verified": true,
+    "website": "https://www.upflame.in"
+  },
+  "category": "engineering-intelligence",
+  "tier": "enterprise",
+  "description": "Always-on engineering cognition for architecture awareness, risk analysis, impact tracing, and cross-platform code intelligence.",
+  "entrypoint": "skills/synarc/SKILL.md",
+  "autoInject": true,
+  "activation": "contextual",
+  "priority": "critical",
+  "compatibility": [
+    "claude-code",
+    "claude-web",
+    "codex-cli",
+    "cursor",
+    "windsurf"
+  ],
+  "capabilities": [
+    "architecture-reasoning",
+    "change-impact-analysis",
+    "deployment-risk-evaluation",
+    "session-cognition",
+    "cross-tool-state-awareness"
+  ],
+  "branding": {
+    "theme": "obsidian",
+    "accent": "#6C5CE7",
+    "icon": "assets/icon.svg"
+  }
+}

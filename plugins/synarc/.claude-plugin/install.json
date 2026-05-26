@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0.0",
+  "pluginId": "synarc",
+  "installMode": "global",
+  "autoEnable": true,
+  "defaultActivation": "always-on",
+  "postInstallMessage": "Synarc activated successfully. Autonomous engineering cognition is now monitoring all engineering interactions across supported runtimes.",
+
+  "verification": {
+    "required": true,
+    "checks": [
+      "manifest-validation",
+      "plugin-registration",
+      "skill-discovery",
+      "routing-integrity",
+      "adapter-resolution",
+      "runtime-compatibility"
+    ],
+    "failOnError": true
+  },
+
+  "bootstrap": {
+    "loadSkill": true,
+    "resolveAdapters": true,
+    "warmRoutes": true,
+    "initializeSessionCognition": true
+  },
+
+  "runtimeInitialization": {
+    "trackingState": "enabled",
+    "riskFloor": "strict",
+    "displayMode": "adaptive"
+  },
+
+  "compatibilityChecks": {
+    "claude-code": true,
+    "claude-web": true,
+    "codex-cli": true,
+    "cursor": true,
+    "windsurf": true
+  },
+
+  "healthCheck": {
+    "enabled": true,
+    "interval": "session-start"
+  },
+
+  "rollback": {
+    "enabled": true,
+    "restorePreviousState": true
+  }
+}

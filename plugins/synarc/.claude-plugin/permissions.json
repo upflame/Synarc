@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0.0",
+
+  "pluginId": "synarc",
+
+  "access": {
+    "contextAnalysis": true,
+    "sessionTracking": true,
+    "routingInspection": true,
+    "architectureInference": true,
+    "changeImpactTracing": true,
+    "riskEvaluation": true,
+    "crossRuntimeAdaptation": true
+  },
+
+  "restricted": {
+    "filesystemWrite": false,
+    "filesystemDelete": false,
+    "networkAccess": false,
+    "shellExecution": false,
+    "externalExecution": false,
+    "systemMutation": false
+  },
+
+  "runtimeScope": {
+    "memory": "session",
+    "statePersistence": "adaptive",
+    "trackingScope": "engineering-context-only"
+  },
+
+  "visibility": {
+    "canObserve": [
+      "code-context",
+      "diffs",
+      "errors",
+      "architecture-discussions",
+      "deployment-analysis",
+      "config-changes",
+      "schema-modifications"
+    ],
+
+    "cannotObserve": [
+      "non-engineering-conversations",
+      "private-user-secrets",
+      "external-system-state"
+    ]
+  },
+
+  "guardrails": {
+    "enforceRiskFloor": true,
+    "preventSilentSuppression": true,
+    "denyUnsafeEscalation": true,
+    "sandboxedReasoning": true
+  },
+
+  "activationPolicy": {
+    "automatic": true,
+    "manualOverride": true,
+    "suppressionOnlyVisual": true
+  },
+
+  "trustBoundary": {
+    "readOnlyIntelligence": true,
+    "mutationRestricted": true
+  }
+}

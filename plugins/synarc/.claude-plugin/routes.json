@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1.0.0",
+
+  "pluginId": "synarc",
+
+  "routing": {
+    "mode": "automatic",
+    "priority": "critical",
+    "alwaysOn": true,
+    "fallback": "manual"
+  },
+
+  "automaticTriggers": {
+    "engineeringTasks": [
+      "write code",
+      "generate code",
+      "refactor",
+      "debug",
+      "fix bug",
+      "analyze error",
+      "trace issue",
+      "review code",
+      "review PR",
+      "analyze diff",
+      "modify schema",
+      "write migration",
+      "update config",
+      "test generation",
+      "deployment analysis",
+      "infra update",
+      "architecture planning"
+    ],
+
+    "artifactDetection": [
+      "source-code",
+      "stack-trace",
+      "logs",
+      "diff",
+      "schema",
+      "migration",
+      "config",
+      "api-contract",
+      "test-suite",
+      "deployment-plan"
+    ],
+
+    "riskLanguage": [
+      "safe to deploy",
+      "breaking",
+      "impact",
+      "what changed",
+      "what broke",
+      "is this safe",
+      "deployment risk",
+      "blast radius"
+    ]
+  },
+
+  "manualInvocation": [
+    "synarc",
+    "activate synarc",
+    "track this",
+    "analyze this code",
+    "review with synarc",
+    "trace impact",
+    "session cognition"
+  ],
+
+  "suppressionRules": {
+    "visualOnly": [
+      "skip tracking",
+      "no footer",
+      "just write code",
+      "silent mode"
+    ],
+
+    "internalTrackingContinues": true
+  },
+
+  "platformRouting": {
+    "claude-code": {
+      "mode": "persistent",
+      "tracking": "filesystem-aware"
+    },
+
+    "claude-web": {
+      "mode": "stateless",
+      "tracking": "conversation-anchored"
+    },
+
+    "codex-cli": {
+      "mode": "session-runtime",
+      "tracking": "execution-context"
+    },
+
+    "cursor": {
+      "mode": "editor-context",
+      "tracking": "workspace-aware"
+    },
+
+    "windsurf": {
+      "mode": "agent-context",
+      "tracking": "toolchain-aware"
+    }
+  },
+
+  "routingConstraints": {
+    "neverDisableForEngineeringTasks": true,
+    "riskFloorImmutable": true,
+    "forceActivationOnRiskLanguage": true
+  }
+}

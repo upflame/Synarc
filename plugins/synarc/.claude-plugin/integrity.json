@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0.0",
+
+  "pluginId": "synarc",
+
+  "release": {
+    "channel": "stable",
+    "stage": "production",
+    "version": "5.0.0"
+  },
+
+  "verification": {
+    "verifiedPublisher": false,
+    "signed": false,
+    "signatureAlgorithm": null,
+    "checksumAlgorithm": "sha256"
+  },
+
+  "security": {
+    "sandboxed": true,
+    "externalExecution": false,
+    "networkAccess": false,
+    "filesystemWrite": false,
+    "privilegedOperations": false
+  },
+
+  "audit": {
+    "securityReviewed": true,
+    "runtimeValidated": true,
+    "routingValidated": true,
+    "compatibilityValidated": true,
+    "lastAudit": "2026-05-25T00:00:00Z"
+  },
+
+  "trust": {
+    "level": "enterprise-preview",
+    "tamperProtection": true,
+    "immutableSkillRouting": true
+  },
+
+  "runtimeGuards": {
+    "strictRiskFloor": true,
+    "silentFailureProtection": true,
+    "activationIntegrity": true
+  },
+
+  "compliance": {
+    "deterministicActivation": true,
+    "safeFallbacks": true,
+    "rollbackSafe": true
+  },
+
+  "hashes": {
+"manifest": "sha256:468e1b64c41552dc8d6308998c6bb7d0237a797c2f598b460f65333bce0c2445",
+"plugin": "sha256:6e9b201f43069d66a927f1f7d0c06889e75cd54bf8d96c567f3f353bd7d0b382",
+"skill": "sha256:4e610c083d8ef84c2a343333f1f8c1b3bd9199fbd564d5e69ab84d6c4fe09dbd"
+  }
+}

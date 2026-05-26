@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "synarc",
+  "slug": "synarc",
+  "name": "Synarc",
+  "displayName": "Synarc",
+
+  "version": "5.0.0",
+  "status": "production",
+
+  "type": "skill-plugin",
+  "category": "engineering-intelligence",
+
+  "publisher": {
+    "name": "UpFlame Labs",
+    "id": "upflame-labs",
+    "verified": false
+  },
+
+  "description": "A production-grade always-on engineering cognition runtime that provides architecture awareness, impact tracing, deployment risk analysis, and adaptive code intelligence across Claude Code, Claude Web, Codex CLI, Cursor, Windsurf, and SKILL.md runtimes.",
+
+  "summary": "Cross-platform engineering cognition for AI coding environments.",
+
+  "entrypoints": {
+    "skill": "skills/synarc/SKILL.md",
+    "plugin": ".claude-plugin/plugin.json"
+  },
+
+  "compatibility": {
+    "platforms": [
+      "claude-code",
+      "claude-web",
+      "codex-cli",
+      "cursor",
+      "windsurf",
+      "skillmd-runtime",
+      "agentsmd-runtime"
+    ],
+    "minimumVersion": {
+      "claude-code": ">=1.0.0"
+    }
+  },
+
+  "activation": {
+    "mode": "automatic",
+    "priority": "critical",
+    "alwaysOn": true,
+    "fallback": "manual"
+  },
+
+  "capabilities": [
+    "architecture-reasoning",
+    "change-impact-analysis",
+    "deployment-risk-evaluation",
+    "session-cognition",
+    "diff-intelligence",
+    "cross-runtime-adaptation",
+    "risk-floor-enforcement"
+  ],
+
+  "triggers": [
+    "debug",
+    "diff",
+    "architecture",
+    "impact",
+    "breaking change",
+    "deployment risk",
+    "review PR",
+    "analyze code",
+    "safe to deploy",
+    "what changed"
+  ],
+
+  "permissions": [
+    "context-analysis",
+    "session-tracking",
+    "code-impact-mapping",
+    "architecture-inference"
+  ],
+
+  "distribution": {
+    "marketplace": true,
+    "installable": true,
+    "public": true
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/upflame-labs/synarc"
+  },
+
+  "license": "MIT",
+
+  "tags": [
+    "autonomous",
+    "architecture",
+    "ai-runtime",
+    "code-intelligence",
+    "risk-analysis",
+    "cross-platform",
+    "always-on"
+  ],
+
+  "updated": "2026-05-25T00:00:00Z"
+}
