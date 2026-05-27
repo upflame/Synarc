@@ -1,0 +1,12 @@
+{
+  "name": "coding-agent",
+  "description": "Autonomous code generation agent — execution model, tool call classification, scope enforcement, checkpoint protocol, risk aggregation, and safe file operations. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["coding-agent", "agent-execution", "autonomous", "tool-use", "scope-enforcement"]
+}

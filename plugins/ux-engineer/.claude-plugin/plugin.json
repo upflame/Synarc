@@ -1,0 +1,9 @@
+{
+  "name": "ux-engineer",
+  "description": "UX engineering — user research, interaction design, information architecture, usability testing, journey mapping, wireframing, prototyping, WCAG accessibility, UX metrics, conversion optimization, cognitive UX. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": { "name": "UpFlame Labs", "email": "info@upflame.in" },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurf"],
+  "tags": ["ux", "user-research", "interaction-design", "wireframing", "prototyping", "wcag", "usability", "conversion", "information-architecture", "journey-mapping"]
+}

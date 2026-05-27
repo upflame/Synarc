@@ -1,0 +1,12 @@
+{
+  "name": "infrastructure-engineer",
+  "description": "Infrastructure engineering reasoning — platform design, networking topology, deployment strategies, capacity planning, disaster recovery, and infrastructure as code. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["infrastructure", "devops", "reliability"]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "engineering-manager",
+  "description": "Engineering management reasoning — team scaling, delivery planning, performance management, incident leadership, technical career development, and organizational design. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["management", "leadership", "delivery"]
+}

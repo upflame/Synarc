@@ -1,0 +1,12 @@
+{
+  "name": "debug-engineer",
+  "description": "Systematic debugging reasoning — fault isolation, binary search debugging, hypothesis-driven debugging, root cause analysis, reproduction techniques, and production debugging. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["debugging", "fault-isolation", "root-cause"]
+}

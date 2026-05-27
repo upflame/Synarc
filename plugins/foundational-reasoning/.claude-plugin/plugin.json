@@ -1,0 +1,12 @@
+{
+  "name": "foundational-reasoning",
+  "description": "Foundational reasoning — first principles decomposition, assumption analysis, constraint vs convention distinction, systems thinking, feedback loops, leverage points, emergent behavior, and system archetypes. Inherits synarc core.",
+  "version": "2.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["reasoning", "first-principles", "systems-thinking", "decomposition"]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "cto",
+  "description": "CTO reasoning — technology strategy, organizational technical direction, build-vs-buy decisions, platform strategy, technical debt governance, and innovation management. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["leadership", "strategy", "executive"]
+}

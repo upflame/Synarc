@@ -1,0 +1,12 @@
+{
+  "name": "frontend-engineer",
+  "description": "Frontend engineering reasoning — component architecture, state management, rendering strategies, responsive design, accessibility, and performance budgeting. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["frontend", "ui", "accessibility"]
+}

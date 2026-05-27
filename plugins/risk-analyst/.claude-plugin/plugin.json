@@ -1,0 +1,12 @@
+{
+  "name": "risk-analyst",
+  "description": "Risk analysis reasoning — probabilistic thinking, worst-case analysis, blast radius assessment, risk matrices, scenario planning, black swan events, and mitigation strategies. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["risk", "analysis", "mitigation"]
+}

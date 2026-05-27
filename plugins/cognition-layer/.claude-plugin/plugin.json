@@ -1,0 +1,12 @@
+{
+  "name": "cognition-layer",
+  "description": "Structured reasoning system that makes AI coding tools context-aware, risk-aware, and consistent. Governs classification, session state, context injection, agent execution, and scale adaptation. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["cognition-layer", "reasoning", "context-management", "architecture", "cognitive-flow"]
+}

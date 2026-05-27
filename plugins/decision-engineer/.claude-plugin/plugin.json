@@ -1,0 +1,12 @@
+{
+  "name": "decision-engineer",
+  "description": "Decision engineering reasoning — structured decision frameworks, trade-off analysis, decision trees, weighted scoring, cost-benefit reasoning, and decision under uncertainty. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["decision-making", "analysis", "trade-offs"]
+}

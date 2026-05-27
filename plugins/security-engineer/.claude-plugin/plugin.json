@@ -1,0 +1,12 @@
+{
+  "name": "security-engineer",
+  "description": "Security engineering reasoning — threat modeling, defense-in-depth, vulnerability assessment, security review patterns, cryptography decisions, zero-trust architecture. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["security", "threat-modeling", "compliance"]
+}

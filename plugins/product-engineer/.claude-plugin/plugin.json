@@ -1,0 +1,12 @@
+{
+  "name": "product-engineer",
+  "description": "Product engineering reasoning — bridging engineering execution and product strategy, feature prioritization, build vs buy decisions, technical product decisions, customer development, experimentation, metrics, and product-aware engineering leadership. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["product-engineering", "product-strategy", "decision-making", "engineering-leadership"]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "architect",
+  "description": "Systems architecture reasoning — high-level design decisions, system decomposition, interface contracts, quality attribute trade-offs, and architectural risk analysis. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["architecture", "design", "reasoning"]
+}

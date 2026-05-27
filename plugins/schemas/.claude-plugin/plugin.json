@@ -1,0 +1,12 @@
+{
+  "name": "schemas",
+  "description": "Canonical document schemas for engineering cognition — 9 brain document schemas (CURRENT_STATE, SYSTEM_MAP, ARCHITECTURE, MODULE_MAP, API_CONTRACTS, FEATURE_LOG, CHANGELOG_INTELLIGENCE, SESSION_LEDGER, SNAPSHOT) with universal frontmatter and section requirements. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["schemas", "markdown", "cognition", "brain-files", "documentation"]
+}

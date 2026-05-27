@@ -1,0 +1,12 @@
+{
+  "name": "testing-strategy",
+  "description": "Testing strategy & patterns — risk-based test pyramid, test type selection, test double strategy, per-WorkType test requirements, test data management, flaky test remediation, contract testing, CI/CD test execution, and coverage quality. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["testing", "quality", "coverage", "test-patterns", "contract-testing", "ci"]
+}

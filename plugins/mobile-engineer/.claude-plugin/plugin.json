@@ -1,0 +1,12 @@
+{
+  "name": "mobile-engineer",
+  "description": "Mobile engineering reasoning — mobile-first architecture, offline-first design, platform-specific decisions, memory management, battery optimization, and app lifecycle. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["mobile", "ios", "android"]
+}

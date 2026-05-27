@@ -1,0 +1,9 @@
+{
+  "name": "ui-engineer",
+  "description": "UI engineering — pixel-perfect implementation, design systems, component libraries, CSS architecture, animation, accessibility, responsive design, design-to-code conversion, cross-browser, UI performance. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": { "name": "UpFlame Labs", "email": "info@upflame.in" },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurf"],
+  "tags": ["ui", "css", "design-system", "animation", "accessibility", "responsive", "component-library", "pixel-perfect", "cross-browser"]
+}

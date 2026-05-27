@@ -1,6 +1,6 @@
 {
   "name": "upflame-marketplace",
-  "description": "Production-grade engineering intelligence plugins and autonomous cognition runtimes.",
+  "description": "Production-grade engineering intelligence plugins and autonomous cognition runtimes — 41 consolidated reasoning engines with zero overlap. Includes token optimization, adaptive intelligence, smart auto-prompt, and persistent knowledge storage.",
   "owner": {
     "name": "UpFlame Labs",
     "email": "info@upflame.in"
@@ -9,8 +9,242 @@
     {
       "name": "synarc",
       "source": "./plugins/synarc",
-      "description": "Autonomous Engineering Intelligence Runtime — change classification, risk tracking, context injection, and session continuity for AI coding environments.",
-      "version": "5.0.0"
+      "description": "Autonomous Engineering Intelligence Runtime — change classification, risk tracking, context injection, session continuity, quality gates, language rules, zero-tolerance violations, token optimization, adaptive intelligence, smart auto-prompt with optimistic prompting, persistent knowledge storage, prompt caching, and high-throughput execution for AI coding environments.",
+      "version": "5.1.0"
+    },
+    {
+      "name": "cognition-layer",
+      "source": "./plugins/cognition-layer",
+      "description": "Structured reasoning architecture — plugin routing and conflict resolution, context window management, injection protocols at four levels, token budgeting, session state and lifecycle, change ledger, crash recovery, context compression, and cache invalidation. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "change-intelligence",
+      "source": "./plugins/change-intelligence",
+      "description": "Change intelligence pipeline — 7D change classification taxonomy, diff analysis across structural/behavioral/data/config/dependency dimensions, composite risk scoring, safe-to-merge evaluation gates, code review intelligence, risk-based review prioritization, actionable feedback patterns, and change ledger audit trail. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "coding-agent",
+      "source": "./plugins/coding-agent",
+      "description": "Autonomous code generation agent — plan-execute-verify-iterate execution model, tool call classification and safety, scope enforcement, checkpoint protocol, risk aggregation, multi-file coordination, refactoring safety, error recovery, and multi-agent handoff. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "negative-prompts",
+      "source": "./plugins/negative-prompts",
+      "description": "Comprehensive prohibition enforcement — 30 zero-tolerance prohibition domains covering fabrication, risk suppression, scope absorption, code quality, testing, architecture, security, data handling, error handling, hallucinations, bluff, bias, anchoring, overconfidence, and more. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "project-scales",
+      "source": "./plugins/project-scales",
+      "description": "Project scale detection and behavioral adaptation — 6 scale definitions with multi-signal detection algorithm, confidence scoring, scale transitions, context injection depth, agent autonomy profiles, and quality gate requirements per scale. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "schemas",
+      "source": "./plugins/schemas",
+      "description": "Canonical brain document schemas — 12 document types including ARCHITECTURE, DECISION-LOG, RUNBOOK, SPECIFICATION with universal frontmatter, section templates, ADR lifecycle, cross-referencing, schema versioning, and quality gates. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "testing-strategy",
+      "source": "./plugins/testing-strategy",
+      "description": "Risk-based testing strategy — test pyramid by change risk with ratio guidance, test type selection framework, test double strategy, per-WorkType requirements, flaky test remediation, contract testing, CI/CD execution with parallelization, coverage quality, and production testing. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "backend-engineer",
+      "source": "./plugins/backend-engineer",
+      "description": "Backend engineering reasoning — service architecture patterns, API design (REST/GraphQL/gRPC), database modeling and selection, state management, concurrency models, data consistency patterns, caching, error handling and resilience, observability, and backend testing. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "frontend-engineer",
+      "source": "./plugins/frontend-engineer",
+      "description": "Frontend engineering reasoning — component architecture, state management strategies, rendering paradigms (CSR/SSR/SSG/ISR), responsive design, WCAG accessibility, performance budgeting, bundle optimization, CSS architecture, build tooling, and frontend testing. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "ui-engineer",
+      "source": "./plugins/ui-engineer",
+      "description": "UI engineering reasoning — pixel-perfect implementation, design systems, component libraries, CSS architecture (BEM/SMACSS/OOCSS), CSS Grid and Flexbox mastery, CSS-in-JS and utility-first CSS, design tokens, component APIs, animation and motion design, cross-browser compatibility, responsive design at scale, UI performance optimization, design-to-code conversion, and component testing. Inherits synarc core.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "ux-engineer",
+      "source": "./plugins/ux-engineer",
+      "description": "UX engineering reasoning — user research methodology, information architecture, interaction design patterns, wireframing and prototyping, usability testing, WCAG 2.1/2.2 accessibility, UX metrics and analytics, conversion optimization, journey mapping, cognitive psychology in design (Gestalt, Fitts's Law, Hick's Law, cognitive load), double diamond process, design sprints, and design strategy operations. Inherits synarc core.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "fullstack-engineer",
+      "source": "./plugins/fullstack-engineer",
+      "description": "Fullstack engineering reasoning — end-to-end feature design from UI to database, data flow across tiers, API integration, state synchronization, full-stack debugging, cross-cutting concerns, authentication flows, and full-stack testing strategy. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "data-engineer",
+      "source": "./plugins/data-engineer",
+      "description": "Data engineering reasoning — pipeline architecture (batch/streaming/lambda/kappa), ETL vs ELT decisions, data modeling (star/snowflake/data vault/3NF), batch processing with Airflow/Spark, stream processing with Kafka/Flink, data quality frameworks, schema evolution, and data governance. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "mobile-engineer",
+      "source": "./plugins/mobile-engineer",
+      "description": "Mobile engineering reasoning — architecture patterns (MVVM/MVI/Clean), offline-first design with sync strategies, platform-specific decisions (iOS vs Android), memory and battery optimization, app lifecycle, network layer, push notifications, testing, distribution, and cross-platform trade-offs. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "ml-engineer",
+      "source": "./plugins/ml-engineer",
+      "description": "Machine learning engineering reasoning — ML pipeline architecture (data ingestion, feature engineering, model selection, training, serving), MLOps practices, feature stores, model versioning, A/B testing ML models, data drift detection, model monitoring, responsible AI, interpretability (SHAP/LIME), training infrastructure (GPU/TPU), and ML cost optimization. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "infrastructure-engineer",
+      "source": "./plugins/infrastructure-engineer",
+      "description": "Infrastructure engineering reasoning — platform design, networking topology, deployment strategies (blue-green/canary/rolling), IaC patterns, capacity planning, disaster recovery, observability infrastructure, container orchestration, service mesh, CI/CD architecture, migration patterns, and cost optimization. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "devops-engineer",
+      "source": "./plugins/devops-engineer",
+      "description": "DevOps engineering reasoning — CI/CD pipeline design and optimization, build systems, artifact management, environment management, GitOps with ArgoCD/Flux, deployment automation, feature flags, blue-green and canary deployments, release engineering, supply chain security (SBOM/SLSA), container security, secrets management, platform engineering, and DevOps metrics (DORA). Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "sre-engineer",
+      "source": "./plugins/sre-engineer",
+      "description": "Site reliability engineering reasoning — SLO/SLI/SLA framework, error budget management, Toil reduction playbook, monitoring philosophy, alert fatigue mitigation, incident management andCommand, blameless postmortem culture, brownout/blackout protocols, runbook automation, reliability patterns for distributed systems, capacity planning, and SRE maturity model. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "observability-engineer",
+      "source": "./plugins/observability-engineer",
+      "description": "Observability engineering reasoning — observability vs monitoring, structured logging best practices, distributed tracing with OpenTelemetry, metrics collection and exposition, dashboard design philosophy, alerting efficiency, pager fatigue reduction, tail-based sampling, log aggregation (ELK/Loki), APM tool selection, correlation IDs, and observability maturity assessment. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "platform-engineer",
+      "source": "./plugins/platform-engineer",
+      "description": "Platform engineering reasoning — internal developer platforms, Golden Paths, self-service infrastructure, IaC with Terraform/Pulumi, container orchestration, Kubernetes deep dive, service mesh (Istio/Linkerd), deployment strategies, environment management, platform maturity model, developer experience metrics, and platform ROI. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "security-engineer",
+      "source": "./plugins/security-engineer",
+      "description": "Security engineering reasoning — threat modeling (STRIDE-M/PASTA/attack trees), defense-in-depth across app/network/data/identity layers, vulnerability assessment with CVSS, security architecture review, cryptography decisions (symmetric/asymmetric/PKI/TLS), IAM (OAuth2/OIDC/SAML/RBAC/ABAC/zero-trust/JIT), application security (OWASP Top 10), infrastructure security, data protection (encryption/DLP/masking/tokenization), security testing (SAST/DAST/IAST/RASP/fuzzing), compliance mapping (SOC2/HIPAA/PCI-DSS/GDPR/FedRAMP), and incident response. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "privacy-engineer",
+      "source": "./plugins/privacy-engineer",
+      "description": "Privacy engineering reasoning — privacy by design, data classification and handling, PII/PHI discovery and protection, GDPR compliance, CCPA, consent management, data minimization, purpose limitation, data retention policies, right to erasure (Article 17), data portability, privacy impact assessments, anonymization techniques (k-anonymity, l-diversity, differential privacy), privacy-preserving analytics, cookie compliance, cross-border transfer (SCCs), and privacy engineering metrics. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "ethics-engineer",
+      "source": "./plugins/ethics-engineer",
+      "description": "AI ethics engineering reasoning — ethical AI frameworks, bias detection and mitigation, fairness metrics (demographic parity, equalized odds, calibration), algorithmic accountability, AI transparency requirements, explainability methods (SHAP, LIME, counterfactuals), responsible AI principles, data ethics, surveillance ethics, automation ethics, fairness in ML pipelines, content moderation ethics, responsible deployment checklist, stakeholder impact analysis, and dual-use technology evaluation. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "architect",
+      "source": "./plugins/architect",
+      "description": "Systems architecture reasoning — system decomposition strategies, architectural styles (layered/microservices/event-driven/CQRS/DDD/saga/hex/clean), quality attribute trade-off analysis (performance/availability/consistency/durability/cost), ADR format and lifecycle, technical RFC process, architecture governance, technical debt management, technology selection methodology, evolutionary architecture, fitness functions, coupling/cohesion analysis, and architectural risk analysis. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "api-designer",
+      "source": "./plugins/api-designer",
+      "description": "API design reasoning — RESTful conventions, GraphQL schema design and federation, gRPC protobuf design, API versioning strategies (URL path/header/negotiation), backward compatibility, pagination patterns (cursor/offset), filtering and search, rate limiting, authentication (OAuth2/JWT/API keys), error response standards (RFC 7807), OpenAPI specifications, API gateway design, client-server contract testing, and API lifecycle management. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "database-architect",
+      "source": "./plugins/database-architect",
+      "description": "Database architecture reasoning — database selection criteria (relational/NoSQL/NewSQL), normalization vs denormalization, indexing strategies (B-tree/Hash/GiST/SP-GiST), query optimization and execution plans, transaction isolation levels, distributed transactions, clustering and replication topologies (master-slave/multi-master), sharding strategies, data migration tools (Flyway/Liquibase), backup and recovery, connection pooling, ORM pitfalls, multi-tenancy patterns, and CAP theorem implications. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "chaos-engineer",
+      "source": "./plugins/chaos-engineer",
+      "description": "Chaos engineering reasoning — failure injection principles, GameDay design and execution, steady-state hypothesis, blast radius estimation, experiment design and safety validation, chaos tools (Chaos Monkey/Gremlin/ Litmus/ChaoBlade), Kubernetes chaos, cloud failure injection (AWS Fault Injection Simulator/GCP chaos), resilience validation, crisis simulation methodology, chaos metrics, business continuity, and chaos engineering maturity model. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "staff-engineer",
+      "source": "./plugins/staff-engineer",
+      "description": "Staff engineer reasoning — leading technical initiatives across teams, influence without authority, design documents and RFC process, cross-project coordination, mentoring senior engineers, technical arbitration, pragmatic decision-making, driving alignment through data, making irreversible decisions correctly, building shared tooling and platforms, and being a force multiplier. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "cto",
+      "source": "./plugins/cto",
+      "description": "CTO reasoning — technology strategy formulation, organizational technical direction, build-vs-buy decisions, platform strategy, technical debt governance at org level, innovation management, technology radar, engineering ROI, M&A technical due diligence, board-level communication, technical vision articulation, and CTO leadership model. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "engineering-manager",
+      "source": "./plugins/engineering-manager",
+      "description": "Engineering management reasoning — team scaling methodology, hiring and interviewing, delivery planning and estimation, performance management (calibration/review), incident leadership, technical career development frameworks, organizational design, 1-on-1 frameworks, stakeholder communication, remote team management, psychological safety, delegation, and engineering manager self-development. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "product-engineer",
+      "source": "./plugins/product-engineer",
+      "description": "Product-minded engineering reasoning — discovery vs delivery balance, user research for engineers, A/B testing methodology, feature flag-driven development, product metrics framework, OKR alignment for engineering teams, customer obsession, PRD writing with acceptance criteria, prioritization frameworks (RICE/ICE/ Kano), stakeholder management, roadmap input techniques, experiment design, usability testing, and feedback loop construction. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "finops-engineer",
+      "source": "./plugins/finops-engineer",
+      "description": "FinOps engineering reasoning — cloud cost optimization, cost allocation and chargeback, tagging strategies, reserved instance and Savings Plan analysis, Spot instance strategies, cost anomaly detection, waste identification, unit economics, cloud waste reduction, FinOps culture building, cloud governance, multi-cloud cost optimization, and FinOps automation with EventBridge/Lambda. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "performance-thinker",
+      "source": "./plugins/performance-thinker",
+      "description": "Performance engineering reasoning — latency analysis and measurement, throughput optimization with queueing theory, capacity planning, performance budgeting per service, profiling methodology (CPU/memory/I/O/goroutine/thread), bottleneck identification, caching strategies (write-through/write-behind/read-through/Cache-Aside), database query optimization, network performance, load testing (k6/Gatling/Locust), and cost-performance trade-offs. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "incident-commander",
+      "source": "./plugins/incident-commander",
+      "description": "Incident command reasoning — ICS framework application, severity classification (SEV1-SEV4), crisis communication trees, command structure, containment strategies, stakeholder communication, status page updates, post-incident review (blameless), tabletop exercises, on-call best practices, runbook quality, and incident metrics improvement. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "debug-engineer",
+      "source": "./plugins/debug-engineer",
+      "description": "Systematic debugging reasoning — fault isolation methodology, hypothesis-driven debugging, binary search through code/state/architecture, bug reproduction with minimal test case, production debugging (heap dumps/core dumps/ flame graphs), debugging concurrency (race conditions/deadlocks/livelocks), memory issues (leaks/heap growth/stack overflow), distributed system debugging, git bisect for regression, language-specific debugger usage, and defect prevention. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "decision-engineer",
+      "source": "./plugins/decision-engineer",
+      "description": "Decision engineering reasoning — structured decision frameworks (RAPID/DACI/RACI), decision tree construction, weighted decision matrices, cost-benefit and cost-of-delay analysis (CD3/WSJF), coupling analysis, reversible vs irreversible classification, expected value calculation, maximin/maximax/minimax regret, pre-mortems, ADR documentation, and group decision-making anti-patterns. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "risk-analyst",
+      "source": "./plugins/risk-analyst",
+      "description": "Risk analysis reasoning — probabilistic thinking, worst-case and average-case analysis, blast radius assessment at five levels, 5x5 risk matrices, scenario planning, black swan identification, risk mitigation strategies (avoid/mitigate/transfer/accept), constraint identification, constraint relaxation, optimization under constraints, risk-based prioritization, and technical risk vs business risk trade-offs. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "foundational-reasoning",
+      "source": "./plugins/foundational-reasoning",
+      "description": "Foundational reasoning — first principles decomposition to fundamental truths, assumption audit and classification (assumed/derived/contested), constraint vs convention distinction, systems thinking with causal loop diagrams, feedback archetype classification, stock-and-flow analysis, 12-level leverage point hierarchy, emergent behavior identification, and second-order effect tracing. Inherits synarc core.",
+      "version": "2.0.0"
+    },
+    {
+      "name": "problem-solver",
+      "source": "./plugins/problem-solver",
+      "description": "Structured problem-solving and design thinking — complete define-analyze-generate-evaluate-implement-verify cycle, problem classification by tractability, RCA toolkit (5 Whys/fishbone/fault tree/Kepner-Tregoe), solution generation (SCAMPER/TRIZ/inversion), multi-criteria evaluation, user-centered design thinking (empathize-define-ideate-prototype-test), iterative prototyping with fast feedback, and verification methodology. Inherits synarc core.",
+      "version": "2.0.0"
     }
   ]
 }

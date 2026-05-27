@@ -1,0 +1,12 @@
+{
+  "name": "fullstack-engineer",
+  "description": "Fullstack engineering reasoning — end-to-end feature design, data flow across tiers, API integration patterns, full-stack debugging, and cross-cutting concerns. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["fullstack", "integration", "web"]
+}

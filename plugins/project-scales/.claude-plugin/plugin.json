@@ -1,0 +1,12 @@
+{
+  "name": "project-scales",
+  "description": "Project scale detection & adaptation — adapts cognition layer depth, outputs, and tracking to six project sizes (NANO, MICRO, SMALL, MEDIUM, LARGE, ENTERPRISE) with detection signals, brain output requirements, and behavioral settings. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["scales", "adaptive", "cognition-layer", "project-size", "detection"]
+}

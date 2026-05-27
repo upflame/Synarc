@@ -1,0 +1,12 @@
+{
+  "name": "data-engineer",
+  "description": "Data engineering reasoning — pipeline architecture, ETL/ELT design, data modeling, batch vs streaming, data quality frameworks, and schema evolution management. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["data", "pipeline", "analytics"]
+}

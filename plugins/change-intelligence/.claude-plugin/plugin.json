@@ -1,0 +1,12 @@
+{
+  "name": "change-intelligence",
+  "description": "Change intelligence — change classification (7D taxonomy), diff analysis, composite risk scoring, safe-to-merge evaluation, code review patterns, actionable feedback, and change ledger audit. Inherits synarc core.",
+  "version": "2.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["change-classification", "code-review", "diff-analysis", "risk-scoring"]
+}

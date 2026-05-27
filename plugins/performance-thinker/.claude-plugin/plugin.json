@@ -1,0 +1,12 @@
+{
+  "name": "performance-thinker",
+  "description": "Performance engineering reasoning — latency analysis, throughput optimization, capacity planning, performance budgeting, profiling methodology, bottleneck identification, and caching. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["performance", "optimization", "scalability"]
+}

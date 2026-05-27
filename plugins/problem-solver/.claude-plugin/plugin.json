@@ -1,0 +1,12 @@
+{
+  "name": "problem-solver",
+  "description": "Structured problem-solving methodology — problem definition, root cause analysis, solution generation, multi-criteria evaluation, implementation planning, and verification. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["problem-solving", "methodology", "root-cause"]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "staff-engineer",
+  "description": "Staff engineer reasoning — technical initiative leadership, cross-project coordination, code quality standards, mentoring, and pragmatic decision-making at scale. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["leadership", "engineering", "mentoring"]
+}

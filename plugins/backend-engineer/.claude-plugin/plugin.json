@@ -1,0 +1,12 @@
+{
+  "name": "backend-engineer",
+  "description": "Backend engineering reasoning — service architecture, API design, database modeling, state management, concurrency, data consistency, and request flow analysis. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["backend", "api", "services"]
+}

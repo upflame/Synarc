@@ -1,0 +1,12 @@
+{
+  "name": "negative-prompts",
+  "description": "Prohibition enforcement system — 21 zero-tolerance prohibition domains covering fabrication, risk suppression, scope absorption, code quality, testing, architecture, security, data handling, error handling, and more. Inherits synarc core.",
+  "version": "1.0.0",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in"
+  },
+  "parent": "synarc",
+  "compatibility": ["claude-code", "claude-web", "codex-cli", "cursor", "windsurfer"],
+  "tags": ["negative-prompts", "prohibitions", "zero-tolerance", "code-quality", "safety"]
+}
