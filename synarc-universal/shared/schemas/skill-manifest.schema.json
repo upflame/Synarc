@@ -1,48 +1,81 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://synarc.dev/schemas/skill-manifest-v1.json",
+  "$id": "https://synarc.dev/schemas/skill-manifest-v2.json",
   "title": "Skill Manifest",
-  "description": "Schema for SKILL.md frontmatter and skill.yaml metadata files",
+  "description": "Schema for SKILL.md frontmatter and skill.yaml metadata files (Synarc Universal 6.x)",
   "type": "object",
   "required": [
     "name",
     "description",
     "version",
-    "skill_type"
+    "schema",
+    "priority",
+    "intent_triggers"
   ],
+  "additionalProperties": false,
   "properties": {
     "name": {
       "type": "string",
       "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
-      "description": "Lowercase hyphenated skill identifier"
+      "not": {
+        "anyOf": [
+          { "pattern": "anthropic" },
+          { "pattern": "claude" },
+          { "pattern": "^gpt" },
+          { "pattern": "gemini" }
+        ]
+      },
+      "description": "Lowercase hyphenated skill identifier. Must equal parent directory."
     },
     "description": {
       "type": "string",
-      "minLength": 10,
-      "maxLength": 1000,
-      "description": "Description of when this skill activates"
+      "minLength": 40,
+      "maxLength": 1024,
+      "pattern": "^[A-Z][\\w ,.:\\-()/'\"]+",
+      "not": {
+        "anyOf": [
+          { "pattern": "^(I |We |You |Help |Assists|This skill )" },
+          { "pattern": "^(A |An )(skill|tool|assistant)" }
+        ]
+      },
+      "description": "3rd-person description of what the skill does and when to use it. Required routing layer."
     },
     "version": {
       "type": "string",
       "pattern": "^\\d+\\.\\d+\\.\\d+$",
-      "description": "Semantic version (MAJOR.MINOR.PATCH)"
+      "description": "Semantic version (MAJOR.MINOR.PATCH). Bump MAJOR on breaking skill-id change."
     },
     "schema": {
       "type": "string",
       "enum": ["skill-pack/v1"],
       "default": "skill-pack/v1"
     },
+    "priority": {
+      "type": "string",
+      "enum": ["low", "normal", "high", "critical"],
+      "default": "normal",
+      "description": "Activation priority level"
+    },
+    "intent_triggers": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 7,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9 -]{1,40}$"
+      },
+      "description": "Keyword triggers for fast routing. Matched before semantic match on description."
+    },
+    "cache_tier": {
+      "type": "string",
+      "enum": ["core", "domain", "episodic"],
+      "default": "domain",
+      "description": "Caching hint to the runtime. core=always loaded; domain=loaded on first match; episodic=rebuilt per turn"
+    },
     "category": {
       "oneOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } }
       ],
       "description": "Skill category for organization"
     },
@@ -76,30 +109,6 @@
       "type": "string",
       "description": "Skill author or maintainer"
     },
-    "skill_type": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": [
-          "workflow",
-          "capability",
-          "preference"
-        ]
-      },
-      "minItems": 1,
-      "description": "Type of skill"
-    },
-    "priority": {
-      "type": "string",
-      "enum": [
-        "low",
-        "normal",
-        "high",
-        "critical"
-      ],
-      "default": "normal",
-      "description": "Activation priority level"
-    },
     "dependencies": {
       "type": "object",
       "additionalProperties": {
@@ -108,76 +117,22 @@
       },
       "description": "Skill dependencies with version constraints"
     },
-    "activation": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "intent-based",
-            "capability-based",
-            "always-on",
-            "composition-based"
-          ]
-        },
-        "triggers": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/activation-trigger"
-          }
-        }
-      },
-      "dependentRequired": {
-        "triggers": ["type"]
-      }
-    },
-    "estimate": {
-      "type": "string",
-      "description": "Estimated skill size (informational only)"
+    "allowed_tools": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional explicit allow-list of tools the skill needs"
     }
   },
-  "allOf": [
-    {
-      "if": {
-        "properties": {
-          "skill_type": {
-            "contains": {
-              "const": "capability"
-            }
-          }
-        }
-      },
-      "then": {
-        "required": ["compatible_agents"]
-      }
-    }
-  ],
-  "definitions": {
-    "activation-trigger": {
-      "type": "object",
-      "required": ["intent"],
-      "properties": {
-        "intent": {
-          "type": "string",
-          "description": "Regex pattern matching user intent"
-        },
-        "context": {
-          "type": "string",
-          "description": "Optional context precondition (regex)"
-        },
-        "priority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 100,
-          "default": 50
-        },
-        "confidence_threshold": {
-          "type": "number",
-          "minimum": 0.0,
-          "maximum": 1.0,
-          "default": 0.6
-        }
-      }
-    }
+  "banned_fields_runtime": {
+    "description": "Fields from v5.x that MUST NOT appear in v6.x frontmatter. The validator fails any skill that includes one.",
+    "removed": [
+      { "field": "activation", "reason": "Replaced by intent_triggers + description" },
+      { "field": "cache", "reason": "Replaced by cache_tier" },
+      { "field": "parent", "reason": "Replaced by dependencies" },
+      { "field": "estimate", "reason": "Replaced by validator-measured size in dist/skill-metrics.json" },
+      { "field": "compatibility", "reason": "Replaced by compatible_agents" },
+      { "field": "minimumVersion", "reason": "Replaced by dependencies" },
+      { "field": "skill_type", "reason": "Replaced by the 8-block template" }
+    ]
   }
 }

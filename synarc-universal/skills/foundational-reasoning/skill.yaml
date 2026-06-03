@@ -1,9 +1,9 @@
 ﻿id: foundational-reasoning
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
 category: engineering-intelligence
 description: >
-  Dual-track reasoning â€” decompose problems to irreducible truths (first principles) while reasoning holistically about system dynamics (systems thinking). Assumption analysis, constraint-convention distinction, causal reduction, causal loop diagrams, feedback dynamics, leverage points, stock-and-flow analysis, emergent behavior, second-order effects, and interconnected dependency mapping.
+  Applies first-principles reasoning, systems thinking, root cause analysis, and structured problem decomposition to engineering decisions. Triggers on: first principles, systems thinking, root cause, decomposition, mental model, abstraction, second-order effects, feedback loop, leverage point.
 
 compatible_agents:
   - codex
@@ -16,15 +16,33 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - first principles
+  - systems thinking
+  - root cause
+  - decomposition
+  - mental model
+  - abstraction
+  - second-order effects
+  - feedback loop
+  - leverage point
+  - 5 whys
+  - fishbone
+  - cause and effect
+  - OODA
+  - inversion
+  - map is not the territory
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: a30195071822a0b0eaae0c0140defa2ef7d2f0c6e20d7d22306beb1a4f754471
+  hash: 2b77403ae9bf16a1c4a3de6cbfea83dd433affbec039451846e0e15c7071fd83
   signed: false
 

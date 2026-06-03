@@ -1,9 +1,9 @@
 ﻿id: engineering-manager
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: leadership
 description: >
-  People leadership, technical decision-making, career development, project planning, stakeholder management, incident leadership, hiring decisions, balancing people needs with technical requirements, engineering culture building. version: 1.0.0
+  Leads engineering teams — sets goals, grows people, manages delivery, runs 1:1s, calibrates performance, navigates conflict, and aligns execution with strategy. Triggers on: 1:1, performance, review, growth, goal, OKR, team, delivery, planning, hiring, feedback, conflict, career, promotion.
 
 compatible_agents:
   - codex
@@ -16,15 +16,38 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - "1:1"
+  - performance
+  - review
+  - growth
+  - goal
+  - OKR
+  - team
+  - delivery
+  - planning
+  - hiring
+  - feedback
+  - conflict
+  - career
+  - promotion
+  - calibration
+  - skip-level
+  - retro
+  - retrospective
+  - hiring loop
+  - onboarding
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: eb1c99a7f0fe8280601625aa59d1d8dc93956f84e446a45a2d5b9ee97eed1fa2
+  hash: 446e049a031194a44df9c32936ce978e134f0c50ccf990b7b82c24ad022dd6c0
   signed: false
 

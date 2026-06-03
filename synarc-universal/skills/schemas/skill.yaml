@@ -1,9 +1,9 @@
 ﻿id: schemas
-version: <semver>
+version: 6.0.0
 schema: skill-pack/v1
 category: engineering-intelligence
 description: >
-  Canonical document schemas for the cognition layer brain files â€” 12 document types (CURRENT_STATE, SYSTEM_MAP, ARCHITECTURE, MODULE_MAP, API_CONTRACTS, FEATURE_LOG, CHANGELOG_INTELLIGENCE, SESSION_LEDGER, SNAPSHOT, DECISION_LOG, RUNBOOK, SPECIFICATION) with universal frontmatter, H1 titles, H2 sections, quality rules, ADR lifecycle, cross-referencing, versioning, and generation triggers. version: 2.0.0
+  Defines and validates the brain document schemas — CURRENT_STATE, MODULE_MAP, API_CONTRACTS, known-issues, ledger entries, checkpoints, error clusters, postmortems. Triggers on: schema, validation, brain, current state, module map, contract, ledger, checkpoint, error cluster, postmortem, ROPA, DPIA.
 
 compatible_agents:
   - codex
@@ -16,15 +16,34 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: critical
+cache_tier: core
+intent_triggers:
+  - schema
+  - validation
+  - brain
+  - current state
+  - module map
+  - contract
+  - ledger
+  - checkpoint
+  - error cluster
+  - postmortem
+  - ROPA
+  - DPIA
+  - JSON schema
+  - document format
+  - structured output
+  - contract
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 8c67b7a169de0133ac3f1b5d82c3619dd143cb77c1042e0bfc9013d548c07b39
+  hash: 0dc01ef5bac42c1251f80470869e8bfd91cf61f7f83a2c6aaeabe8487629cbcf
   signed: false
 

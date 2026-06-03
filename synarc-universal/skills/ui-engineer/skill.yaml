@@ -1,9 +1,9 @@
 ﻿id: ui-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: development
 description: >
-  Comprehensive UI engineering â€” pixel-perfect implementation, design systems, component libraries, CSS architecture, animation, accessibility, responsive design, design-to-code conversion, cross-browser, UI performance. version: 1.0.0
+  Implements pixel-perfect UI from design specs - design systems, component architecture, CSS architecture (BEM, ITCSS, utility-first), animation, responsive layout, accessibility, cross-browser compatibility, and visual regression. Triggers on: UI, pixel-perfect, design system, component, CSS, BEM, ITCSS, Tailwind, styled-components, animation, framer, GSAP, responsive, grid, flexbox, design tokens, Storybook, Chromatic, Figma to code.
 
 compatible_agents:
   - codex
@@ -16,15 +16,50 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - UI
+  - pixel-perfect
+  - design system
+  - component
+  - CSS
+  - BEM
+  - ITCSS
+  - Tailwind
+  - styled-components
+  - animation
+  - framer
+  - GSAP
+  - responsive
+  - grid
+  - flexbox
+  - design tokens
+  - Storybook
+  - Chromatic
+  - Figma to code
+  - design-to-code
+  - CSS-in-JS
+  - emotion
+  - vanilla-extract
+  - design tokens
+  - theming
+  - dark mode
+  - accessibility
+  - a11y
+  - WCAG
+  - visual regression
+  - cross-browser
+allowed_tools:
+  - [Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
+  - Bash]
 
 integrity:
   algorithm: sha256
-  hash: 081e7f5b4c346683c52bc4a563ed42bc1449d7d40409bfc3e57c11205ba1c97c
+  hash: 9f9bac25fa62abf80daecc2b5a7000b501462063d348c5289f343f9f2e823556
   signed: false
 

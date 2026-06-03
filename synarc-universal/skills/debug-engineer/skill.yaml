@@ -1,9 +1,9 @@
 ﻿id: debug-engineer
-version: 2.0.0
+version: 6.0.0
 schema: skill-pack/v1
 category: engineering-intelligence
 description: >
-  Systematic fault isolation, binary search debugging, hypothesis-driven debugging, root cause analysis, reproducing bugs, debugging in production. How to methodically find and fix software defects.
+  Systematic fault isolation, binary search debugging, hypothesis-driven root-cause analysis, and production debugging. Triggers on: bug, error, exception, stack trace, 500, 502, timeout, not working, broken, regression, reproduction, root cause, flapping.
 
 compatible_agents:
   - codex
@@ -16,15 +16,33 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - bug
+  - error
+  - exception
+  - stack trace
+  - 500
+  - 502
+  - timeout
+  - not working
+  - broken
+  - regression
+  - reproduction
+  - root cause
+  - flapping
+  - crash
+  - hang
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 752e136c276f91914f09cb1190a41b846225be0c5df7fc7f66f0297b2a9ef852
+  hash: 34e6305084d8ccd888b7651ff3729f66fbc15d622e3ac462877178c509133f49
   signed: false
 

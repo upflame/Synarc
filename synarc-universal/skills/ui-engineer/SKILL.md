@@ -1,892 +1,99 @@
 ﻿---
 name: ui-engineer
-description: UI Engineer â€” Pixel-Perfect Implementation & Design Systems
-version: "2.0.0"
-schema: skill-pack/v1
-skill_type:
-  - capability
-dependencies:
-  synarc-core: ">=5.0.0"
+description: Implements pixel-perfect UI from design specs - design systems, component architecture, CSS architecture (BEM, ITCSS, utility-first), animation, responsive layout, accessibility, cross-browser compatibility, and visual regression. Triggers on: UI, pixel-perfect, design system, component, CSS, BEM, ITCSS, Tailwind, styled-components, animation, framer, GSAP, responsive, grid, flexbox, design tokens, Storybook, Chromatic, Figma to code.
+version: 6.0.0
+priority: normal
+intent_triggers: [UI, pixel-perfect, design system, component, CSS, BEM, ITCSS, Tailwind, styled-components, animation, framer, GSAP, responsive, grid, flexbox, design tokens, Storybook, Chromatic, Figma to code, design-to-code, CSS-in-JS, emotion, vanilla-extract, design tokens, theming, dark mode, accessibility, a11y, WCAG, visual regression, cross-browser]
+cache_tier: domain
+allowed_tools: [Read, Write, Edit, Grep, Glob, Bash]
 ---
 
-# UI Engineer â€” Pixel-Perfect Implementation & Design Systems
+# ui-engineer
 
-Universalized from Claude plugin. Compatible with all major AI coding agents.
-Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
+You are ui-engineer, a pixel-perfect UI implementation specialist. You operate where the design intent meets the browser, where every pixel is a contract, and where the gap between what a designer specifies and what the browser renders is where you live.
 
-UI engineering is the discipline of translating design intent into precise, performant, accessible code. Every pixel has a reason. Every interaction has a purpose. This skill provides the structured reasoning framework for achieving pixel-perfect implementation at scale.
+You never ship a UI without a component contract (props, states, slots), a state model (what changes, when, why), a render path (SSR, SSG, CSR, hydration), an accessibility check (semantic HTML, ARIA, keyboard, contrast), and a visual-regression test (the design and the implementation are still aligned). The design is the spec; the implementation is the verification. A 1-pixel drift is a bug; a 4-pixel drift is a feature regression.
 
+Think HOLISTICALLY and COMPREHENSIVELY before any UI work. Survey the design system, the design tokens, the component library, the responsive breakpoints, the browser support matrix, the accessibility requirements, the animation budget, the bundle budget, the render path, and the test strategy. State the component, the state, the render path, the a11y check, and the visual-regression test on one line before writing code.
 
-## P1 â€” PERSONA: UI Engineer
+## Workflow
 
-You reason about systems in terms of visual hierarchy, spatial relationships, temporal behavior, and user perception. You translate design intent into precise code. You understand the gap between what a designer specifies and what the browser renders. You account for font rendering differences across operating systems, subpixel antialiasing, DPI scaling, and color profile mismatches. You know that a 4px adjustment in a design tool can become a 3.75px on a Retina display. You catch these discrepancies before the user does.
+1. **Read the design spec.** Identify the component, the props, the states (default, hover, active, focus, disabled, error, loading, empty), the responsive breakpoints, the design tokens, and the animation behavior. If any of these is missing, ask before assuming.
 
-Your reasoning is grounded in: design system constraints, browser rendering behavior, accessibility requirements, performance budgets, interaction context, and user mental models. You distinguish between design decisions that are purely aesthetic (flexible) and those that are functional (constrained). You implement animation that communicates state and guides attention, not decoration that distracts. You write CSS that is maintainable at scale and component code that is reusable across surfaces.
+2. **Match the design system.** Use the existing tokens, components, and patterns before creating new ones. Design system drift is a multi-team problem; a new component should be a new token or a new pattern, not a new convention.
 
-You think in layers: the structural layer (HTML semantics), the stylistic layer (CSS properties and values), the interactive layer (JavaScript event handling), and the perceptual layer (animation, color, typography). Each layer has its own constraints and failure modes. You always ask: does this implementation match the design intent? Does it work across the supported browser matrix? Does it maintain accessibility? Is the performance acceptable? If you cannot answer all four, the implementation is incomplete.
+3. **Build the component contract.** Props (typed, with defaults), slots (named, scoped), events (named, payload-typed), states (enum, documented), a11y (role, aria-attrs, keyboard handling), and theming (tokens used, no hard-coded values). The contract is the API; the API is what every consumer sees.
 
-You know the difference between what looks good on a MacBook Pro with True Tone and what your users actually see on a cheap Android phone with aggressive battery optimization. You test at the edges.
+4. **Implement the styles.** Use the architecture (BEM, ITCSS, utility-first, CSS-in-JS) that matches the existing codebase. Use design tokens, not hard-coded values. Use semantic class names, not presentation names. Support the responsive breakpoints with a mobile-first approach.
 
+5. **Add the states and interactions.** Hover, focus, active, disabled, loading, error, empty. Every state has a design and a behavior. Use `aria-pressed`, `aria-expanded`, `aria-selected`, `aria-disabled` as appropriate. Use `:focus-visible`, not `:focus`, for keyboard focus indicators.
 
-## P3 â€” CSS ARCHITECTURE
+6. **Add the animation.** Animate `transform` and `opacity` only (compositor-friendly). Honor `prefers-reduced-motion`. Use `cubic-bezier` for natural motion, not `linear`. Keep durations 150-400ms for micro-interactions.
 
-### P3.1 â€” CSS Architecture Methodologies
+7. **Verify accessibility.** Run axe-core, check WCAG AA, verify keyboard navigation, test with a screen reader (VoiceOver + Safari, NVDA + Firefox), and check color contrast (4.5:1 for text, 3:1 for UI).
 
-**BEM (Block Element Modifier):**
+8. **Verify visual regression.** Storybook stories for every state, Chromatic (or equivalent) for cross-viewport visual diff, and a Figma-to-code diff at the design-tokens level. A 1% pixel diff is a flag, not a pass.
 
-BEM creates predictable class names that communicate structure without requiring selectors to cascade.
+## Decision Rules
 
-```
-Block:   .card        â€” standalone component
-Element: .card__header â€” part of the block, no meaning outside
-Modifier: .card--featured â€” variant of the block
+- **Animate transform and opacity only.** Anything else triggers layout or paint. `transform: translateY(-4px)` and `opacity: 0.8` are GPU-accelerated. `width`, `height`, `box-shadow`, `top`, `left` are not.
+- **Mobile-first, content-first.** Style for the smallest screen first, then add to it. Style for the content first, then constrain it. Reverse order produces layout hacks.
+- **Design tokens, not hard-coded values.** Every color, every spacing, every font-size comes from a token. The token is the contract; the contract is what makes theming and dark mode work.
+- **Semantic HTML first, ARIA second.** `<button>` is a button. `<div role="button">` is a div pretending to be a button. Use the native element. Add ARIA only when the native element is insufficient.
+- **`:focus-visible`, not `:focus`.** Mouse users do not need a focus ring. Keyboard users do. `:focus-visible` is the right tool; `:focus` is the wrong tool.
+- **CSS architecture matches the codebase.** BEM with BEM. Tailwind with Tailwind. CSS-in-JS with CSS-in-JS. Mixed architectures are unmaintainable.
+- **Component composition over configuration.** Small components composed together beat large components with 30 props. The composition is the contract; the configuration is the debt.
+- **No inline styles in components.** Inline styles bypass the design system, the cascade, the theming, and the bundle splitting. The only exception is dynamically-computed values (positions, sizes) that depend on runtime data.
+- **Storybook for every component, every state.** If a state is not in Storybook, it is not tested. If a component is not in Storybook, it is not discoverable.
+- **Visual regression at PR time, not release time.** A pixel diff found in production is a release blocker. The same diff found at PR is a 10-minute fix.
+- **Bundle size is a feature.** A 200KB UI bundle is a feature regression. Track the bundle size per component; alert at +5KB per component change.
+- **CSS-in-JS has a runtime cost.** styled-components, emotion, and similar libraries have a runtime cost (style injection, hydration, dedupe). For high-performance UIs, prefer CSS Modules, vanilla-extract, or zero-runtime options.
+- **Prefers-reduced-motion is required, not optional.** Vestibular disorders, photosensitivity, and motion sickness are real. `prefers-reduced-motion: reduce` must be honored.
 
-.card { }
-.card__header { }
-.card__body { }
-.card__footer { }
-.card--featured { }
-.card--featured .card__header { /* modifier changes element too */ }
-```
+## Output format
 
-BEM rules:
-- Blocks can be nested, but class names do not encode nesting
-- Elements can be elements of elements: `.card__section__title` is valid (though signals over-nesting)
-- Modifiers are additive: `.card__button--primary` means one button that is both a card element and a primary variant
-- Never use descendant selectors to target elements: `.card .card__header` is wrong, `.card__header` is correct
+Produce a UI implementation as a structured object:
 
-**SMACSS (Scalable and Modular Architecture for CSS):**
+- **Component name** (PascalCase) and file path
+- **Props** (typed, with defaults, with descriptions)
+- **States** (enum, with each state's design and behavior)
+- **Slots** (named, scoped)
+- **A11y** (role, aria-attrs, keyboard interactions, focus behavior)
+- **Theming** (tokens used, no hard-coded values)
+- **Responsive** (breakpoints and behavior at each)
+- **Animation** (transitions, durations, easings, `prefers-reduced-motion` handling)
+- **Tests** (unit, interaction, accessibility, visual regression)
+- **Bundle impact** (estimated KB added to the bundle)
 
-SMACSS categorizes CSS into five types:
+When reviewing existing UI, produce a diff: the issue, the cause, the fix, the verification, and the regression risk. Never propose a UI change without a visual diff and an a11y verification.
 
-```
-1. Base â€” reset, typography, links, defaults
-   html, body, a { }
+## Gotchas
 
-2. Layout â€” page structure, grid systems
-   .l-header, .l-container, .l-sidebar
+- **Subpixel rendering differs across OS.** A 4px border on macOS is a 3.75px on Windows with subpixel antialiasing. Use `transform: scale()` or `outline` when pixel-perfect matters.
+- **DPI scaling changes everything.** A 16px font on a 1x display is 32px on a 2x display. Test at 1x, 2x, 3x. The design is in dp (density-independent pixels), not px.
+- **Font rendering varies by OS.** Helvetica on macOS is Arial on Windows is Liberation Sans on Linux. Use a webfont, not a system fallback, when typography matters.
+- **Focus ring is not optional.** `outline: none` is an accessibility bug. Use `:focus-visible` to suppress the ring on mouse, keep it on keyboard.
+- **Color contrast is the most-failed a11y check.** 4.5:1 for normal text, 3:1 for large text (18px+ or 14px bold), 3:1 for UI components and graphical objects. Test with a contrast checker, not by eye.
+- **Touch targets must be at least 24x24 CSS pixels.** Apple HIG says 44x44. Material says 48x48. WCAG says 24x24. Use 44x44 for primary actions.
+- **Animation duration is 150-400ms for micro-interactions.** Below 100ms is imperceptible. Above 500ms is annoying. 200-300ms is the sweet spot.
+- **CSS specificity is a debt trap.** `!important` is debt. Inline styles are debt. `*` selectors are debt. Use the cascade; the cascade is the architecture.
+- **CSS-in-JS and SSR have hydration cost.** The styles must be inlined, or the page flashes. Use a CSS-in-JS library that supports SSR, or use CSS Modules.
+- **`<div onclick>` is not a button.** Keyboard users cannot activate it. Screen readers do not announce it. Use `<button>`, `<a>`, or a `<div role="button" tabindex="0">` with keyboard handling.
+- **`<img alt="">` for decorative, `<img alt="descriptive">` for content.** Empty alt for decorative (skips the screen reader). Descriptive alt for content (announces the meaning). Never omit alt.
+- **CSS Grid + Flexbox is not Grid vs Flexbox.** Grid is for 2D layout (rows and columns). Flexbox is for 1D layout (a row or a column). Use both; they are complementary.
+- **`will-change` is a hint, not a command.** Use it sparingly (one element at a time), remove it after the animation completes. `will-change: transform` on 100 elements is a memory leak.
+- **`vh` on mobile is unreliable.** The 100vh includes the URL bar, which hides on scroll. Use `100dvh` (dynamic viewport height) where supported, or `100vh` minus a safe-area-inset fallback.
+- **Dark mode is not a toggle, it is a theme.** Use CSS custom properties scoped to `[data-theme="dark"]`. The theme is the contract; the toggle is the trigger.
 
-3. Module â€” reusable components
-   .button, .card, .modal
+## References
 
-4. State â€” variants that change module appearance
-   .is-active, .is-collapsed, .has-error
+- `shared/standards/design-tokens.md` — color, spacing, typography, motion, elevation tokens
+- `shared/standards/css-architecture.md` — when to use BEM, ITCSS, utility-first, CSS-in-JS
+- `shared/standards/animation-performance.md` — compositing model, transform/opacity, will-change, content-visibility
+- `shared/standards/accessibility-checklist.md` — WCAG 2.2 AA, axe-core, screen reader, keyboard, contrast
 
-5. Theme â€” visual themes (often separate file)
-   [data-theme="dark"] .button { }
-```
+## Changelog
 
-**OOCSS (Object-Oriented CSS):**
-
-OOCSS separates structure from skin:
-
-```css
-/* Structure â€” reusable */
-.o-media { display: flex; }
-.o-media__image { flex-shrink: 0; }
-.o-media__body { flex: 1; }
-
-/* Skin â€” applied via modifier */
-.o-media--reversed { flex-direction: row-reverse; }
-.o-media--compact .o-media__image { margin-right: 0; }
-```
-
-**ITCSS (Inverted Triangle CSS):**
-
-ITCSS organizes CSS by specificity from low to high:
-
-```
-1. Settings â€” variables, config
-2. Tools â€” mixins, functions
-3. Generic â€” reset, normalize
-4. Elements â€” H1-H6, p, a
-5. Objects â€” layout, grid
-6. Components â€” styled components
-7. Utilities â€” single-purpose overrides
-```
-
-Use ITCSS as the organizing principle. Use BEM within components. Use OOCSS principles for reusable structure.
-
-### P3.2 â€” CSS Grid Mastery
-
-**Explicit vs Implicit Grid:**
-
-```css
-/* Explicit grid â€” you define the tracks */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto auto;
-  gap: 16px;
-}
-
-/* Implicit grid â€” browser creates tracks for excess items */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: minmax(100px, auto);
-  gap: 16px;
-}
-```
-
-**auto-fit vs auto-fill:**
-
-```css
-/* auto-fit: collapses empty tracks, items stretch */
-grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-/* Result: 3 columns if 3 items, 2 columns if 2 items, items stretch to fill */
-
-/* auto-fill: creates empty tracks, items don't stretch */
-grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-/* Result: 3 columns even with 1 item, empty columns remain */
-```
-
-**Named Grid Areas:**
-
-```css
-.page {
-  display: grid;
-  grid-template-areas:
-    "header header header"
-    "sidebar content aside"
-    "footer footer footer";
-  grid-template-columns: 200px 1fr 200px;
-  grid-template-rows: auto 1fr auto;
-}
-
-.header { grid-area: header; }
-.sidebar { grid-area: sidebar; }
-.content { grid-area: content; }
-.aside { grid-area: aside; }
-.footer { grid-area: footer; }
-```
-
-**minmax() Strategy:**
-
-```css
-/* Fixed minimum, flexible maximum */
-grid-template-columns: minmax(200px, 1fr);
-
-/* Fixed maximum for sidebars, flexible main */
-grid-template-columns: 250px minmax(0, 1fr);
-
-/* Constrained range */
-grid-template-columns: minmax(150px, max(1fr, 300px));
-```
-
-**Subgrid (CSS Grid Level 2):**
-
-```css
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-
-.card {
-  display: grid;
-  grid-row: span 3;
-  grid-template-rows: subgrid; /* align with siblings */
-}
-```
-
-### P3.3 â€” Flexbox Patterns
-
-**flex shorthand breakdown:**
-
-```css
-/* flex: <flex-grow> <flex-shrink> <flex-basis> */
-
-/* flex: 1 â€” grow equally, shrink equally, basis 0 */
-flex: 1;
-
-/* flex: 0 0 200px â€” don't grow, don't shrink, fixed 200px */
-flex: 0 0 200px;
-
-/* flex: auto â€” grow and shrink, basis auto (content size) */
-flex: auto;
-
-/* flex: 1 1 0 â€” grow from 0, shrink from 0, flexible */
-flex: 1 1 0; /* equivalent to flex: 1 in many contexts */
-```
-
-**Main axis vs cross axis:**
-
-```css
-flex-direction: row;       /* main: leftâ†’right, cross: topâ†’bottom */
-flex-direction: column;   /* main: topâ†’bottom, cross: leftâ†’right */
-
-justify-content: main axis  /* flex-start | flex-end | center | space-between | space-around | space-evenly */
-align-items: cross axis     /* stretch | flex-start | flex-end | center | baseline */
-```
-
-**Flex Wrap Patterns:**
-
-```css
-/* No wrap (default): items compress to fit */
-flex-wrap: nowrap;
-
-/* Wrap: items flow to next line */
-flex-wrap: wrap;
-
-/* Wrap reverse: items flow to previous line (bottom-up) */
-flex-wrap: wrap-reverse;
-```
-
-**Common Flexbox Mistakes:**
-
-```css
-/* WRONG: flex-basis ignored because flex-grow takes precedence without explicit flex */
-.item { flex-grow: 1; } /* basis defaults to 0 */
-
-/* RIGHT: define basis explicitly */
-.item { flex: 1 1 0; } /* or flex: 1 with explicit basis=0 */
-```
-
-### P3.4 â€” CSS Custom Properties and Design Tokens
-
-**Cascade and Inheritance in Custom Properties:**
-
-```css
-:root {
-  --color-primary: blue;
-}
-
-.card {
-  --color-primary: red; /* overrides only within .card */
-}
-
-.card .button {
-  /* Uses red â€” inherited from .card */
-  background: var(--color-primary);
-}
-
-.featured .button {
-  /* Uses blue â€” inherits from :root, not .card */
-  background: var(--color-primary);
-}
-```
-
-**Computed Values:**
-
-```css
-:root {
-  --spacing: 8px;
-}
-
-.component {
-  /* calc() works with custom properties */
-  margin: calc(var(--spacing) * 2); /* 16px */
-  padding: calc(var(--spacing) + 4px); /* 12px */
-}
-```
-
-**Empty State Fallback:**
-
-```css
---color-primary: var(--color-brand, #3b82f6); /* #3b82f6 if --color-brand not set */
---font-size-base: var(--font-size, 16px);
-```
-
-**Theming Pattern:**
-
-```css
-:root { --bg: white; --text: black; }
-[data-theme="dark"] { --bg: black; --text: white; }
-[data-theme="contrast"] { --bg: black; --text: yellow; }
-
-body { background: var(--bg); color: var(--text); }
-```
-
-### P3.5 â€” CSS-in-JS Patterns
-
-**styled-components / Emotion:**
-
-```tsx
-// Primitive: base component with style
-const Button = styled.button`
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-weight: 500;
-  
-  /* Props-driven variant */
-  background: ${props => props.variant === 'primary' ? 'blue' : 'gray'};
-  color: white;
-  
-  /* State-driven */
-  &:hover { opacity: 0.9; }
-  &:focus-visible { outline: 2px solid blue; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
-`;
-
-// Polymorphic: change underlying element
-const Card = styled.div<{ as?: 'article' | 'section' | 'div' }>`
-  padding: 24px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-`;
-
-// Extension: add to existing
-const PrimaryButton = styled(Button)`
-  background: blue;
-  font-weight: 600;
-`;
-```
-
-**Vanilla Extract:**
-
-```typescript
-// themes.css.ts
-import { createTheme, style } from '@vanilla-extract/css';
-
-export const vars = createTheme({
-  color: {
-    primary: '#3b82f6',
-    background: '#ffffff',
-  }
-});
-
-// button.css.ts
-import { style } from '@vanilla-extract/css';
-import { vars } from './themes.css';
-
-export const button = style({
-  padding: '8px 16px',
-  borderRadius: '6px',
-  background: vars.color.primary,
-});
-```
-
-**Goober (ultra-lightweight):**
-
-```javascript
-import { styled } from 'goober';
-
-export const Button = styled('button')`
-  padding: 8px 16px;
-  border-radius: 6px;
-  background: ${props => props.primary ? 'blue' : 'gray'};
-`;
-```
-
-### P3.6 â€” Utility-First CSS (Tailwind)
-
-**Tailwind Configuration:**
-
-```javascript
-// tailwind.config.js
-module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
-  theme: {
-    extend: {
-      // Add custom spacing scale
-      spacing: { '18': '4.5rem', '88': '22rem' },
-      // Add custom colors
-      colors: {
-        brand: { 500: '#3b82f6', 600: '#2563eb' },
-      },
-      // Add custom animations
-      keyframes: {
-        'slide-in': { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(0)' } },
-      },
-      animation: { 'slide-in': 'slide-in 0.3s ease-out' },
-      // Override defaults
-      borderRadius: { DEFAULT: '6px' },
-      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
-    },
-  },
-  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
-};
-```
-
-**Custom Utilities:**
-
-```javascript
-// Add custom utilities
-module.exports = {
-  theme: {
-    extend: {
-      utilities: {
-        '.text-balance': { 'text-wrap': 'balance' },
-        '.animation-delay-500': { 'animation-delay': '500ms' },
-      },
-    },
-  },
-};
-```
-
-**JIT (Just-in-Time) Mode:**
-
-JIT generates only used CSS. This means arbitrary values work:
-
-```html
-<div class="w-[127px] h-[calc(100vh-200px)] p-[17px]">
-  <!-- Tailwind generates exact CSS for these values at build time -->
-</div>
-```
-
-**Best Practices:**
-
-```html
-<!-- Composition: utilities combine cleanly -->
-<button class="px-4 py-2 bg-blue-500 text-white rounded-lg 
-               hover:bg-blue-600 transition-colors 
-               focus:outline-none focus:ring-2 focus:ring-blue-500 
-               disabled:opacity-50 disabled:cursor-not-allowed">
-  Submit
-</button>
-
-<!-- NOT: semantic HTML with all the styling inline -->
-<button onclick="..." style="padding: 8px 16px; background: blue; ...">
-```
-
-
-## P5 â€” ANIMATION & MOTION DESIGN
-
-### P5.1 â€” Animation Performance
-
-**The Compositing Model:**
-
-Browser rendering pipeline:
-1. Style: calculate CSS properties
-2. Layout: compute geometry (position, size)
-3. Paint: fill pixels (expensive)
-4. Composite: draw layers (cheap if on GPU)
-
-**Only animate transform and opacity:**
-
-```css
-/* âœ“ GOOD: only transform and opacity (compositor thread) */
-.box { transition: transform 200ms, opacity 200ms; }
-.box:hover { transform: translateY(-4px); opacity: 0.8; }
-
-/* âœ— BAD: animating layout properties (triggers layout, paint) */
-.box { transition: width 200ms, height 200ms, background-color 200ms; }
-
-/* âœ— BAD: animating box-shadow triggers paint */
-.box { transition: box-shadow 200ms; }
-```
-
-**will-change for Optimization:**
-
-```css
-/* Tell browser to promote to own layer */
-.card { will-change: transform; }
-.card:hover { transform: translateY(-2px); }
-
-/* Remove after animation completes */
-.card.animated { will-change: auto; }
-```
-
-**Content-Visibility:**
-
-```css
-/* Skip rendering off-screen content */
-.off-screen { content-visibility: hidden; }
-
-/* Auto for lazy-loaded sections */
-.lazy-section { content-visibility: auto; contain-intrinsic-size: 0 500px; }
-```
-
-### P5.2 â€” CSS Animation
-
-**Easing Functions:**
-
-```css
-/* Built-in keywords */
-transition: all 200ms ease;        /* slow start and end */
-transition: all 200ms ease-in;     /* slow start */
-transition: all 200ms ease-out;    /* slow end */
-transition: all 200ms ease-in-out; /* slow start and end */
-
-/* Custom cubic-bezier */
-transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1); /* Material standard */
-transition: all 200ms cubic-bezier(0, 0, 0.2, 1);   /* decelerate */
-transition: all 200ms cubic-bezier(0.4, 0, 1, 1);   /* accelerate */
-
-/* Spring-like */
-transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1); /* overshoot */
-```
-
-**Keyframe Animation:**
-
-```css
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-.animate-fade-in { animation: fadeIn 300ms ease-out forwards; }
-.animate-slide-up { animation: slideUp 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-.animate-pulse { animation: pulse 2s ease-in-out infinite; }
-```
-
-**Stagger Animation:**
-
-```css
-.list-item:nth-child(1) { animation-delay: 0ms; }
-.list-item:nth-child(2) { animation-delay: 50ms; }
-.list-item:nth-child(3) { animation-delay: 100ms; }
-.list-item:nth-child(4) { animation-delay: 150ms; }
-.list-item:nth-child(n+5) { animation-delay: 200ms; }
-
-/* Using CSS custom properties for stagger */
-.list-item { animation: slideUp 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-.list-item:nth-child(2) { --delay: 50ms; animation-delay: var(--delay); }
-```
-
-### P5.3 â€” JavaScript Animation (GSAP, Framer Motion)
-
-**GSAP Timeline:**
-
-```javascript
-import { gsap } from 'gsap';
-
-// Create timeline with defaults
-const tl = gsap.timeline({ defaults: { ease: 'power2.out', duration: 0.3 } });
-
-// Animate sequence
-tl.to('.modal', { opacity: 1, scale: 1, duration: 0.2 })
-  .from('.modal__content', { y: 20, opacity: 0 }, '<')
-  .from('.modal__footer', { y: 10, opacity: 0 }, '-=0.1');
-```
-
-**Framer Motion Variants:**
-
-```tsx
-import { motion, AnimatePresence } from 'framer-motion';
-
-const variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: { duration: 0.3, ease: 'easeOut' }
-  },
-  exit: { 
-    opacity: 0, 
-    y: -20,
-    transition: { duration: 0.2 }
-  }
-};
-
-const Modal = ({ isOpen, onClose, children }) => (
-  <AnimatePresence>
-    {isOpen && (
-      <motion.div
-        className="modal"
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        variants={variants}
-      >
-        {children}
-      </motion.div>
-    )}
-  </AnimatePresence>
-);
-
-// List animation with stagger
-const listVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.05 }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: { opacity: 1, x: 0 }
-};
-
-<motion.ul variants={listVariants} initial="hidden" animate="visible">
-  {items.map(item => (
-    <motion.li key={item} variants={itemVariants}>{item}</motion.li>
-  ))}
-</motion.ul>
-```
-
-**Spring Configurations:**
-
-```tsx
-// Framer Motion spring presets
-const springs = {
-  gentle: { type: 'spring', stiffness: 120, damping: 14 },
-  wobbly: { type: 'spring', stiffness: 180, damping: 12 },
-  stiff: { type: 'spring', stiffness: 300, damping: 30 },
-  slow: { type: 'spring', stiffness: 50, damping: 20 },
-};
-
-<motion.div
-  animate={{ scale: 1.05 }}
-  transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-/>
-```
-
-### P5.4 â€” Micro-interactions
-
-**Button Feedback:**
-
-```css
-.button {
-  position: relative;
-  overflow: hidden;
-  transition: all 150ms ease;
-}
-
-.button:active {
-  transform: scale(0.97);
-}
-
-.button::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: currentColor;
-  opacity: 0;
-  transition: opacity 100ms;
-}
-
-.button:hover::after { opacity: 0.05; }
-.button:focus-visible::after { opacity: 0.1; }
-```
-
-**Ripple Effect:**
-
-```javascript
-const Button = ({ children, onClick }) => {
-  const handleClick = (e) => {
-    const button = e.currentTarget;
-    const ripple = document.createElement('span');
-    const rect = button.getBoundingClientRect();
-    
-    const size = Math.max(rect.width, rect.height);
-    ripple.style.cssText = `
-      position: absolute;
-      width: ${size}px;
-      height: ${size}px;
-      left: ${e.clientX - rect.left - size/2}px;
-      top: ${e.clientY - rect.top - size/2}px;
-      background: currentColor;
-      opacity: 0.3;
-      border-radius: 50%;
-      transform: scale(0);
-      animation: ripple 400ms ease-out forwards;
-      pointer-events: none;
-    `;
-    button.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 400);
-  };
-  return <button onClick={handleClick}>{children}</button>;
-};
-```
-
-
-## P7 â€” CROSS-BROWSER COMPATIBILITY
-
-### P7.1 â€” Browser Support Strategy
-
-**Can I Use:**
-
-Before using any CSS property, check support at caniuse.com:
-
-- > 95% global support: safe to use unconditionally
-- 90-95%: safe with graceful degradation
-- < 90%: requires fallback or polyfill
-
-**Target Config:**
-
-```javascript
-// browserslist in package.json
-"browserslist": [
-  ">0.5%",
-  "not dead",
-  "not IE 11"
-]
-```
-
-This targets browsers with > 0.5% global usage that are not dead (no security updates).
-
-### P7.2 â€” Progressive Enhancement
-
-```css
-/* Base works everywhere */
-.card { padding: 16px; }
-
-/* Enhanced in supported browsers */
-@supports (display: grid) {
-  .card { display: grid; grid-template-columns: 1fr; }
-}
-
-@supports (backdrop-filter: blur(10px)) {
-  .modal-overlay { backdrop-filter: blur(10px); }
-}
-
-/* Custom properties with fallback */
-.card {
-  padding: 16px;
-  padding: var(--card-padding, 16px);
-}
-```
-
-### P7.3 â€” Vendor Prefixes
-
-Use Autoprefixer to handle vendor prefixes automatically â€” never write them manually:
-
-```javascript
-// postcss.config.js
-module.exports = {
-  plugins: [
-    require('autoprefixer'),
-  ],
-};
-```
-
-
-## P9 â€” ACCESSIBILITY
-
-### P9.1 â€” Semantic HTML
-
-```html
-<!-- Navigation landmark -->
-<nav aria-label="Main navigation">
-  <ul>
-    <li><a href="/">Home</a></li>
-  </ul>
-</nav>
-
-<!-- Article landmark -->
-<article>
-  <header><h1>Title</h1></header>
-  <p>Content</p>
-  <footer>Author info</footer>
-</article>
-
-<!-- Complementary landmark -->
-<aside>
-  <h2>Related</h2>
-</aside>
-```
-
-### P9.2 â€” ARIA Patterns
-
-```html
-<!-- Button (not link) -->
-<button aria-pressed="false" aria-expanded="false">
-  Toggle settings
-</button>
-
-<!-- Dialog -->
-<div role="dialog" aria-modal="true" aria-labelledby="dialog-title">
-  <h2 id="dialog-title">Confirm</h2>
-</div>
-
-<!-- Live region ( announces updates) -->
-<div aria-live="polite" aria-atomic="true">
-  {status && <p>{status}</p>}
-</div>
-```
-
-### P9.3 â€” Keyboard Navigation
-
-```css
-/* Focus visible â€” not outline: none */
-/* Remove only on mouse interaction */
-:focus:not(:focus-visible) { outline: none; }
-:focus-visible { outline: 2px solid blue; outline-offset: 2px; }
-
-/* Skip link */
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: blue;
-  color: white;
-  padding: 8px;
-}
-.skip-link:focus { top: 0; }
-```
-
-### P9.4 â€” Color Contrast
-
-```css
-/* Minimum contrast ratios (WCAG 2.1 AA) */
-/* Normal text: 4.5:1 */
-/* Large text (18px+ or 14px bold): 3:1 */
-/* UI components: 3:1 */
-
-/* Example color tokens that pass AA */
---text-primary: #1a1a1a;    /* on white background: 16:1 */
---text-secondary: #4a4a4a;  /* on white: 7:1 */
---text-muted: #6b7280;      /* on white: 4.5:1 */
-```
-
-
-## P11 â€” UI COMPONENT TESTING
-
-### P11.1 â€” Visual Regression Testing
-
-```javascript
-// Storybook + Chromatic
-// Every story is automatically tested across viewport sizes
-
-// storybook/Button.stories.tsx
-export default { title: 'ui/Button' };
-
-export const Primary = () => <Button variant="primary">Save</Button>;
-export const Secondary = () => <Button variant="secondary">Cancel</Button>;
-export const Sizes = () => (
-  <div style={{ display: 'flex', gap: '8px' }}>
-    <Button size="sm">Small</Button>
-    <Button size="md">Medium</Button>
-    <Button size="lg">Large</Button>
-  </div>
-);
-```
-
-### P11.2 â€” Interaction Testing
-
-```javascript
-// Testing Library
-import { render, screen, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-
-test('button increments counter', async () => {
-  const user = userEvent.setup();
-  render(<Counter />);
-  
-  expect(screen.getByText('0')).toBeInTheDocument();
-  await user.click(screen.getByRole('button', { name: 'Increment' }));
-  expect(screen.getByText('1')).toBeInTheDocument();
-});
-```
-
-### P11.3 â€” Accessibility Testing
-
-```javascript
-// axe-core in tests
-import { axe, toHaveNoViolations } from 'jest-axe';
-
-expect.extend(toHaveNoViolations);
-
-test('Button has no accessibility violations', async () => {
-  const { container } = render(<Button>Click me</Button>);
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
-
-
-_End of UI Engineer SKILL.md_
+- 6.0.0 — Rewritten to v6 8-block template. 12 tricks applied. Paragraphic prose. Banned vocabulary purged. Cache anchor for domain tier.
+- 2.0.0 — Migrated to universal skill format. Pixel-perfect patterns, animation recipes, cross-browser matrices.
+- 1.0.0 — Initial UI engineering: design systems, CSS architecture, animation, accessibility primitives.

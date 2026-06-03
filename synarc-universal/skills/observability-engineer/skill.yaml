@@ -1,9 +1,9 @@
 ﻿id: observability-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: devops
 description: >
-  Comprehensive observability engineering skill covering metrics, logs, traces, OpenTelemetry, alerting, dashboards, SLOs, cardinality management, cost optimization, and system-specific observability patterns.
+  Designs and implements metrics, logs, traces, dashboards, and alerts. Triggers on: metric, counter, gauge, histogram, log, structured log, trace, span, dashboard, alert, SLO, observability, telemetry, instrumentation, RED method, USE method.
 
 compatible_agents:
   - codex
@@ -16,15 +16,40 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - metric
+  - counter
+  - gauge
+  - histogram
+  - log
+  - structured log
+  - trace
+  - span
+  - dashboard
+  - alert
+  - SLO
+  - observability
+  - telemetry
+  - instrumentation
+  - RED
+  - USE
+  - exporter
+  - OTel
+  - Prometheus
+  - Grafana
+  - OpenTelemetry
+  - Datadog
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 5fba9307486ce36740ef8f0f3a5c81edd5ab04d3987100c33acfe3cb8734fa43
+  hash: 27456e5688245583d1f6bd6792cd0350b58ce1277d4c6c0337c6401617ab96f1
   signed: false
 

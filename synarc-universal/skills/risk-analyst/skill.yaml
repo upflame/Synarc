@@ -1,9 +1,9 @@
 ﻿id: risk-analyst
-version: 2.0.0
+version: 6.0.0
 schema: skill-pack/v1
 category: engineering-intelligence
 description: >
-  Probabilistic thinking, worst-case analysis, blast radius reasoning, risk matrices, scenario planning, black swan events, risk mitigation, constraint identification and classification, constraint relaxation strategies, optimization under constraints, trade-off navigation, risk-based prioritization under constraints.
+  Identifies, quantifies, and mitigates risks — technical, operational, security, financial, schedule, and reputational. Triggers on: risk, risk register, mitigation, likelihood, impact, residual risk, risk appetite, risk tolerance, exposure, contingency.
 
 compatible_agents:
   - codex
@@ -16,15 +16,32 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - risk
+  - risk register
+  - mitigation
+  - likelihood
+  - impact
+  - residual risk
+  - risk appetite
+  - risk tolerance
+  - exposure
+  - contingency
+  - risk assessment
+  - risk analysis
+  - risk matrix
+  - risk score
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 89bae10e685c83d60e6bf0bd63066eb2717eafc10a6994d429e5a6c5d870c9c8
+  hash: bfe84f8c914bbf7dd6c1f75dbe0f7982be50b838b543348964141b8df6493482
   signed: false
 

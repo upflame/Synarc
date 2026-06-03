@@ -1,9 +1,9 @@
 ﻿id: product-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: leadership
 description: >
-  A comprehensive guide for engineers who master the product engineering craft — bridging the gap between engineering execution and product strategy through shared ownership, technical empathy, data-driven prioritization, build vs buy analysis, customer development, experimentation, metrics, and product-aware technical leadership. version: 3.0.0
+  Bridges engineering and product — defines user outcomes, writes PRDs, prioritizes by impact, runs experiments, and aligns technical work with customer value. Triggers on: product, PRD, user story, outcome, impact, prioritization, RICE, ICE, experiment, A/B test, hypothesis, customer, value, roadmap.
 
 compatible_agents:
   - codex
@@ -16,15 +16,39 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - product
+  - PRD
+  - user story
+  - outcome
+  - impact
+  - prioritization
+  - RICE
+  - ICE
+  - experiment
+  - A/B test
+  - hypothesis
+  - customer
+  - value
+  - roadmap
+  - OKR
+  - KPI
+  - North Star
+  - jobs to be done
+  - persona
+  - journey
+  - feature request
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 068219154c5733fef0fd11cffb2f3127956ef365958fe3cd28d577e1806f8333
+  hash: dc8df02e8d73227d9897ac4a0d8d37548dcd0692c7ccc61499e5e50ffd942fd9
   signed: false
 

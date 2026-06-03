@@ -1,9 +1,9 @@
 ﻿id: ml-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: ml
 description: >
-  Comprehensive skill set for machine learning engineering covering architecture, pipelines, training, deployment, MLOps, LLMs, and best practices.
+  Designs and operates ML pipelines — training, evaluation, deployment, monitoring, and feedback loops. Triggers on: model, training, inference, ML pipeline, feature store, MLOps, drift, evaluation, metrics, dataset, label, model card, fairness, bias.
 
 compatible_agents:
   - codex
@@ -16,15 +16,46 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - model
+  - training
+  - inference
+  - ML pipeline
+  - feature store
+  - MLOps
+  - drift
+  - evaluation
+  - metrics
+  - dataset
+  - label
+  - model card
+  - fairness
+  - bias
+  - ML
+  - AI
+  - neural network
+  - LLM
+  - embedding
+  - fine-tune
+  - prompt
+  - RAG
+  - agent
+  - transformer
+  - retrain
+  - online learning
+  - batch prediction
+  - serving
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 22b392e9e9957594f370a9bcbdbe8dfacf84914804a5e31c5fae9a187be9f6c4
+  hash: 07b25769d1f72c8e71df32d95f53b74e90e0aeb6640e75fc8d23304f05af1eba
   signed: false
 

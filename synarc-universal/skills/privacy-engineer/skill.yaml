@@ -1,9 +1,9 @@
 ﻿id: privacy-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: security
 description: >
-  Comprehensive privacy engineering skill covering privacy-by-design, data classification, consent management, data subject rights, PIA/DPIA methodology, data retention, PII detection, cross-border transfers, regulatory mapping, incident response, and vendor assessment across the entire data lifecycle.
+  Designs and audits data privacy controls — PII inventory, data flows, consent, retention, deletion, and regulatory compliance (GDPR, CCPA, HIPAA). Triggers on: privacy, PII, personal data, consent, retention, deletion, GDPR, CCPA, HIPAA, anonymization, pseudonymization, data subject rights, DPIA, ROPA, lawful basis.
 
 compatible_agents:
   - codex
@@ -16,15 +16,37 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - privacy
+  - PII
+  - personal data
+  - consent
+  - retention
+  - deletion
+  - GDPR
+  - CCPA
+  - HIPAA
+  - anonymization
+  - pseudonymization
+  - data subject
+  - DPIA
+  - ROPA
+  - lawful basis
+  - data protection
+  - data flow
+  - data inventory
+  - breach notification
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 36fc8654b9c7ae034c310a181c29303819dc081837c5c6ea622831d53223e35d
+  hash: e850a08ec5a5750e84f6c238b66fca1676ae5957437f2b55c99aae2353268c74
   signed: false
 

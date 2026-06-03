@@ -1,12 +1,9 @@
-﻿---
-id: synarc-core
-version: 5.0.0
+﻿id: synarc-core
+version: 6.0.0
 schema: skill-pack/v1
 category: engineering-intelligence
 description: >
-  Core engineering intelligence runtime providing change classification,
-  risk assessment, context injection, session tracking, quality gates,
-  error intelligence, and agent execution governance for all AI coding agents.
+  Engineering intelligence runtime — classifies every change into 12 WorkTypes, applies 6-level risk ladder, injects structural context, tracks every mutation in a session ledger, enforces quality and security gates. Always loaded for engineering tasks. Triggers on: code, commit, deploy, refactor, schema, API, auth, migration, error, debug, test, review, plan, design, analyze, audit, build, ship.
 
 compatible_agents:
   - codex
@@ -19,24 +16,38 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: always-on
-  description: >
-    Automatically activates on any engineering interaction.
-    Provides foundational cognition for all other skills.
-
-dependencies: {}
-
-performance:
-  context_overhead:
-    compact: ~50 tokens
-    standard: ~200 tokens
-    full: ~500 tokens
-  activation_latency: ~50ms
-  classification_overhead: ~15 tokens
+priority: critical
+cache_tier: core
+intent_triggers:
+  - code
+  - commit
+  - deploy
+  - refactor
+  - schema
+  - API
+  - auth
+  - migration
+  - error
+  - debug
+  - test
+  - review
+  - plan
+  - design
+  - analyze
+  - audit
+  - build
+  - ship
+  - change
+  - fix
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: d2939179ddd1b943cee01b66fa7185292cffed14deb593ac7d74bef9f8a432e7
+  hash: eac1d94557d060d1391d273476018d03e0689788d458f59451a8c996336161fe
   signed: false
 

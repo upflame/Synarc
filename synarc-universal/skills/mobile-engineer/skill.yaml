@@ -1,9 +1,9 @@
 ﻿id: mobile-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: mobile
 description: >
-  Mobile-first architecture, offline-first reasoning, platform-specific decisions (iOS vs Android), memory management, battery optimization, app lifecycle management, network-aware design, responsive layouts for mobile screens, push notification architecture, mobile security, gesture navigation, mobile performance profiling. version: 1.0.0
+  Designs and builds native and cross-platform mobile applications — iOS, Android, React Native, Flutter, lifecycle, offline, push, deep links, app store, and battery. Triggers on: mobile, iOS, Android, Swift, Kotlin, React Native, Flutter, app store, push, notification, deep link, offline, battery, lifecycle.
 
 compatible_agents:
   - codex
@@ -16,15 +16,40 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - mobile
+  - iOS
+  - Android
+  - Swift
+  - Kotlin
+  - React Native
+  - Flutter
+  - app store
+  - push
+  - notification
+  - deep link
+  - offline
+  - battery
+  - lifecycle
+  - native
+  - cross-platform
+  - mobile app
+  - IPA
+  - APK
+  - AAB
+  - TestFlight
+  - Play Console
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: a13516877acd3e9bd6bb4babf08d609f52558e2135ea9080662572568da400e3
+  hash: 250aa5499f91038c2673161f23d347e6a74986f27b77acf548e642291b0a3bec
   signed: false
 

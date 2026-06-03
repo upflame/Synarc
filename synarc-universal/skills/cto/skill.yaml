@@ -1,9 +1,9 @@
 ﻿id: cto
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: leadership
 description: >
-  Technical vision, organizational strategy, technology selection, build-vs-buy decisions, platform thinking, engineering culture, resource allocation, strategic risk evaluation, business-aligned engineering reasoning. version: 1.0.0
+  Sets technology strategy, builds engineering org, allocates budget, manages technical debt at portfolio scale, and aligns technology with business. Triggers on: technology strategy, engineering org, budget, headcount, technical debt, portfolio, roadmap, board, investor, due diligence, M&A.
 
 compatible_agents:
   - codex
@@ -16,15 +16,38 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - technology strategy
+  - engineering org
+  - budget
+  - headcount
+  - technical debt
+  - portfolio
+  - roadmap
+  - board
+  - investor
+  - due diligence
+  - "M&A"
+  - vendor selection
+  - build vs buy
+  - "R&D"
+  - innovation
+  - technology vision
+  - multi-year plan
+  - capability
+  - maturity
+  - target operating model
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: bb6c15384d7bf62b923023bfaba35b84283801043b291e3aaf0f319d423aca0d
+  hash: ac5310578b3df83ae7bb453ddd98d78f5e18f29af3155a1e954885b9732043e9
   signed: false
 

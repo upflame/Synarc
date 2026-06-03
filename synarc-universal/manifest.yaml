@@ -1,393 +1,1582 @@
 ﻿# Synarc Universal Skill Pack Manifest
 # Schema: skill-pack/v1
-# Generated: 2026-06-03
+# Generated: 2026-06-04
 # Integrity: SHA-256
+# Source: skills/*/SKILL.md (single source of truth)
 
 pack:
   id: synarc-universal
-  name: Synarc Universal â€” Autonomous Engineering Intelligence Runtime
+  name: Synarc Universal - Autonomous Engineering Intelligence Runtime
   description: >
-    Universal agent skill pack for engineering cognition â€” change classification, risk assessment, context injection, session tracking, quality gates. Compatible with all major AI coding agents.
-  version: 5.0.0
+    Universal agent skill pack for engineering cognition - change classification, risk
+    assessment, context injection, session tracking, quality gates, error intelligence.
+    Compatible with all major AI coding agents (Codex, OpenCode, Cursor, Gemini CLI,
+    Claude Code, Copilot, Windsurf, Cline, RooCode). v6.0.0 introduces the
+    4-tier prompt-caching architecture, intent-based activation via intent_triggers,
+    and 35x token reduction versus v5.x.
+  version: 6.0.0
   schema: skill-pack/v1
-  author: Universal Skill Pack
+  author: UpFlame Labs <info@upflame.in>
 
   compatible_agents:
-    - codex     - opencode     - cursor     - gemini-cli     - claude-code     - copilot     - windsurf     - cline     - roo-code -join "
-"
+    - codex
+    - opencode
+    - cursor
+    - gemini-cli
+    - claude-code
+    - copilot
+    - windsurf
+    - cline
+    - roo-code
 
   tags:
-    - engineering-intelligence     - autonomous-cognition     - architecture-analysis     - change-intelligence     - deployment-safety     - risk-management     - quality-gates     - session-tracking     - cross-platform -join "
-"
+    - engineering-intelligence
+    - autonomous-cognition
+    - architecture-analysis
+    - change-intelligence
+    - deployment-safety
+    - risk-management
+    - quality-gates
+    - session-tracking
+    - cross-platform
+    - universal-runtime
+    - prompt-caching
+    - token-efficient
 
   categories:
-    - engineering-intelligence     - architecture     - development     - security     - devops     - data     - mobile     - ml     - leadership -join "
-"
+    - engineering-intelligence
+    - architecture
+    - development
+    - security
+    - devops
+    - data
+    - mobile
+    - ml
+    - leadership
 
 skills:
   - id: api-designer
     path: skills/api-designer/SKILL.md
-    version: "1.0.0"
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Designs REST, GraphQL, and gRPC API contracts — endpoints, schemas, pagination, error envelopes, versioning, and deprecation. Triggers on: API design, OpenAPI, Swagger, GraphQL schema, gRPC proto, REST, endpoint, route, contract, pagination, status code, error envelope, versioning, deprecation.
+    category: architecture
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - API design
+      - OpenAPI
+      - Swagger
+      - GraphQL schema
+      - gRPC proto
+      - REST
+      - endpoint
+      - route
+      - contract
+      - pagination
+      - status code
+      - error envelope
+      - versioning
+      - deprecation
+      - HATEOAS
+      - idempotency
+      - rate limit
+      - CORS
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: d1d3b66b4bc52c2de07755623d0bd1887e3873bcd8c06d6202202e2019b60817
   - id: architect
     path: skills/architect/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Designs system architecture — service boundaries, data flows, integration patterns, capacity models, and technology selection. Triggers on: architecture, design, system, service, microservice, monolith, decompose, integrate, scale, capacity, technology choice, ADRs, RFC, C4, distributed system.
+    category: architecture
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - architecture
+      - design
+      - system
+      - service
+      - microservice
+      - monolith
+      - decompose
+      - integrate
+      - scale
+      - capacity
+      - technology
+      - ADR
+      - RFC
+      - C4
+      - distributed
+      - boundary
+      - contract
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: a3252cf5ef8024201edd3ac30a2bfb3e135eb2dfb623439e6df7ab2ce6d8a067
   - id: backend-engineer
     path: skills/backend-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Designs and implements server-side systems — REST/GraphQL/gRPC APIs, async workers, background jobs, queues, and service integration. Triggers on: API, endpoint, route, handler, controller, service, repository, worker, job, queue, background, async, middleware, schema, migration, ORM, database write, request, response, status code.
+    category: development
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - API
+      - endpoint
+      - route
+      - handler
+      - controller
+      - service
+      - repository
+      - worker
+      - job
+      - queue
+      - background
+      - async
+      - middleware
+      - schema
+      - migration
+      - ORM
+      - request
+      - response
+      - status code
+      - REST
+      - GraphQL
+      - gRPC
+      - RPC
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 4b07ca3c353867ca6871fb38b4fd7a0116b1f6ecb07a844fa1f6a5764b2d4058
   - id: change-intelligence
     path: skills/change-intelligence/SKILL.md
-    version: 4.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Classifies engineering changes, assesses risk, maps impact, and decides the right depth of review, testing, and rollout. Triggers on: change, classification, impact, risk, change request, RFC, blast radius, dependency, migration, breaking change.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    priority: high
+    cache_tier: core
+    intent_triggers:
+      - change
+      - classification
+      - impact
+      - risk
+      - change request
+      - RFC
+      - blast radius
+      - dependency
+      - migration
+      - breaking change
+      - change type
+      - change risk
+      - change review
+      - change advisory
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 309a0f6c497258236e09bc2c585d6756d279441adccc2d781139166a52e25c28
   - id: chaos-engineer
     path: skills/chaos-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Designs and runs failure injection experiments — game days, chaos drills, latency injection, pod kills, network partitions, and resilience validation. Triggers on: chaos, game day, failure injection, resilience, fault injection, latency, kill, partition, blast radius, recovery time, RTO, RPO.
+    category: devops
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - chaos
+      - game day
+      - failure injection
+      - resilience
+      - fault injection
+      - latency
+      - kill
+      - partition
+      - blast radius
+      - recovery time
+      - RTO
+      - RPO
+      - chaos monkey
+      - litmus
+      - steady state hypothesis
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: b96e7fee4b90c0e1b0683fecccbd8978ccb4164db196e01aeca8c2b9afdc6494
   - id: coding-agent
     path: skills/coding-agent/SKILL.md
-    version: 1.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Configures and operates the agent's own coding loop — task decomposition, file operations, command execution, testing, iteration, and self-correction. Triggers on: coding agent, agent loop, task, file edit, command, test, iterate, self-correct, scaffold.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    priority: high
+    cache_tier: core
+    intent_triggers:
+      - coding agent
+      - agent loop
+      - task
+      - file edit
+      - command
+      - test
+      - iterate
+      - self-correct
+      - scaffold
+      - agent config
+      - agent workflow
+      - multi-step task
+      - file operation
+      - command execution
+      - test run
+      - lint
+      - build
+      - type check
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 8bd16de062264da4ed2544cefa2d02c14c21f9d64508d6f5d284ad9d6afb7af2
   - id: cognition-layer
     path: skills/cognition-layer/SKILL.md
-    version: 2.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Designs the agent's reasoning architecture — context window, attention budget, working memory, scratchpad, prompt-caching tiers, and self-correction. Triggers on: reasoning, context, attention, working memory, scratchpad, prompt, context window, token budget, chain of thought, self-correction, reflection.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    priority: critical
+    cache_tier: core
+    intent_triggers:
+      - reasoning
+      - context
+      - attention
+      - working memory
+      - scratchpad
+      - prompt
+      - context window
+      - token budget
+      - chain of thought
+      - self-correction
+      - reflection
+      - metacognition
+      - planning
+      - decomposition
+      - scratch space
+      - thought
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 3f268ae5cc1b905311db4a2c5d31fa4224548c44a435fd1c892d64fb75e92522
   - id: cto
     path: skills/cto/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
+    version: 6.0.0
+    description: >
+      Sets technology strategy, builds engineering org, allocates budget, manages technical debt at portfolio scale, and aligns technology with business. Triggers on: technology strategy, engineering org, budget, headcount, technical debt, portfolio, roadmap, board, investor, due diligence, M&A.
+    category: leadership
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - technology strategy
+      - engineering org
+      - budget
+      - headcount
+      - technical debt
+      - portfolio
+      - roadmap
+      - board
+      - investor
+      - due diligence
+      - "M&A"
+      - vendor selection
+      - build vs buy
+      - "R&D"
+      - innovation
+      - technology vision
+      - multi-year plan
+      - capability
+      - maturity
+      - target operating model
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: ac5310578b3df83ae7bb453ddd98d78f5e18f29af3155a1e954885b9732043e9
   - id: database-architect
     path: skills/database-architect/SKILL.md
-    version: 4.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Designs database schemas, indexes, query patterns, and data models for relational, document, key-value, graph, and time-series stores. Triggers on: schema, table, column, index, query, migration, normalization, denormalization, partition, shard, replication, ORM, SQL, NoSQL, ER diagram, cardinality, ACID, transaction, isolation level.
+    category: architecture
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - schema
+      - table
+      - column
+      - index
+      - query
+      - migration
+      - normalization
+      - denormalization
+      - partition
+      - shard
+      - replication
+      - ORM
+      - SQL
+      - NoSQL
+      - ER diagram
+      - cardinality
+      - ACID
+      - transaction
+      - isolation level
+      - foreign key
+      - primary key
+      - secondary index
+      - materialized view
+      - stored procedure
+      - trigger
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 884fafe212cb5942fa40d7a045fb6fac62a79822254294926e98f37c0514d871
   - id: data-engineer
     path: skills/data-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Designs and operates data pipelines, ETL/ELT, batch and streaming systems, data warehouses, data lakes, and data quality. Triggers on: data pipeline, ETL, ELT, batch, streaming, warehouse, lake, schema, partition, dbt, Spark, Kafka, Airflow, dbt, Flink, Dagster, data quality, lineage.
+    category: data
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - data pipeline
+      - ETL
+      - ELT
+      - batch
+      - streaming
+      - warehouse
+      - lake
+      - schema
+      - partition
+      - dbt
+      - Spark
+      - Kafka
+      - Airflow
+      - Flink
+      - Dagster
+      - data quality
+      - lineage
+      - Snowflake
+      - BigQuery
+      - Redshift
+      - Delta
+      - Iceberg
+      - Parquet
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: bdd2eb3884236e150494c553eb341fbdd337ec34909160d42f5675fc5e3cc86f
   - id: debug-engineer
     path: skills/debug-engineer/SKILL.md
-    version: 2.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Systematic fault isolation, binary search debugging, hypothesis-driven root-cause analysis, and production debugging. Triggers on: bug, error, exception, stack trace, 500, 502, timeout, not working, broken, regression, reproduction, root cause, flapping.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - bug
+      - error
+      - exception
+      - stack trace
+      - 500
+      - 502
+      - timeout
+      - not working
+      - broken
+      - regression
+      - reproduction
+      - root cause
+      - flapping
+      - crash
+      - hang
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 34e6305084d8ccd888b7651ff3729f66fbc15d622e3ac462877178c509133f49
   - id: decision-engineer
     path: skills/decision-engineer/SKILL.md
-    version: 2.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Designs and documents engineering decisions — ADRs, RFCs, design docs, and the decision log. Triggers on: decision, ADR, RFC, design doc, trade-off, alternatives, decision log, decision record, status (proposed, accepted, deprecated, superseded).
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - decision
+      - ADR
+      - RFC
+      - design doc
+      - trade-off
+      - alternatives
+      - decision log
+      - decision record
+      - status
+      - proposed
+      - accepted
+      - deprecated
+      - superseded
+      - MADR
+      - lightweight ADR
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 617a0d977dbba4242c6b4c69eeb107c1976fb44838c5a7b398436f692fbb2740
   - id: devops-engineer
     path: skills/devops-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Designs and operates CI/CD pipelines, build systems, deployment automation, and release engineering. Triggers on: CI, CD, pipeline, build, deploy, release, branch, merge, tag, artifact, registry, runner, workflow, GitHub Actions, GitLab CI, Jenkins, ArgoCD, Flux.
+    category: devops
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - CI
+      - CD
+      - pipeline
+      - build
+      - deploy
+      - release
+      - branch
+      - merge
+      - tag
+      - artifact
+      - registry
+      - runner
+      - workflow
+      - GitHub Actions
+      - GitLab CI
+      - Jenkins
+      - ArgoCD
+      - Flux
+      - Helm
+      - Kustomize
+      - canary
+      - blue-green
+      - rollback
+      - fastlane
+      - semantic release
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 22cc590230ba1e62872bc39959dead9c5ff89adde641f20860c7417edc5d15b8
   - id: engineering-manager
     path: skills/engineering-manager/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
+    version: 6.0.0
+    description: >
+      Leads engineering teams — sets goals, grows people, manages delivery, runs 1:1s, calibrates performance, navigates conflict, and aligns execution with strategy. Triggers on: 1:1, performance, review, growth, goal, OKR, team, delivery, planning, hiring, feedback, conflict, career, promotion.
+    category: leadership
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - "1:1"
+      - performance
+      - review
+      - growth
+      - goal
+      - OKR
+      - team
+      - delivery
+      - planning
+      - hiring
+      - feedback
+      - conflict
+      - career
+      - promotion
+      - calibration
+      - skip-level
+      - retro
+      - retrospective
+      - hiring loop
+      - onboarding
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 446e049a031194a44df9c32936ce978e134f0c50ccf990b7b82c24ad022dd6c0
   - id: ethics-engineer
     path: skills/ethics-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
+    version: 6.0.0
+    description: >
+      Identifies and addresses ethical considerations in engineering — fairness, bias, transparency, accountability, consent, dual-use, and AI safety. Triggers on: ethics, fairness, bias, transparency, accountability, consent, dual-use, AI safety, alignment, model card, datasheet, responsible AI.
+    category: security
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - ethics
+      - fairness
+      - bias
+      - transparency
+      - accountability
+      - consent
+      - dual-use
+      - AI safety
+      - alignment
+      - model card
+      - datasheet
+      - responsible AI
+      - value alignment
+      - harm
+      - stakeholder
+      - vulnerable population
+      - demographic parity
+      - equalized odds
+      - calibration
+      - disparate impact
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 652130ab720d996e4d0132010579929954651b339d9a4749d78e2ecb786676c2
   - id: finops-engineer
     path: skills/finops-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
+    version: 6.0.0
+    description: >
+      Designs and operates FinOps practices - cloud cost visibility, allocation, optimization, unit economics, anomaly detection, commitment discounts, and engineering cost ownership. Triggers on: finops, cloud cost, cost optimization, cost allocation, unit economics, RI, SP, savings plan, reserved instance, anomaly, tagging, chargeback, showback, COGS, AWS cost, Azure cost, GCP cost.
+    category: devops
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - finops
+      - cloud cost
+      - cost optimization
+      - cost allocation
+      - unit economics
+      - RI
+      - SP
+      - savings plan
+      - reserved instance
+      - anomaly
+      - tagging
+      - chargeback
+      - showback
+      - COGS
+      - AWS cost
+      - Azure cost
+      - GCP cost
+      - right-sizing
+      - idle resource
+      - commitment discount
+      - cost dashboard
+      - budget alert
+      - amortized cost
+      - unblended cost
+      - net cost
+      - waste reduction
+      - K8s cost
+      - cluster cost
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: b02b0f116b1fd6f8661cdb951ec0cfa6532f45328b1ee72213d012c59160cd16
   - id: foundational-reasoning
     path: skills/foundational-reasoning/SKILL.md
-    version: 1.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Applies first-principles reasoning, systems thinking, root cause analysis, and structured problem decomposition to engineering decisions. Triggers on: first principles, systems thinking, root cause, decomposition, mental model, abstraction, second-order effects, feedback loop, leverage point.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - first principles
+      - systems thinking
+      - root cause
+      - decomposition
+      - mental model
+      - abstraction
+      - second-order effects
+      - feedback loop
+      - leverage point
+      - 5 whys
+      - fishbone
+      - cause and effect
+      - OODA
+      - inversion
+      - map is not the territory
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 2b77403ae9bf16a1c4a3de6cbfea83dd433affbec039451846e0e15c7071fd83
   - id: frontend-engineer
     path: skills/frontend-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Designs and implements web frontend systems — components, state, routing, data fetching, performance, accessibility, and design-system integration. Triggers on: frontend, React, Vue, Angular, Svelte, component, state, hook, route, render, hydration, bundle, CSS, accessibility, a11y, design system.
+    category: development
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - frontend
+      - React
+      - Vue
+      - Angular
+      - Svelte
+      - component
+      - state
+      - hook
+      - route
+      - render
+      - hydration
+      - bundle
+      - CSS
+      - accessibility
+      - a11y
+      - design system
+      - WCAG
+      - ARIA
+      - JSX
+      - TSX
+      - props
+      - state management
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 4d124d91f3d8d5dc0614b63a4bcf9b6e53adcd3150dabead264a0bfa94d66dce
   - id: fullstack-engineer
     path: skills/fullstack-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Designs and implements end-to-end features across frontend, backend, data, and infrastructure. Triggers on: fullstack, full-stack, end-to-end, feature, vertical slice, frontend + backend, API + UI, contract-first, integration.
+    category: development
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - fullstack
+      - full-stack
+      - end-to-end
+      - vertical slice
+      - feature
+      - frontend
+      - backend
+      - API
+      - UI
+      - contract
+      - integration
+      - e2e
+      - stack
+      - cross-cutting
+      - full feature
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: fa09759f4efdd5998a6575212e944eacb1877411cc3d6379ebfb6c2fccd92194
   - id: incident-commander
     path: skills/incident-commander/SKILL.md
-    version: 1.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Coordinates incident response — assembles the team, classifies severity, runs comms, drives mitigation, and runs the postmortem. Triggers on: incident, outage, sev1, sev2, sev3, ICS, incident command, on-call, comms, mitigation, postmortem, RCA, status update.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    priority: critical
+    cache_tier: domain
+    intent_triggers:
+      - incident
+      - outage
+      - sev1
+      - sev2
+      - sev3
+      - ICS
+      - incident command
+      - on-call
+      - comms
+      - mitigation
+      - postmortem
+      - RCA
+      - status update
+      - escalation
+      - customer impact
+      - war room
+      - bridge
+      - status page
+      - root cause
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: da8b6a582058a2fc63361c9b0dd440b6435806817f478bd01414f59f2d7a4e3d
   - id: infrastructure-engineer
     path: skills/infrastructure-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Designs and operates infrastructure — networking, compute, storage, DNS, load balancing, IAM, and cloud services. Triggers on: infrastructure, network, VPC, subnet, load balancer, DNS, TLS, certificate, IAM, role, policy, compute, instance, container, bucket, S3, blob, security group, firewall.
+    category: devops
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - infrastructure
+      - network
+      - VPC
+      - subnet
+      - load balancer
+      - DNS
+      - TLS
+      - certificate
+      - IAM
+      - role
+      - policy
+      - compute
+      - instance
+      - container
+      - bucket
+      - S3
+      - blob
+      - security group
+      - firewall
+      - region
+      - availability zone
+      - ASG
+      - autoscaling
+      - terraform
+      - CloudFormation
+      - Pulumi
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: ce6aeb179b89addff6ccec4575c84c27e1c006e65741758c71650dae53ab14be
   - id: ml-engineer
     path: skills/ml-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Designs and operates ML pipelines — training, evaluation, deployment, monitoring, and feedback loops. Triggers on: model, training, inference, ML pipeline, feature store, MLOps, drift, evaluation, metrics, dataset, label, model card, fairness, bias.
+    category: ml
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - model
+      - training
+      - inference
+      - ML pipeline
+      - feature store
+      - MLOps
+      - drift
+      - evaluation
+      - metrics
+      - dataset
+      - label
+      - model card
+      - fairness
+      - bias
+      - ML
+      - AI
+      - neural network
+      - LLM
+      - embedding
+      - fine-tune
+      - prompt
+      - RAG
+      - agent
+      - transformer
+      - retrain
+      - online learning
+      - batch prediction
+      - serving
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 07b25769d1f72c8e71df32d95f53b74e90e0aeb6640e75fc8d23304f05af1eba
   - id: mobile-engineer
     path: skills/mobile-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
+    version: 6.0.0
+    description: >
+      Designs and builds native and cross-platform mobile applications — iOS, Android, React Native, Flutter, lifecycle, offline, push, deep links, app store, and battery. Triggers on: mobile, iOS, Android, Swift, Kotlin, React Native, Flutter, app store, push, notification, deep link, offline, battery, lifecycle.
+    category: mobile
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - mobile
+      - iOS
+      - Android
+      - Swift
+      - Kotlin
+      - React Native
+      - Flutter
+      - app store
+      - push
+      - notification
+      - deep link
+      - offline
+      - battery
+      - lifecycle
+      - native
+      - cross-platform
+      - mobile app
+      - IPA
+      - APK
+      - AAB
+      - TestFlight
+      - Play Console
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 250aa5499f91038c2673161f23d347e6a74986f27b77acf548e642291b0a3bec
   - id: negative-prompts
     path: skills/negative-prompts/SKILL.md
-    version: 1.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Codifies prohibitions — banned vocabulary, banned patterns, banned assumptions, and the rationale for each. Loaded as a Tier-1 reference for all skills. Triggers on: do not, never, avoid, ban, prohibit, refuse, off-limits, deprecated, banned, forbidden, anti-pattern.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    priority: critical
+    cache_tier: core
+    intent_triggers:
+      - do not
+      - never
+      - avoid
+      - ban
+      - prohibit
+      - refuse
+      - off-limits
+      - deprecated
+      - banned
+      - forbidden
+      - anti-pattern
+      - stop
+      - "don't"
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: c783d6da5d4532db965613369f9f5b87ce02973f981a039adbae4beb2f212ad3
   - id: observability-engineer
     path: skills/observability-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Designs and implements metrics, logs, traces, dashboards, and alerts. Triggers on: metric, counter, gauge, histogram, log, structured log, trace, span, dashboard, alert, SLO, observability, telemetry, instrumentation, RED method, USE method.
+    category: devops
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - metric
+      - counter
+      - gauge
+      - histogram
+      - log
+      - structured log
+      - trace
+      - span
+      - dashboard
+      - alert
+      - SLO
+      - observability
+      - telemetry
+      - instrumentation
+      - RED
+      - USE
+      - exporter
+      - OTel
+      - Prometheus
+      - Grafana
+      - OpenTelemetry
+      - Datadog
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 27456e5688245583d1f6bd6792cd0350b58ce1277d4c6c0337c6401617ab96f1
   - id: performance-thinker
     path: skills/performance-thinker/SKILL.md
-    version: 1.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Profiles, measures, and optimizes system performance — latency, throughput, memory, CPU, network, and the trade-offs between them. Triggers on: performance, latency, throughput, p50, p95, p99, profiling, benchmark, optimization, slow, hot path, bottleneck, cache, async.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - performance
+      - latency
+      - throughput
+      - p50
+      - p95
+      - p99
+      - profiling
+      - benchmark
+      - optimization
+      - slow
+      - hot path
+      - bottleneck
+      - cache
+      - async
+      - warm pool
+      - cold start
+      - GC
+      - memory
+      - CPU
+      - network
+      - IO
+      - contention
+      - lock
+      - queue depth
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 3dd4e97e1a13b5bb549591bfbf0b395b685c43ea652167d59fdaadabb808b4ee
   - id: platform-engineer
     path: skills/platform-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
+    version: 6.0.0
+    description: >
+      Designs and operates internal developer platforms — golden paths, service catalogs, IDPs, paved roads, and developer experience. Triggers on: platform, IDP, internal developer platform, golden path, paved road, service catalog, developer experience, DevX, self-service, scaffolding, template, Backstage, backstage.
+    category: devops
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - platform
+      - IDP
+      - internal developer platform
+      - golden path
+      - paved road
+      - service catalog
+      - developer experience
+      - DevX
+      - self-service
+      - scaffolding
+      - template
+      - Backstage
+      - backstage
+      - developer portal
+      - templates
+      - scaffolder
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: dd213cb6fad4d000f769a5abfd786bff450b6ce1b211d336340d40af695b7771
   - id: privacy-engineer
     path: skills/privacy-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Designs and audits data privacy controls — PII inventory, data flows, consent, retention, deletion, and regulatory compliance (GDPR, CCPA, HIPAA). Triggers on: privacy, PII, personal data, consent, retention, deletion, GDPR, CCPA, HIPAA, anonymization, pseudonymization, data subject rights, DPIA, ROPA, lawful basis.
+    category: security
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - privacy
+      - PII
+      - personal data
+      - consent
+      - retention
+      - deletion
+      - GDPR
+      - CCPA
+      - HIPAA
+      - anonymization
+      - pseudonymization
+      - data subject
+      - DPIA
+      - ROPA
+      - lawful basis
+      - data protection
+      - data flow
+      - data inventory
+      - breach notification
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: e850a08ec5a5750e84f6c238b66fca1676ae5957437f2b55c99aae2353268c74
   - id: problem-solver
     path: skills/problem-solver/SKILL.md
-    version: 2.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Applies structured problem-solving frameworks — define the problem, decompose, generate alternatives, evaluate, decide, execute, learn. Triggers on: problem, solve, framework, decompose, MECE, 5W1H, fishbone, decision matrix, hypothesis-driven, OODA, design of experiments.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - problem
+      - solve
+      - framework
+      - decompose
+      - MECE
+      - 5W1H
+      - fishbone
+      - decision matrix
+      - hypothesis-driven
+      - OODA
+      - design of experiments
+      - A3
+      - 8D
+      - DMAIC
+      - root cause
+      - countermeasure
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: b01e79bbbd3c9b23423940971de74f52e997db3ea86561b9ae9c94e57e0a6856
   - id: product-engineer
     path: skills/product-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
+    version: 6.0.0
+    description: >
+      Bridges engineering and product — defines user outcomes, writes PRDs, prioritizes by impact, runs experiments, and aligns technical work with customer value. Triggers on: product, PRD, user story, outcome, impact, prioritization, RICE, ICE, experiment, A/B test, hypothesis, customer, value, roadmap.
+    category: leadership
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - product
+      - PRD
+      - user story
+      - outcome
+      - impact
+      - prioritization
+      - RICE
+      - ICE
+      - experiment
+      - A/B test
+      - hypothesis
+      - customer
+      - value
+      - roadmap
+      - OKR
+      - KPI
+      - North Star
+      - jobs to be done
+      - persona
+      - journey
+      - feature request
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: dc8df02e8d73227d9897ac4a0d8d37548dcd0692c7ccc61499e5e50ffd942fd9
   - id: project-scales
     path: skills/project-scales/SKILL.md
-    version: 1.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Detects and adapts to project scale — TINY, SMALL, MEDIUM, LARGE, ENTERPRISE — based on LOC, modules, team size, and operational complexity. Triggers on: scale, project size, team size, LOC, modules, monorepo, monolith, microservice, headcount, contributor.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - scale
+      - project size
+      - team size
+      - LOC
+      - modules
+      - monorepo
+      - monolith
+      - microservice
+      - headcount
+      - contributor
+      - complexity
+      - codebase size
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: f1ea057615cbde4c7f9552f8525c5e6faa5c5805b66479388a1c5ee569245faf
   - id: risk-analyst
     path: skills/risk-analyst/SKILL.md
-    version: 2.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Identifies, quantifies, and mitigates risks — technical, operational, security, financial, schedule, and reputational. Triggers on: risk, risk register, mitigation, likelihood, impact, residual risk, risk appetite, risk tolerance, exposure, contingency.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - risk
+      - risk register
+      - mitigation
+      - likelihood
+      - impact
+      - residual risk
+      - risk appetite
+      - risk tolerance
+      - exposure
+      - contingency
+      - risk assessment
+      - risk analysis
+      - risk matrix
+      - risk score
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: bfe84f8c914bbf7dd6c1f75dbe0f7982be50b838b543348964141b8df6493482
   - id: schemas
     path: skills/schemas/SKILL.md
-    version: <semver>
-    description: 
+    version: 6.0.0
+    description: >
+      Defines and validates the brain document schemas — CURRENT_STATE, MODULE_MAP, API_CONTRACTS, known-issues, ledger entries, checkpoints, error clusters, postmortems. Triggers on: schema, validation, brain, current state, module map, contract, ledger, checkpoint, error cluster, postmortem, ROPA, DPIA.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    priority: critical
+    cache_tier: core
+    intent_triggers:
+      - schema
+      - validation
+      - brain
+      - current state
+      - module map
+      - contract
+      - ledger
+      - checkpoint
+      - error cluster
+      - postmortem
+      - ROPA
+      - DPIA
+      - JSON schema
+      - document format
+      - structured output
+      - contract
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 0dc01ef5bac42c1251f80470869e8bfd91cf61f7f83a2c6aaeabe8487629cbcf
   - id: security-engineer
     path: skills/security-engineer/SKILL.md
-    version: 2.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Threat-models, audits, hardens, and reviews systems against injection, broken auth, sensitive data exposure, broken access control, misconfiguration, XSS, and supply-chain attacks. Triggers on: security, vulnerability, CVE, threat model, audit, OWASP, exploit, hardening, pentest, SAST, DAST, secrets, encryption, IAM, zero trust.
+    category: security
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - security
+      - vulnerability
+      - CVE
+      - threat model
+      - audit
+      - OWASP
+      - exploit
+      - hardening
+      - pentest
+      - SAST
+      - DAST
+      - secrets
+      - encryption
+      - IAM
+      - zero trust
+      - auth
+      - authorization
+      - credential
+      - token
+      - XSS
+      - CSRF
+      - SSRF
+      - SQLi
+      - injection
+      - supply chain
+      - dependency
+      - CVE
+      - CVE-
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: f49468d4d0acf455158145709b9c6215c162db7ea9aa17ae8414a42448013cd2
   - id: sre-engineer
     path: skills/sre-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    version: 6.0.0
+    description: >
+      Defines and operates SLOs, error budgets, on-call rotations, incident response, capacity planning, and reliability reviews. Triggers on: SLO, SLA, error budget, burn rate, on-call, pager, alert, incident, postmortem, MTTR, MTBF, availability, uptime, capacity, reliability.
+    category: devops
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - SLO
+      - SLA
+      - error budget
+      - burn rate
+      - on-call
+      - pager
+      - alert
+      - incident
+      - postmortem
+      - MTTR
+      - MTBF
+      - availability
+      - uptime
+      - capacity
+      - reliability
+      - toilsome
+      - runbook
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 8840d2c2a2f17cffc4647d0dee15d63bed2253ab8cd0938789b11e2cf3e506e3
   - id: staff-engineer
     path: skills/staff-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
+    version: 6.0.0
+    description: >
+      Operates as a Staff-level engineer — sets technical direction, leads cross-team initiatives, mentors, drives reviews, and unblocks the organization beyond a single team. Triggers on: staff, principal, technical direction, cross-team, initiative, RFC, mentorship, review, unblock, scope, influence, leadership, IC track.
+    category: leadership
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - staff
+      - principal
+      - technical direction
+      - cross-team
+      - initiative
+      - RFC
+      - mentorship
+      - review
+      - unblock
+      - scope
+      - influence
+      - leadership
+      - IC track
+      - technical strategy
+      - technical roadmap
+      - design review
+      - architecture review
+      - technical mentorship
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 0960bf60b563c76fa7a63355b2e56c4040c3ea226a7678f2eca91dae345e8c02
   - id: synarc-core
     path: skills/synarc-core/SKILL.md
-    version: 5.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Engineering intelligence runtime — classifies every change into 12 WorkTypes, applies 6-level risk ladder, injects structural context, tracks every mutation in a session ledger, enforces quality and security gates. Always loaded for engineering tasks. Triggers on: code, commit, deploy, refactor, schema, API, auth, migration, error, debug, test, review, plan, design, analyze, audit, build, ship.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    priority: critical
+    cache_tier: core
+    intent_triggers:
+      - code
+      - commit
+      - deploy
+      - refactor
+      - schema
+      - API
+      - auth
+      - migration
+      - error
+      - debug
+      - test
+      - review
+      - plan
+      - design
+      - analyze
+      - audit
+      - build
+      - ship
+      - change
+      - fix
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: eac1d94557d060d1391d273476018d03e0689788d458f59451a8c996336161fe
   - id: testing-strategy
     path: skills/testing-strategy/SKILL.md
-    version: 1.0.0
-    description: 
+    version: 6.0.0
+    description: >
+      Designs and applies risk-based testing — unit, integration, e2e, contract, performance, security, chaos — and decides the right depth per WorkType. Triggers on: test, testing, unit test, integration test, e2e, end-to-end, contract test, performance test, security test, coverage, test pyramid, mutation testing.
     category: engineering-intelligence
-    tags: []
-    activation: intent-based
-    priority: normal
-    dependencies: {}
+    priority: high
+    cache_tier: domain
+    intent_triggers:
+      - test
+      - testing
+      - unit test
+      - integration test
+      - e2e
+      - end-to-end
+      - contract test
+      - performance test
+      - security test
+      - coverage
+      - test pyramid
+      - mutation testing
+      - TDD
+      - BDD
+      - test data
+      - test fixture
+      - mock
+      - stub
+      - fake
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: e28264b1d22eeed1bc287d13e3c833b04072f08c49b9ee70904e8f52f07369b9
   - id: ui-engineer
     path: skills/ui-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
+    version: 6.0.0
+    description: >
+      Implements pixel-perfect UI from design specs - design systems, component architecture, CSS architecture (BEM, ITCSS, utility-first), animation, responsive layout, accessibility, cross-browser compatibility, and visual regression. Triggers on: UI, pixel-perfect, design system, component, CSS, BEM, ITCSS, Tailwind, styled-components, animation, framer, GSAP, responsive, grid, flexbox, design tokens, Storybook, Chromatic, Figma to code.
+    category: development
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - UI
+      - pixel-perfect
+      - design system
+      - component
+      - CSS
+      - BEM
+      - ITCSS
+      - Tailwind
+      - styled-components
+      - animation
+      - framer
+      - GSAP
+      - responsive
+      - grid
+      - flexbox
+      - design tokens
+      - Storybook
+      - Chromatic
+      - Figma to code
+      - design-to-code
+      - CSS-in-JS
+      - emotion
+      - vanilla-extract
+      - design tokens
+      - theming
+      - dark mode
+      - accessibility
+      - a11y
+      - WCAG
+      - visual regression
+      - cross-browser
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 9f9bac25fa62abf80daecc2b5a7000b501462063d348c5289f343f9f2e823556
   - id: ux-engineer
     path: skills/ux-engineer/SKILL.md
-    version: 1.0.0
-    description: 
-    category: engineering-intelligence
-    tags: []
-    activation: intent-based
+    version: 6.0.0
+    description: >
+      Designs user experiences grounded in research - user research, information architecture, interaction design, usability testing, journey mapping, wireframing, prototyping, WCAG accessibility, conversion optimization, and cognitive UX psychology. Triggers on: UX, user research, usability, information architecture, IA, interaction design, journey map, wireframe, prototype, Figma, persona, JTBD, jobs to be done, usability test, A/B test, conversion, WCAG, accessibility, a11y, heuristic, cognitive load, Fitts, Hick, Miller, Gestalt.
+    category: development
     priority: normal
-    dependencies: {}
+    cache_tier: domain
+    intent_triggers:
+      - UX
+      - user research
+      - usability
+      - information architecture
+      - IA
+      - interaction design
+      - journey map
+      - wireframe
+      - prototype
+      - Figma
+      - persona
+      - JTBD
+      - jobs to be done
+      - usability test
+      - A/B test
+      - conversion
+      - WCAG
+      - accessibility
+      - a11y
+      - heuristic
+      - cognitive load
+      - Fitts
+      - Hick
+      - Miller
+      - Gestalt
+      - card sort
+      - tree test
+      - user interview
+      - survey
+      - heuristic evaluation
+      - Nielsen
+      - design system
+    allowed_tools:
+      - Read
+      - Write
+      - Edit
+      - Grep
+      - Glob
+    integrity:
+      algorithm: sha256
+      hash: 91305c5b269fa376c3f9dc7c02a0b36f96b519c8d27825bc06dbe95e5879778a
 
 integrity:
   algorithm: sha256
-  hash: adc060fbd6c626da88aa192a5b77f8c0be966a72bb2ded270b870bcae6639a3a
+  hash: 2f4b9a675cb2baa60ee3c7662c1369315f2eef4888bb459d3e581c2be7d6e5f5
   signed: false
-  timestamp: "2026-06-03T21:14:27Z"
+  timestamp: '2026-06-04T01:24:54Z'
+  source: skills/*/SKILL.md
+

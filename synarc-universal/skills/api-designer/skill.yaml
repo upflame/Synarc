@@ -1,9 +1,9 @@
 ﻿id: api-designer
-version: "1.0.0"
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: architecture
 description: >
-  "Comprehensive API design skill covering REST, GraphQL, gRPC, contracts, security, lifecycle, documentation, event-driven architectures, and governance"
+  Designs REST, GraphQL, and gRPC API contracts — endpoints, schemas, pagination, error envelopes, versioning, and deprecation. Triggers on: API design, OpenAPI, Swagger, GraphQL schema, gRPC proto, REST, endpoint, route, contract, pagination, status code, error envelope, versioning, deprecation.
 
 compatible_agents:
   - codex
@@ -16,15 +16,36 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - API design
+  - OpenAPI
+  - Swagger
+  - GraphQL schema
+  - gRPC proto
+  - REST
+  - endpoint
+  - route
+  - contract
+  - pagination
+  - status code
+  - error envelope
+  - versioning
+  - deprecation
+  - HATEOAS
+  - idempotency
+  - rate limit
+  - CORS
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 0845195b677898a0045d9a71a46206b7058d11bcea32f22fc215f5ea495ac304
+  hash: d1d3b66b4bc52c2de07755623d0bd1887e3873bcd8c06d6202202e2019b60817
   signed: false
 

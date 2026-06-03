@@ -1,9 +1,9 @@
 ﻿id: database-architect
-version: 4.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: architecture
 description: >
-  Comprehensive database architecture, design, modeling, optimization, and operations knowledge base
+  Designs database schemas, indexes, query patterns, and data models for relational, document, key-value, graph, and time-series stores. Triggers on: schema, table, column, index, query, migration, normalization, denormalization, partition, shard, replication, ORM, SQL, NoSQL, ER diagram, cardinality, ACID, transaction, isolation level.
 
 compatible_agents:
   - codex
@@ -16,15 +16,43 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - schema
+  - table
+  - column
+  - index
+  - query
+  - migration
+  - normalization
+  - denormalization
+  - partition
+  - shard
+  - replication
+  - ORM
+  - SQL
+  - NoSQL
+  - ER diagram
+  - cardinality
+  - ACID
+  - transaction
+  - isolation level
+  - foreign key
+  - primary key
+  - secondary index
+  - materialized view
+  - stored procedure
+  - trigger
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 639bada09ac7cbc2b8ae20cdfddeaecb3f7170b88ad0d0fb4a15e5d7d63180fa
+  hash: 884fafe212cb5942fa40d7a045fb6fac62a79822254294926e98f37c0514d871
   signed: false
 

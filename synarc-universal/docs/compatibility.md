@@ -1,22 +1,23 @@
 ---
 title: Compatibility Matrix — Synarc Universal Skill Pack
-description: Full capability × runtime matrix detailing which features are supported across all 9 AI coding agents, including frontmatter, intent activation, fallback tiers, brain persistence, file ops, command execution, guardrails, session tracking, change classification, risk assessment, quality gates, and error intelligence.
-version: 1.0.0
+description: Full capability × runtime matrix detailing which features are supported across all 9 AI coding agents, including 4-tier prompt-cache, intent-based activation, fallback tiers, brain persistence, file ops, command execution, guardrails, session tracking, change classification, risk assessment, quality gates, and error intelligence. Validated for v6.0.0.
+version: 6.0.0
 schema: skill-pack/v1
 ---
 
-# Compatibility Matrix — Synarc Universal Skill Pack
+# Compatibility Matrix — Synarc Universal Skill Pack (v6.0.0)
 
 ## Capability × Runtime Matrix
 
 | Capability | Codex | OpenCode | Cursor | Gemini | Claude | Copilot | Windsurf | Cline | RooCode |
 |---|---|---|---|---|---|---|---|---|---|
-| **YAML frontmatter** | Partial | Yes | Yes | Yes | Yes | Partial | Yes | Yes | Yes |
-| **Intent activation** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
-| **Tier 1 — Native** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
-| **Tier 2 — External** | No | No | No | Yes | Yes | No | No | Yes | Yes |
-| **Tier 3 — Manual** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
-| **Tier 4 — Human** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
+| **YAML frontmatter** (v6 fields) | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
+| **`intent_triggers` array** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
+| **`cache_tier` declaration** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
+| **Tier 1 — Native** (capability tier) | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
+| **Tier 2 — External** (capability tier) | No | No | No | Yes | Yes | No | No | Yes | Yes |
+| **Tier 3 — Manual** (capability tier) | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
+| **Tier 4 — Human** (capability tier) | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
 | **Brain persistence** | No | Yes | No | No | Yes | No | No | Yes | Yes |
 | **File operations** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
 | **Command execution** | Yes | Yes | No | Yes | Yes | No | Yes | Yes | Yes |
@@ -38,13 +39,23 @@ schema: skill-pack/v1
 
 ## Feature Descriptions
 
-### YAML Frontmatter
+### YAML Frontmatter (v6.0.0 contract)
 
-Powers skill metadata parsing — name, description, version, activation triggers, dependencies. Codex and Copilot read only a subset of frontmatter fields. All other agents read full frontmatter.
+Powers skill metadata parsing — `name`, `description` (3rd-person, 40-1024 chars), `version` (6.0.0), `priority`, `intent_triggers` (array, ≥ 2 elements), `cache_tier` (core / domain / reference / context / dynamic), `allowed_tools`. All 9 agents read the full v6 frontmatter; the v5 partial-subset limitation in Codex and Copilot is resolved in v6.
 
 ### Intent Activation
 
-Skills activate when user intent matches patterns defined in AGENTS.md or the agent's rules system. All 9 agents support this — no agent requires explicit slash commands or manual skill selection.
+Skills activate when user intent matches at least one phrase in the `intent_triggers` array. All 9 agents support this — no agent requires explicit slash commands or manual skill selection. The `intent_triggers` array is the new activation contract; the v5 prose `WHEN/THEN` blocks are removed.
+
+### Cache Tiers (v6.0.0)
+
+| Tier | What | Cached for | Runtime support |
+|------|------|------------|-----------------|
+| 0 | Pack header (AGENTS.md, manifest.yaml) | Always-on, every session | All 9 agents |
+| 1 | Core reasoning (~60 KB total: synarc-core, negative-prompts, cognition-layer, schemas, change-intelligence, coding-agent) | Always-on, per session | All 9 agents |
+| 2 | Active domain skill (~10 KB; one of 40) | Per task, swapped when intent shifts | All 9 agents |
+| 3 | Skill references (`skills/<id>/references/*.md`) | Lazy, on first reference | All 9 agents |
+| 4 | Dynamic context (project files, tool outputs) | Never cached | All 9 agents |
 
 ### Fallback Tiers (1–4)
 
@@ -107,11 +118,12 @@ If no fallback exists, a capability notification is emitted: "Capability X is no
 
 | Feature | Codex | OpenCode | Cursor | Gemini | Claude | Copilot | Windsurf | Cline | RooCode |
 |---------|-------|----------|--------|--------|--------|---------|----------|-------|---------|
-| Version constraints | No | No | No | No | No | No | No | No | No |
-| Dependency graph | No | No | No | No | No | No | No | No | No |
-| Skill manifest | Yes | Yes | No | Yes | Yes | No | No | No | No |
+| `priority` declaration | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
+| `cache_tier` declaration | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
+| `intent_triggers` array | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
+| Skill manifest | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
 
-Dependency resolution is primarily a pack-level concern — the `manifest.yaml` file defines all dependencies and version constraints. Individual agents do not enforce these constraints; they are validated during pack compilation and CI.
+**v6.0.0 removed the v5.x `dependencies` and `compatibility` fields.** The `cache_tier` declaration now describes the runtime relationship between skills: a skill with `cache_tier: core` is the pre-warm dependency for any `cache_tier: domain` skill that needs it. This is enforced at validator level (`scripts/validate-skills.ps1`) and at sync level (`scripts/sync-v6.ps1`); individual runtimes do not enforce version constraints, but the pack is validated during CI.
 
 ## Transport Layer Support
 

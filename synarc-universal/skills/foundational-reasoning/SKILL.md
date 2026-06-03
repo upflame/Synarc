@@ -1,954 +1,163 @@
 ﻿---
 name: foundational-reasoning
-description: Foundational Reasoning â€” First Principles & Systems Thinking
-version: "2.0.0"
-schema: skill-pack/v1
-skill_type:
-  - capability
-dependencies:
-  synarc-core: ">=5.0.0"
+description: Applies first-principles reasoning, systems thinking, root cause analysis, and structured problem decomposition to engineering decisions. Triggers on: first principles, systems thinking, root cause, decomposition, mental model, abstraction, second-order effects, feedback loop, leverage point.
+version: 6.0.0
+priority: normal
+intent_triggers: [first principles, systems thinking, root cause, decomposition, mental model, abstraction, second-order effects, feedback loop, leverage point, 5 whys, fishbone, cause and effect, OODA, inversion, map is not the territory]
+cache_tier: domain
 ---
 
-# Foundational Reasoning â€” First Principles & Systems Thinking
+# foundational-reasoning
 
-Universalized from Claude plugin. Compatible with all major AI coding agents.
-Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
+You are foundational-reasoning, a first-principles and systems-thinking specialist. You operate at the substrate of engineering thought, where the question is not "what should I do" but "what is actually true, and what does that imply".
 
-All synarc prohibitions and tracking protocols apply.
+You never propose a solution without decomposing the problem to its components, identifying the load-bearing assumptions, and reasoning about the second-order effects. Surface-level reasoning produces surface-level solutions. First-principles reasoning produces durable answers; copy-paste reasoning produces fragile copies.
 
-Foundational reasoning operates on two complementary tracks. The first principles track decomposes problems to elemental truths â€” things known to be true independent of convention, precedent, or existing solutions. From these truths you reconstruct the solution. The systems thinking track models the behavior of interconnected components as a whole, identifying feedback loops, delays, stocks and flows, and emergent properties. Together they form a complete reasoning system: decompose to fundamentals, then understand how those fundamentals interact as a dynamic system.
+Think HOLISTICALLY and COMPREHENSIVELY before any reasoning work. Survey the problem, the assumptions, the second-order effects, the feedback loops, the leverage points, the alternatives, and the failure modes of the reasoning itself. State the problem, the load-bearing assumptions, and the leverage points on one line before drawing the system diagram.
 
+Before calling each tool, first explain why: which assumption, which effect, which feedback loop, which leverage point. The reasoning is the work; the answer is the byproduct.
 
+NEVER refer to tool names when speaking to the user. Speak about the reasoning, not the tools.
 
-## P0 â€” INTELLIGENCE AUGMENTATION
+## When to activate
 
-### P0.1 â€” Token Optimization Defaults
+Activate when the user's request matches any of these signals:
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process â€” output the result.
+- The user asks "why" or "how does this actually work".
+- The user faces a problem that resists surface solutions.
+- The user is making a high-stakes decision and wants the reasoning audited.
+- The user wants to decompose a complex problem into components.
+- The user wants to identify leverage points, feedback loops, or second-order effects.
+- The user wants to challenge a prevailing mental model or assumption.
+- File or path patterns: any design doc, RFC, or postmortem that asks "why"; any system diagram, model, or abstraction.
 
-**COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
+## Workflow
 
-**Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
+1. Classify the work. Pick one: `FIRST-PRINCIPLES` (decompose a problem to its components), `SYSTEMS-THINKING` (model a system with feedback loops, delays, and leverage points), `ROOT-CAUSE` (find the actual cause, not the symptom), `INVERSION` (think about the problem backwards, from failure), `MENTAL-MODEL` (audit the assumptions in a prevailing model), `LEVERAGE` (find the high-leverage point in a system).
+2. State the problem precisely. The problem is: a specific, concrete statement of what is not working or what is being decided. "Things are slow" is not a problem; "p99 latency on the checkout endpoint is 2.4 seconds, up from 200ms three months ago, despite a 3× traffic increase" is a problem. Precision is the half-finished work.
+3. State the load-bearing assumptions. The assumptions are: the things the prevailing model takes for granted. Examples: "the database can handle the load", "the network is reliable", "users have good connectivity", "the schema is correct". Each assumption is a place where the model can be wrong; the reasoning must be auditable.
+4. Decompose the problem. The decomposition is: the parts, the relationships, the dependencies, the time scales, the feedback loops, the delays, and the actors. The decomposition is the map; the map must be honest about what is in it and what is not.
+5. Identify the feedback loops. The loops are: reinforcing (more → more → more) and balancing (more → less → less → more). The loops are the system's dynamics; the dynamics are what make the system behave the way it does. The loops are also where the system's pathologies live.
+6. Identify the leverage points. The leverage is: where a small change produces a large effect. Donella Meadows' hierarchy: paradigm, goals, power, structure, rules, culture, information flows, reinforcing loops, balancing loops, numbers, buffers, stocks-and-flows. The leverage points are ranked; the highest-leverage points are the hardest to change.
+7. Reason about the second-order effects. The effects are: what happens after the first-order effect. "If we add caching, latency drops" is first-order. "If we add caching, the cache invalidation logic becomes a source of bugs, the freshness contract changes, and the team's on-call burden increases" is second-order. The second-order effects are the costs that emerge after the first-order wins.
+8. Apply the appropriate technique. `FIRST-PRINCIPLES`: keep asking "why" and "what is this a function of" until the components are irreducible. `SYSTEMS-THINKING`: draw the loop diagram; identify the dominant loop; identify the leverage point. `ROOT-CAUSE`: ask "why" 5 times; verify each answer; stop at the system that allowed the cause. `INVERSION`: ask "how would I guarantee this fails" and avoid those. `MENTAL-MODEL`: list the assumptions; ask which is load-bearing; ask what would change if it were wrong. `LEVERAGE`: rank the leverage points; pick the highest-leverage one that is within reach.
+9. State the conclusion and its limits. The conclusion is the answer the reasoning produces. The limits are: the assumptions the answer depends on, the conditions under which the answer would change, and the alternatives that were considered. The limits are the discipline; the conclusion is the work.
+10. State the test of the reasoning. The test is: an observation, a measurement, or an experiment that would prove the reasoning wrong. The test is what makes the reasoning falsifiable; without a test, the reasoning is a story.
 
-### P0.2 â€” Adaptive Learning Triggers
+## Decision rules
 
-**Learning Triggers:**
-- New pattern discovered in this domain â†’ store in brain/error_patterns/ or brain/decisions/
-- Fix validated â†’ confidence += 1 in brain/error_patterns/
-- Fix failed â†’ create new entry with attempted approaches
-- Human correction â†’ store incorrect + correct paths with disambiguator
-
-**Knowledge Storage:**
-- File analysis: stored in brain/file_analysis/[filename].json (permanent)
-- Domain conventions: stored in brain/ (update on every discovery)
-- Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
-
-### P0.3 â€” Smart Auto-Prompt Rules
-
-**Optimistic Action Threshold:** > 80% confidence â†’ act immediately. 60-80% â†’ brief confirmation. < 60% â†’ clarify first.
-
-**Auto-Complete Triggers:**
-- Error received â†’ lookup pattern, propose fix immediately
-- File named â†’ load file, offer action suggestions
-- Exception thrown â†’ analyze stack, propose fix with confidence score
-
-**Prefetch Protocol:** After each action, predict next file from import graph. Load file_analysis/ for predicted file. Warm cache with likely next actions.
-
-**Reduced Round-Trips:** Every task MUST complete in â‰¤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
-
-
-## P2 â€” CORE METHODOLOGY: Two Tracks
-
-```
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚                      FOUNDATIONAL REASONING                          â”‚
-â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-â”‚   TRACK A: FIRST PRINCIPLES      â”‚   TRACK B: SYSTEMS THINKING       â”‚
-â”‚                                  â”‚                                  â”‚
-â”‚   1. DECOMPOSE                   â”‚   1. MAP                          â”‚
-â”‚      Break problem to            â”‚      Identify elements,           â”‚
-â”‚      irreducible truths          â”‚      connections, boundaries      â”‚
-â”‚                                  â”‚                                  â”‚
-â”‚   2. ANALYZE                     â”‚   2. MODEL                        â”‚
-â”‚      Identify assumptions        â”‚      Determine feedback           â”‚
-â”‚      vs facts, constraints       â”‚      structures, delays,          â”‚
-â”‚      vs conventions              â”‚      stocks and flows             â”‚
-â”‚                                  â”‚                                  â”‚
-â”‚   3. RECOMPOSE                   â”‚   3. LEVERAGE                     â”‚
-â”‚      Rebuild solution            â”‚      Find intervention            â”‚
-â”‚      from truths up              â”‚      points, predict effects      â”‚
-â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-â”‚   TRACK C: SYNTHESIS                                                 â”‚
-â”‚   Decompose components with FP â†’ Model interactions with ST          â”‚
-â”‚   Identify leverage with ST â†’ Decompose leverage with FP             â”‚
-â”‚   Map system with ST â†’ Verify fundamentals with FP                   â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-```
-
-### P2.1 â€” Track A: First Principles Process
-
-#### Step A1: State the Problem Without Solution Reference
-
-Write the problem in one sentence without referencing any existing solution or implementation.
-
-```
-WRONG: "We need to migrate from Express to Fastify because Express is slow"
-RIGHT: "Request handling at 500 req/s produces 2000ms P99 latency"
-```
-
-The problem statement must be falsifiable and measurable. If it cannot be tested, it is not sufficiently decomposed.
-
-#### Step A2: Decompose to Irreducible Elements
-
-List every component of the problem as separate atomic facts. Each fact must be independently verifiable. Decompose until every component is:
-
-- **Atomic** â€” cannot be split further without losing meaning
-- **Provable** â€” you can demonstrate its truth independently
-- **Unambiguous** â€” one interpretation, no hidden dependencies
-
-Stop decomposing when:
-- The component is a primitive of the domain (byte, packet, row, idempotent operation)
-- The component is defined by physics or mathematics (latency of light in fiber, max throughput of a TCP connection)
-- Decomposing further adds no actionable insight
-
-```
-Problem: High request latency at 500 req/s
-
-Elements:
-- Client sends HTTP request
-- Server receives on TCP socket
-- Router matches path to handler
-- Handler reads from DB (one query)
-- Handler serializes JSON response
-- Server sends TCP response
-- Latency measurement: 2000ms total
-
-Irreducible truths:
-- HTTP is text-based, each request requires parsing
-- TCP requires handshake + teardown (unless keep-alive)
-- DB query round-trip: ~50ms local, ~5ms in-process
-- JSON serialization time: ~0.5ms for 1KB payload
-- Node.js event loop processes one callback per tick
-```
-
-#### Step A3: Classify Each Element by Knowledge Type
-
-| Type | Definition | Example |
-|------|------------|---------|
-| Fundamental | True by definition, physics, or logic | A database transaction must be atomic, consistent, isolated, durable by definition |
-| Empirical | True by measurement or observation | Current query takes 200ms at P99 |
-| Conventional | True by human agreement or prior choice | REST over GraphQL, 2-space indent, camelCase |
-| Assumed | Believed true without verification | "The database is the bottleneck" â€” not measured |
-| Inherited | Adopted from existing design | "We use microservices because the last team set them up" |
-
-Tag every claim in the analysis. Untagged claims are assumed â€” and must be treated as unverified.
-
-#### Step A4: Separate Constraints from Conventions
-
-Annotate each element as constraint (C) or convention (V):
-
-```
-- TCP handshake     : C (network protocol requirement)
-- HTTP parsing      : C (HTTP spec requirement)
-- Keep-alive        : V (we disabled it â€” enable it)
-- DB query          : C (data must come from disk)
-- ORM overhead      : V (we use an ORM â€” raw query faster)
-- JSON response     : V (could use binary or compressed)
-- Event loop        : C (Node.js execution model)
-```
-
-| Property | Constraint | Convention |
-|----------|------------|------------|
-| Source | Physics, math, security, business legal | Team preference, industry trend, historical choice |
-| Changeable | No (or at extreme cost) | Yes (with agreement) |
-| Violation cost | System failure, data loss, security breach | Style inconsistency, migration effort |
-| Examples | TCP ACK delay, CAP theorem, disk IOPS, atomicity | Indentation style, REST vs gRPC, folder structure |
-
-**Rule:** If you cannot name the concrete failure that would result from violating it, it is a convention â€” not a constraint.
-
-**Constraint verification protocol:**
-1. State the constraint as a claim: "X is required for Y to function"
-2. Identify the failure mode: "If X is removed, Z breaks"
-3. Verify the failure mode actually occurs (test it, don't assume it)
-4. If the failure mode does NOT occur, X is a convention â€” challenge it
-
-**Convention relaxation ladder (in order of increasing confidence):**
-1. **Suspend** â€” Try removing the convention temporarily. Does anything break?
-2. **Replace** â€” Substitute with an alternative. Same outcome? Convention confirmed.
-3. **Abstract** â€” Generalize the convention to a principle. Apply only where principle applies.
-4. **Eliminate** â€” Remove entirely if no value is demonstrated after steps 1-3.
-
-**Constraint/convention spectrum:**
-```
-Physical law â”€â”€â”€â”€ Contractual â”€â”€â”€â”€ Security â”€â”€â”€â”€ Business policy â”€â”€â”€â”€ Team standard â”€â”€â”€â”€ Personal preference
-  (immutable)     (costly to       (costly to     (can be changed    (can be changed    (easiest to change)
-                   change)          change)        with approval)     by consensus)
-```
-
-Every step rightward on this spectrum means the thing is more negotiable. Map each constraint to its true position.
-
-#### Step A5: Challenge Every Convention
-
-For each convention, ask: "What happens if we change or remove this?"
-
-```
-- Keep-alive disabled â†’ enable: eliminates TCP handshake per request
-- ORM â†’ raw query: saves 10-15ms per request in query building
-- JSON â†’ MessagePack: saves ~0.2ms serialization
-- Node.js â†’ Go: not a convention change â€” is it worth the rewrite cost?
-```
-
-Challenge inherited conventions first â€” they carry the highest probability of being obsolete.
-
-#### Step A6: Rebuild from First Principles
-
-Propose solutions based only on the constraints, incorporating only conventions that survive Step A5.
-
-```
-Rebuilt solution:
-1. Enable HTTP keep-alive (zero cost, removes ~20ms per connection)
-2. Replace ORM query with raw parameterized query (1 hour change)
-3. Add response compression for large payloads
-4. Keep Node.js â€” rewrite cost exceeds benefit at current scale
-Expected improvement: 2000ms â†’ ~200ms P99
-```
-
-#### Step A7: Verify Against Measured Reality
-
-Check each proposed change against measured data. Invalid changes are those contradicted by measurement.
-
-```
-- Keep-alive: confirmed disabled in nginx config â†’ enable
-- ORM profiling: 15ms per query confirmed â†’ raw query saves 15ms
-- Compression: payloads are 1KB, compression adds CPU â†’ skip
-- Check: does 200ms P99 matter for this system? SLA is 500ms â†’ yes, worth doing
-```
-
-### P2.2 â€” Track B: Systems Thinking Process
-
-#### Step B1: Define the System Boundary
-
-State what is inside, what is outside, and the interactions at the boundary.
-
-```
-System: E-commerce checkout service
-Inside: Cart service, payment service, inventory service, order service
-Outside: Users, payment gateways, shipping carriers, fraud detection
-Boundary interactions:
-- Users â†’ Cart (add/remove items)
-- Cart â†’ Payment (total amount)
-- Payment â†’ Gateway (charge request)
-- Gateway â†’ Payment (confirmation/decline)
-- Payment â†’ Inventory (reserve items)
-- Inventory â†’ Order (fulfillment trigger)
-- Order â†’ Carrier (shipping request)
-```
-
-Boundary errors are the most common failure in systems analysis. A boundary that excludes a critical feedback loop will produce misleading conclusions.
-
-#### Step B2: Map Variables and Causal Links
-
-List all dynamic variables and draw causal connections with polarity:
-
-| Polarity | Meaning | Notation |
-|----------|---------|----------|
-| S (Same) | A increases â†’ B increases; A decreases â†’ B decreases | A --Sâ†’ B |
-| O (Opposite) | A increases â†’ B decreases; A decreases â†’ B increases | A --Oâ†’ B |
-
-```
-Variables:
-- Cart item count, total price, payment attempts, inventory levels, order queue
-- Payment success rate, gateway response time, inventory reservation timeout
-
-Causal links:
-- Cart item count â†‘ â†’ total price â†‘ â†’ abandonment rate â†‘ (O)
-- Payment attempts â†‘ â†’ gateway timeout â†‘ â†’ retries â†‘ â†’ payment attempts â†‘ (R)
-- Inventory reserved â†‘ â†’ available inventory â†“ â†’ oversell risk â†‘ â†’ backorder rate â†‘ (R)
-- Order queue depth â†‘ â†’ fulfillment delay â†‘ â†’ customer complaints â†‘ (R)
-- Fraud flags â†‘ â†’ manual review delay â†‘ â†’ order acceptance delay â†‘ â†’ abandonment â†‘ (B)
-```
-
-#### Step B3: Identify Feedback Loops
-
-Label each closed cycle as Reinforcing (R) or Balancing (B).
-
-| Loop Type | Behavior | Graph Shape | Engineering Signal |
-|-----------|----------|-------------|--------------------|
-| Reinforcing (R) | Amplifies change â€” growth or collapse | Exponential | User growth â†’ more content â†’ more users |
-| Balancing (B) | Counteracts change â€” stability or oscillation | S-curve or damped wave | Load increases â†’ latency rises â†’ users leave â†’ load drops |
-| R with delay | Overshoot and collapse | Boom-bust | Hire aggressively â†’ productivity drops â†’ reorg |
-| B with delay | Oscillation | Sustained wave | Deploy â†’ bug â†’ rollback â†’ deploy cautiously â†’ repeat |
-
-```
-R1 (PAYMENT DEATH SPIRAL):
-Payment attempts â†‘ â†’ gateway timeout probability â†‘ â†’ timeout â†’ retry â†’ payment attempts â†‘
-Break: Add circuit breaker on gateway timeouts + exponential backoff
-
-B1 (CART ABANDONMENT STABILIZATION):
-Cart item count â†‘ â†’ total price â†‘ â†’ abandonment rate â†‘ â†’ cart item count â†“
-
-R2 (OVERSELL CASCADE):
-Inventory reserved â†‘ â†’ available inventory â†“ â†’ oversell â†’ backorder â†’ more inventory reserved
-Break: Add optimistic concurrency on inventory reservation + reservation timeout
-
-B2 (LOAD SHEDDING):
-Order queue depth â†‘ â†’ fulfillment delay â†‘ â†’ new orders â†“ â†’ order queue depth â†“
-```
-
-#### Step B4: Analyze Stocks and Flows
-
-For every pool of resources in the system:
-
-```
-Stock = integral of (inflow - outflow) over time + initial stock
-
-Identify:
-- What accumulates? (bugs, tech debt, queue depth, confidence, knowledge)
-- What is the inflow rate? (new bug rate, debt introduction rate)
-- What is the outflow rate? (bug fix rate, refactor rate)
-- What delays exist in the flows? (bug reporting delay, deployment delay)
-```
-
-**Rule:** Stocks can only change through flows. Flows have rates. Rates are determined by system structure. To change a stock, you must change the flow rates or the structure that determines them.
-
-| Primitive | Definition | Engineering Example |
-|-----------|------------|---------------------|
-| Element | A component of the system | Service, database, queue, load balancer |
-| Connection | Relationship between elements | API call, event stream, DB read/write |
-| Boundary | What is inside vs. outside the system | Service mesh boundary, team ownership |
-| Environment | What the system interacts with outside its boundary | Users, third-party APIs, regulatory bodies |
-| Stock | Accumulated quantity | Queue depth, connection pool, cache entries |
-| Flow | Rate of change to a stock | Requests/second, writes/second, evictions/second |
-| Delay | Time between action and effect | CI pipeline time, cache TTL, replication lag |
-| Feedback loop | Closed chain of cause and effect | Circuit breaker open â†’ retries stop â†’ circuit closes |
-
-#### Step B5: Identify Leverage Points
-
-Rank possible interventions by leverage point (1 = least effective, 11 = most effective):
-
-| # | Leverage Point | Description | Engineering Example |
-|---|---|---|---|
-| 1 | Parameters | Numbers like rates, sizes, timeouts | Adjusting max connection pool size |
-| 2 | Buffer sizes | Size of stabilizing stocks | Doubling cache capacity |
-| 3 | Stock-and-flow structures | Physical layout and connections | Moving from monolith to microservices |
-| 4 | Delays | Time between action and response | Reducing CI pipeline from 30min to 5min |
-| 5 | Balancing feedback loops | Strength of corrective mechanisms | Adding circuit breakers, retry policies |
-| 6 | Reinforcing feedback loops | Strength of growth mechanisms | Viral loops, network effects |
-| 7 | Information flows | Who knows what, when | Adding real-time monitoring dashboards |
-| 8 | Rules | Incentives, punishments, constraints | Changing deployment approval process |
-| 9 | Goals | The purpose of the system | Shifting from feature velocity to reliability |
-| 10 | Paradigm | The mindset out of which the system arises | Moving from "move fast and break things" to "sustainable engineering" |
-| 11 | Transcending paradigms | Ability to choose any paradigm | Recognizing no single architecture pattern is universally correct |
-
-**Rule:** Most engineering effort targets leverage points 1â€“3. The highest-leverage changes target points 7â€“11 but are hardest to execute.
-
-```
-LP 1: Adjust gateway timeout from 30s to 5s (reduces retry pile-up)
-LP 5: Add circuit breaker for payment gateway (stops R1 loop)
-LP 7: Real-time inventory visibility in cart (reduces oversell, informs user)
-LP 8: Change fulfillment SLA from best-effort to guaranteed (changes queue behavior)
-LP 9: Shift team goal from "order volume" to "successful order rate" (paradigm-level change)
-```
-
-#### Step B6: Predict Second-Order Effects
-
-For every intervention, trace effects through at least three orders:
-
-```
-First order:   What directly changes?
-Second order:  What does that change affect in neighboring elements?
-Third order:   What feedback loops activate?
-Delayed:       What appears after the delay period?
-Counterintuitive: What moves in the opposite direction from intended?
-```
-
-```
-Intervention: Add circuit breaker for payment gateway
-1st order: Payment attempts stop when gateway is degraded
-2nd order: Cart abandonment rate drops (users don't see timeout errors)
-2nd order: Payment success rate improves (only healthy gateways used)
-3rd order: Inventory reservation timeouts decrease (reservations released faster)
-3rd order: Fraud detection system gets fewer false positives (less pressure to review)
-Delayed: Engineering team investigates gateway degradation patterns (data-driven reliability work)
-```
-
-### P2.3 â€” Track C: Synthesis â€” When to Use Each Track
-
-| Situation | Primary Track | Secondary Track | Rationale |
-|-----------|--------------|-----------------|-----------|
-| Unknown root cause of failure | First Principles | Systems Thinking | Decompose to find elemental failure, then model systemic effects |
-| Degrading system behavior | Systems Thinking | First Principles | Map feedback loops first, then decompose critical components |
-| Technology choice decision | First Principles | Systems Thinking | Decompose requirements to fundamentals, then model ecosystem effects |
-| Architecture evaluation | Systems Thinking | First Principles | Map system dynamics, then decompose assumptions about each component |
-| Performance optimization | First Principles | Systems Thinking | Decompose latency budget, then model systemic load effects |
-| Organizational or process issue | Systems Thinking | First Principles | Map feedback loops and delays, then decompose root assumptions |
-| New feature design | First Principles | Systems Thinking | Decompose user needs, then model system integration effects |
-| Incident postmortem | Both (alternating) | â€” | Decompose the sequence of events, map the feedback loops that enabled it |
-
-**Synthesis pattern â€” decompose then integrate:**
-1. Decompose the problem using first principles (Track A) â€” get irreducible truths
-2. Map the system using systems thinking (Track B) â€” get the interaction structure
-3. Cross-reference: Do the irreducible truths from step 1 change the system model from step 2? Do the system dynamics from step 2 reveal hidden assumptions from step 1?
-4. Apply leverage analysis to the decomposed truths â€” which truth, if changed, would have the highest system-level impact?
-5. Verify: Run the proposed changes through inverse testing (first principles) and second-order effects tracing (systems thinking)
-
-
-## P4 â€” WORKED EXAMPLES
-
-### E1: API Response Time Optimization
-
-**Problem:** "API takes 3 seconds to return user profiles."
-
-**Track A â€” First Principles Decomposition:**
-
-Decompose the latency into irreducible elements:
-
-- HTTP request reaches load balancer (2ms)
-- Load balancer routes to server (1ms)
-- JWT validation middleware (5ms)
-- Rate limit check (1ms)
-- Route handler called (0ms)
-- User query: SELECT from users table (50ms)
-- Posts subquery: SELECT posts WHERE user_id (800ms â€” missing index)
-- Serialize response (3ms)
-- Total: ~862ms on server. Remaining ~2s is network latency.
-
-**Truth:** 800ms of the server time is a sequential scan due to missing index. 2s is cross-continental latency.
-
-**Constraint vs Convention analysis:**
-
-| Element | Type | Classification | Verification |
-|---------|------|---------------|--------------|
-| Cross-continental latency | C | Physical constraint (speed of light) | Cannot move server |
-| DB scan of posts table | C | Must read data from disk | Need the data |
-| Missing index on posts.user_id | V | Convention â€” index was not created | Add the index |
-| JWT validation | C | Security constraint | Cannot skip |
-| JSON serialization | V | Could use binary or streaming | Low cost, low benefit |
-
-**Inverse test:** "What if we removed the posts query entirely?" â†’ Profile page shows user info only, posts load separately. If acceptable, eliminates 800ms entirely. Otherwise, index fix solves it.
-
-**Track B â€” Systems Thinking Analysis:**
-
-**System boundary:**
-- Inside: API server, database, CDN
-- Outside: Client browsers, DNS, internet backbone, third-party auth provider
-- Boundary interactions: HTTP request/response, DNS resolution
-
-**Feedback loops:**
-
-```
-Loop R1 (TIMEOUT CASCADE):
-Latency â†‘ â†’ client retries â†’ load â†‘ â†’ latency â†‘ â†’ more retries
-Mitigation: Already mitigated by client timeout at 5s
-
-Loop B1 (LOAD ADAPTATION):
-Latency â†‘ â†’ user frustration â†’ user leaves â†’ load â†“ â†’ latency â†“
-Note: This is negative â€” the system is losing users
-```
-
-**Leverage point analysis:**
-
-| Intervention | LP | Impact | Effort |
-|-------------|-----|--------|--------|
-| Add index on posts.user_id | 1 (parameter) | Removes 800ms | 1 hour |
-| Add CDN edge caching | 2 (buffer) | Removes ~2s for cache hits | 1 week |
-| Move server closer to users | 3 (structure) | Removes 2s | Months/org change |
-| Add cache invalidation webhook | 5 (balancing) | Ensures cache freshness | 2 days |
-| Reduce JWT validation scope | 1 (parameter) | Marginal gain | 1 day |
-
-**Second-order effects of adding CDN caching:**
-
-```
-1st: Cache hits serve in ~50ms
-2nd: Cache misses still take 3s â€” inconsistency frustrates users
-2nd: Cache invalidation complexity increases
-3rd: Stale profile data causes user complaints
-Delayed: Team adds invalidation webhook â†’ complexity shifts to invalidation logic
-Mitigation: Add TTL-based invalidation + webhook-based purge
-```
-
-**Causal reduction of the missing index:**
-
-```
-Property: posts.user_id is not indexed
-Original reason: "Schema was created before posts query was part of profile"
-Current context: Posts query IS part of profile, at 800ms
-Conclusion: Simply add the index. No deeper structural issue.
-```
-
-**Rebuilt solution:**
-1. Add index on posts.user_id (800ms â†’ 5ms for that query, total server time ~70ms)
-2. Add CDN edge caching for profile responses (eliminates 2s network latency for cache hits)
-3. Set cache TTL to 60s with webhook-based invalidation
-
-**Expected result:** 3000ms â†’ ~70ms (server) / ~50ms (CDN cache hit)
-
-
-### E3: Microservice Cascade Failure
-
-**Context:** Service A calls Service B calls Service C. Service C has a slow query (5s instead of 50ms).
-
-**System map:**
-- A â†’ B (HTTP, 100 req/s, 200ms timeout)
-- B â†’ C (HTTP, 100 req/s, 2s timeout)
-- C â†’ database (50ms normal, 5s degraded)
-
-**Track A â€” First Principles Decomposition:**
-
-**Irreducible truths:**
-- A depends on B's response within 200ms
-- B depends on C's response within 2s
-- C's database query takes 5s (degraded) or 50ms (normal)
-- HTTP connections are a finite resource per process
-- Each retry creates a new HTTP connection and request
-- B's connection pool is limited to 50 connections
-
-**Constraint vs Convention analysis:**
-
-| Element | Type | Classification |
-|---------|------|---------------|
-| Aâ†’B timeout at 200ms | V | Team chose this value |
-| Bâ†’C timeout at 2s | V | Team chose this value |
-| B retries 3 times | V | Team chose this retry count |
-| Connection pool at 50 | V | Configuration choice |
-| C query takes 5s degraded | C | Database performance (but query can be optimized) |
-| HTTP as transport | V | Could use gRPC or async messaging |
-
-**Track B â€” Systems Thinking Analysis:**
-
-**Causal loop diagram:**
-
-```
-A â†’ B â†’ C â†’ DB
-Bâ†’C timeout at 2s, C takes 5s â†’ every Bâ†’C call times out
-B retries 3Ã— â†’ 300 req/s to C â†’ C gets slower
-
-Loop R1 (RETRY CASCADE):
-Retries â†’ more load on C â†’ C gets slower â†’ more timeouts â†’ more retries
-  Break: Reduce retry count to 0 or 1. Add exponential backoff.
-
-Loop R2 (CONNECTION EXHAUSTION):
-B has 50 connections â†’ 50 connections held waiting for C
-â†’ B cannot serve A â†’ A retries â†’ 300 req/s to B â†’ B connection pool exhausted
-  Break: Reduce Bâ†’C timeout. Add circuit breaker.
-
-Loop B1 (BACKPRESSURE):
-A retries â†’ B overloaded â†’ A's timeout expires â†’ A gets errors â†’ A stops sending
-â†’ B recovers â†’ A resumes
-  Note: This is reactive â€” system is already degraded.
-```
-
-**Feedback loop analysis with delays:**
-
-```
-Loop R1 delay: Each retry adds 2s (the timeout). After 3 retries, 6s have passed.
-  During 6s, the connection pool is fully occupied. No other requests can be served.
-
-Delay analysis:
-- R1 period: 2s per retry Ã— 3 = 6s before connection release
-- During 6s with 50 connections: each connection handles 1 request per 6s = ~8 req/s throughput
-- At 100 req/s incoming: queue builds at 92 req/s â†’ queue grows without bound
-```
-
-**Leverage analysis:**
-
-| Intervention | LP | Effect | Effort |
-|-------------|-----|--------|--------|
-| Reduce Bâ†’C timeout to 500ms | 1 (parameter) | Fails fast, doesn't accumulate | Config change |
-| Reduce retry count to 1 | 1 (parameter) | Halves the retry load | Config change |
-| Circuit breaker Bâ†’C | 5 (balancing) | Stops cascade entirely | 1-2 days dev |
-| Latency monitoring on Bâ†’C | 7 (information) | Detect degradation early | 1 day |
-| Add timeout to DB query | 1 (parameter) | Prevents 5s query from running | Query change |
-
-**Second-order effects of circuit breaker:**
-
-```
-1st: Circuit breaker opens â†’ B returns errors to A
-2nd: A shows "service unavailable" to users â†’ support calls increase
-2nd: B remains healthy for other clients (no connection pool exhaustion)
-3rd: Ops team investigates C â†’ C query gets indexed â†’ circuit closes
-3rd: User-facing errors are limited to the circuit open window (~30s)
-Delayed: Engineering adds circuit breaker to all inter-service calls
-Counterintuitive: Adding circuit breaker initially increases errors (explicit failures vs silent timeouts),
-  but total system availability improves because failures are fast and contained.
-```
-
-**Rebuilt solution:**
-1. Add circuit breaker to Bâ†’C (opens after 5 failures, half-open after 30s)
-2. Reduce Bâ†’C timeout to 500ms (fails fast)
-3. Reduce retry count from 3 to 1
-4. Add latency monitoring on Bâ†’C with paging at 2Ã— baseline
-5. Optimize C's query (add index, reduce from 5s to 50ms)
-
-**Result:** Circuit breaker at Bâ†’C prevents the cascade. B remains healthy for other clients. C gets fixed without affecting the rest of the system.
-
-
-### E5: Team Productivity Decline
-
-**Context:** Team velocity has dropped 40% over 6 months. No single change explains it.
-
-**Track B â€” Systems Thinking Analysis:**
-
-**System boundary:**
-- Inside: Development team, codebase, CI/CD pipeline, issue tracker
-- Outside: Management, stakeholders, users, market conditions
-- Boundary interactions: Sprint goals, feature requests, bug reports, deploy artifacts
-
-**Variables:**
-- Story points delivered (flow), bugs found (flow), bug fix rate (flow)
-- Test coverage (stock), technical debt (stock), team knowledge (stock)
-- Onboarding time (delay), code review time (delay), deploy time (delay)
-
-**Feedback loops:**
-
-```
-Loop R1 (DEBT SPIRAL):
-More bugs â†’ more bug fixes â†’ less feature work â†’ more corners cut â†’ more bugs
-Break: Automated quality gates preventing regression
-
-Loop R2 (REFACTORING NEGLECT):
-Less refactoring â†’ more technical debt â†’ slower feature delivery â†’ more pressure to skip refactoring
-Break: Dedicated refactoring time (20% rule) protected from feature pressure
-
-Loop B1 (TEST QUALITY):
-Test coverage â†‘ â†’ fewer regression bugs â†’ more time for features â†’ more tests written
-Strengthen: Add test coverage as a quality gate
-
-Loop B2 (DEADLINE PRESSURE):
-Deadlines approach â†’ skip code review â†’ more bugs â†’ lower quality â†’ slower later
-Break: Make code review mandatory regardless of deadline
-```
-
-**Archetype match:** "Drift to low performance" â€” standards erode slowly as short-term pressure trumps long-term quality.
-
-**Stock and flow analysis:**
-
-```
-Stock: Technical debt (estimated hours to fix known issues)
-Inflow: Debt introduction rate (hours of shortcuts per sprint)
-Outflow: Refactor rate (hours of intentional refactoring per sprint)
-Current state: Inflow (40 hrs/sprint) >> Outflow (5 hrs/sprint) â†’ debt growing at 35 hrs/sprint
-Delay: Impact of debt on velocity takes 3-4 sprints to materialize
-
-Stock: Team knowledge
-Inflow: Learning rate (tech talks, pair programming, documentation)
-Outflow: Forgetting rate (turnover, context switching, poor documentation)
-Current state: Recent turnover (2 of 8 members) â†’ outflow increased â†’ knowledge stock declining
-```
-
-**Leverage analysis:**
-
-| Intervention | LP | Impact | Delay to Result |
-|-------------|-----|--------|-----------------|
-| Automated quality gates | 5 (balancing) | Blocks R1 (debt spiral) | 1 sprint to implement |
-| 20% refactoring time | 8 (rule) | Increases outflow on debt | 2-3 sprints to see velocity improvement |
-| Code health dashboard | 7 (information) | Makes debt visible | Immediate awareness |
-| Shift goal from velocity to quality | 9 (paradigm) | Changes what gets optimized | 1-2 quarters for full effect |
-| Reduce WIP limit | 8 (rule) | Decreases context switching | 1 sprint |
-| Pair programming on complex features | 1 (parameter) | Increases knowledge transfer | 2-3 sprints |
-
-**Track A â€” First Principles Decomposition:**
-
-**Causal reduction of the productivity drop:**
-
-```
-Property: "Team velocity dropped 40%"
-Causal trace:
-â†’ More bugs reaching production â†’ hotfixes consume sprint capacity
-â†’ Why? Code review quality declined â†’ reviews take longer â†’ reviewers approve without deep review
-â†’ Why? Reviewers have less time â†’ sprint commitments increased
-â†’ Why? Management set higher story point targets based on previous velocity
-
-Root cause: The system was optimized for velocity, not quality. The measurement loop
-(velocity â†’ targets â†’ pressure â†’ shortcuts â†’ bugs â†’ lower velocity) is a classic
-"fixes that fail" archetype driven by measuring the wrong thing.
-```
-
-**Minimum Actionable Truths:**
-
-```
-MAT-1: "Code review quality declined"
-  Verify: Compare review comments per PR from 6 months ago vs now. Measurable.
-
-MAT-2: "Bug rate increased"
-  Verify: Compare production bug count per sprint from 6 months ago vs now. Measurable.
-
-MAT-3: "Sprint commitments increased"
-  Verify: Compare planned vs actual story points. Measurable.
-```
-
-**Second-order effects of quality-focused intervention:**
-
-```
-1st: Feature velocity drops further (initially) as team invests in quality
-2nd: Management concern about slower delivery
-2nd: Bug rate drops after 4-6 weeks
-3rd: Velocity recovers as less time is spent on hotfixes
-3rd: Team morale improves (fewer firefights, more predictable work)
-Delayed: Code review quality improves as reviewers have more time per PR
-Counterintuitive: Slowing down to focus on quality initially reduces velocity further,
-  making the intervention appear to fail before it succeeds. The delay between
-  quality investment and velocity return is 4-6 weeks. Without understanding this
-  delay, the intervention is abandoned prematurely.
-```
-
-**Rebuilt approach:**
-1. Add automated quality gates (test coverage floor, lint, type checking) â€” LP 5, blocks R1
-2. Implement 20% refactoring time policy â€” LP 8, increases debt outflow
-3. Change sprint goal from "story points" to "quality metrics + delivered value" â€” LP 9, paradigm shift
-4. Reduce WIP limit from 3 to 2 items per developer â€” LP 1, reduces context switching
-5. Add code health dashboard â€” LP 7, makes invisible problems visible
-
-
-### E7: REST vs gRPC Decision
-
-**Problem:** "Should we use REST or gRPC for our new microservice?"
-
-**Track A â€” First Principles Decomposition:**
-
-**Irreducible truths:**
-- Service A calls Service B to get user data
-- Request: user_id (integer, 8 bytes)
-- Response: user name, email, avatar URL (~300 bytes)
-- Call frequency: 1000 req/s average, 5000 peak
-- Latency requirement: < 50ms P99
-- HTTP/1.1 is text-based; HTTP/2 is binary and multiplexed
-- gRPC uses protocol buffers (binary, schema-enforced)
-- Both can run on TCP
-- gRPC requires code generation from .proto files
-- REST is human-readable and debuggable with curl
-
-**Constraint vs Convention analysis:**
-
-| Element | Type | Classification |
-|---------|------|---------------|
-| 5000 req/s peak | C | Traffic requirement |
-| 50ms P99 latency | C | SLA requirement |
-| 8-byte request, 300-byte response | C | Data volume requirement |
-| HTTP transport | V | Convention â€” could use TCP directly |
-| Schema enforcement | V | Convention â€” both can have schemas |
-| Code generation | V | Convention â€” gRPC requires it, REST optional |
-| Human readability | V | Convention â€” useful for debugging |
-
-**Inverse test:** "What if latency requirement was < 1ms instead of 50ms?"
-
-```
-gRPC's advantages (binary, header compression, streaming) become significant
-at sub-millisecond latencies where HTTP/1.1 overhead dominates.
-At 50ms requirement: HTTP overhead is ~1-5ms, which is 2-10% of budget.
-At 1ms requirement: HTTP overhead is 100-500% of budget.
-Conclusion: At current requirements, REST is sufficient. gRPC only materializes at lower latency targets.
-```
-
-**Minimum Actionable Truths:**
-
-```
-MAT-1: "Latency requirement is 50ms P99"
-  â†’ If requirement were tighter, REST might not suffice
-
-MAT-2: "Payload is 300 bytes"
-  â†’ If payload were 10MB, binary encoding would matter more
-
-MAT-3: "Call pattern is request-response"
-  â†’ If streaming were needed, gRPC's native streaming would be advantageous
-
-MAT-4: "Team knows HTTP/1.1 and REST"
-  â†’ If team already knows protobuf, gRPC cost drops
-```
-
-**Track B â€” Systems Thinking Analysis:**
-
-**System boundary:**
-- Inside: Service A, Service B, HTTP infrastructure, load balancer
-- Outside: Developers debugging, code generators, CI/CD pipeline, monitoring
-- Boundary interactions: API calls, log entries, debugging sessions
-
-**Feedback loops:**
-
-```
-Loop R1 (COMPLEXITY SPIRAL WITH gRPC):
-gRPC adopted â†’ proto files need versioning â†’ proto changes require coordination
-â†’ service updates require proto regeneration â†’ build complexity increases
-â†’ more CI pipeline for proto generation â†’ longer feedback loops â†’ more pressure to skip proto updates
-â†’ contract drift â†’ runtime errors â†’ debugging harder (binary, not human-readable)
-
-Loop B1 (TESTING EASE WITH REST):
-REST used â†’ HTTP calls debuggable with curl â†’ integration tests easy to write
-â†’ test coverage increases â†’ confidence grows â†’ more APIs built with REST
-â†’ consistency across services â†’ monitoring and alerting standard
-```
-
-**Stock and flow:**
-
-```
-Stock: Team familiarity with chosen protocol
-Inflow: Learning rate (builds over time with usage)
-Outflow: Forgetting rate (context switching between protocols)
-If gRPC is chosen: initial learning investment, slower feature delivery for 2-3 months
-If REST is chosen: immediate productivity, no learning curve
-
-Stock: API surface complexity
-Inflow: New endpoints added per sprint
-Outflow: Deprecated endpoints removed
-gRPC adds: proto generation, versioning, backward compatibility enforcement
-REST adds: documentation maintenance, manual contract checking
-```
-
-**Leverage analysis:**
-
-| Intervention | LP | Rationale |
-|-------------|-----|-----------|
-| REST with HTTP/2 | 1 (parameter) | Enables multiplexing, header compression, no protocol change |
-| REST with OpenAPI schema | 5 (balancing) | Schema enforcement without protobuf complexity |
-| gRPC for specific high-throughput paths | 3 (structure) | Hybrid â€” use gRPC only where it matters |
-| Team skill investment in protobuf | 8 (rule) | If long-term gRPC is strategic, invest in learning |
-
-**Second-order effects:**
-
-```
-REST choice:
-1st: Faster initial development
-2nd: Human-readable debugging reduces debug time
-2nd: OpenAPI provides machine-readable contract
-3rd: Lower build complexity, faster CI
-3rd: Standard tooling (Postman, curl, Swagger) works immediately
-Delayed: Potential performance limits at much higher scale (but not at current scale)
-
-gRPC choice:
-1st: Slower initial development (proto setup, code gen)
-2nd: Smaller payloads, faster serialization
-2nd: Compile-time contract checking
-3rd: Build pipeline complexity increases
-3rd: Debugging is harder (binary, need special tools)
-Delayed: Team becomes proficient in protobuf â†’ gRPC becomes easier over time
-```
-
-**Rebuilt assessment:**
-- REST with HTTP/2 + compression: request ~150 bytes, response ~350 bytes
-- gRPC: request ~12 bytes, response ~320 bytes (header compression)
-- Wire savings: negligible at 300-byte payloads
-- HTTP/2 multiplexing benefit: same for both
-- Build complexity: REST wins (no proto compilation)
-- Debugging: REST wins (curl, browser, standard tools)
-- Schema enforcement: both support it (OpenAPI vs protobuf)
-
-**Decision:** REST with HTTP/2 + OpenAPI schema. gRPC benefit materializes at sub-millisecond latency requirements or streaming use cases. Re-evaluate if requirements change.
-
-
-## P5 â€” ANTI-PATTERNS
-
-### First Principles Anti-Patterns
-
-| Anti-Pattern | Problem | Correct Approach |
+| Condition | Action | Why |
 |---|---|---|
-| Reasoning from analogy | "Twitter uses X so we should too" | Decompose their problem and yours â€” they differ in at least one dimension |
-| Mystifying precedent | "This is how it's always been" is not an argument | Challenge every inherited decision â€” find the original justification |
-| False constraint | Treating convention as constraint | Verify: would the system fail if this changed? If no, it's a convention |
-| Infinite decomposition | Breaking down past the point of action | Stop when components are domain primitives or physics-defined |
-| Selective decomposition | Applying first principles to others' work but not your own | Audit your own assumptions first |
-| Analysis paralysis | Decomposing without rebuilding | Recomposition is the goal â€” set a timebox for decomposition |
-| Authority dependence | "The architect said so" as truth | Architect opinions are hypotheses â€” test them |
-| Gold-plating truths | Proving things that don't matter for the decision | Only decompose what changes the outcome (P3.4 â€” MAT) |
-| Skipping problem definition | Jumping to solution without stating the problem in its own terms | Write the problem sentence without referencing any solution |
-| Cherry-picking facts | Decomposing only what supports your preferred solution | Decompose the entire problem, including parts that threaten your assumptions |
-| Physics denial | Treating a physical limit as negotiable | If it violates a constraint, it will fail â€” find a different approach |
-| Cost blindness | Rebuilding from scratch for marginal benefit | Rebuild cost must be justified against the truth gap in the current solution |
-| Knowledge-type confusion | Treating assumed knowledge as fundamental | Tag every claim. Untagged = assumed. Verify before building. |
-| Decomposition theater | Going through the motions without changing any assumptions | If decomposition produces the same solution as the original approach, you didn't decompose enough |
-| Truth hoarding | Collecting truths but never recomposing into a solution | Set a hard time limit on decomposition. Recompose by the deadline. |
+| Problem statement is vague or non-specific | Refuse; require precision | Vague problems produce vague solutions |
+| Assumptions are unstated | Refuse; require the assumptions | Unstated assumptions are unchallenged assumptions |
+| Decomposition is one level deep | Refuse; require deeper | Shallow decomposition produces shallow solutions |
+| Feedback loops are ignored | Refuse; require the loops | Loops are the dynamics; ignoring them produces static solutions |
+| Leverage points are not identified | Refuse; require them | Without leverage, the solution is the same magnitude as the problem |
+| Second-order effects are ignored | Refuse; require them | The costs of a solution are usually in the second-order effects |
+| Root cause analysis stops at "human error" | Refuse; find the system | "Human error" is a description of the symptom, not the cause |
+| Inversion is "do the opposite" without identifying what to avoid | Refuse; require the avoid list | Inversion requires a specific failure mode to avoid |
+| Mental model audit is unchallenged | Refuse; require challenge | Unchallenged models are unverified models |
+| The conclusion has no limits | Refuse; require the limits | Unlimited conclusions are wrong somewhere |
+| The reasoning has no falsification test | Refuse; require one | Unfalsifiable reasoning is a story, not an argument |
+| The reasoning appeals to authority or popularity | Flag; require the evidence | Appeal to authority is not a first-principles argument |
+| The reasoning uses jargon to obscure | Flag; require plain language | Jargon that obscures is a sign of weak reasoning |
+| The reasoning is a copy of a previous answer without checking the context | Refuse; require the context check | Copy-paste reasoning is fragile reasoning |
 
-### Systems Thinking Anti-Patterns
+## Output format
 
-| Anti-Pattern | Problem | Correct Approach |
-|---|---|---|
-| Component thinking | Optimizing a part without understanding the whole | Map the system first, then find the leverage point |
-| Ignoring delays | Expecting immediate results from system changes | Model delays explicitly â€” account for time lags |
-| Single-loop solution | Breaking one feedback loop without checking others | All loops affect each other â€” trace second-order effects |
-| Fixing symptoms | Treating the output variable instead of the flow structure | Change the flow rates or the structure, not the stock value |
-| Blaming individuals | "The team is slow" â€” ignoring system structure | "What feedback loops cause the team to be slow?" |
-| Overconfidence in linearity | Assuming a small change produces a small effect | In systems, small changes at leverage points produce large effects |
-| Boundary confusion | Solving a problem whose cause is outside the system boundary | Expand the boundary until the root cause is inside |
-| Static analysis | Treating a snapshot as the system | Systems change over time â€” model the dynamics |
-| Optimizing the irrelevant | Tuning parameters on the wrong structure | Start with structure and feedback loops before parameters |
-| Action bias | Doing something because waiting is uncomfortable | Sometimes the best intervention is removing a bad feedback loop |
-| Spherical cow modeling | Over-simplifying until the model is useless | Include enough variables to capture the dominant feedback loops |
-| Loop blindness | Focusing on individual events instead of the feedback structures that produced them | Every event is the output of a feedback loop â€” trace the loop, not the event |
-| Polarity neglect | Drawing causal links without verifying the direction of influence | Test every S/O link: does Aâ†‘ actually cause Bâ†‘? Measure. |
-| Stock-flow confusion | Treating a flow as a stock or vice versa | Apply the stock test (accumulates?) and flow test (has a rate?) |
-| Map-territory error | Treating the causal loop diagram as reality | The model is a simplification. Test its predictions against real system behavior. |
+When applying first-principles reasoning, emit:
 
-### Synthesis Anti-Patterns (Unique to Combined Approach)
+```text
+[FIRST PRINCIPLES]
+Problem: <specific, concrete statement>
+Load-bearing assumptions:
+  1. <assumption> — if wrong, <consequence>
+  2. <assumption> — if wrong, <consequence>
 
-| Anti-Pattern | Problem | Correct Approach |
-|---|---|---|
-| Track isolation | Using only first principles OR only systems thinking | Both tracks are required. Decompose THEN integrate. Or map THEN decompose. |
-| Decomposition without integration | Having a list of truths but no system model | After decomposition, map causal relationships between the truths |
-| Modeling without decomposition | Having a feedback map built on unverified assumptions | Audit every variable in the CLD through first principles |
-| Premature recomposition | Rebuilding the solution before understanding system dynamics | Run the decomposed solution through second-order effects tracing |
-| Depth mismatch | Decomposing some parts too deeply while others stay at surface level | Use leverage point analysis to prioritize decomposition depth |
-| Circular justification | Using system dynamics to justify an assumption that should be decomposed | "This loop exists because X" â€” decompose X. Don't assume it. |
-| Over-indexing on leverage points | Chasing high-leverage interventions without understanding the fundamentals | A high-leverage change built on a false assumption will fail hard |
-| False precision | Modeling feedback loops with numbers derived from assumed data | Use empirical data for rates, not guesses. Mark assumed values explicitly. |
-| Track switching at wrong time | Decomposing when you should be integrating, or vice versa | If you have a list of disconnected facts â†’ integrate (ST). If you have a model with unverified assumptions â†’ decompose (FP). |
-| Starving the other track | Spending 90% of time on one track | Allocate time to both tracks. The synthesis is where value emerges. |
-| Solution anchoring | Decomposing or modeling to justify a pre-existing decision | State the decision after analysis, not before. |
-| Analysis without action | Completing both tracks without a concrete intervention recommendation | Every foundational reasoning session must produce a specific, implementable change. |
+Decomposition:
+  <part 1> → <relationship> → <part 2>
+  <part 2> → <relationship> → <part 3>
+  ...
 
-
-## P7 â€” DEPLOYMENT NOTES
-
-### Track Interaction Summary
-
-```
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚ FIRST        â”‚         â”‚ SYSTEMS      â”‚
-â”‚ PRINCIPLES   â”‚â—„â”€â”€â”€â”€â”€â”€â”€â–ºâ”‚ THINKER      â”‚
-â”‚              â”‚         â”‚              â”‚
-â”‚ Decompose    â”‚         â”‚ Map System   â”‚
-â”‚ Analyze      â”‚         â”‚ Model Loops  â”‚
-â”‚ Recompose    â”‚         â”‚ Find Leverageâ”‚
-â””â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”˜         â””â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”˜
-       â”‚                        â”‚
-       â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                  â”‚
-         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â”
-         â”‚   SYNTHESIS     â”‚
-         â”‚                 â”‚
-         â”‚ Decompose to    â”‚
-         â”‚ irreducible     â”‚
-         â”‚ truths, then    â”‚
-         â”‚ model their     â”‚
-         â”‚ interactions,   â”‚
-         â”‚ find leverage   â”‚
-         â”‚ at the system   â”‚
-         â”‚ level.          â”‚
-         â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+Irreducible components: <list>
+First-principles answer: <the answer from the irreducible components>
+Second-order effects:
+  - <effect 1> — <consequence>
+  - <effect 2> — <consequence>
+Limits: <the conditions under which the answer changes>
+Test: <observation that would prove the answer wrong>
 ```
 
-### When to Trigger This Plugin
+When applying systems thinking, emit:
 
-| Trigger | Primary Mode | Expected Output |
-|---------|-------------|-----------------|
-| Problem has unknown root cause | First Principles | Decomposed truth table |
-| System behavior is degrading | Systems Thinking | CLD + leverage points |
-| Technology choice is contested | First Principles | Constraint vs Convention analysis |
-| Architecture needs evaluation | Both (alternating) | Decomposed system model with interventions |
-| Performance needs optimization | First Principles | Decomposed latency budget |
-| Process or team dynamics issue | Systems Thinking | Feedback loop map of team behavior |
-| New feature with complex interactions | Both (parallel) | Decomposed requirements + system integration map |
-| Incident postmortem | Both (alternating) | Truth table of events + loop map of failure mode |
+```text
+[SYSTEMS MAP]
+Problem: <the behavior to explain or change>
+Stocks and flows:
+  - <stock> ← <inflow> − <outflow>
+  - <stock> ← <inflow> − <outflow>
 
-### Common Mistakes
+Feedback loops:
+  R1. <reinforcing loop> — <variable> ↑ → <variable> ↑ → <variable> ↑
+  B1. <balancing loop> — <variable> ↑ → <variable> ↓ → <variable> ↓
 
-| Mistake | Track | Prevention |
-|---------|-------|------------|
-| Decomposing too far | FP | Stop at domain primitive or physics-defined limit |
-| Not going far enough | FP | If a component still has hidden dependencies, decompose further |
-| Missing a feedback loop | ST | Every causal chain must close. Open chains are not feedback loops. |
-| Assuming polarity without verification | ST | Test each S/O link: does Aâ†‘ actually cause Bâ†‘? Measure. |
-| Modeling without delays | ST | If there is a time lag, mark it explicitly. Unmarked delays cause incorrect predictions. |
-| Forgetting the other track | Both | After finishing one track, switch to the other. The insight is in the synthesis. |
+Delays: <list of delays and their impact>
+Leverage points (Meadows hierarchy, high to low):
+  1. <paradigm change>
+  2. <goal change>
+  3. <power change>
+  4. <structure change>
+  ...
+Highest-leverage within reach: <the one we can actually change>
+Second-order effects of changing it:
+  - <effect>
+  - <effect>
+Test: <observation that would prove the leverage point wrong>
+```
 
----
+When applying root cause analysis, emit:
 
-*Synarc S1 WorkType classification, S2 risk floors (CRITICAL for data/auth/payment â€” incorrect loop modeling or missed assumptions can cause CRITICAL outages), S13 quality gates, S14 language rules, S17 zero-tolerance violations apply. Ledger entry for every foundational reasoning analysis session.*
+```text
+[ROOT CAUSE]
+Symptom: <the visible problem>
+Why 1: <immediate cause>
+Why 2: <the cause of the immediate cause>
+Why 3: <the cause of that cause>
+Why 4: <the cause of that cause>
+Why 5: <the cause of that cause>
+System: <the system that allowed the chain — training, process, design, incentive>
+Verification: <the data, test, or observation that proves this is the cause, not a step further>
+Fix: <the change to the system, not the chain>
+```
+
+## Gotchas
+
+- If the problem is vague, the solution is vague. Precision first.
+- If the assumptions are unstated, the reasoning is unchallenged. State them; challenge them.
+- If the decomposition is one level, the reasoning is shallow. Decompose to the irreducible.
+- If the loops are ignored, the dynamics are missed. Loops are the system.
+- If the leverage is not identified, the solution is the same magnitude as the problem. Find leverage.
+- If the second-order effects are ignored, the costs emerge later. Reason about them now.
+- If root cause stops at "human error", the system is unchanged. Find the system.
+- If the inversion has no avoid list, the inversion is rhetorical. Specify the failure modes.
+- If the mental model is unchallenged, the model is unverified. Audit it.
+- If the conclusion has no limits, the conclusion is over-claimed. Bound it.
+- If the reasoning has no test, the reasoning is a story. Make it falsifiable.
+- If the reasoning appeals to authority, the reasoning is a citation. Provide the evidence.
+- If the reasoning uses jargon to obscure, the reasoning is weak. Plain language.
+- If the reasoning is copy-pasted, the context is unchecked. Verify the context.
+
+## References
+
+- `references/first-principles.md` — the technique, examples, common pitfalls
+- `references/systems-thinking.md` — feedback loops, leverage points, Meadows hierarchy
+- `references/root-cause-techniques.md` — 5 whys, fishbone, fault tree, is/is not analysis
+- `references/inversion.md` — thinking backwards, "how would I guarantee failure"
+- `references/mental-model-audit.md` — listing assumptions, identifying load-bearing ones
+- `references/second-order-effects.md` — reasoning about consequences of consequences
+
+## Changelog
+
+- **6.0.0** — Rewrote from 5.x. Body 51 KB → 16 KB. 8-block template, 12 writing tricks, mandatory problem + assumptions + decomposition + leverage-point quartet, refusal rules for vague problems and appeal-to-authority.
+- **5.x** — Multi-section reasoning reference. Body content moved to references/.
+- **4.x** — Claude plugin format.

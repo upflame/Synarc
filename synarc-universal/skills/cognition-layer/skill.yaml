@@ -1,9 +1,9 @@
 ﻿id: cognition-layer
-version: 2.0.0
+version: 6.0.0
 schema: skill-pack/v1
 category: engineering-intelligence
 description: >
-  Meta-governance system for AI coding tools â€” reasoning architecture, plugin attention routing, context injection strategy, session lifecycle management, token budget allocation, plugin conflict resolution, and cross-session continuity. Governs how all synarc subsystems interrelate.
+  Designs the agent's reasoning architecture — context window, attention budget, working memory, scratchpad, prompt-caching tiers, and self-correction. Triggers on: reasoning, context, attention, working memory, scratchpad, prompt, context window, token budget, chain of thought, self-correction, reflection.
 
 compatible_agents:
   - codex
@@ -16,15 +16,34 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: critical
+cache_tier: core
+intent_triggers:
+  - reasoning
+  - context
+  - attention
+  - working memory
+  - scratchpad
+  - prompt
+  - context window
+  - token budget
+  - chain of thought
+  - self-correction
+  - reflection
+  - metacognition
+  - planning
+  - decomposition
+  - scratch space
+  - thought
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: c6c59c928c9d49e193e158284d5e7803b78d4d3c32d6fa59afead349ee3ac279
+  hash: 3f268ae5cc1b905311db4a2c5d31fa4224548c44a435fd1c892d64fb75e92522
   signed: false
 

@@ -21,12 +21,14 @@ This specification defines the **SKILL.md** format — a universal, markdown-bas
 |------|-------------|
 | Vendor-neutral | No platform-specific constructs |
 | Model-agnostic | No LLM-specific assumptions |
-| Tool-agnostic | No hardcoded tool dependencies |
+| Tool-agnostic | No hardcoded tool dependencies; no vendor tool names in body |
 | Fallback-first | Every capability has 4-tier fallback |
 | Deterministic | Same input → same behavior |
 | Self-contained | No external dependencies for basic operation |
-| Cache-friendly | Section boundaries enable prefix caching |
-| Validatable | Formal schema enables automated checks |
+| Cache-friendly | 4-tier cache architecture; byte-stable Tiers 0-2 |
+| Prompt-caching-ready | Tiers 0-2 contain no dynamic state (no timestamps, session IDs, user data) |
+| Routing-precise | `description` and `intent_triggers` decide which skill fires; 3rd-person prose with concrete triggers |
+| Validatable | Formal schema + L1/L2/L3 conformance + size + content checks |
 
 ### 1.3 Conformance
 
@@ -61,10 +63,13 @@ skill-directory/
 
 | Limit | Value | Reason |
 |-------|-------|--------|
-| Max SKILL.md size | 1 MB | Agent context window constraints |
-| Max section size | 50 KB | Cache boundary optimization |
-| Max reference file | 200 KB | Load-on-demand efficiency |
-| Recommended frontmatter | < 10 KB | Fast parsing |
+| Hard cap SKILL.md | 50 KB / 1 000 lines / 12 000 tokens | Promotes split into `references/`; supports prefix caching |
+| Recommended SKILL.md | < 30 KB / 500 lines / 6 000 tokens | Single-shot context-fit; cache-friendly |
+| Per `references/*` file | 2-50 KB | Load-on-demand efficiency |
+| `references/*.md` minimum | 1 000 bytes | Stub prevention; every reference must contain real content |
+| Recommended frontmatter | < 2 KB / 9 lines | Routing layer; fast parsing and embedding |
+
+The previous 1 MB cap (5.x) is removed. Skills exceeding the hard cap fail L1 conformance. The 4-tier cache architecture (Tier 0 runtime header → Tier 4 task context) requires small, byte-stable Tiers 0-2.
 
 ---
 
@@ -162,90 +167,94 @@ nested-map       = newline, { indentation, key, ":", scalar, newline };
 
 ## 4. Body Specification
 
-### 4.1 Section Structure
+### 4.1 The 8-Block Template (v6)
+
+Every SKILL.md in v6 uses this exact section order. The first three blocks form the cache anchor and must be byte-stable for the version.
 
 ```markdown
-# Skill Title
+# Skill Name
 
-## Purpose
+You are <name>, <one-line role>. You operate in <scope>.
 
-What the skill solves.
+You <one hard "never" sentence — the single most important prohibition>.
 
-## Activation Conditions
+## When to activate
 
-WHEN:
-- condition 1
-- condition 2
+Activate when the user's request matches any of these signals:
+- <verb phrase, e.g., "review this pull request">
+- <noun phrase, e.g., "OAuth token">
+- <file type or path pattern, e.g., "*.sql migration", "in src/auth/*">
 
-THEN:
-Activate this skill
+## Workflow
 
-## Required Inputs
+1. <first step>
+2. <second step>
+3. If <condition>, <branch A>; otherwise, <branch B>
+4. <next step>
 
-- input 1
-- input 2
+## Decision rules
 
-## Capabilities
+| Condition | Action | Why |
+|---|---|---|
+| <observable signal> | <single verb + object> | <one-line reason> |
 
-### Capability: Capability Name
+## Output format
 
-#### Tier 1 — Native Execution
+When <user asks X>, emit exactly:
 
-#### Tier 2 — External Integration
+​```text
+<3-10 line example with real placeholder shapes>
+​```
 
-#### Tier 3 — Manual Workflow
+## Gotchas
 
-#### Tier 4 — Human-Assisted
+- If <condition>, then <action>. <one-line reason>.
+- Never <prohibition>. <one-line reason>.
+- Always <requirement>. <one-line reason>.
 
-## Validation
+## References
 
-Success criteria.
+- `references/commands.txt` — flat-text command catalog, loaded on demand
+- `references/error-codes.md` — error code lookup with remediation
+- `references/checklist.md` — pre-commit / pre-deploy verification
 
-## Failure Handling
+## Changelog
 
-Edge cases and recovery.
-
-## Output Format
-
-Required output structure.
-
-## Quality Checklist
-
-Verification steps.
-
-## Security Checklist
-
-Risk analysis.
-
-## Performance Checklist
-
-Optimization review.
+- **6.0.0** — Rewrote from 5.x. Body 2.2 MB → 30 KB. 12 writing tricks applied.
+- **5.1.0** — Added ...
+- **5.0.0** — Initial universal release.
 ```
 
-### 4.2 Section Types
+The 12-section structure (Purpose, Activation, Required Inputs, Capabilities with 4 tiers, Validation, Failure Handling, Output Format, Quality/Security/Performance Checklists) from v5 is **deprecated**. The 8-block template replaces it. The detailed WHEN/THEN activation table is preserved as the `## When to activate` block plus the `intent_triggers:` frontmatter array. The 4-tier fallback is preserved as a runtime behavior (not a body section).
 
-#### Mandatory Sections
+### 4.2 Mandatory Blocks (v6)
 
-Every SKILL.md MUST contain:
+Every SKILL.md MUST contain, in order:
 
-| Section | Description |
-|---------|-------------|
-| `# Title` | Skill name and one-line description |
-| `## Purpose` | What problem this skill solves |
-| `## Activation Conditions` | When this skill activates (WHEN/THEN format) |
-| `## Capabilities` | One or more capability blocks, each with 4 tiers |
+| Block | Description |
+|-------|-------------|
+| `# Title` + 2-line persona | Skill name and third-person persona with one load-bearing prohibition |
+| `## When to activate` | 3-5 concrete user phrasings or file patterns |
+| `## Workflow` | 5-9 numbered steps with decision branches |
+| `## Gotchas` | 5-8 imperative bullets capturing known near-misses |
+| `## References` | One-level-deep list with named purpose for each file |
 
-#### Optional Sections
+`## Decision rules` (table), `## Output format` (code-block template), and `## Changelog` (last 3 versions) are recommended.
 
-| Section | Description |
-|---------|-------------|
-| `## Required Inputs` | Expected input information |
-| `## Validation` | Success criteria |
-| `## Failure Handling` | Edge cases and recovery |
-| `## Output Format` | Required output structure |
-| `## Quality Checklist` | Verification steps |
-| `## Security Checklist` | Risk analysis |
-| `## Performance Checklist` | Optimization review |
+### 4.3 Section Types Deprecated in v6
+
+| v5 Section | v6 Replacement |
+|------------|----------------|
+| `## Purpose` | Folded into 2-line persona |
+| `## Activation Conditions` (WHEN/THEN) | `## When to activate` bullets + `intent_triggers:` frontmatter array |
+| `## Required Inputs` | Implicit in `## When to activate` |
+| `## Capabilities` (with 4 tiers) | Runtime fallback; not a body section |
+| `## Validation` | Folded into `## Gotchas` |
+| `## Failure Handling` | Folded into `## Gotchas` |
+| `## Output Format` | Kept as `## Output format` (lowercase 'f') with code-block template only |
+| `## Quality Checklist` | Replaced by `references/checklist.md` |
+| `## Security Checklist` | Folded into `## Gotchas` |
+| `## Performance Checklist` | Folded into `## Gotchas` |
 
 ### 4.3 Capability Block Specification
 

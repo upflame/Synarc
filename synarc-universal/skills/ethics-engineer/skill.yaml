@@ -1,9 +1,9 @@
 ﻿id: ethics-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: security
 description: >
-  Comprehensive ethics engineering plugin for responsible AI development, ethical analysis, bias detection, fairness evaluation, transparency assessment, accountability frameworks, governance, and regulatory compliance across the AI/ML lifecycle.
+  Identifies and addresses ethical considerations in engineering — fairness, bias, transparency, accountability, consent, dual-use, and AI safety. Triggers on: ethics, fairness, bias, transparency, accountability, consent, dual-use, AI safety, alignment, model card, datasheet, responsible AI.
 
 compatible_agents:
   - codex
@@ -16,15 +16,38 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - ethics
+  - fairness
+  - bias
+  - transparency
+  - accountability
+  - consent
+  - dual-use
+  - AI safety
+  - alignment
+  - model card
+  - datasheet
+  - responsible AI
+  - value alignment
+  - harm
+  - stakeholder
+  - vulnerable population
+  - demographic parity
+  - equalized odds
+  - calibration
+  - disparate impact
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 53b666cfae382fb13c52cb6221ba6f546a451a3928384ae6757dc4babe9f2c06
+  hash: 652130ab720d996e4d0132010579929954651b339d9a4749d78e2ecb786676c2
   signed: false
 

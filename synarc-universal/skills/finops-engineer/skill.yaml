@@ -1,9 +1,9 @@
 ﻿id: finops-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: devops
 description: >
-  Cloud financial operations — cost optimization, allocation, governance, and unit economics across multi-cloud environments.
+  Designs and operates FinOps practices - cloud cost visibility, allocation, optimization, unit economics, anomaly detection, commitment discounts, and engineering cost ownership. Triggers on: finops, cloud cost, cost optimization, cost allocation, unit economics, RI, SP, savings plan, reserved instance, anomaly, tagging, chargeback, showback, COGS, AWS cost, Azure cost, GCP cost.
 
 compatible_agents:
   - codex
@@ -16,15 +16,47 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - finops
+  - cloud cost
+  - cost optimization
+  - cost allocation
+  - unit economics
+  - RI
+  - SP
+  - savings plan
+  - reserved instance
+  - anomaly
+  - tagging
+  - chargeback
+  - showback
+  - COGS
+  - AWS cost
+  - Azure cost
+  - GCP cost
+  - right-sizing
+  - idle resource
+  - commitment discount
+  - cost dashboard
+  - budget alert
+  - amortized cost
+  - unblended cost
+  - net cost
+  - waste reduction
+  - K8s cost
+  - cluster cost
+allowed_tools:
+  - [Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
+  - Bash]
 
 integrity:
   algorithm: sha256
-  hash: 65d9008bf152ba235538d92fe81c302c704d58172359e9caa315c1be914bf6d6
+  hash: b02b0f116b1fd6f8661cdb951ec0cfa6532f45328b1ee72213d012c59160cd16
   signed: false
 

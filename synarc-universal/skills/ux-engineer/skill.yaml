@@ -1,9 +1,9 @@
 ﻿id: ux-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: development
 description: >
-  Comprehensive UX engineering â€” user research, interaction design, information architecture, usability testing, journey mapping, wireframing, prototyping, WCAG accessibility, UX metrics, conversion optimization, cognitive UX. version: 1.0.0
+  Designs user experiences grounded in research - user research, information architecture, interaction design, usability testing, journey mapping, wireframing, prototyping, WCAG accessibility, conversion optimization, and cognitive UX psychology. Triggers on: UX, user research, usability, information architecture, IA, interaction design, journey map, wireframe, prototype, Figma, persona, JTBD, jobs to be done, usability test, A/B test, conversion, WCAG, accessibility, a11y, heuristic, cognitive load, Fitts, Hick, Miller, Gestalt.
 
 compatible_agents:
   - codex
@@ -16,15 +16,51 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - UX
+  - user research
+  - usability
+  - information architecture
+  - IA
+  - interaction design
+  - journey map
+  - wireframe
+  - prototype
+  - Figma
+  - persona
+  - JTBD
+  - jobs to be done
+  - usability test
+  - A/B test
+  - conversion
+  - WCAG
+  - accessibility
+  - a11y
+  - heuristic
+  - cognitive load
+  - Fitts
+  - Hick
+  - Miller
+  - Gestalt
+  - card sort
+  - tree test
+  - user interview
+  - survey
+  - heuristic evaluation
+  - Nielsen
+  - design system
+allowed_tools:
+  - [Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
+  - Bash]
 
 integrity:
   algorithm: sha256
-  hash: dd907041a46ce23cb2350e5dfc0d493758b295c3129467d1e5bb48553c5692a0
+  hash: 91305c5b269fa376c3f9dc7c02a0b36f96b519c8d27825bc06dbe95e5879778a
   signed: false
 

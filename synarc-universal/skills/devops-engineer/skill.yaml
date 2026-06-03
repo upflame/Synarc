@@ -1,9 +1,9 @@
 ﻿id: devops-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: devops
 description: >
-  
+  Designs and operates CI/CD pipelines, build systems, deployment automation, and release engineering. Triggers on: CI, CD, pipeline, build, deploy, release, branch, merge, tag, artifact, registry, runner, workflow, GitHub Actions, GitLab CI, Jenkins, ArgoCD, Flux.
 
 compatible_agents:
   - codex
@@ -16,15 +16,43 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - CI
+  - CD
+  - pipeline
+  - build
+  - deploy
+  - release
+  - branch
+  - merge
+  - tag
+  - artifact
+  - registry
+  - runner
+  - workflow
+  - GitHub Actions
+  - GitLab CI
+  - Jenkins
+  - ArgoCD
+  - Flux
+  - Helm
+  - Kustomize
+  - canary
+  - blue-green
+  - rollback
+  - fastlane
+  - semantic release
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 21aaafe4e8b7634557e5758803252383a837a388135c90555cb79f16ff68a3a4
+  hash: 22cc590230ba1e62872bc39959dead9c5ff89adde641f20860c7417edc5d15b8
   signed: false
 

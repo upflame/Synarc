@@ -1,9 +1,9 @@
 ﻿id: sre-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: devops
 description: >
-  
+  Defines and operates SLOs, error budgets, on-call rotations, incident response, capacity planning, and reliability reviews. Triggers on: SLO, SLA, error budget, burn rate, on-call, pager, alert, incident, postmortem, MTTR, MTBF, availability, uptime, capacity, reliability.
 
 compatible_agents:
   - codex
@@ -16,15 +16,35 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - SLO
+  - SLA
+  - error budget
+  - burn rate
+  - on-call
+  - pager
+  - alert
+  - incident
+  - postmortem
+  - MTTR
+  - MTBF
+  - availability
+  - uptime
+  - capacity
+  - reliability
+  - toilsome
+  - runbook
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 041189ef3c3318c39dae37148b7fa09b1109c06f40f8653c4e8b61c45b409714
+  hash: 8840d2c2a2f17cffc4647d0dee15d63bed2253ab8cd0938789b11e2cf3e506e3
   signed: false
 

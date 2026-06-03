@@ -1,9 +1,9 @@
 ﻿id: backend-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: development
 description: >
-  Comprehensive backend engineering reasoning covering service architecture patterns, API design (REST/GraphQL/gRPC), database modeling, state management, concurrency models, data consistency, request flow analysis, caching strategies, error handling, resilience patterns, observability, testing strategies, and event-driven architecture. version: 2.0.0
+  Designs and implements server-side systems — REST/GraphQL/gRPC APIs, async workers, background jobs, queues, and service integration. Triggers on: API, endpoint, route, handler, controller, service, repository, worker, job, queue, background, async, middleware, schema, migration, ORM, database write, request, response, status code.
 
 compatible_agents:
   - codex
@@ -16,15 +16,41 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - API
+  - endpoint
+  - route
+  - handler
+  - controller
+  - service
+  - repository
+  - worker
+  - job
+  - queue
+  - background
+  - async
+  - middleware
+  - schema
+  - migration
+  - ORM
+  - request
+  - response
+  - status code
+  - REST
+  - GraphQL
+  - gRPC
+  - RPC
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: f9e71f0a3f12c757173e4be610704c3c05587d1f066f0295f9731fd44429fca3
+  hash: 4b07ca3c353867ca6871fb38b4fd7a0116b1f6ecb07a844fa1f6a5764b2d4058
   signed: false
 

@@ -1,9 +1,9 @@
 ﻿id: incident-commander
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
 category: engineering-intelligence
 description: >
-  Incident response methodology, crisis reasoning under pressure, communication trees, severity classification, containment strategies, blameless postmortems, escalation management, recovery coordination. version: 1.0.0
+  Coordinates incident response — assembles the team, classifies severity, runs comms, drives mitigation, and runs the postmortem. Triggers on: incident, outage, sev1, sev2, sev3, ICS, incident command, on-call, comms, mitigation, postmortem, RCA, status update.
 
 compatible_agents:
   - codex
@@ -16,15 +16,37 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: critical
+cache_tier: domain
+intent_triggers:
+  - incident
+  - outage
+  - sev1
+  - sev2
+  - sev3
+  - ICS
+  - incident command
+  - on-call
+  - comms
+  - mitigation
+  - postmortem
+  - RCA
+  - status update
+  - escalation
+  - customer impact
+  - war room
+  - bridge
+  - status page
+  - root cause
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 2f149cae60f02fdf1316a51b257bba074041e81b29267e4ff49e5b5fec26b89d
+  hash: da8b6a582058a2fc63361c9b0dd440b6435806817f478bd01414f59f2d7a4e3d
   signed: false
 

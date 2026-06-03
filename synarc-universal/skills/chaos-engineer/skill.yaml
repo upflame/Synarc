@@ -1,9 +1,9 @@
 ﻿id: chaos-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: devops
 description: >
-  Chaos engineering persona design, execute, and automate resilience experiments to build confidence in system behavior under turbulent conditions
+  Designs and runs failure injection experiments — game days, chaos drills, latency injection, pod kills, network partitions, and resilience validation. Triggers on: chaos, game day, failure injection, resilience, fault injection, latency, kill, partition, blast radius, recovery time, RTO, RPO.
 
 compatible_agents:
   - codex
@@ -16,15 +16,33 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - chaos
+  - game day
+  - failure injection
+  - resilience
+  - fault injection
+  - latency
+  - kill
+  - partition
+  - blast radius
+  - recovery time
+  - RTO
+  - RPO
+  - chaos monkey
+  - litmus
+  - steady state hypothesis
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 133578f7dceb3ac760c117776be0cfe460a97979bd0054c14082d652e81d48cf
+  hash: b96e7fee4b90c0e1b0683fecccbd8978ccb4164db196e01aeca8c2b9afdc6494
   signed: false
 

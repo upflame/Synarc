@@ -1,11 +1,19 @@
 ---
 title: Enterprise Deployment Guide — Synarc Universal Skill Pack
-description: Enterprise-scale deployment guide covering org-wide installation, skill version management, dependency resolution for large skill packs, CI/CD integration, compliance and audit considerations, and multi-team skill distribution.
-version: 1.0.0
+description: Enterprise-scale deployment guide covering org-wide installation, skill version management, dependency resolution for large skill packs, CI/CD integration, compliance and audit considerations, and multi-team skill distribution. Validated for v6.0.0.
+version: 6.0.0
 schema: skill-pack/v1
 ---
 
-# Enterprise Deployment Guide — Synarc Universal Skill Pack
+# Enterprise Deployment Guide — Synarc Universal Skill Pack (v6.0.0)
+
+## What's new in v6.0.0
+
+- **No compile step** — the v5 compile-for-runtime matrix is removed. Same SKILL.md ships to all 9 runtimes.
+- **Cache tier as the new dependency model** — `cache_tier: core` declares a pre-warm dependency on a skill. The v5 `dependencies: { synarc-core: ">=5.0.0" }` field is removed.
+- **Single source of truth** — `scripts/sync-v6.ps1` regenerates `manifest.yaml`, `skill.yaml`, and `marketplace.json` from SKILL.md frontmatter. The v5 manual `generate-manifest.ps1` is deprecated.
+- **Stronger contract enforcement** — `scripts/validate-skills.ps1` runs 15+ checks (frontmatter shape, banned fields, banned names, mojibake, 8-block template, size caps, reference resolution).
+- **38× token reduction** — total pack 15.67 MB → 412.9 KB. Each SKILL.md is 8-14 KB; the pack fits in a single cache miss.
 
 ---
 
@@ -20,9 +28,10 @@ org-internal/
 └── synarc-universal/
     ├── AGENTS.md
     ├── manifest.yaml
-    ├── skills/
-    ├── shared/
-    └── docs/
+    ├── skills/         (40 SKILL.md files, 8-14 KB each)
+    ├── shared/         (standards, schemas, workflows, runtime-adapters)
+    ├── docs/           (installation, architecture, usage, migration)
+    └── scripts/        (sync-v6, validate-skills, measure-skills, check-vendor-lockin, check-refs)
 ```
 
 ### Distribution Methods
@@ -86,9 +95,9 @@ All skills follow semver (MAJOR.MINOR.PATCH):
 
 | Component | Breaking Change |
 |-----------|----------------|
-| MAJOR | Activation triggers changed, capability removed, guardrails weakened, compatibility dropped |
-| MINOR | New capability, new trigger, new reference, improved descriptions |
-| PATCH | Typo fix, example fix, clarification |
+| MAJOR | `intent_triggers` changed in a way that alters activation, `cache_tier` changed, capability removed, 8-block template restructured, frontmatter contract changed |
+| MINOR | New `intent_triggers` phrase added, new reference, improved descriptions, additional `allowed_tools` entry |
+| PATCH | Typo fix, example fix, gotcha clarification, broken reference fix |
 
 ### Version Pinning
 
@@ -97,17 +106,26 @@ In `manifest.yaml`, pin pack versions for production:
 ```yaml
 pack:
   id: synarc-universal
-  version: 5.0.0  # Pinned — do not auto-update
+  version: 6.0.0  # Pinned — do not auto-update
 ```
 
-Skills declare their minimum dependency versions:
+In v6.0.0 skills declare their pre-warm requirements via `cache_tier`, not via a `dependencies` map:
 
 ```yaml
-skills:
-  - id: backend-engineer
-    dependencies:
-      synarc-core: ">=5.0.0"
+# skills/backend-engineer/skill.yaml
+id: backend-engineer
+version: 6.0.0
+priority: high
+cache_tier: domain
+intent_triggers:
+  - backend service
+  - REST API
+  - service layer
+  - business logic
+allowed_tools: [Read, Write, Edit, Grep, Glob, Bash]
 ```
+
+A `cache_tier: domain` skill implicitly depends on every `cache_tier: core` skill being pre-warm in the session. The validator and sync script enforce this.
 
 ### Release Channels
 
@@ -162,24 +180,31 @@ For organizations maintaining custom skill packs with many interdependent skills
 
 ### Enterprise Lock File
 
-For regulated environments, maintain a lock file that pins all transitive dependencies:
+For regulated environments, maintain a lock file that pins all transitive dependencies. The v6.0.0 lock file uses `cache_tier` as the dependency declaration:
 
 ```yaml
 # synarc.lock.yaml
-lock_version: 1
-generated: "2026-06-02T00:00:00Z"
+lock_version: 2
+generated: "2026-06-04T00:00:00Z"
+pack_version: 6.0.0
+pack_hash: sha256:2f4b9a675cb2baa60ee3c7662c1369315f2eef4888bb459d3e581c2be7d6e5f5
 skills:
   - id: synarc-core
-    version: 5.0.0
+    version: 6.0.0
+    cache_tier: core
     hash: sha256:a1b2c3d4...
+  - id: negative-prompts
+    version: 6.0.0
+    cache_tier: core
+    hash: sha256:...
   - id: backend-engineer
-    version: 2.0.0
+    version: 6.0.0
+    cache_tier: domain
+    pre_warm: [synarc-core, negative-prompts, cognition-layer, schemas]
     hash: sha256:e5f6g7h8...
-    dependencies:
-      synarc-core: 5.0.0
 ```
 
-The lock file is validated before deployment. Any hash mismatch or version conflict blocks deployment.
+The lock file is validated before deployment. Any hash mismatch, version conflict, or `cache_tier` regression blocks deployment.
 
 ---
 
@@ -201,7 +226,9 @@ repos:
         files: ^synarc-universal/skills/.*\.(md|yaml)$
 ```
 
-### CI Pipeline Stages
+### CI Pipeline Stages (v6.0.0)
+
+The v5 compile-matrix job is removed — v6.0.0 ships the same SKILL.md to all 9 runtimes with no compile step.
 
 ```yaml
 # .github/workflows/synarc-ci.yml
@@ -211,57 +238,41 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: L1 — Basic Validation
+      - name: L1 — Basic Validation (v6 frontmatter contract)
         run: |
-          check-required-fields skills/*/SKILL.md
-          check-banned-fields skills/*/SKILL.md
+          pwsh synarc-universal/scripts/validate-skills.ps1
 
-      - name: L2 — Standard Validation
+      - name: L2 — Standard Validation (size, refs, tiers)
         run: |
-          validate-schema skills/*/skill.yaml
-          check-reference-integrity skills/*/SKILL.md
-          verify-tier-completeness skills/*/SKILL.md
+          pwsh synarc-universal/scripts/measure-skills.ps1
+          pwsh synarc-universal/scripts/check-refs.ps1
 
-      - name: L3 — Strict Validation
+      - name: L3 — Strict Validation (vendor-lock, security)
         run: |
-          scan-platform-lockin skills/*/SKILL.md
-          security-scan skills/**/guardrails.yaml
+          pwsh synarc-universal/scripts/check-vendor-lockin.ps1
 
-      - name: L4 — Enterprise Validation
+      - name: L4 — Enterprise Validation (sync, manifest signature, OWASP)
         run: |
-          verify-manifest-signature manifest.yaml
-          owasp-map skills/**/guardrails.yaml
-
-  compile:
-    needs: validate
-    strategy:
-      matrix:
-        agent: [codex, opencode, cursor, gemini-cli, claude-code, copilot, windsurf, cline, roo-code]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Compile for ${{ matrix.agent }}
-        run: |
-          compile-skills --target ${{ matrix.agent }} --output dist/${{ matrix.agent }}/
+          pwsh synarc-universal/scripts/sync-v6.ps1
+          verify-manifest-signature synarc-universal/manifest.yaml
+          owasp-map synarc-universal/skills/**/guardrails.yaml
 
   test:
-    needs: compile
-    strategy:
-      matrix:
-        agent: [codex, opencode, cursor, gemini-cli, claude-code, copilot, windsurf, cline, roo-code]
+    needs: validate
     steps:
-      - name: Test compiled skills for ${{ matrix.agent }}
+      - name: Test fallback tiers
         run: |
-          test-compiled-skills dist/${{ matrix.agent }}/
+          pwsh synarc-universal/scripts/test-fallbacks.ps1
 ```
 
 ### Validation Conformance Levels
 
-| Level | Checks | Gate |
-|-------|--------|------|
-| L1 — Basic | Required fields, banned fields | PR gate |
-| L2 — Standard | Schema, references, tiers | CI gate |
-| L3 — Strict | Platform lock-in, security scan | Release gate |
-| L4 — Enterprise | Manifest signature, OWASP | Production gate |
+| Level | Script | Checks | Gate |
+|-------|--------|--------|------|
+| L1 — Basic | `validate-skills.ps1` | v6 frontmatter contract, required fields, banned v5 fields, 8-block template sections, size caps | PR gate |
+| L2 — Standard | `measure-skills.ps1`, `check-refs.ps1` | Per-skill size, tier distribution, percentiles, cap enforcement, markdown reference resolution | CI gate |
+| L3 — Strict | `check-vendor-lockin.ps1` | Banned name tokens (anthropic/claude/gpt*/gemini), banned body patterns, v5 deprecated fields | Release gate |
+| L4 — Enterprise | `sync-v6.ps1`, manifest signature, OWASP map | Single-source-of-truth regeneration, manifest hash, OWASP LLM category mapping | Production gate |
 
 ---
 

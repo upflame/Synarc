@@ -1,9 +1,9 @@
 ﻿id: problem-solver
-version: 2.0.0
+version: 6.0.0
 schema: skill-pack/v1
 category: engineering-intelligence
 description: >
-  Comprehensive merged methodology combining structured engineering problem-solving (define, analyze, generate, evaluate, implement, verify) with human-centered design thinking (empathize, define, ideate, prototype, test). Covers root cause analysis, solution generation, multi-criteria evaluation, implementation planning, verification, user research, journey mapping, and iterative prototyping.
+  Applies structured problem-solving frameworks — define the problem, decompose, generate alternatives, evaluate, decide, execute, learn. Triggers on: problem, solve, framework, decompose, MECE, 5W1H, fishbone, decision matrix, hypothesis-driven, OODA, design of experiments.
 
 compatible_agents:
   - codex
@@ -16,15 +16,34 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - problem
+  - solve
+  - framework
+  - decompose
+  - MECE
+  - 5W1H
+  - fishbone
+  - decision matrix
+  - hypothesis-driven
+  - OODA
+  - design of experiments
+  - A3
+  - 8D
+  - DMAIC
+  - root cause
+  - countermeasure
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 46d83f9662932d7fbe683683b357961a396836dfd014c538c1448698bf172305
+  hash: b01e79bbbd3c9b23423940971de74f52e997db3ea86561b9ae9c94e57e0a6856
   signed: false
 

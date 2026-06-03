@@ -1,17 +1,24 @@
 ---
 title: Usage Guide — Synarc Universal Skill Pack
-description: Comprehensive usage guide covering skill activation, writing new skills, referencing shared workflows, fallback tier usage, runtime compilation, and common workflow examples for change classification, risk assessment, and session tracking.
-version: 1.0.0
+description: Comprehensive usage guide covering skill activation via intent_triggers, writing new skills with the 8-block template, the 4-tier cache architecture, fallback tier usage, and common workflow examples.
+version: 6.0.0
 schema: skill-pack/v1
 ---
 
-# Usage Guide — Synarc Universal Skill Pack
+# Usage Guide — Synarc Universal Skill Pack (v6.0.0)
+
+## What's new in 6.0.0
+
+- **Intent-based activation via `intent_triggers`** — every skill declares ≥ 2 concrete trigger phrases. Match on user intent, not platform-specific commands.
+- **4-tier prompt-caching architecture** — every skill declares a `cache_tier` so agents can pre-wam the cache.
+- **8-block template** — replaces the v5 12-section structure. Mandatory sections: frontmatter, persona, activation, workflow, decision rules, output format, gotchas, references, changelog.
+- **35-38× token reduction** — total pack ~413 KB, each SKILL.md 8-14 KB. Fits in a single cache miss.
 
 ---
 
 ## How Skills Activate
 
-Skills use **intent-based activation**. When you describe a task, the agent matches your intent against activation conditions defined in each SKILL.md. No slash commands, no manual selection.
+Skills use **intent-based activation**. When you describe a task, the agent matches your intent against the `intent_triggers` array declared in each SKILL.md frontmatter. No slash commands, no manual selection.
 
 ### Activation Flow
 
@@ -57,121 +64,84 @@ Your intent (e.g., "Add user authentication")
 mkdir -p skills/my-domain-skill/
 ```
 
-### 2. Write SKILL.md
+### 2. Write SKILL.md (v6 8-block template)
 
 ```markdown
 ---
 name: my-domain-skill
-title: My Domain Skill
-description: Handles intent-matching for my specific domain
-version: 1.0.0
-schema: skill-pack/v1
-category:
-  - development
-tags:
-  - my-domain
-compatible_agents:
-  - codex
-  - opencode
-  - cursor
-  - gemini-cli
-  - claude-code
-  - copilot
-  - windsurf
-  - cline
-  - roo-code
+description: Handles intent-matching for my specific domain with concrete triggers.
+version: 6.0.0
 priority: normal
-dependencies:
-  synarc-core: ">=5.0.0"
+intent_triggers: [domain, skill, capability, intent, ...]
+cache_tier: domain
 ---
 
-# My Domain Skill
+# my-domain-skill
 
-## Purpose
+You are my-domain-skill, a ... (one sentence persona, 2 lines max).
 
-What this skill solves — one paragraph.
+You never [prohibited action] without [prerequisite]. [One sentence about why.]
 
-## Activation Conditions
+Think HOLISTICALLY and COMPREHENSIVELY before any work. Survey [scopes]. State [key things] on one line before [action].
 
-WHEN:
-- user requests domain-specific work
-- user mentions domain keywords
+Before calling each tool, first explain why: [reason template].
 
-THEN:
-Activate My Domain Skill
+NEVER refer to tool names when speaking to the user.
 
-## Required Inputs
+## When to activate
 
-- Input context needed for this skill to function
+This skill activates implicitly when the user describes work matching the triggers. [One paragraph.]
 
-## Capabilities
+## Workflow
 
-### Capability: My Capability
+1. [Step one with concrete output]
+2. [Step two with concrete output]
+3. ...
 
-#### Tier 1 — Native Execution
+## Decision rules
 
-[Agent-native workflow]
+[3-5 specific rules in prose or a small table]
 
-#### Tier 2 — External Integration
+## Output format
 
-[If Tier 1 unavailable: external tools/APIs]
+[Structured output schema: what to emit, in what shape]
 
-#### Tier 3 — Manual Workflow
+## Gotchas
 
-[If Tier 2 unavailable: step-by-step instructions]
+- [Edge case 1]
+- [Edge case 2]
+- ...
 
-#### Tier 4 — Human-Assisted
+## References
 
-[If all above unavailable: structured output for human review]
+- `shared/standards/<file>.md` — [purpose]
 
-## Validation
+## Changelog
 
-Success criteria for this skill.
-
-## Failure Handling
-
-Edge cases and recovery procedures.
-
-## Quality Checklist
-
-- [ ] Check 1
-- [ ] Check 2
-
-## Security Checklist
-
-- [ ] Security check 1
-
-## Performance Checklist
-
-- [ ] Performance check 1
+- 6.0.0 — Initial v6 release.
 ```
 
-### 3. Create skill.yaml
+### 3. Create skill.yaml (auto-generated)
 
-```yaml
-id: my-domain-skill
-version: 1.0.0
-schema: skill-pack/v1
-description: Handles intent-matching for my specific domain
-compatible_agents:
-  - codex
-  - opencode
-  - cursor
-  - gemini-cli
-  - claude-code
-  - copilot
-  - windsurf
-  - cline
-  - roo-code
-activation:
-  type: intent-based
-dependencies:
-  synarc-core: ">=5.0.0"
-```
+Run `npm run sync` to auto-generate `skill.yaml` from the SKILL.md frontmatter. The sync script reads SKILL.md as the single source of truth and produces:
 
-### 4. Register in manifest.yaml
+- `skills/<id>/skill.yaml` — v6 manifest with `intent_triggers` and `cache_tier`
+- `manifest.yaml` — pack manifest with all skills
+- `.claude-plugin/marketplace.json` — marketplace catalog
 
-Add the skill entry to `manifest.yaml` under the `skills:` list with its path, version, dependencies, and metadata.
+### 4. Validate
+
+Run `npm run validate` to check the v6 contract:
+
+- Required frontmatter fields
+- 3rd-person description, 40-1024 chars
+- intent_triggers array with ≥ 2 elements
+- cache_tier enum
+- No v5 deprecated fields
+- No vendor-locked name tokens
+- Mandatory 8-block template sections
+- Size cap (50 KB hard, 30 KB warn)
+- Markdown reference resolution
 
 ---
 
@@ -240,40 +210,37 @@ Tier 4 — Human-Assisted (structured output for review)
 
 ---
 
-## How to Compile for Different Runtimes
+## How the 4-Tier Cache Architecture Works
 
-Compilation transforms universal SKILL.md into the format each agent expects.
+v6.0.0 introduces the 4-tier prompt-caching architecture. Every skill declares its `cache_tier` in frontmatter, so agents can pre-warm the cache and reduce per-turn cost.
 
-### Compilation Flow
+### Tier breakdown
 
-1. **Input**: Universal SKILL.md + skill.yaml + runtime adapter
-2. **Parse**: Extract frontmatter, sections, activation model
-3. **Transform**: Apply adapter-specific rules (section filtering, format conversion)
-4. **Output**: Runtime-native file
+| Tier | What | Cached for | When loaded |
+|------|------|------------|-------------|
+| 0 | Pack header (AGENTS.md, manifest.yaml) | Always (every session) | Session start |
+| 1 | Core reasoning (synarc-core, negative-prompts, cognition-layer, schemas) | Always-on | Session start |
+| 2 | Active domain skill (debug-engineer, architect, etc.) | Per task | On intent match |
+| 3 | Skill references (`skills/<id>/references/*.md`) | Lazy | On first reference |
+| 4 | Dynamic context (project files, tool outputs) | Never | Per turn |
 
-### Output Formats by Agent
+### Activation across all 9 runtimes (no compile step)
 
-| Agent | Output File | Format |
-|-------|-------------|--------|
-| Codex CLI | `AGENTS.md` section | ASCII markdown, no Unicode |
-| OpenCode | `AGENTS.md` section | Unicode markdown, full paths |
-| Cursor | `.cursor/rules/*.mdc` | YAML frontmatter + markdown body |
-| Gemini CLI | `AGENTS.md` section | ASCII markdown |
-| Claude Code | Native `SKILL.md` | Full format, no transformation needed |
-| Copilot | `.github/copilot-instructions.md` | Compact markdown sections |
-| Windsurf | `.windsurfrules` | Compact markdown |
-| Cline | `.clinerules/` | Full skill markdown |
-| RooCode | `.roorules/` | Full skill markdown |
+| Agent | Tier 0 location | Tier 1 location | Tier 2 location |
+|-------|-----------------|-----------------|-----------------|
+| Codex CLI | `AGENTS.md` (root) | `synarc-universal/skills/synarc-core/SKILL.md` | `synarc-universal/skills/<id>/SKILL.md` |
+| OpenCode | `AGENTS.md` (root) | same | same |
+| Cursor | `.cursor/rules/*.mdc` | `.cursor/rules/synarc-core.mdc` | `.cursor/rules/<id>.mdc` |
+| Gemini CLI | `AGENTS.md` (root) | same | same |
+| Claude Code | `SKILL.md` (root) | `synarc-universal/skills/synarc-core/SKILL.md` | `synarc-universal/skills/<id>/SKILL.md` |
+| Copilot | `.github/copilot-instructions.md` | included | included |
+| Windsurf | `.windsurfrules` | included | included |
+| Cline | `.clinerules/` | included | included |
+| RooCode | `.roorules/` | included | included |
 
-### Running the Compiler
+### Why no compile step?
 
-Compilation is handled by the `convert-child-plugins.ps1` script in `scripts/`:
-
-```powershell
-.\scripts\convert-child-plugins.ps1 -TargetAgent cursor
-```
-
-This compiles all skills to the specified runtime format.
+The 4-tier cache replaces the v5.x compile step. Agents read the same SKILL.md natively and use cache invalidation rules to determine when to reload. This is the same pattern that Anthropic's prompt caching uses internally; we expose it via the `cache_tier` field so any agent can implement it.
 
 ---
 

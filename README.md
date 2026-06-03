@@ -3,14 +3,15 @@
 ![Synarc Banner](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790150/synarc-banner_lytvq5.png)
 
 
-[![Version](https://img.shields.io/badge/version-5.0.0-blue)](https://github.com/upflame-labs/synarc/releases)
+[![Version](https://img.shields.io/badge/version-6.0.0-blue)](https://github.com/upflame-labs/synarc/releases)
 [![Stage](https://img.shields.io/badge/stage-production-success)](https://github.com/upflame-labs/synarc)
 [![License](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)
 [![Runtime](https://img.shields.io/badge/runtime-Claude_Code%20%7C%20Codex%20%7C%20Cursor%20%7C%20Windsurf-purple)](https://github.com/upflame-labs/synarc)
 [![Category](https://img.shields.io/badge/category-AI_Coding_Skill_Runtime-black)](https://github.com/upflame-labs/synarc)
-[![Context Engine](https://img.shields.io/badge/context-persistent_memory-blueviolet)](https://github.com/upflame-labs/synarc)
+[![Context Engine](https://img.shields.io/badge/context-prompt_cached_4--tier-blueviolet)](https://github.com/upflame-labs/synarc)
 [![Security](https://img.shields.io/badge/OWASP-Agentic_Top_10_Covered-brightgreen)](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
-[![Specs](https://img.shields.io/badge/specifications-12_reference_modules-orange)](https://github.com/upflame-labs/synarc/tree/main/synarc-universal/skills)
+[![Specs](https://img.shields.io/badge/skills-40_(8--14_KB_each)-orange)](https://github.com/upflame-labs/synarc/tree/main/synarc-universal/skills)
+[![Pack Size](https://img.shields.io/badge/pack-413_KB_(38x_reduction)-success)](https://github.com/upflame-labs/synarc)
 [![Integrity](https://img.shields.io/badge/integrity-SHA256_Verified-success)](https://github.com/upflame-labs/synarc)
 [![Marketplace](https://img.shields.io/badge/marketplace-upflame/synarc-red)](https://github.com/upflame-labs/synarc)
 
@@ -20,6 +21,47 @@ Build fast with AI, but ship with engineering discipline. Synarc transforms raw 
 > Production - always-on, zero-configuration engineering cognition runtime. No breaking changes in minor versions.
 
 Change classification, risk tracking, context injection, and session continuity for AI coding environments. One SKILL.md, any runtime.
+
+---
+
+## v6.0.0 — 4-tier prompt-caching + 38× token reduction
+
+**What's new in 6.0.0:**
+
+- **4-tier prompt-caching architecture** — every skill declares a `cache_tier` (core / domain / reference / context / dynamic). Agents pre-warm the cache once and amortize the cost across many turns.
+- **Intent-based activation via `intent_triggers`** — every skill declares ≥ 2 concrete trigger phrases. Match on user intent, not platform-specific commands.
+- **8-block template** — replaces the v5 12-section structure. Mandatory sections: frontmatter, persona, activation, workflow, decision rules, output format, gotchas, references, changelog.
+- **38× token reduction** — total pack is now 413 KB (down from 15.67 MB in v5.x). Each SKILL.md is 8-14 KB; the pack fits in a single cache miss.
+- **Universal runtime, no compile step** — same files work in Codex, OpenCode, Cursor, Gemini CLI, Claude Code, Copilot, Windsurf, Cline, RooCode. No platform-specific fields, no compile step.
+- **Vendor-neutral naming** — no `anthropic`, `claude`, `gpt*`, `gemini` in skill names, descriptions, or content. Banned at validator level.
+
+**The 4-tier cache architecture:**
+
+```
+Tier 0: Pack header (AGENTS.md, manifest.yaml)           - cached for the session
+Tier 1: Core reasoning (synarc-core, negative-prompts,    - cached for the session
+        cognition-layer, schemas)                          (~60 KB)
+Tier 2: Active domain skill (debug-engineer, architect,   - cached for the task
+        security-engineer, etc.)                           (one of 40, ~10 KB each)
+Tier 3: Skill references (skills/<id>/references/*.md)    - lazy-loaded on first ref
+Tier 4: Dynamic context (project files, tool outputs)     - never cached
+```
+
+Anti-cache rules for Tiers 0-2: no timestamps, no session IDs, no user data, no tool-result echoes. Dynamic content lives in Tier 4.
+
+**The token math:**
+
+| Metric | v5.x | v6.0.0 | Change |
+|--------|------|--------|--------|
+| Total pack size | 15,670 KB (15.67 MB) | 412.9 KB | **38× smaller** |
+| Largest SKILL.md | 2,870 KB (sre-engineer) | 13.7 KB (negative-prompts) | 209× smaller |
+| SKILL.md size cap | unbounded | 50 KB hard / 30 KB warn | enforced |
+| Per-skill intent match | "WHEN/THEN" prose | `intent_triggers: [...]` array | machine-parseable |
+| Runtime support | 9 (with compile step) | 9 (no compile step) | same coverage |
+
+See [CHANGELOG.md](CHANGELOG.md) for the full v6.0.0 release notes.
+
+---
 
 ---
 
@@ -123,48 +165,61 @@ Full walkthrough: [docs/QUICKSTART.md](docs/QUICKSTART.md)
 
 ## Installation
 
-### Universal Skill Pack (Recommended)
+The Synarc Universal skill pack is a portable directory of 40 SKILL.md files plus `AGENTS.md`, `manifest.yaml`, and `shared/`. **In v6.0.0, the same SKILL.md files ship to every runtime — no compile step is required.** Total pack is 412.9 KB; each SKILL.md is 8-14 KB.
+
+### One-line install
 
 ```bash
-git clone https://github.com/upflame/Synarc.git
-cd Synarc/synarc-universal
+git clone https://github.com/upflame-labs/synarc.git && cp synarc/synarc-universal/AGENTS.md ./AGENTS.md
 ```
 
-Copy `AGENTS.md` to your project root. The `skills/` directory must be accessible.
+Then point your runtime at the pack. The `skills/` directory must be reachable from the same project tree.
+
+### Per-runtime install
 
 | Runtime | Install Method |
 |---------|---------------|
 | Codex CLI | Copy `AGENTS.md` to repo root |
 | OpenCode | Copy `AGENTS.md` to repo root |
-| Claude Code | Copy `AGENTS.md` to repo root or `~/.claude/skills/` |
-| Cursor IDE | Copy rules to `.cursor/rules/` |
-| Windsurf IDE | Copy to `.windsurfrules` |
+| Claude Code | Copy `AGENTS.md` to repo root, or `cp -r synarc-universal/skills/ ~/.claude/skills/synarc/` for global install |
+| Cursor IDE | Copy `skills/synarc-core/SKILL.md` to `.cursor/rules/synarc.mdc` |
+| Windsurf IDE | Copy `skills/synarc-core/SKILL.md` to `.windsurfrules` |
 | Gemini CLI | Copy `AGENTS.md` to repo root |
-| GitHub Copilot | Copy to `.github/copilot-instructions.md` |
-| Cline | Copy to `.clinerules/` directory |
-| RooCode | Copy to `.roorules/` directory |
+| GitHub Copilot | Append relevant sections of `AGENTS.md` to `.github/copilot-instructions.md` |
+| Cline | `cp -r synarc-universal/skills/* .clinerules/` |
+| RooCode | `cp -r synarc-universal/skills/* .roorules/` |
+| Claude Web / API | Paste `SKILL.md` contents into system prompt or project knowledge |
 
-Full guide: [docs/installation.md](synarc-universal/docs/installation.md)
+### How activation works (v6.0.0)
 
----
+Activation is **intent-based** — no slash commands, no manual skill selection. The agent reads the `intent_triggers` array in each skill's frontmatter and loads the matching skill when a trigger phrase matches the user's request.
 
-### Manual Installation (Any Runtime)
-
-```bash
-git clone https://github.com/upflame/Synarc.git
-cd Synarc/synarc-universal
+```
+User says: "Help me debug this 500 error from the auth middleware"
+  → matches intent_triggers: ["debug", "error", "root cause"]
+  → loads debug-engineer (cache_tier: domain)
+  → pre-warm: synarc-core, cognition-layer, schemas already in Tier 1 cache
 ```
 
-Then point your runtime to the universal skill pack:
+### Cache pre-warm (recommended)
 
-| Runtime | Location |
-|---------|----------|
-| Claude Code | `synarc-universal/skills/synarc-core/SKILL.md` or copy to `~/.claude/skills/` |
-| Codex CLI | Copy `AGENTS.md` to repo root |
-| OpenCode | Copy `AGENTS.md` to repo root |
-| Cursor IDE | Copy to `.cursor/rules/synarc.mdc` |
-| Windsurf IDE | Copy to `.windsurfrules` |
-| Claude Web / API | Paste `SKILL.md` contents into system prompt or project knowledge |
+To minimize per-turn cost, pre-warm the cache once at session start by loading the Tier 1 core skills (~60 KB total) into the system context:
+
+```yaml
+Tier 1 (always-on, ~60 KB):  synarc-core, negative-prompts, cognition-layer, schemas, change-intelligence, coding-agent
+Tier 2 (per task, ~10 KB):   debug-engineer | architect | backend-engineer | ... (one of 40)
+```
+
+Anti-cache rules for Tiers 0-2: no timestamps, no session IDs, no user data, no tool-result echoes. Dynamic content lives in Tier 4 (never cached).
+
+### Multi-project setup
+
+```bash
+git submodule add https://github.com/upflame-labs/synarc.git synarc-universal
+ln -s synarc-universal/AGENTS.md AGENTS.md
+```
+
+Full guide: [docs/installation.md](synarc-universal/docs/installation.md)
 
 ---
 

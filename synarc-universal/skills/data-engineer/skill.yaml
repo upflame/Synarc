@@ -1,9 +1,9 @@
 ﻿id: data-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: data
 description: >
-  Pipeline architecture reasoning, ETL/ELT decisions, data modeling (star schema, data vault, 3NF, lakehouse), batch vs streaming decisions, data quality frameworks, schema evolution, data movement patterns, transformation logic, storage format selection, orchestration strategies, data governance, cataloging, cost optimization. version: 2.0.0
+  Designs and operates data pipelines, ETL/ELT, batch and streaming systems, data warehouses, data lakes, and data quality. Triggers on: data pipeline, ETL, ELT, batch, streaming, warehouse, lake, schema, partition, dbt, Spark, Kafka, Airflow, dbt, Flink, Dagster, data quality, lineage.
 
 compatible_agents:
   - codex
@@ -16,15 +16,41 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - data pipeline
+  - ETL
+  - ELT
+  - batch
+  - streaming
+  - warehouse
+  - lake
+  - schema
+  - partition
+  - dbt
+  - Spark
+  - Kafka
+  - Airflow
+  - Flink
+  - Dagster
+  - data quality
+  - lineage
+  - Snowflake
+  - BigQuery
+  - Redshift
+  - Delta
+  - Iceberg
+  - Parquet
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 63841010ca03e6539884f9079780754711151d04eb6404debd8cdc64d5b79f1d
+  hash: bdd2eb3884236e150494c553eb341fbdd337ec34909160d42f5675fc5e3cc86f
   signed: false
 

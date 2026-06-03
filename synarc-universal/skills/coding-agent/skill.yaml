@@ -1,9 +1,9 @@
 ﻿id: coding-agent
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
 category: engineering-intelligence
 description: >
-  Execution model for autonomous coding agents â€” per-tool-call classification, scope enforcement, risk aggregation, checkpoint protocol, multi-file coordination, error recovery, and safe file operations. version: 2.0.0
+  Configures and operates the agent's own coding loop — task decomposition, file operations, command execution, testing, iteration, and self-correction. Triggers on: coding agent, agent loop, task, file edit, command, test, iterate, self-correct, scaffold.
 
 compatible_agents:
   - codex
@@ -16,15 +16,36 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: core
+intent_triggers:
+  - coding agent
+  - agent loop
+  - task
+  - file edit
+  - command
+  - test
+  - iterate
+  - self-correct
+  - scaffold
+  - agent config
+  - agent workflow
+  - multi-step task
+  - file operation
+  - command execution
+  - test run
+  - lint
+  - build
+  - type check
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: a5911cdba20ee905fb35ca599f69a766300dd85f41c4462fb2acc40ac7c4cbbb
+  hash: 8bd16de062264da4ed2544cefa2d02c14c21f9d64508d6f5d284ad9d6afb7af2
   signed: false
 

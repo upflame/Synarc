@@ -1,9 +1,9 @@
 ﻿id: staff-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: leadership
 description: >
-  Technical leadership without management authority, cross-team influence, technical direction, design documents, complexity reduction, unblocking teams, mentoring senior engineers, driving technical initiatives through alignment. version: 2.0.0
+  Operates as a Staff-level engineer — sets technical direction, leads cross-team initiatives, mentors, drives reviews, and unblocks the organization beyond a single team. Triggers on: staff, principal, technical direction, cross-team, initiative, RFC, mentorship, review, unblock, scope, influence, leadership, IC track.
 
 compatible_agents:
   - codex
@@ -16,15 +16,36 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - staff
+  - principal
+  - technical direction
+  - cross-team
+  - initiative
+  - RFC
+  - mentorship
+  - review
+  - unblock
+  - scope
+  - influence
+  - leadership
+  - IC track
+  - technical strategy
+  - technical roadmap
+  - design review
+  - architecture review
+  - technical mentorship
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: d28df9d212cea4388c8bf698a0f3b3cfb8da60bc116a3409277e22b65f27c4bf
+  hash: 0960bf60b563c76fa7a63355b2e56c4040c3ea226a7678f2eca91dae345e8c02
   signed: false
 

@@ -1,9 +1,9 @@
 ﻿id: project-scales
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
 category: engineering-intelligence
 description: >
-  Adapts cognition layer depth, brain output requirements, injection levels, checkpoint frequency, and agent behavior to six project sizes â€” from NANO (single script) to ENTERPRISE (multi-repo regulated platform). version: 1.0.0
+  Detects and adapts to project scale — TINY, SMALL, MEDIUM, LARGE, ENTERPRISE — based on LOC, modules, team size, and operational complexity. Triggers on: scale, project size, team size, LOC, modules, monorepo, monolith, microservice, headcount, contributor.
 
 compatible_agents:
   - codex
@@ -16,15 +16,30 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - scale
+  - project size
+  - team size
+  - LOC
+  - modules
+  - monorepo
+  - monolith
+  - microservice
+  - headcount
+  - contributor
+  - complexity
+  - codebase size
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: b8af7d5f76b13bc6d8a8c4c8bda9c21fe0536d393cb9323cd26bfe0a31954937
+  hash: f1ea057615cbde4c7f9552f8525c5e6faa5c5805b66479388a1c5ee569245faf
   signed: false
 

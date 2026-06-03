@@ -1,23 +1,38 @@
 ---
 title: Installation Guide — Synarc Universal Skill Pack
-description: Per-agent installation instructions for all 9 supported AI coding agents — Codex CLI, OpenCode, Cursor, Gemini CLI, Claude Code, GitHub Copilot, Windsurf, Cline, and RooCode.
-version: 1.0.0
+description: Per-agent installation instructions for all 9 supported AI coding agents — Codex CLI, OpenCode, Cursor, Gemini CLI, Claude Code, GitHub Copilot, Windsurf, Cline, and RooCode. Covers the v6.0.0 4-tier prompt-caching architecture and intent-based activation.
+version: 6.0.0
 schema: skill-pack/v1
 ---
 
-# Installation Guide — Synarc Universal Skill Pack
+# Installation Guide — Synarc Universal Skill Pack (v6.0.0)
 
 ## Overview
 
 The Synarc Universal skill pack can be installed on any of the 9 supported AI coding agents. Each agent has a different mechanism for loading skills. This guide covers all methods.
 
-The skill pack ships as a portable directory. All installation methods involve copying or referencing the relevant files into locations your agent reads.
+The skill pack ships as a portable directory. All installation methods involve copying or referencing the relevant files into locations your agent reads. **v6.0.0 ships the same SKILL.md files to all runtimes — no compile step is required.**
 
 ## Shared Prerequisites
 
 1. Clone or download the skill pack to your project workspace
 2. The pack root contains `AGENTS.md`, `manifest.yaml`, `skills/`, `shared/`, and `docs/`
 3. No package manager, runtime, or build step is required — the pack is pure Markdown + YAML
+4. Total pack is 412.9 KB across 40 SKILL.md files; each SKILL.md is 8-14 KB and fits in a single cache miss
+
+## v6.0.0 Cache Architecture (Read This First)
+
+Every agent should pre-warm the cache in this order to minimize per-turn cost:
+
+| Tier | What | Cached for |
+|------|------|------------|
+| 0 | Pack header (AGENTS.md, manifest.yaml) | Always-on, every session |
+| 1 | Core reasoning (synarc-core, negative-prompts, cognition-layer, schemas, change-intelligence, coding-agent) | Always-on, per session (~60 KB total) |
+| 2 | Active domain skill (one of 40) | Per task, swapped when intent shifts (~10 KB) |
+| 3 | Skill references (`skills/<id>/references/*.md`) | Lazy, on first reference |
+| 4 | Dynamic context (project files, tool outputs) | Never cached |
+
+**Anti-cache rules for Tiers 0-2:** no timestamps, no session IDs, no user data, no tool-result echoes. Dynamic content lives in Tier 4.
 
 ---
 
@@ -57,7 +72,7 @@ OpenCode reads `AGENTS.md` from the repository root.
 
 ## Cursor
 
-Cursor reads rules from `.cursor/rules/*.mdc` files.
+Cursor reads rules from `.cursor/rules/*.mdc` files. **In v6.0.0 the SKILL.md files are read directly — no compile step is required.**
 
 **Steps:**
 
@@ -66,11 +81,11 @@ Cursor reads rules from `.cursor/rules/*.mdc` files.
    ```
    cp synarc-universal/AGENTS.md ./AGENTS.md
    ```
-3. For full `.mdc` rule files, run the compile script:
+3. For full `.mdc` rule files, copy the SKILL.md content directly into `.cursor/rules/synarc.mdc`:
    ```
-   pwsh synarc-universal/scripts/compile-for-runtime.ps1 -Runtime cursor -OutputDir .cursor/rules/
+   cp synarc-universal/skills/synarc-core/SKILL.md .cursor/rules/synarc.mdc
    ```
-   Or manually create `.cursor/rules/synarc.mdc` with the skill content from `skills/synarc-core/SKILL.md`
+   The `intent_triggers` array in the frontmatter becomes the activation contract.
 
 **Verification:** In Cursor Chat or Inline mode, trigger a skill intent — the agent should apply the skill's rules.
 
@@ -133,7 +148,7 @@ Copilot reads instructions from `.github/copilot-instructions.md`.
 
 ## Windsurf
 
-Windsurf reads rules from `.windsurfrules` in the project root.
+Windsurf reads rules from `.windsurfrules` in the project root. **In v6.0.0 the SKILL.md files are read directly — no compile step is required.**
 
 **Steps:**
 
@@ -142,11 +157,11 @@ Windsurf reads rules from `.windsurfrules` in the project root.
    ```
    cp synarc-universal/AGENTS.md ./AGENTS.md
    ```
-3. For full `.windsurfrules` format, run the compile script:
+3. For full `.windsurfrules` format, copy the SKILL.md content directly:
    ```
-   pwsh synarc-universal/scripts/compile-for-runtime.ps1 -Runtime windsurf -OutputFile .windsurfrules
+   cp synarc-universal/skills/synarc-core/SKILL.md .windsurfrules
    ```
-   Or manually create `.windsurfrules` with the skill content from `skills/synarc-core/SKILL.md`
+   The `intent_triggers` array in the frontmatter becomes the activation contract.
 
 **Verification:** Start a Cascade session — Synarc behaviors should be active.
 
@@ -192,8 +207,9 @@ RooCode reads rules from `.roorules/` directory.
 |-------|----------|
 | Skill pack files present | `skills/`, `shared/`, `AGENTS.md`, `manifest.yaml` |
 | Agent-specific config copied | Per-agent installation method above |
-| Intent activation works | Skill activates when matching intent is detected |
-| Fallback tiers functional | All 4 tiers degrade gracefully |
+| Intent activation works | Skill activates when `intent_triggers` match user request |
+| Cache tiers pre-warm | Tiers 0-1 (~60 KB) loaded on session start |
+| Fallback tiers functional | All 4 fallback tiers degrade gracefully |
 | Brain persistence (if supported) | `brain/` directory created on first session |
 
 ## Troubleshooting
@@ -203,7 +219,8 @@ RooCode reads rules from `.roorules/` directory.
 | Skill not activating | AGENTS.md not in expected location | Verify copy path for your agent |
 | Missing capabilities | Runtime adapter not applied | Check `shared/runtime-adapters/<agent>.md` |
 | Classification not appearing | Skill pack not loaded | Run installation step again |
-| Agent not recognizing intents | Intent patterns differ | Check `activation.triggers` in skill.yaml |
+| Agent not recognizing intents | `intent_triggers` array differs from agent's matcher | Check `intent_triggers` in skill.yaml frontmatter |
+| Cache misses every turn | Timestamps or session IDs leaked into Tier 0-2 | Check `cache_tier: core` skills for dynamic content |
 
 ## Managing Multiple Projects
 

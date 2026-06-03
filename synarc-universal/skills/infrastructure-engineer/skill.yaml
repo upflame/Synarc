@@ -1,9 +1,9 @@
 ﻿id: infrastructure-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: devops
 description: >
-  Platform design reasoning, networking topology, deployment strategies, capacity planning, disaster recovery, infrastructure as code, observability architecture, container orchestration, service mesh, CI/CD architecture, migration patterns (cloud provider, CI/CD, container platform, database, secrets, observability), configuration management, cost optimization. version: 1.0.0
+  Designs and operates infrastructure — networking, compute, storage, DNS, load balancing, IAM, and cloud services. Triggers on: infrastructure, network, VPC, subnet, load balancer, DNS, TLS, certificate, IAM, role, policy, compute, instance, container, bucket, S3, blob, security group, firewall.
 
 compatible_agents:
   - codex
@@ -16,15 +16,44 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - infrastructure
+  - network
+  - VPC
+  - subnet
+  - load balancer
+  - DNS
+  - TLS
+  - certificate
+  - IAM
+  - role
+  - policy
+  - compute
+  - instance
+  - container
+  - bucket
+  - S3
+  - blob
+  - security group
+  - firewall
+  - region
+  - availability zone
+  - ASG
+  - autoscaling
+  - terraform
+  - CloudFormation
+  - Pulumi
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 19b0e471ab3633377e7ae01c7a0c6c24dfe278e5b853fd23dbce9372bb68e5c6
+  hash: ce6aeb179b89addff6ccec4575c84c27e1c006e65741758c71650dae53ab14be
   signed: false
 

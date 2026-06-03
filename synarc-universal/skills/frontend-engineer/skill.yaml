@@ -1,9 +1,9 @@
 ﻿id: frontend-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: development
 description: >
-  UI component architecture, state management reasoning, rendering strategies, responsive design decisions, accessibility-first thinking, performance budget reasoning, user interaction modeling, component composition, visual consistency patterns. version: 2.0.0
+  Designs and implements web frontend systems — components, state, routing, data fetching, performance, accessibility, and design-system integration. Triggers on: frontend, React, Vue, Angular, Svelte, component, state, hook, route, render, hydration, bundle, CSS, accessibility, a11y, design system.
 
 compatible_agents:
   - codex
@@ -16,15 +16,40 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - frontend
+  - React
+  - Vue
+  - Angular
+  - Svelte
+  - component
+  - state
+  - hook
+  - route
+  - render
+  - hydration
+  - bundle
+  - CSS
+  - accessibility
+  - a11y
+  - design system
+  - WCAG
+  - ARIA
+  - JSX
+  - TSX
+  - props
+  - state management
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 005c51454c4e42f8ba3f5e32c0e6c95f206f2efb0a4ed05275e71d9ac57a4cd4
+  hash: 4d124d91f3d8d5dc0614b63a4bcf9b6e53adcd3150dabead264a0bfa94d66dce
   signed: false
 

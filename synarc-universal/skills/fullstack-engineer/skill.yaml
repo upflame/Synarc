@@ -1,9 +1,9 @@
 ﻿id: fullstack-engineer
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: development
 description: >
-  End-to-end feature reasoning, data flow across the stack, API design connecting frontend to backend, integration points, full-stack debugging, feature trace from UI through API to database and back, cross-layer consistency, state synchronization, feature flagging, API versioning, deployment pipelines, validation at every layer. version: 2.0.0
+  Designs and implements end-to-end features across frontend, backend, data, and infrastructure. Triggers on: fullstack, full-stack, end-to-end, feature, vertical slice, frontend + backend, API + UI, contract-first, integration.
 
 compatible_agents:
   - codex
@@ -16,15 +16,33 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - fullstack
+  - full-stack
+  - end-to-end
+  - vertical slice
+  - feature
+  - frontend
+  - backend
+  - API
+  - UI
+  - contract
+  - integration
+  - e2e
+  - stack
+  - cross-cutting
+  - full feature
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 44f9afdf09368415789f22498f20a8c583ae3ffea8a6f4fdfa2da65c87a54670
+  hash: fa09759f4efdd5998a6575212e944eacb1877411cc3d6379ebfb6c2fccd92194
   signed: false
 

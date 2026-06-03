@@ -1,9 +1,9 @@
 ﻿id: decision-engineer
-version: 2.0.0
+version: 6.0.0
 schema: skill-pack/v1
 category: engineering-intelligence
 description: >
-  Structured decision frameworks, trade-off analysis, decision trees, weighted scoring, cost-benefit reasoning, cost of delay (CD3/WSJF), decision under uncertainty, coupling analysis, reversible/irreversible classification, opportunity cost, group decision-making (RAPID/DACI), ADR documentation, pre/post-mortem techniques. How to make and document technical decisions with clarity and justification.
+  Designs and documents engineering decisions — ADRs, RFCs, design docs, and the decision log. Triggers on: decision, ADR, RFC, design doc, trade-off, alternatives, decision log, decision record, status (proposed, accepted, deprecated, superseded).
 
 compatible_agents:
   - codex
@@ -16,15 +16,33 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: normal
+cache_tier: domain
+intent_triggers:
+  - decision
+  - ADR
+  - RFC
+  - design doc
+  - trade-off
+  - alternatives
+  - decision log
+  - decision record
+  - status
+  - proposed
+  - accepted
+  - deprecated
+  - superseded
+  - MADR
+  - lightweight ADR
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: 7c3d7a9c2fbe7ba9c08dcf64e32a7293738259ee7f7bb7dc0bf636310b076bf2
+  hash: 617a0d977dbba4242c6b4c69eeb107c1976fb44838c5a7b398436f692fbb2740
   signed: false
 

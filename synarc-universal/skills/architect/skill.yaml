@@ -1,9 +1,9 @@
 ﻿id: architect
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: architecture
 description: >
-  System design, architecture decisions, trade-off analysis, system decomposition, architectural styles, quality attribute analysis, ADR lifecycle, RFC/technical proposals, architecture governance, technical debt management, technology selection, cross-team alignment, API versioning strategy, data architecture decisions, evolutionary architecture, fitness functions, coupling/cohesion analysis, architectural risk analysis. version: 2.0.0
+  Designs system architecture — service boundaries, data flows, integration patterns, capacity models, and technology selection. Triggers on: architecture, design, system, service, microservice, monolith, decompose, integrate, scale, capacity, technology choice, ADRs, RFC, C4, distributed system.
 
 compatible_agents:
   - codex
@@ -16,15 +16,35 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - architecture
+  - design
+  - system
+  - service
+  - microservice
+  - monolith
+  - decompose
+  - integrate
+  - scale
+  - capacity
+  - technology
+  - ADR
+  - RFC
+  - C4
+  - distributed
+  - boundary
+  - contract
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: c17a8f6f57da5bbf9222b12d5cef944c21b936a03f3d7c8b8b0072687213a62a
+  hash: a3252cf5ef8024201edd3ac30a2bfb3e135eb2dfb623439e6df7ab2ce6d8a067
   signed: false
 

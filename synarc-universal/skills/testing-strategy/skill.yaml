@@ -1,9 +1,9 @@
 ﻿id: testing-strategy
-version: 1.0.0
+version: 6.0.0
 schema: skill-pack/v1
 category: engineering-intelligence
 description: >
-  Risk-based testing strategy â€” test pyramid by change risk, test type selection guide, test double strategy, per-WorkType test requirements, test data management, flaky test remediation, contract testing, CI/CD test execution, and coverage quality. version: 1.0.0
+  Designs and applies risk-based testing — unit, integration, e2e, contract, performance, security, chaos — and decides the right depth per WorkType. Triggers on: test, testing, unit test, integration test, e2e, end-to-end, contract test, performance test, security test, coverage, test pyramid, mutation testing.
 
 compatible_agents:
   - codex
@@ -16,15 +16,37 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - test
+  - testing
+  - unit test
+  - integration test
+  - e2e
+  - end-to-end
+  - contract test
+  - performance test
+  - security test
+  - coverage
+  - test pyramid
+  - mutation testing
+  - TDD
+  - BDD
+  - test data
+  - test fixture
+  - mock
+  - stub
+  - fake
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: a8b9947a64083410aa02efd8b5b543a9027c21053f60d3f28f0a582b1256596c
+  hash: e28264b1d22eeed1bc287d13e3c833b04072f08c49b9ee70904e8f52f07369b9
   signed: false
 

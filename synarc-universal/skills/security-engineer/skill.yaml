@@ -1,9 +1,9 @@
 ﻿id: security-engineer
-version: 2.0.0
+version: 6.0.0
 schema: skill-pack/v1
-category: engineering-intelligence
+category: security
 description: >
-  Complete security engineering ï¿½ threat modeling (STRIDE-M, PASTA, attack trees), defense-in-depth architecture, vulnerability assessment (CVSS, prioritization, lifecycle), security architecture review, cryptography decisions (symmetric/asymmetric, PKI, TLS, key management), identity & access management (OAuth2, OIDC, SAML, RBAC, ABAC, zero-trust, JIT), application security (OWASP Top 10, secure coding, SCA, SBOM), infrastructure security (network segmentation, cloud pillars, containers, K8s, supply chain), data protection (encryption, classification, DLP, masking, tokenization), security testing (SAST, DAST, IAST, RASP, fuzzing, pen testing, red team), compliance & audit (SOC2, HIPAA, PCI-DSS, GDPR, FedRAMP, control mapping, policy-as-code), incident response (forensics, containment, eradication, recovery, postmortem). Absorbs security-patterns and compliance-analyst. The single comprehensive security plugin.
+  Threat-models, audits, hardens, and reviews systems against injection, broken auth, sensitive data exposure, broken access control, misconfiguration, XSS, and supply-chain attacks. Triggers on: security, vulnerability, CVE, threat model, audit, OWASP, exploit, hardening, pentest, SAST, DAST, secrets, encryption, IAM, zero trust.
 
 compatible_agents:
   - codex
@@ -16,15 +16,46 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: domain
+intent_triggers:
+  - security
+  - vulnerability
+  - CVE
+  - threat model
+  - audit
+  - OWASP
+  - exploit
+  - hardening
+  - pentest
+  - SAST
+  - DAST
+  - secrets
+  - encryption
+  - IAM
+  - zero trust
+  - auth
+  - authorization
+  - credential
+  - token
+  - XSS
+  - CSRF
+  - SSRF
+  - SQLi
+  - injection
+  - supply chain
+  - dependency
+  - CVE
+  - CVE-
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: cfff3188a95fd6ad68eeb2c9298fdee5897433458e0597726ab81ba1fcda2ab9
+  hash: f49468d4d0acf455158145709b9c6215c162db7ea9aa17ae8414a42448013cd2
   signed: false
 

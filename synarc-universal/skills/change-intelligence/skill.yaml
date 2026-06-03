@@ -1,9 +1,9 @@
 ﻿id: change-intelligence
-version: 4.0.0
+version: 6.0.0
 schema: skill-pack/v1
 category: engineering-intelligence
 description: >
-  Comprehensive seven-dimensional change classification, composite risk scoring, multi-surface diff analysis, cross-boundary impact detection, safe-to-merge evaluation gates, code review intelligence with actionable feedback patterns, change audit ledger, and review quality gates. Merges change-taxonomy, analysis-patterns, and review-engineer into a unified discipline.
+  Classifies engineering changes, assesses risk, maps impact, and decides the right depth of review, testing, and rollout. Triggers on: change, classification, impact, risk, change request, RFC, blast radius, dependency, migration, breaking change.
 
 compatible_agents:
   - codex
@@ -16,15 +16,32 @@ compatible_agents:
   - cline
   - roo-code
 
-activation:
-  type: intent-based
-  description: Activates when user requests domain-specific engineering guidance
-
-dependencies:
-  synarc-core: ">=5.0.0"
+priority: high
+cache_tier: core
+intent_triggers:
+  - change
+  - classification
+  - impact
+  - risk
+  - change request
+  - RFC
+  - blast radius
+  - dependency
+  - migration
+  - breaking change
+  - change type
+  - change risk
+  - change review
+  - change advisory
+allowed_tools:
+  - Read
+  - Write
+  - Edit
+  - Grep
+  - Glob
 
 integrity:
   algorithm: sha256
-  hash: e035871f825f038ef70a696873f47744887237621881f9bd9508527a61f32685
+  hash: 309a0f6c497258236e09bc2c585d6756d279441adccc2d781139166a52e25c28
   signed: false
 
