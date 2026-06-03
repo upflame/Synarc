@@ -1,9 +1,9 @@
 ---
-title: Synarc v3 Deployment Guide
+title: Synarc v5 Deployment Guide
 type: deployment
 status: active
-version: 3.0.0
-updated: 2026-05-24
+version: 5.0.0
+updated: 2026-06-03
 owner: synarc-engine
 tags:
   - deployment
@@ -11,9 +11,10 @@ tags:
   - teams
   - workflow
   - ci-cd
+  - universal
 ---
 
-# Synarc v3 — Deployment Guide
+# Synarc v5 — Deployment Guide
 
 How to wire Synarc into real repos, team workflows, and CI/CD pipelines.
 
@@ -303,7 +304,7 @@ When using Claude Code with Synarc:
 ```markdown
 # Synarc Context
 
-This repo uses Synarc v3 for engineering cognition.
+This repo uses Synarc v5 for engineering cognition.
 
 ## Always load at session start:
 - brain/CURRENT_STATE.md

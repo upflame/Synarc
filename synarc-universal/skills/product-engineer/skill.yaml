@@ -1,0 +1,30 @@
+﻿id: product-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  A comprehensive guide for engineers who master the product engineering craft — bridging the gap between engineering execution and product strategy through shared ownership, technical empathy, data-driven prioritization, build vs buy analysis, customer development, experimentation, metrics, and product-aware technical leadership. version: 3.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: 068219154c5733fef0fd11cffb2f3127956ef365958fe3cd28d577e1806f8333
+  signed: false
+

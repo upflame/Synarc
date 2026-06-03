@@ -1,0 +1,111 @@
+name: Validate Skill Pack
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'skills/**'
+      - 'shared/**'
+      - 'manifest.yaml'
+      - 'scripts/validate-skills.ps1'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'skills/**'
+      - 'shared/**'
+      - 'manifest.yaml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PowerShell
+        uses: actions/setup-powershell@v1
+
+      - name: Validate all skills against schema
+        run: |
+          ./scripts/validate-skills.ps1 -Verbose
+        shell: pwsh
+
+      - name: Test fallback chain completeness
+        run: |
+          ./scripts/test-fallbacks.ps1 -Verbose
+        shell: pwsh
+
+      - name: Generate manifest with integrity hashes
+        run: |
+          ./scripts/generate-manifest.ps1
+        shell: pwsh
+
+      - name: Check for vendor lock-in
+        run: |
+          $violations = 0
+          $patterns = @(
+            @{Pattern = 'activation: (contextual|automatic)'; Issue = 'Platform-specific activation mode'}
+            @{Pattern = 'parent: '; Issue = 'Claude plugin inheritance'}
+            @{Pattern = 'cache: '; Issue = 'Platform-specific caching'}
+            @{Pattern = '^compatibility:' ; Issue = 'Deprecated compatibility field (use compatible_agents)'}
+            @{Pattern = 'minimumVersion:' ; Issue = 'Deprecated version field'}
+          )
+          
+          Get-ChildItem -Path skills -Recurse -Filter 'SKILL.md' | ForEach-Object {
+            $content = Get-Content $_.FullName -Raw
+            foreach ($rule in $patterns) {
+              if ($content -match $rule.Pattern) {
+                Write-Warning "$($_.FullName): $($rule.Issue)"
+                $violations++
+              }
+            }
+          }
+          
+          if ($violations -gt 0) {
+            Write-Error "Found $violations vendor lock-in violations"
+            exit 1
+          }
+          
+          Write-Host "No vendor lock-in violations found"
+        shell: pwsh
+
+      - name: Check cross-reference integrity
+        run: |
+          $broken = 0
+          Get-ChildItem -Path skills -Recurse -Filter 'SKILL.md' | ForEach-Object {
+            $dir = $_.DirectoryName
+            $content = Get-Content $_.FullName -Raw
+            $refs = [regex]::Matches($content, '\[.*?\]\(([^)]+)\)')
+            foreach ($ref in $refs) {
+              $target = $ref.Groups[1].Value
+              if ($target -notmatch '^https?://') {
+                $resolved = Join-Path $dir $target
+                if (-not (Test-Path $resolved)) {
+                  Write-Warning "Broken ref: $($_.FullName) -> $target"
+                  $broken++
+                }
+              }
+            }
+          }
+          if ($broken -gt 0) {
+            Write-Error "Found $broken broken references"
+            exit 1
+          }
+          Write-Host "All cross-references valid"
+        shell: pwsh
+
+      - name: Summary
+        run: |
+          $skillCount = (Get-ChildItem -Path skills -Directory).Count
+          $sharedCount = (Get-ChildItem -Path shared -Recurse -File).Count
+          $docCount = (Get-ChildItem -Path docs -File).Count
+          Write-Host "=== Validation Summary ==="
+          Write-Host "Skills: $skillCount"
+          Write-Host "Shared files: $sharedCount"
+          Write-Host "Documentation files: $docCount"
+          Write-Host "Status: PASS"

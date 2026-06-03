@@ -1,0 +1,30 @@
+﻿id: ml-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Comprehensive skill set for machine learning engineering covering architecture, pipelines, training, deployment, MLOps, LLMs, and best practices.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: 22b392e9e9957594f370a9bcbdbe8dfacf84914804a5e31c5fae9a187be9f6c4
+  signed: false
+

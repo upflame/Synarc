@@ -1,18 +1,19 @@
 ---
-title: "Synarc v4 — Quickstart for Coding Agents"
+title: "Synarc v5 — Quickstart for Coding Agents"
 type: onboarding
 status: active
-version: 4.0.0
-updated: 2026-05-25
+version: 5.0.0
+updated: 2026-06-03
 owner: synarc-engine
 tags:
   - quickstart
   - onboarding
   - coding-agent
   - production-ready
+  - universal
 ---
 
-# Synarc v4 — Quickstart for Coding Agents
+# Synarc v5 — Quickstart for Coding Agents
 
 Synarc is always-on in every coding agent session.
 Zero configuration. Zero exceptions. This guide explains what happens
@@ -234,7 +235,7 @@ Add to your repo's `CLAUDE.md`:
 ```markdown
 ## Synarc
 
-This repo uses Synarc v4 for engineering cognition.
+This repo uses Synarc v5 for engineering cognition.
 
 Load at session start:
 - /brain/CURRENT_STATE.md (always)

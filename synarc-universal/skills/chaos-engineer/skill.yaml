@@ -1,0 +1,30 @@
+﻿id: chaos-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Chaos engineering persona design, execute, and automate resilience experiments to build confidence in system behavior under turbulent conditions
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: 133578f7dceb3ac760c117776be0cfe460a97979bd0054c14082d652e81d48cf
+  signed: false
+

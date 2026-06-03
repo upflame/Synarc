@@ -1,0 +1,30 @@
+﻿id: finops-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Cloud financial operations — cost optimization, allocation, governance, and unit economics across multi-cloud environments.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: 65d9008bf152ba235538d92fe81c302c704d58172359e9caa315c1be914bf6d6
+  signed: false
+

@@ -1,0 +1,30 @@
+﻿id: observability-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Comprehensive observability engineering skill covering metrics, logs, traces, OpenTelemetry, alerting, dashboards, SLOs, cardinality management, cost optimization, and system-specific observability patterns.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: 5fba9307486ce36740ef8f0f3a5c81edd5ab04d3987100c33acfe3cb8734fa43
+  signed: false
+

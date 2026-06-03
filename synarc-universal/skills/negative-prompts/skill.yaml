@@ -1,0 +1,30 @@
+﻿id: negative-prompts
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Zero-tolerance enforcement system covering 30 prohibition domains â€” fabrication, risk suppression, scope absorption, code quality, testing, architecture, security, data handling, error handling, concurrency, database, API design, configuration, logging, communication, hallucination, bluff, bias, credulity, omission, anchoring, overconfidence, scope creep, and performance prohibitions. Includes severity classification, self-correction protocols, and quality gate integration. version: 2.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: 6c236615139995fdcd136f00dd47e509f12627524c56bd8f12cb144d692fe80d
+  signed: false
+

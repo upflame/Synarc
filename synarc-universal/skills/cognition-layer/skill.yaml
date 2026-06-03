@@ -1,0 +1,30 @@
+﻿id: cognition-layer
+version: 2.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Meta-governance system for AI coding tools â€” reasoning architecture, plugin attention routing, context injection strategy, session lifecycle management, token budget allocation, plugin conflict resolution, and cross-session continuity. Governs how all synarc subsystems interrelate.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: c6c59c928c9d49e193e158284d5e7803b78d4d3c32d6fa59afead349ee3ac279
+  signed: false
+

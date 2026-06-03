@@ -1,0 +1,37 @@
+{
+  "name": "synarc-universal",
+  "version": "5.0.0",
+  "description": "Universal skill pack for engineering intelligence across all AI coding agents",
+  "private": true,
+  "scripts": {
+    "validate": "pwsh -ExecutionPolicy Bypass -File ./scripts/validate-skills.ps1",
+    "test-fallbacks": "pwsh -ExecutionPolicy Bypass -File ./scripts/test-fallbacks.ps1",
+    "generate-manifest": "pwsh -ExecutionPolicy Bypass -File ./scripts/generate-manifest.ps1",
+    "check-vendor-lockin": "pwsh -ExecutionPolicy Bypass -Command \"& { $violations = 0; $patterns = @(@{Pattern='activation: (contextual|automatic)'; Issue='Platform-specific activation'},@{Pattern='parent: '; Issue='Claude plugin inheritance'},@{Pattern='cache: '; Issue='Platform-specific caching'},@{Pattern='^compatibility:'; Issue='Deprecated compatibility field'},@{Pattern='minimumVersion:'; Issue='Deprecated version field'}); Get-ChildItem -Path skills -Recurse -Filter 'SKILL.md' | ForEach-Object { $content = Get-Content $_.FullName -Raw; foreach ($rule in $patterns) { if ($content -match $rule.Pattern) { Write-Warning \\\"$($_.FullName): $($rule.Issue)\\\"; $violations++ } } }; if ($violations -gt 0) { Write-Error \\\"Found $violations violations\\\"; exit 1 }; Write-Host 'No vendor lock-in violations' }\"",
+    "check-refs": "pwsh -ExecutionPolicy Bypass -Command \"& { $broken = 0; Get-ChildItem -Path skills -Recurse -Filter 'SKILL.md' | ForEach-Object { $dir = $_.DirectoryName; $content = Get-Content $_.FullName -Raw; $refs = [regex]::Matches($content, '\\[.*?\\]\\(([^)]+)\\)'); foreach ($ref in $refs) { $target = $ref.Groups[1].Value; if ($target -notmatch '^https?://') { $resolved = Join-Path $dir $target; if (-not (Test-Path $resolved)) { Write-Warning \\\"Broken ref: $($_.FullName) -> $target\\\"; $broken++ } } } }; if ($broken -gt 0) { Write-Error \\\"Found $broken broken refs\\\"; exit 1 }; Write-Host 'All references valid' }\"",
+    "lint": "npm run check-vendor-lockin && npm run check-refs",
+    "test": "npm run validate && npm run test-fallbacks",
+    "build": "npm run generate-manifest && npm run validate",
+    "precommit": "npm run lint && npm run test"
+  },
+  "engines": {
+    "pwsh": ">=7.0.0"
+  },
+  "keywords": [
+    "synarc",
+    "engineering-intelligence",
+    "universal-skill",
+    "ai-coding-agent",
+    "claude",
+    "codex",
+    "opencode",
+    "cursor",
+    "windsurf"
+  ],
+  "author": "UpFlame Labs <info@upflame.in>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/upflame-labs/synarc"
+  }
+}

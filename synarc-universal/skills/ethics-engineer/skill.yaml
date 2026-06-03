@@ -1,0 +1,30 @@
+﻿id: ethics-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Comprehensive ethics engineering plugin for responsible AI development, ethical analysis, bias detection, fairness evaluation, transparency assessment, accountability frameworks, governance, and regulatory compliance across the AI/ML lifecycle.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: 53b666cfae382fb13c52cb6221ba6f546a451a3928384ae6757dc4babe9f2c06
+  signed: false
+

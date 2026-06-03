@@ -1,0 +1,30 @@
+﻿id: staff-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Technical leadership without management authority, cross-team influence, technical direction, design documents, complexity reduction, unblocking teams, mentoring senior engineers, driving technical initiatives through alignment. version: 2.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: d28df9d212cea4388c8bf698a0f3b3cfb8da60bc116a3409277e22b65f27c4bf
+  signed: false
+

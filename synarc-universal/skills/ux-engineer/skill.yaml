@@ -1,0 +1,30 @@
+﻿id: ux-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Comprehensive UX engineering â€” user research, interaction design, information architecture, usability testing, journey mapping, wireframing, prototyping, WCAG accessibility, UX metrics, conversion optimization, cognitive UX. version: 1.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: dd907041a46ce23cb2350e5dfc0d493758b295c3129467d1e5bb48553c5692a0
+  signed: false
+

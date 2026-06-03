@@ -1,0 +1,30 @@
+﻿id: infrastructure-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Platform design reasoning, networking topology, deployment strategies, capacity planning, disaster recovery, infrastructure as code, observability architecture, container orchestration, service mesh, CI/CD architecture, migration patterns (cloud provider, CI/CD, container platform, database, secrets, observability), configuration management, cost optimization. version: 1.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: 19b0e471ab3633377e7ae01c7a0c6c24dfe278e5b853fd23dbce9372bb68e5c6
+  signed: false
+

@@ -1,0 +1,30 @@
+﻿id: frontend-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  UI component architecture, state management reasoning, rendering strategies, responsive design decisions, accessibility-first thinking, performance budget reasoning, user interaction modeling, component composition, visual consistency patterns. version: 2.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: 005c51454c4e42f8ba3f5e32c0e6c95f206f2efb0a4ed05275e71d9ac57a4cd4
+  signed: false
+

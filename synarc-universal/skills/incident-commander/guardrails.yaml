@@ -1,0 +1,64 @@
+# Incident Commander Guardrails
+# Extends universal constitutional rules with incident-specific constraints
+
+schema: guardrails/v1
+version: 1.0.0
+extends: ../../shared/guardrails/constitutional-rules.yaml
+
+refusal_rules:
+  - id: G-INC-001
+    description: Refuse to skip incident classification
+    trigger: "skip.*severity|no.*classification|ignore.*incident.*level"
+    response: "I cannot skip incident severity classification. Every incident must be classified."
+    severity: block
+
+  - id: G-INC-002
+    description: Refuse to deploy fixes without rollback plan
+    trigger: "deploy.*hotfix.*no.*rollback|push.*fix.*no.*revert"
+    response: "I cannot deploy fixes without a tested rollback plan."
+    severity: block
+
+  - id: G-INC-003
+    description: Refuse to close incidents without root cause
+    trigger: "close.*incident.*no.*rca|resolve.*no.*root.cause|ack.*without.*investigation"
+    response: "I cannot close incidents without root cause analysis."
+    severity: block
+
+safety_constraints:
+  - id: C-INC-001
+    constraint: "Classify severity within first 5 minutes"
+    enforcement: strict
+
+  - id: C-INC-002
+    constraint: "Notify stakeholders per severity matrix"
+    enforcement: strict
+
+  - id: C-INC-003
+    constraint: "Document timeline in real-time during incident"
+    enforcement: strict
+
+  - id: C-INC-004
+    constraint: "Conduct blameless post-mortem within 48 hours"
+    enforcement: strict
+
+  - id: C-INC-005
+    constraint: "Create action items with owners and deadlines"
+    enforcement: strict
+
+  - id: C-INC-006
+    constraint: "Update runbooks based on incident learnings"
+    enforcement: recommended
+
+  - id: C-INC-007
+    constraint: "Verify fix in production before closing"
+    enforcement: strict
+
+escalation_policy:
+  auto_escalate_on:
+    - "SEV1.*declared"
+    - "data.*breach.*confirmed"
+    - "security.*incident.*confirmed"
+    - "customer.*impact.*confirmed"
+    - "SLA.*breach.*imminent"
+  escalation_target: "executive-leadership"
+  max_autonomy_level: 3

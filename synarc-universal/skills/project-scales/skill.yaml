@@ -1,0 +1,30 @@
+﻿id: project-scales
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Adapts cognition layer depth, brain output requirements, injection levels, checkpoint frequency, and agent behavior to six project sizes â€” from NANO (single script) to ENTERPRISE (multi-repo regulated platform). version: 1.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: b8af7d5f76b13bc6d8a8c4c8bda9c21fe0536d393cb9323cd26bfe0a31954937
+  signed: false
+

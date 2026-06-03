@@ -1,0 +1,30 @@
+﻿id: database-architect
+version: 4.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Comprehensive database architecture, design, modeling, optimization, and operations knowledge base
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: 639bada09ac7cbc2b8ae20cdfddeaecb3f7170b88ad0d0fb4a15e5d7d63180fa
+  signed: false
+

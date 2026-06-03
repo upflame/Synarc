@@ -1,0 +1,30 @@
+﻿id: data-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Pipeline architecture reasoning, ETL/ELT decisions, data modeling (star schema, data vault, 3NF, lakehouse), batch vs streaming decisions, data quality frameworks, schema evolution, data movement patterns, transformation logic, storage format selection, orchestration strategies, data governance, cataloging, cost optimization. version: 2.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: 63841010ca03e6539884f9079780754711151d04eb6404debd8cdc64d5b79f1d
+  signed: false
+

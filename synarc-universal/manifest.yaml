@@ -1,0 +1,393 @@
+﻿# Synarc Universal Skill Pack Manifest
+# Schema: skill-pack/v1
+# Generated: 2026-06-03
+# Integrity: SHA-256
+
+pack:
+  id: synarc-universal
+  name: Synarc Universal â€” Autonomous Engineering Intelligence Runtime
+  description: >
+    Universal agent skill pack for engineering cognition â€” change classification, risk assessment, context injection, session tracking, quality gates. Compatible with all major AI coding agents.
+  version: 5.0.0
+  schema: skill-pack/v1
+  author: Universal Skill Pack
+
+  compatible_agents:
+    - codex     - opencode     - cursor     - gemini-cli     - claude-code     - copilot     - windsurf     - cline     - roo-code -join "
+"
+
+  tags:
+    - engineering-intelligence     - autonomous-cognition     - architecture-analysis     - change-intelligence     - deployment-safety     - risk-management     - quality-gates     - session-tracking     - cross-platform -join "
+"
+
+  categories:
+    - engineering-intelligence     - architecture     - development     - security     - devops     - data     - mobile     - ml     - leadership -join "
+"
+
+skills:
+  - id: api-designer
+    path: skills/api-designer/SKILL.md
+    version: "1.0.0"
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: architect
+    path: skills/architect/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: backend-engineer
+    path: skills/backend-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: change-intelligence
+    path: skills/change-intelligence/SKILL.md
+    version: 4.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: chaos-engineer
+    path: skills/chaos-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: coding-agent
+    path: skills/coding-agent/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: cognition-layer
+    path: skills/cognition-layer/SKILL.md
+    version: 2.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: cto
+    path: skills/cto/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: database-architect
+    path: skills/database-architect/SKILL.md
+    version: 4.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: data-engineer
+    path: skills/data-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: debug-engineer
+    path: skills/debug-engineer/SKILL.md
+    version: 2.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: decision-engineer
+    path: skills/decision-engineer/SKILL.md
+    version: 2.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: devops-engineer
+    path: skills/devops-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: engineering-manager
+    path: skills/engineering-manager/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: ethics-engineer
+    path: skills/ethics-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: finops-engineer
+    path: skills/finops-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: foundational-reasoning
+    path: skills/foundational-reasoning/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: frontend-engineer
+    path: skills/frontend-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: fullstack-engineer
+    path: skills/fullstack-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: incident-commander
+    path: skills/incident-commander/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: infrastructure-engineer
+    path: skills/infrastructure-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: ml-engineer
+    path: skills/ml-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: mobile-engineer
+    path: skills/mobile-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: negative-prompts
+    path: skills/negative-prompts/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: observability-engineer
+    path: skills/observability-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: performance-thinker
+    path: skills/performance-thinker/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: platform-engineer
+    path: skills/platform-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: privacy-engineer
+    path: skills/privacy-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: problem-solver
+    path: skills/problem-solver/SKILL.md
+    version: 2.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: product-engineer
+    path: skills/product-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: project-scales
+    path: skills/project-scales/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: risk-analyst
+    path: skills/risk-analyst/SKILL.md
+    version: 2.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: schemas
+    path: skills/schemas/SKILL.md
+    version: <semver>
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: security-engineer
+    path: skills/security-engineer/SKILL.md
+    version: 2.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: sre-engineer
+    path: skills/sre-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: staff-engineer
+    path: skills/staff-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: synarc-core
+    path: skills/synarc-core/SKILL.md
+    version: 5.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: testing-strategy
+    path: skills/testing-strategy/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: ui-engineer
+    path: skills/ui-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+  - id: ux-engineer
+    path: skills/ux-engineer/SKILL.md
+    version: 1.0.0
+    description: 
+    category: engineering-intelligence
+    tags: []
+    activation: intent-based
+    priority: normal
+    dependencies: {}
+
+integrity:
+  algorithm: sha256
+  hash: adc060fbd6c626da88aa192a5b77f8c0be966a72bb2ded270b870bcae6639a3a
+  signed: false
+  timestamp: "2026-06-03T21:14:27Z"

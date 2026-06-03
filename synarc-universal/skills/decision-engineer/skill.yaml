@@ -1,0 +1,30 @@
+﻿id: decision-engineer
+version: 2.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Structured decision frameworks, trade-off analysis, decision trees, weighted scoring, cost-benefit reasoning, cost of delay (CD3/WSJF), decision under uncertainty, coupling analysis, reversible/irreversible classification, opportunity cost, group decision-making (RAPID/DACI), ADR documentation, pre/post-mortem techniques. How to make and document technical decisions with clarity and justification.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: 7c3d7a9c2fbe7ba9c08dcf64e32a7293738259ee7f7bb7dc0bf636310b076bf2
+  signed: false
+

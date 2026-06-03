@@ -10,7 +10,7 @@
 [![Category](https://img.shields.io/badge/category-AI_Coding_Skill_Runtime-black)](https://github.com/upflame-labs/synarc)
 [![Context Engine](https://img.shields.io/badge/context-persistent_memory-blueviolet)](https://github.com/upflame-labs/synarc)
 [![Security](https://img.shields.io/badge/OWASP-Agentic_Top_10_Covered-brightgreen)](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
-[![Specs](https://img.shields.io/badge/specifications-12_reference_modules-orange)](https://github.com/upflame-labs/synarc/tree/main/plugins/synarc/skills/references)
+[![Specs](https://img.shields.io/badge/specifications-12_reference_modules-orange)](https://github.com/upflame-labs/synarc/tree/main/synarc-universal/skills)
 [![Integrity](https://img.shields.io/badge/integrity-SHA256_Verified-success)](https://github.com/upflame-labs/synarc)
 [![Marketplace](https://img.shields.io/badge/marketplace-upflame/synarc-red)](https://github.com/upflame-labs/synarc)
 
@@ -123,28 +123,28 @@ Full walkthrough: [docs/QUICKSTART.md](docs/QUICKSTART.md)
 
 ## Installation
 
-### Claude Code (Recommended)
+### Universal Skill Pack (Recommended)
 
 ```bash
-# Step 1: Add the marketplace from the GitHub repo
-/plugin marketplace add upflame/Synarc
-
-# Step 2: Install Synarc from the marketplace
-/plugin install synarc@upflame-marketplace
-
-# Verify
-> Classify: ANALYSIS | Risk: INFO | Scale: auto
+git clone https://github.com/upflame/Synarc.git
+cd Synarc/synarc-universal
 ```
 
-Alternatively, add via full URL or local path:
+Copy `AGENTS.md` to your project root. The `skills/` directory must be accessible.
 
-```bash
-/plugin marketplace add https://github.com/upflame/Synarc.git
-# or from a local clone:
-/plugin marketplace add ./path/to/Synarc
-```
+| Runtime | Install Method |
+|---------|---------------|
+| Codex CLI | Copy `AGENTS.md` to repo root |
+| OpenCode | Copy `AGENTS.md` to repo root |
+| Claude Code | Copy `AGENTS.md` to repo root or `~/.claude/skills/` |
+| Cursor IDE | Copy rules to `.cursor/rules/` |
+| Windsurf IDE | Copy to `.windsurfrules` |
+| Gemini CLI | Copy `AGENTS.md` to repo root |
+| GitHub Copilot | Copy to `.github/copilot-instructions.md` |
+| Cline | Copy to `.clinerules/` directory |
+| RooCode | Copy to `.roorules/` directory |
 
-Synarc auto-detects `/brain/` or `.claude/` directories. Full brain directory, hooks, and session continuity enabled. The plugin registers automatically — no manual configuration needed.
+Full guide: [docs/installation.md](synarc-universal/docs/installation.md)
 
 ---
 
@@ -152,17 +152,18 @@ Synarc auto-detects `/brain/` or `.claude/` directories. Full brain directory, h
 
 ```bash
 git clone https://github.com/upflame/Synarc.git
-cd Synarc
+cd Synarc/synarc-universal
 ```
 
-Then point your runtime to `plugins/synarc/skills/SKILL.md`:
+Then point your runtime to the universal skill pack:
 
 | Runtime | Location |
 |---------|----------|
-| Claude Code | `/sk: install plugins/synarc/skills/SKILL.md` or copy to `~/.claude/skills/` |
-| Codex CLI | Copy `SKILL.md` to repo root as `AGENTS.md` |
-| Cursor IDE | Copy `SKILL.md` to `.cursor/rules/synarc.mdc` |
-| Windsurf IDE | Copy `SKILL.md` to `.windsurfrules` |
+| Claude Code | `synarc-universal/skills/synarc-core/SKILL.md` or copy to `~/.claude/skills/` |
+| Codex CLI | Copy `AGENTS.md` to repo root |
+| OpenCode | Copy `AGENTS.md` to repo root |
+| Cursor IDE | Copy to `.cursor/rules/synarc.mdc` |
+| Windsurf IDE | Copy to `.windsurfrules` |
 | Claude Web / API | Paste `SKILL.md` contents into system prompt or project knowledge |
 
 ---
@@ -177,8 +178,11 @@ Then point your runtime to `plugins/synarc/skills/SKILL.md`:
 | Claude Code | Full brain directory + hooks | `/brain/` or `.claude/` exists | STANDARD + COMPACT per tool | Yes |
 | Claude Web | Conversation state blocks | Filesystem inaccessible; chat-only | COMPACT per interaction | No |
 | Codex CLI | AGENTS.md protocol | `AGENTS.md` in repo root | STANDARD at session start | Via AGENTS.md |
+| OpenCode | Full brain directory | `AGENTS.md` in repo root | STANDARD + COMPACT per tool | Yes |
 | Cursor IDE | IDE rules protocol | `.cursor/rules` detected | COMPACT per file write | Limited |
 | Windsurf IDE | IDE rules protocol | `.windsurfrules` detected | COMPACT per file write | Limited |
+| Gemini CLI | AGENTS.md protocol | `AGENTS.md` in repo root | STANDARD at session start | Via AGENTS.md |
+| GitHub Copilot | Instructions file | `.github/copilot-instructions.md` | COMPACT per session | Limited |
 | Claude API | Structured JSON | API call with `skill_id` | STANDARD via `context` field | Via API |
 
 ---
@@ -371,11 +375,11 @@ Classification across SDLC: Pre-dev → Development → Review → Pre-deploy �
 
 | Category | Links |
 |----------|-------|
-| Getting Started | [Quick Start](docs/QUICKSTART.md) · [Deployment Guide](docs/DEPLOYMENT.md) |
-| Specifications | [change-taxonomy.md](plugins/synarc/skills/references/change-taxonomy.md) · [injection-protocol.md](plugins/synarc/skills/references/injection-protocol.md) · [session-tracking.md](plugins/synarc/skills/references/session-tracking.md) · [coding-agent.md](plugins/synarc/skills/references/coding-agent.md) · [project-scales.md](plugins/synarc/skills/references/project-scales.md) · [analysis-patterns.md](plugins/synarc/skills/references/analysis-patterns.md) · [testing-strategy.md](plugins/synarc/skills/references/testing-strategy.md) · [security-patterns.md](plugins/synarc/skills/references/security-patterns.md) |
-| Architecture | [cognition-layer.md](plugins/synarc/skills/references/cognition-layer.md) · [schemas.md](plugins/synarc/skills/references/schemas.md) · [platform-adapters.md](plugins/synarc/skills/references/platform-adapters.md) |
-| Reference | [SKILL.md](plugins/synarc/skills/SKILL.md) (entry point) · [negative-prompts.md](plugins/synarc/skills/references/negative-prompts.md) |
-| Integrity | [integrity.json](.claude-plugin/integrity.json) (SHA-256 verified) |
+| Getting Started | [Quick Start](docs/QUICKSTART.md) · [Deployment Guide](docs/DEPLOYMENT.md) · [Installation Guide](synarc-universal/docs/installation.md) |
+| Specifications | [SKILL.md Format Spec](synarc-universal/SCHEMA.md) · [Compatibility Matrix](synarc-universal/docs/compatibility.md) · [Architecture](synarc-universal/docs/architecture.md) |
+| Reference | [Universal Skill Pack](synarc-universal/AGENTS.md) (entry point) · [Migration Guide](synarc-universal/docs/migration-guide.md) · [Usage Guide](synarc-universal/docs/usage.md) |
+| Integrity | [manifest.yaml](synarc-universal/manifest.yaml) (SHA-256 verified) |
+| Security | [OWASP Mapping](synarc-universal/security/OWASP-LLM-mapping.md) · [Adversarial Scenarios](synarc-universal/security/adversarial-scenarios.md) |
 
 ---
 

@@ -1,0 +1,30 @@
+﻿id: fullstack-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  End-to-end feature reasoning, data flow across the stack, API design connecting frontend to backend, integration points, full-stack debugging, feature trace from UI through API to database and back, cross-layer consistency, state synchronization, feature flagging, API versioning, deployment pipelines, validation at every layer. version: 2.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: 44f9afdf09368415789f22498f20a8c583ae3ffea8a6f4fdfa2da65c87a54670
+  signed: false
+

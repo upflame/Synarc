@@ -1,0 +1,30 @@
+﻿id: backend-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Comprehensive backend engineering reasoning covering service architecture patterns, API design (REST/GraphQL/gRPC), database modeling, state management, concurrency models, data consistency, request flow analysis, caching strategies, error handling, resilience patterns, observability, testing strategies, and event-driven architecture. version: 2.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: f9e71f0a3f12c757173e4be610704c3c05587d1f066f0295f9731fd44429fca3
+  signed: false
+
