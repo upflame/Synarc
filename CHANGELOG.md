@@ -5,7 +5,12 @@ All notable changes to Synarc will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [6.0.0] — 2026-06-05 — Cognition Mesh
+## [6.1.0] — 2026-06-05 — Cognition Mesh
+
+> **Note:** This release is published on the `release/v6.1.0-cognition-mesh` branch
+> and tagged `v6.1.0-cognition-mesh`. It is an **alternate release line** alongside
+> the cache-rewrite v6.0.0 on `main` (commit `5a083eb`, tag `v6.0.0`). See
+> [RELEASES.md](RELEASES.md) for the full picture.
 
 ### Added
 
@@ -157,7 +162,10 @@ v6.0.0 was planned and built in a single 2026-06-05 session. The Cognition Mesh 
 
 ## Roadmap
 
-- **v6.0.0-beta** (TBD) — full mesh runtime, MCP server, SQLite ledger
-- **v6.1.0** (TBD) — P1 skills (platform PM, growth PM, ux-researcher, technical-writer, devrel), VS Code extension
-- **v6.2.0** (TBD) — P2 verticals (fintech, healthtech, edtech, govtech, gamedev), team mode (shared ledger)
+- **v6.1.0-beta** (TBD) — full mesh runtime, MCP server, SQLite ledger
+- **v6.2.0** (TBD) — P1 skills (platform PM, growth PM, ux-researcher, technical-writer, devrel), VS Code extension
+- **v6.3.0** (TBD) — P2 verticals (fintech, healthtech, edtech, govtech, gamedev), team mode (shared ledger)
 - **v7.0.0** (research) — self-extending skills (a skill that observes another role and proposes its own update)
+
+> Roadmap above applies to the **Cognition Mesh** release line (`release/v6.1.0-cognition-mesh`).
+> The cache-rewrite line on `main` ships v6.0.0 → v6.0.x → v6.1.0 on its own track.
