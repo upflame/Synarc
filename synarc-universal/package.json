@@ -1,0 +1,43 @@
+{
+  "name": "synarc-universal",
+  "version": "6.0.0",
+  "description": "Universal skill pack for engineering intelligence across all AI coding agents - 4-tier prompt-caching architecture, intent-based activation, 35x token reduction vs v5",
+  "private": true,
+  "scripts": {
+    "sync": "powershell -ExecutionPolicy Bypass -File ./scripts/sync-v6.ps1",
+    "validate": "powershell -ExecutionPolicy Bypass -File ./scripts/validate-skills.ps1",
+    "test-fallbacks": "powershell -ExecutionPolicy Bypass -File ./scripts/test-fallbacks.ps1",
+    "generate-manifest": "powershell -ExecutionPolicy Bypass -File ./scripts/sync-v6.ps1",
+    "measure": "powershell -ExecutionPolicy Bypass -File ./scripts/measure-skills.ps1",
+    "check-vendor-lockin": "powershell -ExecutionPolicy Bypass -File ./scripts/check-vendor-lockin.ps1",
+    "check-refs": "powershell -ExecutionPolicy Bypass -File ./scripts/check-refs.ps1",
+    "check-contract": "powershell -ExecutionPolicy Bypass -File ./scripts/check-v6-contract.ps1",
+    "lint": "npm run check-vendor-lockin && npm run check-refs && npm run check-contract",
+    "test": "npm run validate && npm run test-fallbacks",
+    "build": "npm run sync && npm run validate",
+    "precommit": "npm run lint && npm run test"
+  },
+  "engines": {
+    "powershell": ">=5.1"
+  },
+  "keywords": [
+    "synarc",
+    "engineering-intelligence",
+    "universal-skill",
+    "ai-coding-agent",
+    "codex",
+    "opencode",
+    "cursor",
+    "windsurf",
+    "claude-code",
+    "prompt-caching",
+    "intent-activation",
+    "token-efficient"
+  ],
+  "author": "UpFlame Labs <info@upflame.in>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/upflame-labs/synarc"
+  }
+}

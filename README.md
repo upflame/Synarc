@@ -25,6 +25,47 @@ Change classification, risk tracking, context injection, multi-role team collabo
 
 ---
 
+## v6.0.0 — 4-tier prompt-caching + 38× token reduction
+
+**What's new in 6.0.0:**
+
+- **4-tier prompt-caching architecture** — every skill declares a `cache_tier` (core / domain / reference / context / dynamic). Agents pre-warm the cache once and amortize the cost across many turns.
+- **Intent-based activation via `intent_triggers`** — every skill declares ≥ 2 concrete trigger phrases. Match on user intent, not platform-specific commands.
+- **8-block template** — replaces the v5 12-section structure. Mandatory sections: frontmatter, persona, activation, workflow, decision rules, output format, gotchas, references, changelog.
+- **38× token reduction** — total pack is now 413 KB (down from 15.67 MB in v5.x). Each SKILL.md is 8-14 KB; the pack fits in a single cache miss.
+- **Universal runtime, no compile step** — same files work in Codex, OpenCode, Cursor, Gemini CLI, Claude Code, Copilot, Windsurf, Cline, RooCode. No platform-specific fields, no compile step.
+- **Vendor-neutral naming** — no `anthropic`, `claude`, `gpt*`, `gemini` in skill names, descriptions, or content. Banned at validator level.
+
+**The 4-tier cache architecture:**
+
+```
+Tier 0: Pack header (AGENTS.md, manifest.yaml)           - cached for the session
+Tier 1: Core reasoning (synarc-core, negative-prompts,    - cached for the session
+        cognition-layer, schemas)                          (~60 KB)
+Tier 2: Active domain skill (debug-engineer, architect,   - cached for the task
+        security-engineer, etc.)                           (one of 40, ~10 KB each)
+Tier 3: Skill references (skills/<id>/references/*.md)    - lazy-loaded on first ref
+Tier 4: Dynamic context (project files, tool outputs)     - never cached
+```
+
+Anti-cache rules for Tiers 0-2: no timestamps, no session IDs, no user data, no tool-result echoes. Dynamic content lives in Tier 4.
+
+**The token math:**
+
+| Metric | v5.x | v6.0.0 | Change |
+|--------|------|--------|--------|
+| Total pack size | 15,670 KB (15.67 MB) | 412.9 KB | **38× smaller** |
+| Largest SKILL.md | 2,870 KB (sre-engineer) | 13.7 KB (negative-prompts) | 209× smaller |
+| SKILL.md size cap | unbounded | 50 KB hard / 30 KB warn | enforced |
+| Per-skill intent match | "WHEN/THEN" prose | `intent_triggers: [...]` array | machine-parseable |
+| Runtime support | 9 (with compile step) | 9 (no compile step) | same coverage |
+
+See [CHANGELOG.md](CHANGELOG.md) for the full v6.0.0 release notes.
+
+---
+
+---
+
 ## The Problem
 
 Your AI coding agent reads files, edits code, runs commands, and ships changes to production. Every interaction creates change, and in vibe coding workflows those changes compound faster than context can keep up. Five rapid edits become fifty hidden assumptions spread across your codebase. Architectural intent fades, reasoning fragments across prompts, and what feels like velocity quietly turns into system drift.
@@ -280,6 +321,37 @@ No additional setup. `synarc-core` is the mesh coordinator.
 
 Full per-agent reference with verification steps and troubleshooting: [synarc-universal/docs/installation.md](synarc-universal/docs/installation.md).
 
+### How activation works (v6.0.0)
+
+Activation is **intent-based** — no slash commands, no manual skill selection. The agent reads the `intent_triggers` array in each skill's frontmatter and loads the matching skill when a trigger phrase matches the user's request.
+
+```
+User says: "Help me debug this 500 error from the auth middleware"
+  → matches intent_triggers: ["debug", "error", "root cause"]
+  → loads debug-engineer (cache_tier: domain)
+  → pre-warm: synarc-core, cognition-layer, schemas already in Tier 1 cache
+```
+
+### Cache pre-warm (recommended)
+
+To minimize per-turn cost, pre-warm the cache once at session start by loading the Tier 1 core skills (~60 KB total) into the system context:
+
+```yaml
+Tier 1 (always-on, ~60 KB):  synarc-core, negative-prompts, cognition-layer, schemas, change-intelligence, coding-agent
+Tier 2 (per task, ~10 KB):   debug-engineer | architect | backend-engineer | ... (one of 40)
+```
+
+Anti-cache rules for Tiers 0-2: no timestamps, no session IDs, no user data, no tool-result echoes. Dynamic content lives in Tier 4 (never cached).
+
+### Multi-project setup
+
+```bash
+git submodule add https://github.com/upflame-labs/synarc.git synarc-universal
+ln -s synarc-universal/AGENTS.md AGENTS.md
+```
+
+Full guide: [docs/installation.md](synarc-universal/docs/installation.md)
+
 ---
 
 ## Runtime Support
@@ -292,8 +364,11 @@ Full per-agent reference with verification steps and troubleshooting: [synarc-un
 | Claude Code | Full brain directory + hooks | `/brain/` or `.claude/` exists | STANDARD + COMPACT per tool | Yes |
 | Claude Web | Conversation state blocks | Filesystem inaccessible; chat-only | COMPACT per interaction | No |
 | Codex CLI | AGENTS.md protocol | `AGENTS.md` in repo root | STANDARD at session start | Via AGENTS.md |
+| OpenCode | Full brain directory | `AGENTS.md` in repo root | STANDARD + COMPACT per tool | Yes |
 | Cursor IDE | IDE rules protocol | `.cursor/rules` detected | COMPACT per file write | Limited |
 | Windsurf IDE | IDE rules protocol | `.windsurfrules` detected | COMPACT per file write | Limited |
+| Gemini CLI | AGENTS.md protocol | `AGENTS.md` in repo root | STANDARD at session start | Via AGENTS.md |
+| GitHub Copilot | Instructions file | `.github/copilot-instructions.md` | COMPACT per session | Limited |
 | Claude API | Structured JSON | API call with `skill_id` | STANDARD via `context` field | Via API |
 
 ---

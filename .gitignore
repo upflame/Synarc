@@ -3,3 +3,5 @@
 .env.development
 .env.production
 assets/img/
+node_modules/
+package-lock.json

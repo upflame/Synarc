@@ -235,7 +235,7 @@ Add to your repo's `CLAUDE.md`:
 ```markdown
 ## Synarc
 
-This repo uses Synarc v4 for engineering cognition.
+This repo uses Synarc v5 for engineering cognition.
 
 Load at session start:
 - /brain/CURRENT_STATE.md (always)

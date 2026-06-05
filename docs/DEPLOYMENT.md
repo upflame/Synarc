@@ -305,7 +305,7 @@ When using Claude Code with Synarc:
 ```markdown
 # Synarc Context
 
-This repo uses Synarc v3 for engineering cognition.
+This repo uses Synarc v5 for engineering cognition.
 
 ## Always load at session start:
 - brain/CURRENT_STATE.md
