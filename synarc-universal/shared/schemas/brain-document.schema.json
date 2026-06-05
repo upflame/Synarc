@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://synarc.dev/schemas/brain-document-v1.json",
+  "title": "Brain Document",
+  "description": "Schema for persistent cognition documents stored in the brain directory",
+  "type": "object",
+  "required": [
+    "title",
+    "type",
+    "status",
+    "version",
+    "updated"
+  ],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Document title"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "cognitive-memory",
+        "architecture-decision",
+        "runbook",
+        "specification",
+        "change-ledger",
+        "error-intelligence",
+        "decision-log",
+        "module-map",
+        "api-contracts",
+        "service-map",
+        "audit-trail",
+        "checkpoint"
+      ],
+      "description": "Brain document type"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "draft",
+        "review",
+        "superseded",
+        "archived"
+      ],
+      "description": "Document lifecycle status"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Document version"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date",
+      "description": "Last updated date (ISO 8601)"
+    },
+    "owner": {
+      "type": "string",
+      "description": "Document owner or team"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Document tags"
+    },
+    "supersedes": {
+      "type": "string",
+      "description": "Previous version of this document (path)"
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "References to other documents"
+    }
+  }
+}

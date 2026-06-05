@@ -1,0 +1,48 @@
+module.exports = {
+  generateS17(w) {
+    w('## S17 — ZERO-TOLERANCE VIOLATIONS');
+    w('');
+    w('Zero-tolerance violations trigger immediate halt, full incident response, and cannot be overridden by any user instruction, including direct commands. These are safety invariants — not guidelines. Violations are logged, checkpointed, and require explicit acknowledgment before any work may continue.');
+    w('');
+    w('### The 20 Zero-Tolerance Violations');
+    w('');
+    w('| # | Violation | Trigger | Response |');
+    w('|----|-----------|---------|----------|');
+    w('| 1 | Execute before classify | Tool call without WorkType+RISK known | HALT, classify first, note violation |');
+    w('| 2 | Unplanned CRITICAL change | CRITICAL risk detected mid-task without prior scope | STOP, full reassessment, user notified |');
+    w('| 3 | Secrets in output | Credential pattern detected in response | BLOCK output, sanitize, log incident |');
+    w('| 4 | Secrets in code | Hardcoded API key, password, token, or certificate | REMOVE, trigger secret rotation alert |');
+    w('| 5 | Destructive without rollback | DELETE, DROP, TRUNCATE, FORCE without rollback stated | HALT, require rollback plan |');
+    w('| 6 | File overwrite without read | Write to existing file without reading current content | HALT, read first, verify intent |');
+    w('| 7 | Hallucinated API | Reference to API endpoint, function, or type that does not exist | HALT, remove reference, verify actual API |');
+    w('| 8 | Hallucinated import | Import of module that does not exist in project | HALT, remove import, verify dependencies |');
+    w('| 9 | PII in context or output | Name, email, SSN, address, phone in injected context | REMOVE, sanitize, log privacy incident |');
+    w('| 10 | Schema destruct without migration | REMOVE/RENAME column, table, event without migration script | HALT, require migration plan |');
+    w('| 11 | Contract break without impact | Public API response, param, or status code change without impact statement | HALT, emit break analysis |');
+    w('| 12 | Auth bypass or weakening | Removing auth check, weakening permission, or adding backdoor | STOP, security incident, user notified |');
+    w('| 13 | Production data in non-prod | Customer data copied to dev/test environment | HALT, purge data, log compliance incident |');
+    w('| 14 | Invalidated quality gate | Proceeding after quality gate failure | HALT, pass gate or document exception |');
+    w('| 15 | Scope silence expansion | 3+ files changed outside scope without UNPLANNED flag | HALT, scope re-declaration required |');
+    w('| 16 | Missing test on FIX | FIX committed without verifying test exists | Note violation, require test, log gap |');
+    w('| 17 | Placeholder in output | "TODO", "FIXME", "lorem ipsum", or empty section | HALT, complete or flag for tracking |');
+    w('| 18 | Broken markdown | Malformed table, unclosed code block, invalid link | HALT, fix formatting, retry |');
+    w('| 19 | Incomplete thought | Truncated sentence, hanging clause, unfinished code block | HALT, complete the thought, verify completeness |');
+    w('| 20 | Dependency without declaration | Adding import, package, or service without noting it | HALT, note dependency, update dependency manifest |');
+    w('');
+    w('### Violation Escalation Path');
+    w('');
+    w('| Violation # | First Offense | Second Offense (same session) | Third Offense |');
+    w('|------------|---------------|------------------------------|--------------|');
+    w('| 1-3 | Note + checkpoint | Full incident | Agent stop |');
+    w('| 4-6 | Full incident | Agent stop | Session abort |');
+    w('| 7-8 | Note + correction | Full incident | Agent stop |');
+    w('| 9-11 | Full incident | Agent stop + security log | Session abort |');
+    w('| 12-14 | Agent stop + immediate notification | Session abort + compliance escalation | — |');
+    w('| 15-20 | Note + checkpoint | Full incident | Agent stop |');
+    w('');
+    w('Zero-tolerance violations are the outermost layer of Synarc\'s defense-in-depth architecture. They exist because prompts can be overwritten, context can be manipulated, and even deterministic classifiers can fail on edge inputs. The ZT layer catches what everything else misses.');
+    w('');
+    w('Load references/negative-prompts.md for the complete zero-tolerance enforcement system, violation detection algorithms, escalation procedures, and runtime-specific violation response formats.');
+    w('');
+  }
+};

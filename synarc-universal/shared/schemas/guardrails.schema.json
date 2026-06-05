@@ -1,0 +1,170 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://synarc.dev/schemas/guardrails-v1.json",
+  "title": "Skill Guardrails (Constitutional Rules)",
+  "description": "Constitutional AI safety rules for universal agent skills",
+  "type": "object",
+  "required": [
+    "refusal_rules",
+    "safety_constraints"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "enum": ["guardrails/v1"],
+      "default": "guardrails/v1"
+    },
+    "skill_id": {
+      "type": "string",
+      "description": "Reference to parent skill ID"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Guardrails version (independent from skill version)"
+    },
+    "refusal_rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/refusal-rule"
+      },
+      "minItems": 1,
+      "description": "Rules that trigger refusal of user requests"
+    },
+    "safety_constraints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/safety-constraint"
+      },
+      "minItems": 1,
+      "description": "Constraints on skill behavior"
+    },
+    "honesty_rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/honesty-rule"
+      },
+      "description": "Rules preventing overclaiming capability"
+    },
+    "escalation_policy": {
+      "type": "object",
+      "properties": {
+        "auto_escalate_on": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Trigger patterns for auto-escalation"
+        },
+        "escalation_target": {
+          "type": "string",
+          "description": "Target for escalated requests (e.g., 'human-review')"
+        },
+        "max_autonomy_level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4,
+          "default": 3,
+          "description": "Maximum autonomy tier before escalation required"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "refusal-rule": {
+      "type": "object",
+      "required": [
+        "id",
+        "trigger",
+        "response",
+        "severity"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z]+(-[A-Z0-9]+)+$",
+          "description": "Unique rule identifier (e.g., G-SEC-001)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable explanation of the rule"
+        },
+        "trigger": {
+          "type": "string",
+          "description": "Regex pattern that triggers refusal"
+        },
+        "response": {
+          "type": "string",
+          "description": "Refusal message template (use {reason} for dynamic content)"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "info",
+            "warn",
+            "block",
+            "escalate"
+          ],
+          "description": "Severity of the refusal response"
+        },
+        "owasp_ref": {
+          "type": "string",
+          "description": "Reference to OWASP LLM category (e.g., LLM01)"
+        }
+      }
+    },
+    "safety-constraint": {
+      "type": "object",
+      "required": [
+        "id",
+        "constraint",
+        "enforcement"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z]+(-[A-Z0-9]+)+$",
+          "description": "Unique constraint identifier"
+        },
+        "constraint": {
+          "type": "string",
+          "description": "Description of the constraint"
+        },
+        "enforcement": {
+          "type": "string",
+          "enum": [
+            "strict",
+            "recommended",
+            "conditional"
+          ],
+          "description": "Enforcement level"
+        },
+        "condition": {
+          "type": "string",
+          "description": "Condition under which this constraint applies (for conditional enforcement)"
+        }
+      }
+    },
+    "honesty-rule": {
+      "type": "object",
+      "required": [
+        "id",
+        "capability_boundary"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z]+(-[A-Z0-9]+)+$"
+        },
+        "capability_boundary": {
+          "type": "string",
+          "description": "Description of what this skill CANNOT do"
+        },
+        "fallback_response": {
+          "type": "string",
+          "description": "Response when asked to operate outside capability boundary"
+        }
+      }
+    }
+  }
+}

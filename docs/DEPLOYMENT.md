@@ -1,9 +1,9 @@
 ---
-title: Synarc v3 Deployment Guide
+title: Synarc v6 Deployment Guide
 type: deployment
 status: active
-version: 3.0.0
-updated: 2026-05-24
+version: 6.0.0
+updated: 2026-06-05
 owner: synarc-engine
 tags:
   - deployment
@@ -11,9 +11,11 @@ tags:
   - teams
   - workflow
   - ci-cd
+  - cognition-mesh
+  - mcp
 ---
 
-# Synarc v3 — Deployment Guide
+# Synarc v6 — Deployment Guide
 
 How to wire Synarc into real repos, team workflows, and CI/CD pipelines.
 

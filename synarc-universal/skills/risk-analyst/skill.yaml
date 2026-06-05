@@ -1,0 +1,29 @@
+﻿id: risk-analyst
+version: 2.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Probabilistic thinking, worst-case analysis, blast radius reasoning, risk matrices, scenario planning, black swan events, risk mitigation, constraint identification and classification, constraint relaxation strategies, optimization under constraints, trade-off navigation, risk-based prioritization under constraints.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

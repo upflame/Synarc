@@ -1,18 +1,19 @@
 ---
-title: "Synarc v4 — Quickstart for Coding Agents"
+title: "Synarc v6 — Quickstart for Coding Agents"
 type: onboarding
 status: active
-version: 4.0.0
-updated: 2026-05-25
+version: 6.0.0
+updated: 2026-06-05
 owner: synarc-engine
 tags:
   - quickstart
   - onboarding
   - coding-agent
   - production-ready
+  - cognition-mesh
 ---
 
-# Synarc v4 — Quickstart for Coding Agents
+# Synarc v6 — Quickstart for Coding Agents
 
 Synarc is always-on in every coding agent session.
 Zero configuration. Zero exceptions. This guide explains what happens

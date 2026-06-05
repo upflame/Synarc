@@ -1,0 +1,730 @@
+# Synarc Universal Skill Pack Manifest
+# Schema: skill-pack/v1
+# Generated: 2026-06-05
+# Integrity: SHA-256
+
+pack:
+  id: synarc-universal
+  name: Synarc Universal — Cognition Mesh (Engineering Intelligence Runtime)
+  description: >
+    Autonomous engineering cognition for architecture reasoning, change propagation
+    analysis, deployment risk intelligence, cross-platform code-state awareness,
+    multi-role team collaboration, and first-party MCP integrations across all
+    modern AI coding environments.
+  version: 6.0.0
+  schema: skill-pack/v1
+  author: Universal Skill Pack
+
+  compatible_agents:
+    - codex
+    - opencode
+    - cursor
+    - gemini-cli
+    - claude-code
+    - copilot
+    - windsurf
+    - cline
+    - roo-code
+
+  tags:
+    - engineering-intelligence
+    - autonomous-cognition
+    - architecture-analysis
+    - change-intelligence
+    - deployment-safety
+    - risk-management
+    - quality-gates
+    - session-tracking
+    - cross-platform
+    - cognition-mesh
+    - multi-role-teams
+    - ai-era
+    - mcp
+    - agent-orchestration
+
+  categories:
+    - engineering-intelligence
+    - architecture
+    - development
+    - security
+    - devops
+    - data
+    - mobile
+    - ml
+    - leadership
+    - ai-era
+    - product
+    - design
+    - quality
+    - industry-verticals
+
+skills:
+  - id: synarc-core
+    path: skills/synarc-core/SKILL.md
+    version: 6.0.0
+    description: Core engineering intelligence runtime — classification, risk, context, session tracking, quality gates, multi-role mesh coordination
+    category: engineering-intelligence
+    tags: [core, runtime, cognition, classification, risk, session, mesh]
+    activation: always-on
+    priority: critical
+    skill_type: [workflow, capability]
+    dependencies: {}
+
+  - id: cognition-layer
+    path: skills/cognition-layer/SKILL.md
+    version: 2.0.0
+    description: Structured reasoning architecture — plugin routing, context management, injection protocols, token budgeting
+    category: engineering-intelligence
+    tags: [reasoning, context, injection, token-optimization]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: change-intelligence
+    path: skills/change-intelligence/SKILL.md
+    version: 2.0.0
+    description: Change intelligence pipeline — 7D classification, diff analysis, composite risk scoring, safe-to-merge evaluation
+    category: engineering-intelligence
+    tags: [change, diff, risk, review, classification]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: coding-agent
+    path: skills/coding-agent/SKILL.md
+    version: 2.0.0
+    description: Autonomous code generation — plan-execute-verify-iterate, tool call classification, scope enforcement
+    category: engineering-intelligence
+    tags: [code-generation, execution, planning, verification]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: negative-prompts
+    path: skills/negative-prompts/SKILL.md
+    version: 2.0.0
+    description: Prohibition enforcement — 30 zero-tolerance domains covering fabrication, risk suppression, scope absorption
+    category: engineering-intelligence
+    tags: [prohibitions, safety, guardrails, quality]
+    activation: always-on
+    priority: critical
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: project-scales
+    path: skills/project-scales/SKILL.md
+    version: 2.0.0
+    description: Project scale detection — 6 scales, multi-signal detection, context injection depth, agent autonomy profiles
+    category: engineering-intelligence
+    tags: [scale, detection, adaptation, autonomy]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: schemas
+    path: skills/schemas/SKILL.md
+    version: 2.0.0
+    description: Canonical brain document schemas — 12 document types, universal frontmatter, ADR lifecycle
+    category: engineering-intelligence
+    tags: [schemas, documents, ADR, templates]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: testing-strategy
+    path: skills/testing-strategy/SKILL.md
+    version: 2.0.0
+    description: Risk-based testing strategy — test pyramid, test type selection, per-WorkType requirements, flaky test remediation
+    category: engineering-intelligence
+    tags: [testing, quality, coverage, ci-cd]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: backend-engineer
+    path: skills/backend-engineer/SKILL.md
+    version: 2.0.0
+    description: Backend engineering reasoning — service architecture, API design, database modeling, concurrency, caching
+    category: engineering-intelligence
+    tags: [backend, api, services, database, concurrency]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: frontend-engineer
+    path: skills/frontend-engineer/SKILL.md
+    version: 2.0.0
+    description: Frontend engineering reasoning — component architecture, state management, rendering, accessibility, performance
+    category: engineering-intelligence
+    tags: [frontend, ui, components, state, accessibility]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: ui-engineer
+    path: skills/ui-engineer/SKILL.md
+    version: 1.0.0
+    description: UI engineering reasoning — pixel-perfect implementation, design systems, CSS architecture, animation
+    category: engineering-intelligence
+    tags: [ui, css, design-systems, animation, responsive]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: ux-engineer
+    path: skills/ux-engineer/SKILL.md
+    version: 1.0.0
+    description: UX engineering reasoning — user research, information architecture, interaction design, usability testing
+    category: engineering-intelligence
+    tags: [ux, research, design, usability, accessibility]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: fullstack-engineer
+    path: skills/fullstack-engineer/SKILL.md
+    version: 2.0.0
+    description: Fullstack engineering — end-to-end feature design, data flow, API integration, state synchronization
+    category: engineering-intelligence
+    tags: [fullstack, frontend, backend, integration, features]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: data-engineer
+    path: skills/data-engineer/SKILL.md
+    version: 2.0.0
+    description: Data engineering — pipeline architecture, ETL vs ELT, data modeling, streaming, data quality
+    category: engineering-intelligence
+    tags: [data, pipeline, etl, streaming, quality]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: mobile-engineer
+    path: skills/mobile-engineer/SKILL.md
+    version: 2.0.0
+    description: Mobile engineering — architecture patterns, offline-first, platform decisions, performance optimization
+    category: engineering-intelligence
+    tags: [mobile, ios, android, offline, performance]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: ml-engineer
+    path: skills/ml-engineer/SKILL.md
+    version: 2.0.0
+    description: Machine learning engineering — pipeline architecture, MLOps, feature stores, model serving, monitoring
+    category: engineering-intelligence
+    tags: [ml, mlops, models, training, serving]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: infrastructure-engineer
+    path: skills/infrastructure-engineer/SKILL.md
+    version: 2.0.0
+    description: Infrastructure engineering — platform design, networking, deployment strategies, IaC, capacity planning
+    category: engineering-intelligence
+    tags: [infrastructure, networking, iaac, deployment, capacity]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: devops-engineer
+    path: skills/devops-engineer/SKILL.md
+    version: 2.0.0
+    description: DevOps engineering — CI/CD, build systems, GitOps, release engineering, supply chain security
+    category: engineering-intelligence
+    tags: [devops, ci-cd, gitops, releases, security]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: sre-engineer
+    path: skills/sre-engineer/SKILL.md
+    version: 2.0.0
+    description: Site reliability engineering — SLOs, error budgets, toil reduction, incident management, capacity planning
+    category: engineering-intelligence
+    tags: [sre, reliability, slos, incidents, capacity]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: observability-engineer
+    path: skills/observability-engineer/SKILL.md
+    version: 2.0.0
+    description: Observability engineering — structured logging, distributed tracing, metrics, dashboards, alerting
+    category: engineering-intelligence
+    tags: [observability, monitoring, tracing, metrics, alerting]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: platform-engineer
+    path: skills/platform-engineer/SKILL.md
+    version: 2.0.0
+    description: Platform engineering — internal developer platforms, Golden Paths, self-service infrastructure, Kubernetes
+    category: engineering-intelligence
+    tags: [platform, kubernetes, developer-experience, idp]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: security-engineer
+    path: skills/security-engineer/SKILL.md
+    version: 2.0.0
+    description: Security engineering — threat modeling, defense-in-depth, vulnerability assessment, cryptography, IAM
+    category: engineering-intelligence
+    tags: [security, threat-modeling, vulnerabilities, iam, compliance]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: privacy-engineer
+    path: skills/privacy-engineer/SKILL.md
+    version: 2.0.0
+    description: Privacy engineering — privacy by design, PII protection, GDPR, consent, data minimization
+    category: engineering-intelligence
+    tags: [privacy, gdpr, pii, compliance, data-protection]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: ethics-engineer
+    path: skills/ethics-engineer/SKILL.md
+    version: 2.0.0
+    description: AI ethics engineering — bias detection, fairness metrics, explainability, responsible AI
+    category: engineering-intelligence
+    tags: [ethics, fairness, bias, explainability, responsible-ai]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: architect
+    path: skills/architect/SKILL.md
+    version: 2.0.0
+    description: Systems architecture — decomposition, architectural styles, quality attributes, ADRs, technical governance
+    category: engineering-intelligence
+    tags: [architecture, design, patterns, quality-attributes, governance]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: api-designer
+    path: skills/api-designer/SKILL.md
+    version: 2.0.0
+    description: API design — RESTful conventions, GraphQL, gRPC, versioning, pagination, authentication
+    category: engineering-intelligence
+    tags: [api, rest, graphql, grpc, design]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: database-architect
+    path: skills/database-architect/SKILL.md
+    version: 2.0.0
+    description: Database architecture — selection criteria, indexing, query optimization, transactions, sharding
+    category: engineering-intelligence
+    tags: [database, sql, nosql, indexing, transactions]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: chaos-engineer
+    path: skills/chaos-engineer/SKILL.md
+    version: 2.0.0
+    description: Chaos engineering — failure injection, GameDays, steady-state hypothesis, blast radius, resilience
+    category: engineering-intelligence
+    tags: [chaos, resilience, testing, failure-injection]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: staff-engineer
+    path: skills/staff-engineer/SKILL.md
+    version: 2.0.0
+    description: Staff engineer reasoning — technical initiatives, influence, design docs, mentoring, technical arbitration
+    category: engineering-intelligence
+    tags: [leadership, mentoring, architecture, influence]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: cto
+    path: skills/cto/SKILL.md
+    version: 2.0.0
+    description: CTO reasoning — technology strategy, build-vs-buy, platform strategy, technical debt governance
+    category: engineering-intelligence
+    tags: [strategy, leadership, technology, governance]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: engineering-manager
+    path: skills/engineering-manager/SKILL.md
+    version: 2.0.0
+    description: Engineering management — team scaling, hiring, delivery planning, performance management, incident leadership
+    category: engineering-intelligence
+    tags: [management, teams, hiring, delivery, performance]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: product-engineer
+    path: skills/product-engineer/SKILL.md
+    version: 2.0.0
+    description: Product-minded engineering — discovery, A/B testing, feature flags, product metrics, UX research
+    category: engineering-intelligence
+    tags: [product, metrics, ab-testing, features, research]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: finops-engineer
+    path: skills/finops-engineer/SKILL.md
+    version: 2.0.0
+    description: FinOps engineering — cloud cost optimization, cost allocation, tagging, reserved instances, anomaly detection
+    category: engineering-intelligence
+    tags: [finops, cost, cloud, optimization, governance]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: performance-thinker
+    path: skills/performance-thinker/SKILL.md
+    version: 2.0.0
+    description: Performance engineering — latency analysis, throughput optimization, capacity planning, profiling, caching
+    category: engineering-intelligence
+    tags: [performance, latency, throughput, profiling, optimization]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: incident-commander
+    path: skills/incident-commander/SKILL.md
+    version: 2.0.0
+    description: Incident command — ICS framework, severity classification, crisis communication, post-incident review
+    category: engineering-intelligence
+    tags: [incidents, on-call, response, communication, reviews]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: debug-engineer
+    path: skills/debug-engineer/SKILL.md
+    version: 2.0.0
+    description: Systematic debugging — fault isolation, hypothesis-driven debugging, production debugging, root cause analysis
+    category: engineering-intelligence
+    tags: [debugging, errors, root-cause, production, troubleshooting]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: decision-engineer
+    path: skills/decision-engineer/SKILL.md
+    version: 2.0.0
+    description: Decision engineering — structured frameworks, decision trees, cost-benefit analysis, ADRs
+    category: engineering-intelligence
+    tags: [decisions, frameworks, analysis, adrs, tradeoffs]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: risk-analyst
+    path: skills/risk-analyst/SKILL.md
+    version: 2.0.0
+    description: Risk analysis — probabilistic thinking, blast radius assessment, risk matrices, scenario planning
+    category: engineering-intelligence
+    tags: [risk, analysis, probability, mitigation, scenarios]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: foundational-reasoning
+    path: skills/foundational-reasoning/SKILL.md
+    version: 2.0.0
+    description: Foundational reasoning — first principles, assumption audit, systems thinking, leverage points
+    category: engineering-intelligence
+    tags: [reasoning, first-principles, systems-thinking, analysis]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: problem-solver
+    path: skills/problem-solver/SKILL.md
+    version: 2.0.0
+    description: Structured problem solving — define-analyze-generate-evaluate-implement-verify, RCA toolkit, design thinking
+    category: engineering-intelligence
+    tags: [problem-solving, design-thinking, rca, creativity]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=5.0.0"
+
+  - id: agentic-ai-engineer
+    path: skills/agentic-ai-engineer/SKILL.md
+    version: 1.0.0
+    description: Agentic AI engineering — agent loops, tool use, ReAct, planning, memory, multi-agent orchestration, MCP, agent security
+    category: ai-era
+    tags: [agentic, agents, react, planning, tools, mcp, multi-agent]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+      ml-engineer: ">=2.0.0"
+
+  - id: prompt-engineer
+    path: skills/prompt-engineer/SKILL.md
+    version: 1.0.0
+    description: Prompt engineering — system prompts, few-shot, chain-of-thought, structured output, prompt patterns, evaluation
+    category: ai-era
+    tags: [prompts, llm, system-prompt, few-shot, cot, structured-output]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+
+  - id: rag-engineer
+    path: skills/rag-engineer/SKILL.md
+    version: 1.0.0
+    description: RAG engineering — chunking, embeddings, vector DBs, hybrid search, re-ranking, evaluation, GraphRAG
+    category: ai-era
+    tags: [rag, retrieval, embeddings, vector-db, hybrid-search, reranking, graphrag]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+      data-engineer: ">=2.0.0"
+
+  - id: ai-safety-eval-engineer
+    path: skills/ai-safety-eval-engineer/SKILL.md
+    version: 1.0.0
+    description: AI safety evaluation — red teaming, jailbreaks, adversarial prompts, eval harnesses, harm taxonomy, EU AI Act
+    category: ai-era
+    tags: [ai-safety, red-team, evaluation, jailbreak, adversarial, eu-ai-act, harm]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+      security-engineer: ">=2.0.0"
+      ethics-engineer: ">=2.0.0"
+
+  - id: agent-architect
+    path: skills/agent-architect/SKILL.md
+    version: 1.0.0
+    description: Agent architecture — tool design, agent topologies, orchestration patterns, agent SDKs, capability modeling
+    category: ai-era
+    tags: [agent-architecture, tools, orchestration, multi-agent, sdk, capability-modeling]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+      agentic-ai-engineer: ">=1.0.0"
+      architect: ">=2.0.0"
+
+  - id: ai-product-manager
+    path: skills/ai-product-manager/SKILL.md
+    version: 1.0.0
+    description: AI product management — model selection, cost-quality-latency tradeoffs, evals-as-product, prompt-product fit, shipping AI features
+    category: ai-era
+    tags: [ai-product, model-selection, evals, cost-quality, prompt-product-fit]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+      product-manager: ">=1.0.0"
+      agentic-ai-engineer: ">=1.0.0"
+
+  - id: mlops-engineer
+    path: skills/mlops-engineer/SKILL.md
+    version: 1.0.0
+    description: MLOps — feature stores, model registries, training pipelines, online/offline eval, drift, A/B for models, LLMOps
+    category: ai-era
+    tags: [mlops, feature-store, model-registry, training, llmops, drift, ab]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+      ml-engineer: ">=2.0.0"
+      data-engineer: ">=2.0.0"
+
+  - id: data-scientist
+    path: skills/data-scientist/SKILL.md
+    version: 1.0.0
+    description: Data science — EDA, hypothesis testing, causal inference, feature engineering, experiment analysis, statistical rigor
+    category: ai-era
+    tags: [data-science, eda, hypothesis-testing, causal-inference, experimentation, statistics]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+      data-engineer: ">=2.0.0"
+
+  - id: product-manager
+    path: skills/product-manager/SKILL.md
+    version: 1.0.0
+    description: Product management — discovery, opportunity sizing, PRDs, prioritization (RICE/ICE/Kano), North Star metric, lifecycle
+    category: product
+    tags: [product-management, discovery, prioritization, rice, north-star, lifecycle]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+
+  - id: product-designer
+    path: skills/product-designer/SKILL.md
+    version: 1.0.0
+    description: Product design — interaction design, wireframing, prototyping, design critique, usability testing, design handoff
+    category: design
+    tags: [product-design, interaction-design, wireframing, prototyping, usability, handoff]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+      frontend-engineer: ">=2.0.0"
+
+  - id: content-designer
+    path: skills/content-designer/SKILL.md
+    version: 1.0.0
+    description: Content design — UX writing, microcopy, voice/tone, error messages, empty states, content patterns, localization
+    category: design
+    tags: [content-design, ux-writing, microcopy, voice-tone, localization, empty-states]
+    activation: intent-based
+    priority: normal
+    dependencies:
+      synarc-core: ">=6.0.0"
+      product-designer: ">=1.0.0"
+
+  - id: design-systems-engineer
+    path: skills/design-systems-engineer/SKILL.md
+    version: 1.0.0
+    description: Design systems — tokens, primitives, components, Figma libraries, code-gen, governance, contribution model, documentation
+    category: design
+    tags: [design-systems, tokens, primitives, figma, code-gen, governance, docs]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+      product-designer: ">=1.0.0"
+      frontend-engineer: ">=2.0.0"
+
+  - id: sdet-engineer
+    path: skills/sdet-engineer/SKILL.md
+    version: 1.0.0
+    description: SDET engineering — test automation frameworks, page object model, contract testing (Pact), E2E at scale, visual regression, flaky test remediation
+    category: quality
+    tags: [sdet, test-automation, e2e, contract-testing, pact, playwright, flaky-tests, visual-regression]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+      testing-strategy: ">=2.0.0"
+      backend-engineer: ">=2.0.0"
+
+  - id: performance-engineer
+    path: skills/performance-engineer/SKILL.md
+    version: 1.0.0
+    description: Performance engineering — profiling, load/stress/soak testing, capacity planning, latency, caching, observability, performance budgets
+    category: quality
+    tags: [performance, profiling, load-testing, capacity-planning, latency, caching, observability, web-vitals]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+      sre-engineer: ">=2.0.0"
+      backend-engineer: ">=2.0.0"
+
+  - id: release-engineer
+    path: skills/release-engineer/SKILL.md
+    version: 1.0.0
+    description: Release engineering — CI/CD pipelines, deployment strategies (canary, blue/green, rolling, shadow), versioning, feature flags, release trains, rollback
+    category: quality
+    tags: [release-engineering, cicd, canary, blue-green, feature-flags, semver, gitops, rollback]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+      sre-engineer: ">=2.0.0"
+      devops-engineer: ">=2.0.0"
+      security-engineer: ">=2.0.0"
+
+  - id: accessibility-engineer
+    path: skills/accessibility-engineer/SKILL.md
+    version: 1.0.0
+    description: Accessibility engineering — WCAG 2.2, ARIA patterns, keyboard navigation, screen reader compatibility, focus management, VPAT, ADA/EAA compliance
+    category: quality
+    tags: [accessibility, a11y, wcag, aria, screen-reader, keyboard, vpat, ada, eaa]
+    activation: intent-based
+    priority: high
+    dependencies:
+      synarc-core: ">=6.0.0"
+      frontend-engineer: ">=2.0.0"
+      product-designer: ">=1.0.0"
+
+# ============================================================================
+# v6.0.0 PLANNED SKILLS (P1 / P2 — deferred to subsequent minor versions)
+# ============================================================================
+# These skills are scoped and planned but not yet shipped. They appear in
+# the manifest as forward declarations to lock the API surface and avoid
+# surprise renames. Each will get its full SKILL.md + skill.yaml + guardrails
+# + CHANGELOG.md when its target version ships.
+#
+# P1 (planned for v6.1.0):
+#   - platform-product-manager
+#   - technical-product-manager
+#   - growth-product-manager
+#   - ux-researcher
+#   - technical-writer
+#   - developer-relations-engineer
+#
+# P2 (planned for v6.2.0 — industry verticals):
+#   - fintech-engineer
+#   - healthtech-engineer
+#   - edtech-engineer
+#   - govtech-engineer
+#   - gamedev-engineer
+# ============================================================================
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false
+  timestamp: "2026-06-02T00:00:00Z"

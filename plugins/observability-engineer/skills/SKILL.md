@@ -1,6 +1,11 @@
 ﻿---
 id: synarc-observability-engineer
-name: Observability Engineer
+name: observability-engineer
+schema: skill-pack/v1
+skill_type:
+  - capability
+dependencies:
+  synarc-core: ">=5.0.0"
 version: 1.0.0
 description: Comprehensive observability engineering skill covering metrics, logs, traces, OpenTelemetry, alerting, dashboards, SLOs, cardinality management, cost optimization, and system-specific observability patterns.
 author: Synarc

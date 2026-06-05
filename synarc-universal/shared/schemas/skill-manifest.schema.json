@@ -1,0 +1,183 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://synarc.dev/schemas/skill-manifest-v1.json",
+  "title": "Skill Manifest",
+  "description": "Schema for SKILL.md frontmatter and skill.yaml metadata files",
+  "type": "object",
+  "required": [
+    "name",
+    "description",
+    "version",
+    "skill_type"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Lowercase hyphenated skill identifier"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 1000,
+      "description": "Description of when this skill activates"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version (MAJOR.MINOR.PATCH)"
+    },
+    "schema": {
+      "type": "string",
+      "enum": ["skill-pack/v1"],
+      "default": "skill-pack/v1"
+    },
+    "category": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ],
+      "description": "Skill category for organization"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      },
+      "description": "Search and filter tags"
+    },
+    "compatible_agents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "codex",
+          "opencode",
+          "cursor",
+          "gemini-cli",
+          "claude-code",
+          "copilot",
+          "windsurf",
+          "cline",
+          "roo-code"
+        ]
+      },
+      "description": "Known compatible AI coding agents"
+    },
+    "author": {
+      "type": "string",
+      "description": "Skill author or maintainer"
+    },
+    "skill_type": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "workflow",
+          "capability",
+          "preference"
+        ]
+      },
+      "minItems": 1,
+      "description": "Type of skill"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "normal",
+        "high",
+        "critical"
+      ],
+      "default": "normal",
+      "description": "Activation priority level"
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^(>=|\\^|~|>|<|=)?\\d+\\.\\d+\\.\\d+$"
+      },
+      "description": "Skill dependencies with version constraints"
+    },
+    "activation": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "intent-based",
+            "capability-based",
+            "always-on",
+            "composition-based"
+          ]
+        },
+        "triggers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/activation-trigger"
+          }
+        }
+      },
+      "dependentRequired": {
+        "triggers": ["type"]
+      }
+    },
+    "estimate": {
+      "type": "string",
+      "description": "Estimated skill size (informational only)"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "skill_type": {
+            "contains": {
+              "const": "capability"
+            }
+          }
+        }
+      },
+      "then": {
+        "required": ["compatible_agents"]
+      }
+    }
+  ],
+  "definitions": {
+    "activation-trigger": {
+      "type": "object",
+      "required": ["intent"],
+      "properties": {
+        "intent": {
+          "type": "string",
+          "description": "Regex pattern matching user intent"
+        },
+        "context": {
+          "type": "string",
+          "description": "Optional context precondition (regex)"
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 50
+        },
+        "confidence_threshold": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "default": 0.6
+        }
+      }
+    }
+  }
+}

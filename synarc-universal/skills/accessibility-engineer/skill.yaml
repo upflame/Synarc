@@ -1,0 +1,39 @@
+---
+id: accessibility-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: quality
+description: >
+  Accessibility engineering — WCAG 2.2 conformance, ARIA patterns,
+  keyboard navigation, screen reader compatibility, focus
+  management, color contrast, accessible forms, accessibility
+  testing (axe, pa11y, WAVE, NVDA, VoiceOver), VPAT/ACR
+  documentation, legal compliance (ADA, EAA, Section 508).
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: >
+    Activates on intent signals: accessibility, a11y, WCAG, ARIA,
+    screen reader, keyboard navigation, contrast, focus, VPAT,
+    Section 508, ADA, EAA, inclusive design, semantic HTML.
+
+dependencies:
+  synarc-core: ">=6.0.0"
+  frontend-engineer: ">=2.0.0"
+  product-designer: ">=2.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

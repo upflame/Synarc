@@ -1,25 +1,27 @@
-# Synarc - Autonomous Engineering Intelligence Runtime
+# Synarc - Cognition Mesh (Autonomous Engineering Intelligence Runtime)
 
 ![Synarc Banner](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790150/synarc-banner_lytvq5.png)
 
 
-[![Version](https://img.shields.io/badge/version-5.0.0-blue)](https://github.com/upflame-labs/synarc/releases)
+[![Version](https://img.shields.io/badge/version-6.0.0-blue)](https://github.com/upflame-labs/synarc/releases)
 [![Stage](https://img.shields.io/badge/stage-production-success)](https://github.com/upflame-labs/synarc)
 [![License](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)
-[![Runtime](https://img.shields.io/badge/runtime-Claude_Code%20%7C%20Codex%20%7C%20Cursor%20%7C%20Windsurf-purple)](https://github.com/upflame-labs/synarc)
+[![Runtime](https://img.shields.io/badge/runtime-Claude_Code%20%7C%20Codex%20%7C%20Cursor%20%7C%20Windsurf%20%7C%20MCP-purple)](https://github.com/upflame-labs/synarc)
 [![Category](https://img.shields.io/badge/category-AI_Coding_Skill_Runtime-black)](https://github.com/upflame-labs/synarc)
+[![Roles](https://img.shields.io/badge/roles-67_specialized_skills-6C5CE7)](https://github.com/upflame-labs/synarc/tree/main/synarc-universal/skills)
 [![Context Engine](https://img.shields.io/badge/context-persistent_memory-blueviolet)](https://github.com/upflame-labs/synarc)
+[![Cognition Mesh](https://img.shields.io/badge/cognition-multi_role_teams-success)](https://github.com/upflame-labs/synarc)
 [![Security](https://img.shields.io/badge/OWASP-Agentic_Top_10_Covered-brightgreen)](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
-[![Specs](https://img.shields.io/badge/specifications-12_reference_modules-orange)](https://github.com/upflame-labs/synarc/tree/main/plugins/synarc/skills/references)
+[![Specs](https://img.shields.io/badge/specifications-15_reference_modules-orange)](https://github.com/upflame-labs/synarc/tree/main/plugins/synarc/skills/references)
 [![Integrity](https://img.shields.io/badge/integrity-SHA256_Verified-success)](https://github.com/upflame-labs/synarc)
 [![Marketplace](https://img.shields.io/badge/marketplace-upflame/synarc-red)](https://github.com/upflame-labs/synarc)
 
-Build fast with AI, but ship with engineering discipline. Synarc transforms raw vibe coding into context-governed agentic execution by preserving architectural memory, enforcing repository awareness, and maintaining decision continuity across sessions.
+Build fast with AI, but ship with engineering discipline. Synarc transforms raw vibe coding into context-governed agentic execution by preserving architectural memory, enforcing repository awareness, and maintaining decision continuity across sessions. **v6 introduces the Cognition Mesh: specialized AI engineer roles that collaborate as a team.**
 
 > [!IMPORTANT]
-> Production - always-on, zero-configuration engineering cognition runtime. No breaking changes in minor versions.
+> Production - always-on, zero-configuration engineering cognition runtime. v6 is additive to v5 — no breaking changes for v5 manifest consumers.
 
-Change classification, risk tracking, context injection, and session continuity for AI coding environments. One SKILL.md, any runtime.
+Change classification, risk tracking, context injection, multi-role team collaboration, and session continuity for AI coding environments. One SKILL.md, any runtime. 67 specialized roles, one mesh.
 
 ---
 
@@ -123,47 +125,160 @@ Full walkthrough: [docs/QUICKSTART.md](docs/QUICKSTART.md)
 
 ## Installation
 
-### Claude Code (Recommended)
+Synarc v6.0.0 ships **56 skills** (40 carried from v5 + 16 new in the v6 P0 cohort) and the **Cognition Mesh** runtime for 9 AI coding agents. Choose your agent below; the Claude Code plugin marketplace is the fastest path, all other agents use a single drop-in file.
+
+> [!TIP]
+> **AGENTS.md is the cross-tool standard** (governed by the Linux Foundation's Agentic AI Foundation, 2026). Codex CLI, OpenCode, and most modern agents read it from the repo root. Claude Code uses `CLAUDE.md` natively, Gemini CLI uses `GEMINI.md`.
+
+### 1. Claude Code (Recommended)
 
 ```bash
-# Step 1: Add the marketplace from the GitHub repo
 /plugin marketplace add upflame/Synarc
-
-# Step 2: Install Synarc from the marketplace
 /plugin install synarc@upflame-marketplace
-
-# Verify
-> Classify: ANALYSIS | Risk: INFO | Scale: auto
 ```
 
-Alternatively, add via full URL or local path:
+The `synarc` core plugin bundles all 56 role subsystems as reference files. One install activates everything — no per-skill commands needed. Verify with a classification prompt; the headers `WorkType`, `Risk`, `Scale` should appear automatically.
+
+**Optional — install specific role plugins for granular routing:**
 
 ```bash
-/plugin marketplace add https://github.com/upflame/Synarc.git
-# or from a local clone:
-/plugin marketplace add ./path/to/Synarc
+/plugin install backend-engineer@upflame-marketplace
+/plugin install security-engineer@upflame-marketplace
+/plugin install agentic-ai-engineer@upflame-marketplace
 ```
 
-Synarc auto-detects `/brain/` or `.claude/` directories. Full brain directory, hooks, and session continuity enabled. The plugin registers automatically — no manual configuration needed.
-
----
-
-### Manual Installation (Any Runtime)
+**Local clone alternative:**
 
 ```bash
 git clone https://github.com/upflame/Synarc.git
-cd Synarc
+/plugin marketplace add ./Synarc
+/plugin install synarc@synarc-marketplace
 ```
 
-Then point your runtime to `plugins/synarc/skills/SKILL.md`:
+Claude Code auto-detects `/brain/` or `.claude/`. Full brain directory, hooks, and session continuity are enabled out of the box.
 
-| Runtime | Location |
-|---------|----------|
-| Claude Code | `/sk: install plugins/synarc/skills/SKILL.md` or copy to `~/.claude/skills/` |
-| Codex CLI | Copy `SKILL.md` to repo root as `AGENTS.md` |
-| Cursor IDE | Copy `SKILL.md` to `.cursor/rules/synarc.mdc` |
-| Windsurf IDE | Copy `SKILL.md` to `.windsurfrules` |
-| Claude Web / API | Paste `SKILL.md` contents into system prompt or project knowledge |
+### 2. Codex CLI
+
+```bash
+cp synarc-universal/AGENTS.md ./AGENTS.md
+# Keep synarc-universal/ in the repo (or as a submodule)
+```
+
+Codex reads `AGENTS.md` from the repository root on every session. The `skills/` directory must be reachable from the same project tree.
+
+### 3. OpenCode
+
+```bash
+# Project-level
+cp synarc-universal/AGENTS.md ./AGENTS.md
+
+# Or global (applies to every project on this machine)
+mkdir -p ~/.config/opencode
+cp synarc-universal/AGENTS.md ~/.config/opencode/AGENTS.md
+```
+
+OpenCode 1.14.33+ reads `AGENTS.md` from the repo root (project) or `~/.config/opencode/AGENTS.md` (global). It supports MCP servers, custom slash commands, and intent-based skill activation.
+
+### 4. Cursor
+
+Cursor deprecated `.cursorrules` in 2025. The current format is **`.cursor/rules/*.mdc`** with YAML frontmatter.
+
+```bash
+mkdir -p .cursor/rules
+cp synarc-universal/runtime-adapters/cursor/*.mdc .cursor/rules/
+```
+
+Each `.mdc` file declares `description`, `globs`, and `alwaysApply` for automatic activation. Cursor supports four activation modes: **Always Attached**, **Auto Attached** (glob match), **File Match**, and **Manual**.
+
+### 5. Windsurf
+
+Windsurf reads `.windsurfrules` from the repo root (Cascade agent, VS Code-based).
+
+```bash
+cp synarc-universal/shared/runtime-adapters/windsurf.md .windsurfrules
+```
+
+### 6. GitHub Copilot
+
+```bash
+mkdir -p .github
+# Append Synarc sections
+cat synarc-universal/shared/runtime-adapters/copilot.md >> .github/copilot-instructions.md
+```
+
+Copilot reads repository-wide rules from `.github/copilot-instructions.md`. Path-specific rules use `.github/instructions/*.md` with glob filters.
+
+### 7. Gemini CLI
+
+Gemini CLI uses `GEMINI.md` (its own convention, separate from `AGENTS.md`).
+
+```bash
+cp synarc-universal/AGENTS.md ./GEMINI.md
+```
+
+With a 1M-token context window, the full 56-skill pack fits comfortably. No MCP server is required.
+
+### 8. Cline
+
+Cline reads SKILL.md files natively from `.cline/skills/` (project) or `~/.cline/skills/` (personal global).
+
+```bash
+# Project-level
+mkdir -p .cline/skills
+cp -r synarc-universal/skills/* .cline/skills/
+
+# Personal global
+mkdir -p ~/.cline/skills
+cp -r synarc-universal/skills/* ~/.cline/skills/
+```
+
+### 9. Roo Code → Cline (Migration)
+
+**Roo Code shut down on May 15, 2026.** Its user base migrated to **Cline** (the successor). The SKILL.md format is identical.
+
+```bash
+# If you previously had .roo/skills/, just rename it
+mv .roo/skills .cline/skills
+
+# Otherwise, install Cline from scratch
+mkdir -p .cline/skills
+cp -r synarc-universal/skills/* .cline/skills/
+```
+
+### 10. Claude Web / Claude API
+
+Claude Web has no filesystem access. Paste the contents of `plugins/synarc/skills/SKILL.md` into **Project Knowledge**, then start a conversation. For the Claude API, pass the SKILL.md content via the `system` parameter, or use a structured `tool_use` block with `skill_id: "synarc"`.
+
+---
+
+### Mesh Activation (v6)
+
+Once installed, the **Cognition Mesh** activates automatically on:
+
+- The `/mesh` or `/team` slash command
+- Intent phrasing such as "as a team", "have someone review this", "collaborate on this"
+- 3+ distinct intent signals in one request (e.g., "build a checkout flow" matches PM, designer, frontend, backend, accessibility, performance, SDET, release, security)
+
+No additional setup. `synarc-core` is the mesh coordinator.
+
+---
+
+### Quick Reference
+
+| Agent | File / Command | Location |
+|-------|---------------|----------|
+| Claude Code | `/plugin install synarc@upflame-marketplace` | Plugin marketplace |
+| Codex CLI | `AGENTS.md` | Repo root |
+| OpenCode | `AGENTS.md` | Repo root or `~/.config/opencode/AGENTS.md` |
+| Cursor | `.mdc` rules with frontmatter | `.cursor/rules/` |
+| Windsurf | `.windsurfrules` | Repo root |
+| Copilot | `copilot-instructions.md` | `.github/` |
+| Gemini CLI | `GEMINI.md` | Repo root |
+| Cline | `SKILL.md` files | `.cline/skills/` or `~/.cline/skills/` |
+| Roo Code | Migrate to Cline | `.cline/skills/` |
+| Claude Web/API | Paste / `system` param | Project knowledge or API system field |
+
+Full per-agent reference with verification steps and troubleshooting: [synarc-universal/docs/installation.md](synarc-universal/docs/installation.md).
 
 ---
 
@@ -301,6 +416,64 @@ Engineer-to-engineer: direct, precise, no filler.
 
 ---
 
+## Cognition Mesh (v6)
+
+v6 ships the **Cognition Mesh**: instead of activating a single skill, multiple roles collaborate on a single task with shared working memory, role handoffs, and a unified deliverable.
+
+### When the Mesh Activates
+
+- You type `/mesh` or `/team`
+- You ask for "a team" / "collaborate" / "have someone review this"
+- 3+ distinct intent signals are detected (e.g., "build a checkout flow" matches PM, designer, frontend, backend, accessibility, performance, SDET, release, security)
+
+### Example Mesh
+
+```text
+User: "/mesh build a checkout flow"
+
+synarc-core (coordinator)
+├── product-manager         opportunity, success metrics
+├── product-designer        interaction, wireframe
+├── frontend-engineer       component architecture
+├── backend-engineer        API, data model
+├── accessibility-engineer  WCAG, keyboard, screen reader
+├── performance-engineer    LCP/INP budget, CDN
+├── sdet-engineer           E2E suite, contract test
+├── release-engineer        feature flag rollout, canary
+└── security-engineer       threat model, fraud
+```
+
+Each role produces its output, writes to the mesh working memory, and hands off to the next. The coordinator merges into a single, structured response.
+
+### Mesh Output
+
+The mesh returns JSON-serializable output you can pipe to tools, CI, or other agents:
+
+```json
+{
+  "mesh_id": "checkout-flow-design",
+  "participants": ["product-manager", "product-designer", ...],
+  "per_role_output": [...],
+  "conflicts": [],
+  "unified": "<merged response>"
+}
+```
+
+### v6.0.0 New Skills (16)
+
+| Category | Skills |
+|----------|--------|
+| AI-Era (8) | agentic-ai-engineer, prompt-engineer, rag-engineer, ai-safety-eval-engineer, agent-architect, ai-product-manager, mlops-engineer, data-scientist |
+| Product (1) | product-manager |
+| Design (3) | product-designer, content-designer, design-systems-engineer |
+| Quality (4) | sdet-engineer, performance-engineer, release-engineer, accessibility-engineer |
+
+Each is a full skill with SKILL.md, skill.yaml, guardrails.yaml, and CHANGELOG.md. They inherit `synarc-core` and follow the v5 conventions exactly.
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full design and [docs/MIGRATION_v5_to_v6.md](docs/MIGRATION_v5_to_v6.md) for upgrade notes.
+
+---
+
 ## Adoption Readiness
 
 | Criterion | Status |
@@ -371,10 +544,11 @@ Classification across SDLC: Pre-dev → Development → Review → Pre-deploy �
 
 | Category | Links |
 |----------|-------|
-| Getting Started | [Quick Start](docs/QUICKSTART.md) · [Deployment Guide](docs/DEPLOYMENT.md) |
+| Getting Started | [Quick Start](docs/QUICKSTART.md) · [Deployment Guide](docs/DEPLOYMENT.md) · [Architecture (v6)](docs/ARCHITECTURE.md) · [v5→v6 Migration](docs/MIGRATION_v5_to_v6.md) |
 | Specifications | [change-taxonomy.md](plugins/synarc/skills/references/change-taxonomy.md) · [injection-protocol.md](plugins/synarc/skills/references/injection-protocol.md) · [session-tracking.md](plugins/synarc/skills/references/session-tracking.md) · [coding-agent.md](plugins/synarc/skills/references/coding-agent.md) · [project-scales.md](plugins/synarc/skills/references/project-scales.md) · [analysis-patterns.md](plugins/synarc/skills/references/analysis-patterns.md) · [testing-strategy.md](plugins/synarc/skills/references/testing-strategy.md) · [security-patterns.md](plugins/synarc/skills/references/security-patterns.md) |
 | Architecture | [cognition-layer.md](plugins/synarc/skills/references/cognition-layer.md) · [schemas.md](plugins/synarc/skills/references/schemas.md) · [platform-adapters.md](plugins/synarc/skills/references/platform-adapters.md) |
 | Reference | [SKILL.md](plugins/synarc/skills/SKILL.md) (entry point) · [negative-prompts.md](plugins/synarc/skills/references/negative-prompts.md) |
+| Vision | [v6 Vision](brain/V6_VISION.md) |
 | Integrity | [integrity.json](.claude-plugin/integrity.json) (SHA-256 verified) |
 
 ---

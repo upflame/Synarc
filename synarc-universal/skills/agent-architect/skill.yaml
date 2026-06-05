@@ -1,0 +1,36 @@
+---
+id: agent-architect
+version: 1.0.0
+schema: skill-pack/v1
+category: ai-era
+description: >
+  Agent architecture — multi-agent topology design, MCP server
+  architecture, A2A protocols, capability discovery, agent trust,
+  graph observability, cost/latency budgeting.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: >
+    Activates on intent signals: multi-agent, agent topology,
+    MCP server, A2A protocol, capability discovery, agent
+    registry, agent observability, agent cost.
+
+dependencies:
+  synarc-core: ">=6.0.0"
+  agentic-ai-engineer: ">=1.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

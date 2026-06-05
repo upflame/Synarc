@@ -1,0 +1,36 @@
+---
+id: data-scientist
+version: 1.0.0
+schema: skill-pack/v1
+category: ai-era
+description: >
+  Data science — statistical reasoning, A/B testing, causal inference,
+  time series, classification and regression metrics, EDA, statistical
+  pitfalls, experiment pre-registration.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: >
+    Activates on intent signals: A/B test, hypothesis test, statistics,
+    causal inference, p-value, statistical significance, experiment,
+    time series, classification metric, regression metric.
+
+dependencies:
+  synarc-core: ">=6.0.0"
+  data-engineer: ">=2.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

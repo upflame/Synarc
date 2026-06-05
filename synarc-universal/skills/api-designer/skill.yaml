@@ -1,0 +1,29 @@
+﻿id: api-designer
+version: "1.0.0"
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  "Comprehensive API design skill covering REST, GraphQL, gRPC, contracts, security, lifecycle, documentation, event-driven architectures, and governance"
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

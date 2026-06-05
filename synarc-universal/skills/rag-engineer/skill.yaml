@@ -1,0 +1,35 @@
+---
+id: rag-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: ai-era
+description: >
+  RAG engineering — chunking, embeddings, retrieval strategies
+  (dense/sparse/hybrid), reranking, generation, evals, security,
+  and agentic RAG.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: >
+    Activates on intent signals: RAG, retrieval, embedding, vector
+    search, chunking, rerank, HyDE, multi-hop, RAG eval, retrieval
+    poisoning, agentic RAG.
+
+dependencies:
+  synarc-core: ">=6.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

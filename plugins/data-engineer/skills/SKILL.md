@@ -1,6 +1,11 @@
----
+﻿---
 name: data-engineer
-title: Data Engineer — Pipeline Architecture & Data Modeling
+schema: skill-pack/v1
+skill_type:
+  - capability
+dependencies:
+  synarc-core: ">=5.0.0"
+title: Data Engineer â€” Pipeline Architecture & Data Modeling
 description: Pipeline architecture reasoning, ETL/ELT decisions, data modeling (star schema, data vault, 3NF, lakehouse), batch vs streaming decisions, data quality frameworks, schema evolution, data movement patterns, transformation logic, storage format selection, orchestration strategies, data governance, cataloging, cost optimization. Inherits synarc core.
 version: 2.0.0
 category: engineering-intelligence
@@ -25,86 +30,33 @@ compatibility:
   - codex-cli
   - cursor
   - windsurf
-activation: contextual
-parent: synarc
 ---
 
-# Data Engineer — Pipeline Architecture & Data Modeling
+# Data Engineer â€” Pipeline Architecture & Data Modeling
 
 Inherits synarc core (S1 WorkType taxonomy, S2 risk hard floors, S5 project scales, S13 quality gates, S14 language rules, S16 negative prompts, S17 zero-tolerance violations). All synarc prohibitions apply.
 
 Data engineering moves data from source systems to storage and compute layers, transforming it along the way. Every decision involves trade-offs between freshness, completeness, cost, and complexity. This skill covers the full lifecycle of data pipeline design: ingestion, transformation, storage, modeling, governance, quality, and monitoring.
 
----
 
-## P0 — INTELLIGENCE AUGMENTATION
+## P2 â€” METHODOLOGY: Pipeline Architecture
 
-### P0.1 — Token Optimization Defaults
-
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
-
-**COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
-
-**Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
-
-### P0.2 — Adaptive Learning Triggers
-
-**Learning Triggers:**
-- New pattern discovered in this domain → store in brain/error_patterns/ or brain/decisions/
-- Fix validated → confidence += 1 in brain/error_patterns/
-- Fix failed → create new entry with attempted approaches
-- Human correction → store incorrect + correct paths with disambiguator
-
-**Knowledge Storage:**
-- File analysis: stored in brain/file_analysis/[filename].json (permanent)
-- Domain conventions: stored in brain/ (update on every discovery)
-- Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
-
-### P0.3 — Smart Auto-Prompt Rules
-
-**Optimistic Action Threshold:** > 80% confidence → act immediately. 60-80% → brief confirmation. < 60% → clarify first.
-
-**Auto-Complete Triggers:**
-- Error received → lookup pattern, propose fix immediately
-- File named → load file, offer action suggestions
-- Exception thrown → analyze stack, propose fix with confidence score
-
-**Prefetch Protocol:** After each action, predict next file from import graph. Load file_analysis/ for predicted file. Warm cache with likely next actions.
-
-**Reduced Round-Trips:** Every task MUST complete in ≤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
-
-## P1 — PERSONA: Data Engineer
-
-You reason about systems in terms of data movement: where data originates, how it is extracted, how it is transformed, where it is stored, and who consumes it. You design pipelines that are observable, testable, and recoverable. You choose storage formats and data models based on query patterns and cost constraints.
-
-Your reasoning is grounded in: the volume and velocity of incoming data, the freshness requirements of downstream consumers, the cost of storage and compute for each transformation step, the data quality guarantees that each pipeline must enforce, and the schema evolution patterns that allow systems to change without breaking existing consumers.
-
-You distinguish between batch patterns (reliable, complete, higher latency) and streaming patterns (low latency, eventual completeness, more complex error handling). You choose the approach based on business requirements, not technology preference.
-
-You are responsible for end-to-end data flow design: source system extraction, serialization and transport, transformation logic, target storage modeling, data quality enforcement, schema governance, and pipeline observability. You design for failure — every pipeline must handle retries, late-arriving data, schema drift, and backfill scenarios without manual intervention.
-
-You evaluate total cost of ownership: storage costs, compute costs, data transfer costs, and engineering maintenance overhead. A pipeline that is cheap to run but expensive to maintain is not a good design. A pipeline that is technically elegant but costs 10x to operate is not a good design.
-
----
-
-## P2 — METHODOLOGY: Pipeline Architecture
-
-### P2.1 — ETL vs ELT Decision
+### P2.1 â€” ETL vs ELT Decision
 
 ```
 ETL (Extract -> Transform -> Load):
-  TRANSFORM BEFORE LOAD — data is transformed in a dedicated compute layer before writing to target
+  TRANSFORM BEFORE LOAD â€” data is transformed in a dedicated compute layer before writing to target
   Extract raw data -> transform in intermediate engine -> load structured data into warehouse
   Use when:
     - Target storage is expensive (transformed data is smaller)
     - Target cannot do complex transformations (NoSQL, legacy systems)
     - Data must be anonymized/masked before landing in warehouse
     - Regulatory requirement: sensitive data cannot enter warehouse untransformed
-    - Source system has limited retention — transform immediately
+    - Source system has limited retention â€” transform immediately
     - Target is a data lake without transformation engine (raw zone -> curated zone)
 
 ELT (Extract -> Load -> Transform):
-  LOAD BEFORE TRANSFORM — raw data lands in warehouse, transformation happens in-warehouse
+  LOAD BEFORE TRANSFORM â€” raw data lands in warehouse, transformation happens in-warehouse
   Extract raw data -> load into raw storage -> transform in warehouse (dbt, SQL)
   Use when:
     - Warehouse is cheap and scalable (cloud data warehouse: Snowflake, BigQuery, Redshift)
@@ -114,7 +66,7 @@ ELT (Extract -> Load -> Transform):
     - Team is SQL-proficient and wants to iterate quickly
     - You need to preserve raw data for regulatory/compliance purposes
 
-ETL vs ELT is not a binary choice — many pipelines use both:
+ETL vs ELT is not a binary choice â€” many pipelines use both:
   Stage 1: ELT raw data into landing zone (preserve source fidelity)
   Stage 2: ETL from landing zone to curated zone (cleanse, mask, normalize)
   Stage 3: ELT within warehouse for analytics models (dbt transformations)
@@ -159,7 +111,7 @@ ORCHESTRATED ELT:
   - Dataform (now part of Google): SQL-based warehouse transformations
 ```
 
-### P2.2 — Pipeline Architecture Patterns
+### P2.2 â€” Pipeline Architecture Patterns
 
 There are four fundamental pipeline architecture patterns. Choose based on latency requirements, data volume, and operational complexity tolerance.
 
@@ -193,8 +145,8 @@ LAMBDA ARCHITECTURE (Batch + Streaming):
   Serving Layer: merges batch and speed layer results for query
   Problems:
     - Two codebases for same logic (batch and streaming implementations diverge)
-    - Merging logic complexity — speed layer results must be corrected when batch catches up
-    - Operational overhead — maintain and monitor two systems
+    - Merging logic complexity â€” speed layer results must be corrected when batch catches up
+    - Operational overhead â€” maintain and monitor two systems
   Use: only when existing batch infrastructure cannot be replaced and real-time is required
 ```
 
@@ -209,7 +161,7 @@ KAPPA ARCHITECTURE (Streaming-only, unified):
     - Event log must have sufficient retention for reprocessing
     - Stream processor must be able to process historical data at throughput
   Strengths:
-    - Single codebase — batch and streaming are the same pipeline
+    - Single codebase â€” batch and streaming are the same pipeline
     - Reprocessing is a parameter change (start from offset 0), not a different system
     - Lower operational overhead than Lambda
   Weaknesses:
@@ -232,7 +184,7 @@ Need real-time (sub-second) results?
             |-- > 1 hour -> Batch-only (hourly/daily)
 ```
 
-### P2.3 — Storage Format Selection
+### P2.3 â€” Storage Format Selection
 
 ```
 ROW-ORIENTED (Avro, JSON, CSV): full row reads, frequent updates, moderate compression
@@ -258,10 +210,10 @@ PHYSICAL LAYOUT:
   Column chunk split into pages (compress/encode independently)
 
 ENCODING TECHNIQUES:
-  PLAIN: raw values, no encoding — baseline
+  PLAIN: raw values, no encoding â€” baseline
   RLE (Run Length Encoding): sequences of same value -> (value, count) pairs
-  DELTA: store differences between consecutive values — good for sorted/monotonic
-  DICTIONARY: build value dictionary, store dictionary indexes — high compression for low-cardinality
+  DELTA: store differences between consecutive values â€” good for sorted/monotonic
+  DICTIONARY: build value dictionary, store dictionary indexes â€” high compression for low-cardinality
 
 COMPRESSION CODECS:
   Snappy: fast, moderate compression (default for most engines)
@@ -322,16 +274,16 @@ APACHE HUDI:
 +-------------------+---------+---------+---------+---------+
 ```
 
-### P2.4 — Data Modeling Patterns
+### P2.4 â€” Data Modeling Patterns
 
 ```
 FIVE MAJOR DATA MODELING APPROACHES:
-  1. Third Normal Form (3NF) — transactional/operational systems
-  2. Star Schema — dimensional modeling for BI/reporting
-  3. Snowflake Schema — normalized dimensions
-  4. Data Vault — enterprise data warehouse with audit trail
-  5. One Big Table (OBT) / Wide Table — ML/data discovery
-  6. Medallion Architecture (Bronze/Silver/Gold) — modern lakehouse
+  1. Third Normal Form (3NF) â€” transactional/operational systems
+  2. Star Schema â€” dimensional modeling for BI/reporting
+  3. Snowflake Schema â€” normalized dimensions
+  4. Data Vault â€” enterprise data warehouse with audit trail
+  5. One Big Table (OBT) / Wide Table â€” ML/data discovery
+  6. Medallion Architecture (Bronze/Silver/Gold) â€” modern lakehouse
 ```
 
 ```
@@ -346,7 +298,7 @@ THIRD NORMAL FORM (3NF):
     - Source systems where normalization prevents update anomalies
 
   Strengths:
-    - Eliminates data redundancy — each fact stored once
+    - Eliminates data redundancy â€” each fact stored once
     - Prevents update/insert/delete anomalies
     - Schema is stable and well-understood
     - Storage efficient
@@ -362,37 +314,37 @@ THIRD NORMAL FORM (3NF):
 
 ```
 STAR SCHEMA:
-  Fact table: measurements, metrics, events — foreign keys to dimensions
-  Dimension tables: descriptive attributes — denormalized, single join key
+  Fact table: measurements, metrics, events â€” foreign keys to dimensions
+  Dimension tables: descriptive attributes â€” denormalized, single join key
 
   FACT TABLE DESIGN:
     Grain: declare the atomic level (one row per transaction, per line item, per event)
     Additive measures: can be summed across any dimension (revenue, quantity)
     Semi-additive: can be summed across some dimensions but not all (account balance across time)
-    Non-additive: cannot be summed (ratios, percentages — store numerator/denominator)
+    Non-additive: cannot be summed (ratios, percentages â€” store numerator/denominator)
     Degenerate dimensions: fact attributes without a dimension table (order number, ticket ID)
 
   DIMENSION TABLE DESIGN:
     Conformed dimension: same dimension used across multiple fact tables (dim_date, dim_customer)
     Junk dimension: small collection of low-cardinality flags and indicators in one table
     Slowly Changing Dimension (SCD):
-      Type 0: fixed — never changes (date dimension)
-      Type 1: overwrite — no history (customer phone number)
-      Type 2: add row — full history with effective/end dates and current flag
-      Type 3: add column — track limited history (previous value column)
-      Type 4: historical table — current values in main dim, history in separate table
+      Type 0: fixed â€” never changes (date dimension)
+      Type 1: overwrite â€” no history (customer phone number)
+      Type 2: add row â€” full history with effective/end dates and current flag
+      Type 3: add column â€” track limited history (previous value column)
+      Type 4: historical table â€” current values in main dim, history in separate table
 
   Use:
     - BI dashboards and reporting
     - Dimensional analysis (drill-down, roll-up, slice, dice)
 
   Strengths:
-    - Intuitive for business users — dimensions are "by what?" and facts are "what?"
-    - Fast aggregations — star join optimization in most query engines
-    - Predictable query patterns — BI tools work naturally
+    - Intuitive for business users â€” dimensions are "by what?" and facts are "what?"
+    - Fast aggregations â€” star join optimization in most query engines
+    - Predictable query patterns â€” BI tools work naturally
 
   Weaknesses:
-    - Dimension updates require SCD handling — adds complexity
+    - Dimension updates require SCD handling â€” adds complexity
     - Cannot track full source system history without data vault
     - Rigid when source systems change frequently
 ```
@@ -408,13 +360,13 @@ SNOWFLAKE SCHEMA:
     - When attribute maintenance benefits from normalization
 
   Strengths:
-    - Reduced data redundancy — region names stored once
-    - Easier dimension maintenance — update region name in one place
+    - Reduced data redundancy â€” region names stored once
+    - Easier dimension maintenance â€” update region name in one place
     - Storage efficient for large dimensions with shared attributes
 
   Weaknesses:
-    - More joins required — each normalized level adds a join
-    - Slower query performance — join penalty in large datasets
+    - More joins required â€” each normalized level adds a join
+    - Slower query performance â€” join penalty in large datasets
     - More complex BI tool configuration
 
   Prefer star schema over snowflake in analytical warehouses.
@@ -425,7 +377,7 @@ SNOWFLAKE SCHEMA:
 DATA VAULT:
   Hubs: business keys (unique, immutable, no descriptive data)
   Links: relationships between business keys (many-to-many, many-to-one)
-  Satellites: descriptive attributes (temporal — tracked over time)
+  Satellites: descriptive attributes (temporal â€” tracked over time)
 
   HUB DESIGN:
     Natural business key (not surrogate) + hash key (SHA-256 of business key concatenation)
@@ -449,15 +401,15 @@ DATA VAULT:
     - Environments where source systems change frequently
 
   Strengths:
-    - Handles source system changes gracefully — add satellite for new system
-    - Full audit trail — every data point tracked with source, load time, and version
-    - Parallel loading — hubs, links, and satellites load independently
+    - Handles source system changes gracefully â€” add satellite for new system
+    - Full audit trail â€” every data point tracked with source, load time, and version
+    - Parallel loading â€” hubs, links, and satellites load independently
     - Resilient to source system schema changes
 
   Weaknesses:
-    - Complex to query — 3+ joins for basic business questions
-    - High storage overhead — hash keys, load timestamps, source system identifiers
-    - Requires automation tooling — manual data vault is error-prone
+    - Complex to query â€” 3+ joins for basic business questions
+    - High storage overhead â€” hash keys, load timestamps, source system identifiers
+    - Requires automation tooling â€” manual data vault is error-prone
     - Not suitable for direct BI consumption
 ```
 
@@ -471,15 +423,15 @@ ONE BIG TABLE (OBT) / WIDE TABLE:
     - Export to external systems (CSV/Parquet dump for data scientists)
 
   Strengths:
-    - Simplest to query — no joins needed
+    - Simplest to query â€” no joins needed
     - Fast for individual record lookups
     - Easy to export and share
 
   Weaknesses:
-    - High storage cost — repeated dimension attributes across every row
-    - Slow aggregations — scanning wide rows is expensive
+    - High storage cost â€” repeated dimension attributes across every row
+    - Slow aggregations â€” scanning wide rows is expensive
     - Schema change affects everything
-    - Update anomalies — updating a dimension attribute updates millions of rows
+    - Update anomalies â€” updating a dimension attribute updates millions of rows
 ```
 
 ```
@@ -488,7 +440,7 @@ MEDALLION ARCHITECTURE (Bronze / Silver / Gold):
   BRONZE (Raw): raw ingested data, exactly as received from source, append-only
     - Schema-on-read (or minimal schema enforcement)
     - No transformations, no cleansing, no deduplication
-    - Immutable — never modified after ingestion
+    - Immutable â€” never modified after ingestion
     - Partitioned by ingestion date
 
   SILVER (Cleaned): validated, deduplicated, standardized data
@@ -542,15 +494,15 @@ MEDALLION ARCHITECTURE (Bronze / Silver / Gold):
 +---------------+----------------------------------------------------------+
 
 SCD Type 2 implementation columns:
-  surrogate_key      — unique row ID per version
-  natural_key        — business key (stable across versions)
-  effective_date     — when this version became active
-  end_date           — when this version was superseded (NULL = current)
-  is_current         — boolean flag for current version
-  version_number     — sequential version per natural key
+  surrogate_key      â€” unique row ID per version
+  natural_key        â€” business key (stable across versions)
+  effective_date     â€” when this version became active
+  end_date           â€” when this version was superseded (NULL = current)
+  is_current         â€” boolean flag for current version
+  version_number     â€” sequential version per natural key
 ```
 
-### P2.5 — Batch Processing Deep Dive
+### P2.5 â€” Batch Processing Deep Dive
 
 Batch processing is the workhorse of data engineering. It handles the majority of data volume and is the foundation for reliable, repeatable data pipelines.
 
@@ -572,11 +524,11 @@ APACHE AIRFLOW:
 
   Airflow DAG best practices:
     - One DAG per data domain (not one DAG per table)
-    - Tasks should be idempotent — running twice produces same result
+    - Tasks should be idempotent â€” running twice produces same result
     - Use deferrable operators for long-running sensors (reduce worker consumption)
     - Set task retries at task level, DAG-level retries for the whole DAG
     - Use TaskFlow API (Python decorators) for simple Python tasks
-    - Separate config from code — use Airflow Variables or connections
+    - Separate config from code â€” use Airflow Variables or connections
     - Test DAGs in CI (pytest with dagbag, mock external dependencies)
 
   Airflow anti-patterns:
@@ -587,7 +539,7 @@ APACHE AIRFLOW:
 
   Airflow scaling considerations:
     - Scheduler can handle thousands of DAGs with Celery/Kubernetes executor
-    - Database (PostgreSQL/MySQL) is the bottleneck — use connection pooling
+    - Database (PostgreSQL/MySQL) is the bottleneck â€” use connection pooling
     - Queue management: separate queues for CPU-heavy, IO-heavy, and short tasks
 
 DAGSTER:
@@ -624,7 +576,7 @@ SPARK BATCH JOB DESIGN PRINCIPLES:
     - Skew handling: salt keys, use bucketing, range partitioning
 
   Shuffle optimization:
-    - Shuffle is the most expensive operation in Spark — minimize it
+    - Shuffle is the most expensive operation in Spark â€” minimize it
     - Use reduceByKey instead of groupByKey (combiners reduce shuffle data)
     - Broadcast small tables (< 100MB) instead of shuffle join
     - SortMergeJoin for large tables, HashJoin for medium tables
@@ -640,16 +592,16 @@ SPARK BATCH JOB DESIGN PRINCIPLES:
   File output optimization:
     - Coalesce or repartition before write to control output file count
     - Target file size: 128MB-1GB per output file
-    - Avoid too many small files (< 64MB) — overhead on listing and metadata
+    - Avoid too many small files (< 64MB) â€” overhead on listing and metadata
     - Use dynamic partition writes to avoid writing empty partitions
     - Use INSERT OVERWRITE for partition-level idempotent writes
 
   Common Spark anti-patterns:
-    - Using collect() on large datasets — pulls all data to driver, causes OOM
-    - Reading too many small files — use coalesce or read with wholeTextFiles
-    - Not persisting reused DataFrames — time travel through lineage
-    - Using Python UDFs when built-in functions exist — UDFs serialize data, slow
-    - No partitioning on joins — full shuffle for every join even when pre-partitioned
+    - Using collect() on large datasets â€” pulls all data to driver, causes OOM
+    - Reading too many small files â€” use coalesce or read with wholeTextFiles
+    - Not persisting reused DataFrames â€” time travel through lineage
+    - Using Python UDFs when built-in functions exist â€” UDFs serialize data, slow
+    - No partitioning on joins â€” full shuffle for every join even when pre-partitioned
 
   Spark configuration checklist:
     - spark.sql.adaptive.enabled=true (AQE for dynamic optimization)
@@ -681,7 +633,7 @@ INCREMENTAL WITH BACKFILL:
   Implementation: parameterized start_date/end_date in job config, default to last watermark
 
   Full refresh everything is lazy engineering. Use incremental for tables > 10M rows
-  or when source system load is a concern. Always parameterize date ranges — every pipeline
+  or when source system load is a concern. Always parameterize date ranges â€” every pipeline
   should support backfill with {start_date, end_date} parameters.
 ```
 
@@ -689,19 +641,19 @@ INCREMENTAL WITH BACKFILL:
 
 ```
 WATERMARK TABLE SCHEMA (pipeline_watermarks):
-  pipeline_name    VARCHAR   — unique pipeline identifier
-  table_name       VARCHAR   — target table being loaded
-  source_type      VARCHAR   — 'cdc', 'timestamp', 'sequence'
-  watermark_column VARCHAR   — the column used for incremental tracking
-  watermark_value  TIMESTAMP — last successfully processed value
-  watermark_type   VARCHAR   — 'full_refresh', 'incremental', 'backfill'
-  updated_at       TIMESTAMP — when this watermark was last updated
+  pipeline_name    VARCHAR   â€” unique pipeline identifier
+  table_name       VARCHAR   â€” target table being loaded
+  source_type      VARCHAR   â€” 'cdc', 'timestamp', 'sequence'
+  watermark_column VARCHAR   â€” the column used for incremental tracking
+  watermark_value  TIMESTAMP â€” last successfully processed value
+  watermark_type   VARCHAR   â€” 'full_refresh', 'incremental', 'backfill'
+  updated_at       TIMESTAMP â€” when this watermark was last updated
 
   Implementation:
     - Read watermark at start of pipeline run
     - Process data WHERE {watermark_column} > {watermark_value}
     - On success: UPDATE watermark_value = MAX({watermark_column}) from processed data
-    - On failure: watermark unchanged — retry from same point
+    - On failure: watermark unchanged â€” retry from same point
     - For backfill: set watermark_value to backfill start, process, then back to normal
 
   Multiple source types:
@@ -746,7 +698,7 @@ PATTERN 7: Dependency graph for dimensional model
   load_dim_store    ->|
 ```
 
-### P2.6 — Stream Processing Deep Dive
+### P2.6 â€” Stream Processing Deep Dive
 
 Stream processing handles data as it arrives, enabling low-latency insights. It is fundamentally more complex than batch due to state management, event ordering, and exactly-once semantics.
 
@@ -758,8 +710,8 @@ STREAM PROCESSING FUNDAMENTALS:
     Processing time: when the event is processed by the stream processor
     Ingestion time: when the event entered the streaming platform (Kafka timestamp)
 
-    Event time is the truth — it represents when the real-world action occurred.
-    Processing time is an implementation detail — it varies based on system load.
+    Event time is the truth â€” it represents when the real-world action occurred.
+    Processing time is an implementation detail â€” it varies based on system load.
     Always use event time for windowed aggregations and business logic.
 
   WATERMARKS:
@@ -777,8 +729,8 @@ STREAM PROCESSING FUNDAMENTALS:
       Idle source detection: advance watermark when no data from a partition
 
     Watermark implications:
-      Too aggressive: windows close early, late data discarded — undercounting
-      Too conservative: windows stay open too long — high memory, delayed results
+      Too aggressive: windows close early, late data discarded â€” undercounting
+      Too conservative: windows stay open too long â€” high memory, delayed results
 
   TIME WINDOWS:
     Tumbling window: fixed-size, non-overlapping windows
@@ -790,7 +742,7 @@ STREAM PROCESSING FUNDAMENTALS:
     Session window: gaps between activity define window boundaries
       Example: 30-minute session gap -> activity burst with < 30min gap = same session
 
-    Global window: no time boundary — all events in one window
+    Global window: no time boundary â€” all events in one window
       Requires trigger specification (e.g., emit every 1000 events or every 10 seconds)
 
     Each window type has different late-data handling requirements:
@@ -826,19 +778,19 @@ APACHE FLINK:
     Parallelism: match to Kafka partition count (1:1 is optimal)
     Buffer timeout: default 100ms, increase for higher throughput (500ms for batch-like)
     RocksDB state: enable incremental checkpoints for large state
-    Checkpoint interval: 1-5 minutes (not every second — overhead is significant)
+    Checkpoint interval: 1-5 minutes (not every second â€” overhead is significant)
     State TTL: configure state time-to-live to prevent unbounded state growth
 
   Flink anti-patterns:
     Global state (non-keyed): limited parallelism, single-threaded bottleneck
     KeyBy on high-cardinality keys: shuffle overhead, large state
-    Too many windows: all windows are tracked in state — memory pressure
+    Too many windows: all windows are tracked in state â€” memory pressure
     Checkpointing too frequently: I/O overhead on checkpoint storage
     Allowed lateness too large: keeps windows in memory for too long
     No state TTL: unbounded state growth -> OOM or disk exhaustion
 
 KAFKA STREAMS:
-  Architecture: library, not a cluster — runs in your application
+  Architecture: library, not a cluster â€” runs in your application
   State: local RocksDB stores per stream task
   Exactly-once: idempotent producer + transactional semantics
 
@@ -861,7 +813,7 @@ AMAZON KINESIS:
 
   Kinesis specifics:
     Shard: unit of throughput (1MB/s write, 2MB/s read per shard)
-    Partition key: determines shard assignment — needs good distribution
+    Partition key: determines shard assignment â€” needs good distribution
     Retention: default 24 hours, up to 8760 hours with extended retention
     Fan-out: enhanced fan-out for multiple consumers (dedicated 2MB/s per consumer)
     Limitations: hard shard limit, no on-demand repartitioning
@@ -892,18 +844,18 @@ processing time accuracy is sufficient (e.g., infrastructure monitoring).
 ```
 DELIVERY SEMANTICS DEFINITIONS:
   At-most-once: records are processed zero or one time (no retries)
-    — Acceptable for: monitoring metrics, non-critical logs
-    — Risk: data loss on failure
+    â€” Acceptable for: monitoring metrics, non-critical logs
+    â€” Risk: data loss on failure
 
   At-least-once: records are processed one or more times (retries on failure)
-    — Acceptable for: idempotent sinks (UPSERT targets), deduplicating sinks
-    — Risk: duplicate data if sink is not idempotent
-    — Most common default in streaming systems
+    â€” Acceptable for: idempotent sinks (UPSERT targets), deduplicating sinks
+    â€” Risk: duplicate data if sink is not idempotent
+    â€” Most common default in streaming systems
 
   Exactly-once: records are processed exactly one time, no duplicates, no gaps
-    — Required for: financial transactions, billing, inventory, compliance
-    — Risk: higher complexity and latency
-    — Note: "effectively once" is a more accurate term — at-least-once with dedup
+    â€” Required for: financial transactions, billing, inventory, compliance
+    â€” Risk: higher complexity and latency
+    â€” Note: "effectively once" is a more accurate term â€” at-least-once with dedup
 
 ACHIEVING EXACTLY-ONCE IN STREAMING:
   Source: offset/sequence tracked in checkpoint state
@@ -936,8 +888,8 @@ Micro-batching bridges batch and streaming by collecting events into small batch
     Exactly-once: via checkpoint-based offset tracking
 
     Micro-batch vs continuous processing:
-      Micro-batch: process one batch at a time — higher latency, higher throughput
-      Continuous: low-latency processing (Flink-like) — lower throughput, experimental in Spark
+      Micro-batch: process one batch at a time â€” higher latency, higher throughput
+      Continuous: low-latency processing (Flink-like) â€” lower throughput, experimental in Spark
 
   When to use micro-batching:
     - You need streaming ingestion but batch transformation (CDC -> file -> batch process)
@@ -946,7 +898,7 @@ Micro-batching bridges batch and streaming by collecting events into small batch
     - Team is more comfortable with batch processing debugging
 ```
 
-### P2.7 — Batch vs Streaming Decision Framework
+### P2.7 â€” Batch vs Streaming Decision Framework
 
 This is the most consequential architecture decision in data engineering. The choice affects tooling, team skills, operational complexity, and data quality guarantees.
 
@@ -1024,9 +976,9 @@ HYBRID 3: Kappa (streaming does everything, batch is just replay)
   Benefit: single codebase, single operational model
 ```
 
-### P2.8 — Data Quality Framework
+### P2.8 â€” Data Quality Framework
 
-Data quality is not a one-time check — it is a continuous process embedded in every pipeline stage.
+Data quality is not a one-time check â€” it is a continuous process embedded in every pipeline stage.
 
 ```
 QUALITY DIMENSIONS:
@@ -1139,18 +1091,18 @@ LAYER 4: POST-LOAD QUALITY
 
 ```
 MONITORING METADATA (every pipeline writes to quality_metrics table):
-  pipeline_name       — unique identifier
-  run_id              — unique run identifier
-  table_name          — target table
-  dimension           — which quality dimension checked
-  check_name          — descriptive check name
-  records_checked     — total records evaluated
-  records_passed      — records passing the check
-  records_failed      — records failing the check
-  pass_rate           — records_passed / records_checked
-  threshold           — configured pass rate threshold
-  status              — PASS / FAIL / WARNING
-  checked_at          — when the check ran
+  pipeline_name       â€” unique identifier
+  run_id              â€” unique run identifier
+  table_name          â€” target table
+  dimension           â€” which quality dimension checked
+  check_name          â€” descriptive check name
+  records_checked     â€” total records evaluated
+  records_passed      â€” records passing the check
+  records_failed      â€” records failing the check
+  pass_rate           â€” records_passed / records_checked
+  threshold           â€” configured pass rate threshold
+  status              â€” PASS / FAIL / WARNING
+  checked_at          â€” when the check ran
 
 ALERTING TIERS:
   CRITICAL (page on-call):
@@ -1195,7 +1147,7 @@ ALERTING TIERS:
 +-----------------+-------------+-------------+-------------+-------------+
 ```
 
-### P2.9 — Schema Evolution
+### P2.9 â€” Schema Evolution
 
 Data schemas change over time. A schema evolution strategy defines how these changes flow through the data pipeline without breaking downstream consumers.
 
@@ -1273,9 +1225,9 @@ AVRO:
 
 PROTOBUF:
   Schema format: .proto files (compiled descriptor)
-  Resolution: field numbers and wire format — unknown fields are preserved
+  Resolution: field numbers and wire format â€” unknown fields are preserved
   Schema evolution features:
-    - Field numbers never change — adding a field always uses a new number
+    - Field numbers never change â€” adding a field always uses a new number
     - Reserved fields: explicitly mark removed field numbers
     - Default values: empty string for string, 0 for numeric
     - Oneof: at most one field from a set is set
@@ -1284,7 +1236,7 @@ PROTOBUF:
 
 JSON SCHEMA:
   Schema format: JSON Schema (draft-07+)
-  Resolution: validation-based — document conforms to schema
+  Resolution: validation-based â€” document conforms to schema
   Schema evolution features:
     - Additional properties: controlled via "additionalProperties" setting
     - Default values: defined in schema
@@ -1305,7 +1257,7 @@ EVOLUTION PATTERN 1: Add optional column
     JSON:   "new_field": {"type": "string", "default": ""}
 
 EVOLUTION PATTERN 2: Add required column
-  Breaking change — requires consumer migration
+  Breaking change â€” requires consumer migration
   Migration strategy:
     1. Add as optional with default (transition period)
     2. Inform all consumers
@@ -1314,16 +1266,16 @@ EVOLUTION PATTERN 2: Add required column
   This is a two-step evolution over two schema versions.
 
 EVOLUTION PATTERN 3: Remove column
-  Breaking change — do not remove!
+  Breaking change â€” do not remove!
   Deprecation strategy:
     1. Add deprecation annotation to the field
     2. Inform consumers to stop using the field
     3. Verify no consumers depend on it
     4. After transition period, mark as deprecated
-  Never remove a field from a schema — set it to default and ignore it.
+  Never remove a field from a schema â€” set it to default and ignore it.
 
 EVOLUTION PATTERN 4: Rename column
-  Breaking change — the field name is the semantic contract.
+  Breaking change â€” the field name is the semantic contract.
   Strategy (Avro): add alias on old name, migrate consumers, remove alias
   Strategy (Protobuf): add new field with new number, deprecate old, run reserved
   Strategy (JSON): write both fields during transition, remove old
@@ -1336,12 +1288,12 @@ EVOLUTION PATTERN 5: Change column type
     string -> bytes
   Breaking changes:
     string -> int (type entirely different)
-    double -> float (narrowing — precision loss)
+    double -> float (narrowing â€” precision loss)
   Strategy: if you must make a breaking type change, add a new field with the new type
 
 EVOLUTION PATTERN 6: Enum changes
   Add new enum value: backward compatible if consumers handle unknown values
-  Remove enum value: breaking change — do not remove
+  Remove enum value: breaking change â€” do not remove
   Strategy: always handle unknown enum values with a default/fallback
 ```
 
@@ -1375,7 +1327,7 @@ DRIFT RESOLUTION:
   Rollback: if drift breaks pipeline, hold data in DLQ until schema is updated
 ```
 
-### P2.10 — Data Lake vs Warehouse vs Lakehouse Architecture
+### P2.10 â€” Data Lake vs Warehouse vs Lakehouse Architecture
 
 ```
 DATA WAREHOUSE (DWH):
@@ -1391,7 +1343,7 @@ DATA WAREHOUSE (DWH):
 
 DATA LAKE:
   Definition: raw, schema-on-read, stores all data in native format
-  Storage: object storage (S3, ADLS, GCS) — cheap, highly available
+  Storage: object storage (S3, ADLS, GCS) â€” cheap, highly available
   Compute: separate from storage (Spark, Presto, Athena)
   Data: raw, any format (CSV, JSON, Parquet, Avro, images, audio)
   Users: data engineers, data scientists, ML engineers
@@ -1406,7 +1358,7 @@ LAKEHOUSE:
   Compute: Spark, Trino, Dremio, Snowflake (external tables)
   ACID: provided by table format (Delta Lake, Iceberg, Hudi)
   Data: raw + transformed, governed by table format properties
-  Users: everyone — analysts, engineers, data scientists
+  Users: everyone â€” analysts, engineers, data scientists
   Typical latency: minutes (batch), seconds (streaming)
   Pros: cheap storage + ACID + schema enforcement + fast queries + ML support
   Cons: newer technology, requires table format understanding, operational complexity
@@ -1467,7 +1419,7 @@ warehouse for specific high-performance serving use cases +
 data lake for archival and raw data retention.
 ```
 
-### P2.11 — Data Cataloging and Discovery
+### P2.11 â€” Data Cataloging and Discovery
 
 A data catalog is the inventory of all data assets: tables, schemas, dashboards, pipelines, metrics. Data discovery enables users to find, understand, and trust data.
 
@@ -1558,7 +1510,7 @@ LINEAGE CAPTURE APPROACHES:
 
 USING LINEAGE:
   Impact analysis: "Will removing this column break downstream dashboards?"
-  Root cause: "This KPI dropped — which upstream data source changed?"
+  Root cause: "This KPI dropped â€” which upstream data source changed?"
   Compliance: "All data in this report originated from approved sources."
   Debugging: "The transformation that produced this value is X."
 ```
@@ -1595,19 +1547,19 @@ DISCOVERABILITY ENABLERS:
      Red: beyond 2x SLA
 ```
 
-### P2.12 — Data Governance
+### P2.12 â€” Data Governance
 
 Data governance defines who can access what data, how data should be used, and how data quality and compliance are maintained.
 
 ```
 GOVERNANCE PILLARS:
-  1. Data Quality — accuracy, completeness, consistency, timeliness
-  2. Data Stewardship — ownership, accountability, stewardship processes
-  3. Metadata Management — catalog, lineage, business glossary
-  4. Data Security — access control, authentication, encryption
-  5. Data Privacy — PII handling, consent management, anonymization
-  6. Compliance — regulatory requirements (GDPR, CCPA, SOX, HIPAA)
-  7. Data Lifecycle Management — retention, archival, deletion
+  1. Data Quality â€” accuracy, completeness, consistency, timeliness
+  2. Data Stewardship â€” ownership, accountability, stewardship processes
+  3. Metadata Management â€” catalog, lineage, business glossary
+  4. Data Security â€” access control, authentication, encryption
+  5. Data Privacy â€” PII handling, consent management, anonymization
+  6. Compliance â€” regulatory requirements (GDPR, CCPA, SOX, HIPAA)
+  7. Data Lifecycle Management â€” retention, archival, deletion
 ```
 
 **Access control models:**
@@ -1620,7 +1572,7 @@ ROLE-BASED ACCESS CONTROL (RBAC):
     - Snowflake: ACCOUNTADMIN -> SYSADMIN -> custom roles -> users
     - Databricks Unity Catalog: metastore -> catalog -> schema -> table -> column
     - S3 bucket policies: bucket-level, prefix-level, object-level
-  Best practice: least privilege — grant minimum permissions for the job
+  Best practice: least privilege â€” grant minimum permissions for the job
 
 ATTRIBUTE-BASED ACCESS CONTROL (ABAC):
   Access decisions based on attributes (user, resource, environment)
@@ -1680,7 +1632,7 @@ LIFECYCLE STAGES:
   Archival (day M-P):
     - Rarely accessed (compliance retention)
     - Move to Glacier/Archive storage ($1/TB/month)
-    - No direct query — restore before access
+    - No direct query â€” restore before access
 
   Deletion (day P):
     - Compliance retention period expired
@@ -1728,7 +1680,7 @@ MASKING TECHNIQUES:
     - Use: demographic analysis without exact values
 ```
 
-### P2.13 — Data Pipeline Testing and Monitoring
+### P2.13 â€” Data Pipeline Testing and Monitoring
 
 Pipelines must be tested before deployment and monitored continuously in production.
 
@@ -1835,7 +1787,7 @@ PIPELINE METRICS (every pipeline must emit):
 MONITORING AND OBSERVABILITY TOOLS:
 
   CLOUD-NATIVE:
-    AWS CloudWatch: metrics, logs, alarms — native to AWS services
+    AWS CloudWatch: metrics, logs, alarms â€” native to AWS services
     GCP Cloud Monitoring: integrated with BigQuery, Dataflow, Pub/Sub
     Azure Monitor: integrated with Azure Data Factory, Synapse, Event Hubs
 
@@ -1865,31 +1817,31 @@ MONITORING AND OBSERVABILITY TOOLS:
 ```
 INCIDENT SEVERITY DEFINITIONS:
 
-  SEV1 — Data is wrong or missing affecting business decisions
+  SEV1 â€” Data is wrong or missing affecting business decisions
     Response: immediate investigation, page on-call
     Examples: financial reconciliation fails, production dashboard wrong
     SLAs: respond within 15 minutes, resolve within 2 hours
 
-  SEV2 — Pipeline is failing, no data reaching consumers
+  SEV2 â€” Pipeline is failing, no data reaching consumers
     Response: within business hours, escalate to team lead
     Examples: nightly batch failed, streaming pipeline is down
     SLAs: respond within 1 hour, resolve within 8 hours
 
-  SEV3 — Pipeline degraded but still producing data
+  SEV3 â€” Pipeline degraded but still producing data
     Response: next sprint, log ticket
     Examples: pipeline slower than usual, quality threshold near limit
     SLAs: respond within 24 hours
 
 INCIDENT RESPONSE STEPS:
-  1. Detect — alert fires (monitoring, user report, automated check)
-  2. Triage — assess severity, assign owner
-  3. Mitigate — stop the bleeding (pause pipeline, fix data, reroute)
-  4. Resolve — fix root cause, backfill if needed
-  5. Postmortem — write incident report, identify preventive measures
-  6. Close — update runbook, add monitoring if gaps found
+  1. Detect â€” alert fires (monitoring, user report, automated check)
+  2. Triage â€” assess severity, assign owner
+  3. Mitigate â€” stop the bleeding (pause pipeline, fix data, reroute)
+  4. Resolve â€” fix root cause, backfill if needed
+  5. Postmortem â€” write incident report, identify preventive measures
+  6. Close â€” update runbook, add monitoring if gaps found
 ```
 
-### P2.14 — Cost Optimization for Data Storage and Processing
+### P2.14 â€” Cost Optimization for Data Storage and Processing
 
 Data engineering costs are driven by storage volume, compute consumption, and data transfer. Optimization requires understanding cost drivers and engineering trade-offs.
 
@@ -1912,15 +1864,15 @@ STORAGE COST OPTIMIZATION:
 
   TIERED STORAGE:
     AWS S3 tiers:
-      S3 Standard: $0.023/GB — frequent access (0-30 days)
-      S3 Intelligent-Tiering: $0.0125/GB + monitoring fee — auto-tiering
-      S3 Infrequent Access: $0.0125/GB — less frequent (30-90 days)
-      S3 Glacier Instant: $0.004/GB — archival (90+ days)
-      S3 Glacier Deep Archive: $0.00099/GB — long-term (365+ days)
+      S3 Standard: $0.023/GB â€” frequent access (0-30 days)
+      S3 Intelligent-Tiering: $0.0125/GB + monitoring fee â€” auto-tiering
+      S3 Infrequent Access: $0.0125/GB â€” less frequent (30-90 days)
+      S3 Glacier Instant: $0.004/GB â€” archival (90+ days)
+      S3 Glacier Deep Archive: $0.00099/GB â€” long-term (365+ days)
     Savings: 70-90% vs keeping everything in Standard
 
   PARTITION MANAGEMENT:
-    - Only store partitions that are needed — purge old data on schedule
+    - Only store partitions that are needed â€” purge old data on schedule
     - Lifecycle policy for raw data: auto-expire after N days
     - Compress small files into larger files to reduce metadata overhead
     - Delete temporary/intermediate data after pipeline completes
@@ -1986,9 +1938,9 @@ TRANSFER COSTS:
   Internet: $0.09/GB (egress)
 
   OPTIMIZATION:
-    - Keep data and compute in same region — single biggest cost saver
+    - Keep data and compute in same region â€” single biggest cost saver
     - If cross-region required: batch transfer during off-peak, compress before transfer
-    - Avoid frequent cross-region data movement — replicate once, query in region
+    - Avoid frequent cross-region data movement â€” replicate once, query in region
     - Use direct peering or PrivateLink for large cross-cloud transfers
 ```
 
@@ -2002,19 +1954,19 @@ COST ALLOCATION:
     - Spark cluster -> tag: Job=NightlyReconciliation, Owner=Finance
 
   COST REDUCTION TACTICS (ordered by impact):
-    1. Delete unused data — no consumer for 90 days? Delete it.
-    2. Compress and re-format — Parquet + Zstd vs CSV is 10-30x cheaper
-    3. Tier storage — move cold data to cheaper tiers automatically
-    4. Right-size compute — over-provisioned clusters are #1 waste
-    5. Partition pruning — query costs drop 90%+ with good partition design
-    6. Select only needed columns — stop SELECT * in production
-    7. Caching — cache intermediate results and repeated queries
-    8. Auto-scaling — shut down idle compute
-    9. Reserved instances — 30-60% discount for 1-3 year commitments
-    10. Preemptible/spot instances — 50-90% discount for fault-tolerant workloads
+    1. Delete unused data â€” no consumer for 90 days? Delete it.
+    2. Compress and re-format â€” Parquet + Zstd vs CSV is 10-30x cheaper
+    3. Tier storage â€” move cold data to cheaper tiers automatically
+    4. Right-size compute â€” over-provisioned clusters are #1 waste
+    5. Partition pruning â€” query costs drop 90%+ with good partition design
+    6. Select only needed columns â€” stop SELECT * in production
+    7. Caching â€” cache intermediate results and repeated queries
+    8. Auto-scaling â€” shut down idle compute
+    9. Reserved instances â€” 30-60% discount for 1-3 year commitments
+    10. Preemptible/spot instances â€” 50-90% discount for fault-tolerant workloads
 ```
 
-### P2.15 — Real-time vs Near-real-time vs Batch Decision Framework
+### P2.15 â€” Real-time vs Near-real-time vs Batch Decision Framework
 
 ```
 LATENCY CLASSIFICATION:
@@ -2110,304 +2062,10 @@ LATENCY COST RELATIONSHIP:
   Lower latency is a business decision, not a technical one.
 ```
 
----
 
-## P3 — PIPELINE RELIABILITY
+## P4 â€” OUTPUT FORMATS
 
-### P3.1 — Idempotency and Reprocessing
-
-```
-FULL REFRESH:
-  delete + re-insert partition — most reliable, no dedup
-  Implementation: INSERT OVERWRITE for partition-level atomic swap
-  Pros: guaranteed correct, no dedup logic, handles late-arriving data automatically
-  Cons: recomputes everything, higher cost, longer runtime
-  Use: small dimensions, Type 1 SCD, monthly rebuilds, data quality correction runs
-
-UPSERT:
-  MERGE on business key — use for streaming/late-arriving data
-  Implementation: MERGE statement (Snowflake, Delta, Iceberg) or INSERT ON CONFLICT (PG)
-  Pros: handles updates and inserts in one operation, low latency
-  Cons: risk of concurrent write collisions, merge can be expensive at volume
-  Use: CDC streams, Type 2 SCD, incremental fact loads
-
-DEDUP BY WATERMARK:
-  unique ID + timestamp — destination deduplicates, use for at-least-once delivery
-  Implementation: ROW_NUMBER() OVER (PARTITION BY business_key ORDER BY last_updated DESC) = 1
-  Pros: accepts duplicates at source, ensures clean target
-  Cons: requires unique identifier and reliable timestamp
-  Use: at-least-once delivery systems, Kafka consumers, idempotent sinks
-
-APPEND-ONLY:
-  new data is simply appended — no conflict resolution needed
-  Implementation: INSERT ... SELECT (always new rows)
-  Pros: simplest, fastest write path, no locking
-  Cons: cannot handle updates, duplicates accumulate
-  Use: event logs, clickstream data, audit tables, immutable data
-```
-
-**Reprocessing patterns:**
-
-```
-BACKFILL (reprocess historical data):
-  Trigger: pipeline logic change, data quality issue, schema evolution, late-arriving data
-  Implementation:
-    1. Parameterize pipeline with {start_date, end_date}
-    2. For full refresh: DELETE target partition(s) -> re-run pipeline for that range
-    3. For incremental: process range as if it were new data
-    4. For CDC: replay source WAL/binlog for the time range (if available)
-    5. Verify: run reconciliation after backfill
-
-  Backfill safety:
-    - Always run backfill in isolation (separate table/partition)
-    - Verify results before swapping to production table
-    - Have a rollback plan — ability to restore previous state
-    - Communicate with downstream consumers before and after
-
-POINT-IN-TIME RESTORE:
-  Required for: data corruption discovered late, compliance requests
-  Implementation (medallion):
-    - Bronze: immutable — replay from point-in-time
-    - Silver: time-travel to pre-corruption snapshot (Delta Lake / Iceberg)
-    - Gold: rebuild from corrected silver
-```
-
-### P3.2 — Failure Recovery Patterns
-
-```
-EXTRACTION FAILURE:
-
-  Symptom: no data extracted, partial data extracted, corrupted data extracted
-
-  Recovery:
-    1. Check source availability (network, auth, rate limits, maintenance window)
-    2. Retry with exponential backoff:
-       - API: 3 retries at 30s / 2min / 5min intervals
-       - Database: single retry with connection refresh
-       - File: retry after 1 minute (might be landing)
-    3. If all retries exhausted:
-       - For batch: skip this extraction window, mark as failed in monitoring
-       - For streaming: pipeline pauses, alert fires, latest checkpoint preserved
-       - Backfill when source recovers: replay from last successful offset
-    4. Guarantee: eventual consistency — data will catch up
-
-  Prevention:
-    - Source health check before extraction (connection pool, query test)
-    - Graceful degradation: if one source fails, other sources still process
-    - Fallback: serve stale data while extraction is down (if acceptable)
-```
-
-```
-TRANSFORMATION FAILURE:
-
-  Symptom: algorithm error, data type mismatch, memory error, business logic violation
-
-  Recovery batch mode:
-    - FAIL FAST: whole batch fails, retry from beginning
-      Safe if: pipeline is idempotent (full refresh or upsert with idempotency)
-      Risk: wasted compute for long-running pipelines
-
-    - RECORD LEVEL: route bad records to DLQ, continue processing good records
-      Implementation: try/except per record or per micro-partition
-      DLQ schema: original_record, error_message, error_type, pipeline_name, timestamp
-      DLQ action: alert on DLQ depth > N -> investigate -> fix logic -> reprocess DLQ
-
-  Recovery streaming mode:
-    - Failed record: route to DLQ topic, continue processing
-    - Failed checkpoint: restart from last successful checkpoint
-    - State corruption: restore from savepoint or rebuild state
-
-  Prevention:
-    - Schema validation before transformation
-    - Unit tests for transformation logic
-    - Pre-flight data quality checks
-    - Type guards and null checks in transform functions
-```
-
-```
-LOAD FAILURE:
-
-  Symptom: target unavailable, write conflict, quota exceeded, partial write
-
-  Recovery:
-    - Transactional warehouse load:
-      If load is within a transaction -> ROLLBACK entire batch
-      If load is file-per-partition -> delete partially loaded files, retry
-
-    - Object store load (S3/ADLS/GCS):
-      Write to temporary prefix -> atomic rename on success
-      On failure: clean up temp prefix, retry
-      Parallel writes: track which files succeeded, retry only failed files
-
-    - Data lake table (Delta/Iceberg):
-      Delta Lake: optimistic concurrency — retry on conflict
-      Iceberg: atomic commit to catalog — retry on conflict
-      Hudi: rollback failed commit, retry
-
-  Prevention:
-    - Idempotent writes (INSERT OVERWRITE, MERGE)
-    - Pre-validate target schema (column existence, type compatibility)
-    - Monitor target system health before beginning write
-    - Staging area for intermediate results before final load
-```
-
-```
-LATE-ARRIVING DATA:
-
-  Definition: data whose event timestamp is earlier than the watermark
-  of the window it should have been processed in.
-
-  Recovery per architecture:
-    - Batch (full refresh): no issue — re-run with expanded date range
-    - Batch (incremental): checkpoint issue — does late data fall in previous window?
-      Yes -> update historical window, alert downstream consumers
-      No -> process in next batch, append or upsert normally
-    - Streaming (windowed): use allowed lateness parameter
-      Events within allowed lateness -> recalculate affected window
-      Events beyond allowed lateness -> DLQ, offline reprocessing
-    - Streaming (append-only): no special handling — append normally
-      Caveat: consumers must handle temporal correctness
-
-  Late data budget:
-    Define how late data can arrive and still be processed correctly.
-    This is a business decision.
-    Examples:
-      - Financial: accept late data up to 7 days (settlement windows)
-      - Web analytics: accept late data up to 24 hours (browser offline)
-      - Fraud: accept late data up to 5 minutes (real-time decisions)
-```
-
-### P3.3 — Monitoring and Observability
-
-```
-ESSENTIAL PIPELINE METRICS:
-
-  records_in:         total records read from source
-  records_out:        total records written to target
-  records_failed:     records that failed validation or transformation
-  dlq_depth:          current count of unprocessed failed records
-  bytes_read:         data volume read (cost tracking)
-  bytes_written:      data volume written (cost tracking)
-  duration_seconds:   wall-clock execution time
-  cpu_seconds:        total compute time
-  max_event_time:     latest business timestamp in processed data
-  max_processing_time:latest processing timestamp
-  watermark_lag:      wall_clock - max_event_time (for streaming)
-  source_lag:         source max timestamp - max_event_time (for CDC)
-  pipeline_version:   version of pipeline code that ran
-  schema_version:     version of schema used at write time
-```
-
-```
-OBSERVABILITY DATA MODEL:
-
-  pipeline_runs table:
-    run_id              UUID        (PK)
-    pipeline_name       VARCHAR     (FK to pipeline metadata)
-    run_type            VARCHAR     ('scheduled', 'backfill', 'manual', 'retry')
-    status              VARCHAR     ('running', 'success', 'failed')
-    started_at          TIMESTAMP
-    finished_at         TIMESTAMP
-    records_in          BIGINT
-    records_out         BIGINT
-    records_failed      BIGINT
-    bytes_read          BIGINT
-    bytes_written       BIGINT
-    duration_seconds    INTEGER
-    error_message       TEXT        (NULL on success)
-    triggered_by        VARCHAR     ('scheduler', 'manual', 'event')
-
-  quality_checks table:
-    check_id            UUID        (PK)
-    pipeline_name       VARCHAR     (FK)
-    run_id              UUID        (FK to pipeline_runs)
-    table_name          VARCHAR
-    dimension           VARCHAR     ('completeness', 'uniqueness', 'accuracy')
-    check_name          VARCHAR     (descriptive name)
-    records_checked     BIGINT
-    records_passed      BIGINT
-    records_failed      BIGINT
-    pass_rate           DECIMAL(5,2)
-    threshold           DECIMAL(5,2)
-    status              VARCHAR     ('pass', 'fail', 'warning')
-    checked_at          TIMESTAMP
-    details             JSONB       (additional context)
-
-  pipeline_sla table:
-    pipeline_name       VARCHAR     (PK)
-    sla_window_seconds  INTEGER     (expected max duration)
-    sla_freshness_seconds INTEGER   (expected max age)
-    severity            VARCHAR     ('critical', 'warning', 'info')
-    oncall_channel      VARCHAR     (slack channel, pagerduty key)
-    escalation_minutes  INTEGER     (minutes before escalating)
-```
-
-```
-ALERTING RULES:
-
-  CRITICAL ALERTS:
-    rule: pipeline_status == 'failed' AND run_type == 'scheduled'
-      -> page on-call team
-    rule: dlq_depth > 1000
-      -> page on-call, check for backpressure
-    rule: data_freshness NOT updated within 2 * sla_freshness_seconds
-      -> page pipeline owner, check for stalled pipeline
-    rule: reconciliation_pass_rate < 99%
-      -> page data quality team, investigate data corruption
-
-  WARNING ALERTS:
-    rule: records_in < 0.8 * trailing_7d_avg_records
-      -> notify in team channel, check source system
-    rule: pipeline_duration > 2 * p95_duration
-      -> notify team, investigate performance regression
-    rule: quality_check_pass_rate < threshold AND > threshold - 5
-      -> notify data quality channel
-
-  INFO ALERTS:
-    rule: pipeline completed successfully
-      -> log to monitoring dashboard (no notification)
-    rule: quality checks all passing
-      -> increment quality counter in dashboard
-    rule: backfill started
-      -> notify downstream consumers
-    rule: schema version changed
-      -> log to schema registry audit log
-```
-
-```
-DASHBOARD STRUCTURE:
-
-  DASHBOARD 1: Pipeline Health (overview)
-    - Total pipelines by status (success / failed / running) — donut chart
-    - Pipeline success rate over last 7 days — line chart
-    - Average duration by pipeline — bar chart
-    - Alert count by severity — trend chart
-    - DLQ depth by pipeline — heatmap
-
-  DASHBOARD 2: Data Quality Dashboard
-    - Quality check pass rate by dimension — radar chart
-    - Dimension scores over time — line chart
-    - Worst-performing tables — sorted table
-    - Completeness trend for critical columns — trend per column
-
-  DASHBOARD 3: Cost Dashboard
-    - Cost by pipeline (last 30 days) — bar chart
-    - Cost by layer (bronze/silver/gold) — stacked area
-    - Storage growth by layer — line chart
-    - Compute cost per GB processed — scatter plot
-    - Cost anomaly detection — flag > 2x expected cost
-
-  DASHBOARD 4: SLA Dashboard
-    - SLA compliance by pipeline — green/yellow/red heatmap
-    - Freshness lag for streaming pipelines — gauge chart
-    - Missed SLA counts by team — bar chart
-```
-
----
-
-## P4 — OUTPUT FORMATS
-
-### P4.1 — Pipeline Design Document
+### P4.1 â€” Pipeline Design Document
 
 ```
 PIPELINE:     [name]
@@ -2425,7 +2083,7 @@ EXTRACT:
   Failure:    [retry strategy, alert threshold]
 
 TRANSFORM:
-  Step 1:     [description — what, why, how]
+  Step 1:     [description â€” what, why, how]
   Step 2:     [description]
   Output:     [schema after transformation]
 
@@ -2448,7 +2106,7 @@ MONITORING:
   freshness       [max event_time]              [> 60 min behind wall clock]
 ```
 
-### P4.2 — Data Model Specification
+### P4.2 â€” Data Model Specification
 
 ```
 MODEL TYPE:   [star / snowflake / data vault / OBT / medallion]
@@ -2481,323 +2139,40 @@ QUERY PATTERNS:
   Pattern 2:    [another typical query]
 
 COMPLIANCE:
-  PII columns:       [column list — masking/restriction requirements]
-  Retention policy:  [TTL per table/partition — purge/deletion schedule]
+  PII columns:       [column list â€” masking/restriction requirements]
+  Retention policy:  [TTL per table/partition â€” purge/deletion schedule]
   Access control:    [role/attribute-based access]
 ```
 
-### P4.3 — Orchestration DAG Specification
+### P4.3 â€” Orchestration DAG Specification
 
 ```
-DAG: [name] — SCHEDULE: [cron/event] — OWNER: [team/slack]
+DAG: [name] â€” SCHEDULE: [cron/event] â€” OWNER: [team/slack]
 TASKS: task_id, type (PythonOperator/SQLOperator/Sensor), depends_on, retries, timeout, alert channel
 SLAS: dag-level SLA + per-task SLA from schedule time
 ```
 
----
 
-## P5 — WORKED EXAMPLES
-
-### E1: Customer Orders Report — Star Schema Design
-
-**Context:** Build a reporting model for customer orders. Source data comes from a transactional database. Business analysts need to query order metrics by customer, product, date, and region.
-
-**Model design:**
-```
-FACT TABLE: fct_orders
-  grain: one row per order line item
-  measures: quantity (SUM), unit_price (AVG), discount (AVG), line_total (SUM)
-  dimensions: order_date (FK -> dim_date), customer (FK -> dim_customer),
-              product (FK -> dim_product), store (FK -> dim_store)
-
-DIMENSION: dim_date
-  attributes: date, year, quarter, month, month_name, week, day_of_week, is_holiday
-  SCD: type 0 (static — dates do not change)
-  grain: one row per date
-
-DIMENSION: dim_customer
-  attributes: customer_id (natural key), name, email, city, state, segment, created_at
-  SCD: type 2 (track address changes — add new row when address changes)
-  grain: one row per customer per version
-
-DIMENSION: dim_product
-  attributes: product_id (natural key), name, category, subcategory, unit_price, supplier
-  SCD: type 1 (overwrite price/supplier changes)
-  grain: one row per product
-
-DIMENSION: dim_store
-  attributes: store_id (natural key), name, address, city, state, region, manager
-  SCD: type 1 (overwrite on change)
-  grain: one row per store
-```
-
-**ETL approach:** ELT — raw order data lands in staging tables, dbt transforms into star schema. Backfills reprocess affected partitions only.
-
-**Query example:**
-```
-SELECT
-  d.region,
-  dp.category,
-  SUM(f.line_total) as revenue,
-  COUNT(DISTINCT f.order_id) as orders
-FROM fct_orders f
-JOIN dim_store d ON f.store_key = d.store_key
-JOIN dim_product dp ON f.product_key = dp.product_key
-JOIN dim_date dd ON f.order_date_key = dd.date_key
-WHERE dd.year = 2026 AND dd.quarter = 2
-GROUP BY d.region, dp.category
-```
-
-### E2: CDC Pipeline from PostgreSQL to Snowflake
-
-**Context:** Stream order data from PostgreSQL (transactional DB) to Snowflake with sub-minute latency.
-
-**Architecture:**
-```
-SOURCE: PostgreSQL -> CDC via Debezium (logical replication)
-  Reads WAL (Write-Ahead Log) for commit log
-  Captures INSERT, UPDATE, DELETE with before/after images
-  Publishes change events to Kafka
-
-BUFFER: Kafka topic (orders.cdc)
-  Event schema: { op: "c"/"u"/"d", before: {...}, after: {...}, source: { ts_ms, db, table } }
-  Retention: 7 days for replay
-  Partition by: order_id for ordering guarantees per record
-
-PROCESS: Kafka Connect S3 Sink OR Snowpipe
-  Option A: Kafka -> S3 (Parquet) -> Snowpipe -> Snowflake
-    - More resilient (data in S3), slight latency (30-60 seconds)
-  Option B: Kafka -> Snowflake Kafka Connector
-    - Lower latency (seconds), directly to Snowflake
-    - More expensive (Snowflake compute for ingestion)
-
-TARGET: Snowflake
-  Raw table: orders_raw (variant column for change event JSON)
-  Processed table: orders (upserted from raw via stream + task)
-  History table: orders_history (full change log for audit)
-```
-
-**Quality checks:**
-```
-COMPLETENESS: Row count in Snowflake matches row count in PostgreSQL (within 5 min window)
-ACCURACY: SELECT SUM(total) FROM orders = system reference count — > 99.99% match
-TIMELINESS: MAX(updated_at) in Snowflake < 60 seconds behind PostgreSQL MAX(updated_at)
-```
-
-### E3: Data Lake Partitioning and Clustering Strategy
-
-**Context:** 10TB event data in S3, queried by Athena and Spark. Need to optimize query performance and cost.
-
-**Partitioning strategy:**
-```
-PARTITION KEY: (year, month, day, event_type)
-  /data/events/year=2026/month=05/day=26/event_type=pageview/part-00001.parquet
-  /data/events/year=2026/month=05/day=26/event_type=purchase/part-00001.parquet
-
-RATIONALE:
-  - 90% of queries filter by date range (last 7 days, last month)
-  - 60% of queries filter by event_type in addition to date
-  - Partition pruning eliminates > 95% of scanned data for common queries
-  - Too many partitions (e.g., hour-granularity) causes S3 throttling on listing
-
-CLUSTERING:
-  Within each partition, sort by (user_id, session_id)
-  Co-locates events from the same user session — common analytical pattern
-
-COMPACTION:
-  Small files (< 128MB) are merged hourly — reduces S3 list overhead
-  Target file size: 256MB-1GB (optimal for Athena/Spark split sizing)
-  Compaction job: Spark job on scheduled trigger, rewrites partition with larger files
-```
-
-**Cost optimization:**
-```
-STORAGE:
-  - Parquet compression: 5:1 vs CSV for event data -> 2TB vs 10TB storage
-  - S3 Intelligent Tiering for data > 30 days old
-  - Lifecycle policy: data > 90 days -> Glacier
-  - Lifecycle policy: data > 365 days -> Delete
-
-COMPUTE:
-  - Partition pruning reduces Athena query bytes scanned by 95%
-  - Materialized views for common aggregations (daily/weekly/monthly rollups)
-  - Query result caching for repeated dashboard queries (TTL: 1 hour)
-```
-
-### E4: Stream Processing for Real-Time Fraud Detection
-
-**Context:** Detect fraudulent transactions within 100ms of authorization. Must process 10,000 events/second with 99.99% uptime.
-
-**Architecture:**
-```
-SOURCE: Payment authorization events -> Kafka topic: payment.authorizations (10K msg/s)
-
-STREAM PROCESSOR: Apache Flink
-  State: per-user rolling statistics (transaction count, velocity, geo distance)
-  Windows: 5-minute sliding window for velocity checks, 1-hour for pattern detection
-
-DETECTION RULES (in order of application):
-  Rule 1 — Velocity check: > 3 transactions in 5 minutes -> flag REVIEW
-  Rule 2 — Geo anomaly: transaction from different country within 1 hour -> flag REVIEW
-  Rule 3 — Amount anomaly: > 3x average transaction amount -> flag REVIEW
-  Rule 4 — Card testing: 5+ failed attempts in 10 minutes -> BLOCK
-  Rule 5 — Known patterns: matches known fraud pattern (ML model scores in real-time)
-
-OUTPUT:
-  Kafka topic: payment.authorization.decision
-    { transactionId, decision: ALLOW | REVIEW | BLOCK, reason, modelScore, timestamp }
-
-LATE DATA HANDLING:
-  Events up to 5 minutes late are processed in the correct window (allowed lateness)
-  Events more than 5 minutes late -> separate late-data path for offline analysis
-  Watermark: 5 seconds behind max observed timestamp
-```
-
-### E5: Medallion Architecture Implementation
-
-**Context:** Implement medallion architecture for e-commerce data platform.
-
-**Architecture:**
-```
-BRONZE LAYER (raw):
-  s3://data-lake/bronze/orders/
-    - Raw CDC events from Debezium (Avro format)
-    - Partitioned by ingestion_date
-    - Append-only, never modified
-    - Schema-on-read (Kafka Connect AVRO)
-
-SILVER LAYER (cleaned):
-  s3://data-lake/silver/orders/
-    - CDC resolved: inserts/updates/deletes materialized into current state
-    - Deduplicated by order_id (keep latest version)
-    - Data types enforced: order_date as DATE, amount as DECIMAL(10,2)
-    - Null handling: defaults applied for optional fields
-    - Partitioned by order_date
-    - Format: Delta Lake (Iceberg) for ACID and time travel
-
-GOLD LAYER (aggregated):
-  s3://data-lake/gold/orders/
-    - fct_orders: daily order fact table (star schema)
-    - dim_customer: customer dimension with SCD Type 2
-    - dim_product: product dimension with SCD Type 1
-    - agg_daily_orders: daily aggregated metrics by store and category
-    - Partitioned by date for efficient BI querying
-```
-
-**Data flow:**
-```
-Bronze (CDC events) -> Silver (dedup + type + clean) -> Gold (dim models)
-  Pipeline 1: Spark Structured Streaming, continuous
-  Pipeline 2: Spark batch, hourly
-  Pipeline 3: dbt models, triggered on Silver completion
-```
-
-### E6: Data Quality Framework Implementation
-
-**Context:** Implement automated data quality checks for a 50-table warehouse.
-
-**Framework design:**
-```
-QUALITY CHECK REGISTRY:
-  Each table has a quality_config.yaml:
-    table: fct_orders
-    checks:
-      - dimension: completeness
-        columns: [order_id, customer_id, order_date, total_amount]
-        threshold: 99.0
-        action: warn
-      - dimension: uniqueness
-        columns: [order_line_id]
-        threshold: 100.0
-        action: block
-      - dimension: accuracy
-        reconciliation_query: "SELECT SUM(total_amount) FROM source WHERE date = :run_date"
-        threshold: 99.9
-        action: block
-
-DAILY QUALITY REPORT:
-  1. Run all checks after each pipeline completes
-  2. Aggregate results per table, per dimension
-  3. Score: pass_rate per check, overall table health score
-  4. Dashboard: green (all passing), yellow (warning), red (blocked)
-  5. Alert: notify channel on any RED status
-  6. Escalate: page on-call if RED persists for 2 runs
-
-MONTHLY QUALITY REVIEW:
-  - Trend analysis: are quality scores improving or degrading?
-  - Root cause analysis for recurring failures
-  - Update thresholds based on production data characteristics
-  - Add new checks for newly discovered quality issues
-```
-
----
-
-## P6 — ANTI-PATTERNS
+## P6 â€” ANTI-PATTERNS
 
 | Anti-Pattern | Problem | Correct |
 |---|---|---|
 | Upsert everything | UPSERT on every batch regardless of data volume | Full refresh for small dims, incremental for large facts, upsert for CDC |
 | Single pipeline for all | One enormous DAG that processes everything sequentially | Modular pipelines per domain, parallel execution, independent failure domains |
 | Ignoring data skew | Partition by date, but 90% of data is yesterday | Use composite partition keys or bucketing to distribute data evenly |
-| No schema registry | Every producer and consumer agrees by convention — breakage is silent | Schema registry with compatibility checks at production time |
-| Over-partitioning | Hourly partitions for data queried monthly — 8760 partitions per year | Daily or monthly partitions, cluster within partition |
-| Stringly-typed data | All columns as VARCHAR — no type safety | Define explicit types per column — date, numeric, boolean |
+| No schema registry | Every producer and consumer agrees by convention â€” breakage is silent | Schema registry with compatibility checks at production time |
+| Over-partitioning | Hourly partitions for data queried monthly â€” 8760 partitions per year | Daily or monthly partitions, cluster within partition |
+| Stringly-typed data | All columns as VARCHAR â€” no type safety | Define explicit types per column â€” date, numeric, boolean |
 | Reprocessing without idempotency | Rerunning a failed pipeline creates duplicate records | Idempotent pipelines: upsert/merge or partition-level full refresh |
 | No dead letter queue | Pipeline fails on bad records, entire batch halts | DLQ for bad records, alert on DLQ depth, fix and reprocess |
 | BI tool as transformation engine | Heavy transformations in Tableau/LookML instead of warehouse | Transform in warehouse (dbt/SQL), BI tool only visualizes |
-| Copying data without compression | Raw CSV files in data lake — 5x storage cost, slow queries | Columnar format (Parquet) with compression — faster, cheaper |
+| Copying data without compression | Raw CSV files in data lake â€” 5x storage cost, slow queries | Columnar format (Parquet) with compression â€” faster, cheaper |
 | Everything in one table | OBT for everything, even when star schema is better | Match model to use case: star for BI, OBT for ML, vault for compliance |
 | No monitoring on pipelines | Pipelines run silently, only noticed when data is wrong | Every pipeline emits records_in/out, duration, freshness, quality metrics |
 | Ignoring late-arriving data | Assume all data arrives in order and on time | Define late data budget per pipeline (minutes to days) |
 | Manual backfill | Backfill involves writing ad-hoc queries and manual validation | Parameterized backfill: every pipeline supports {start_date, end_date} |
 | No watermark tracking | Incremental pipelines have no tracking of last processed offset | Every incremental pipeline uses a watermark table or checkpoint |
 
----
-
-## P7 — QUALITY GATES
-
-### Tier 1 — Hard Block
-
-- [ ] WorkType classified before implementation (S1)
-- [ ] Risk floor applied — never below what change type requires (S2)
-- [ ] Pipeline has defined idempotency strategy (full refresh, upsert, or dedup)
-- [ ] Data quality checks defined for completeness, uniqueness, and accuracy
-- [ ] Schema evolution plan documented — backward/forward compatibility assessed
-- [ ] No S14 prohibited words in output
-
-### Tier 2 — Standard
-
-- [ ] Pipeline failure recovery documented (retry, DLQ, alert, backfill)
-- [ ] Storage format selected based on access pattern analysis
-- [ ] Partitioning/clustering strategy optimizes common query patterns
-- [ ] Data volume and growth rate estimated — pipeline scales accordingly
-- [ ] Monitoring metrics defined (records in/out, duration, freshness, error rate)
-- [ ] Source system impact assessed (CDC: replication lag, batch: query load)
-- [ ] Cost estimate for storage and compute per pipeline run
-- [ ] Pipeline architecture pattern selected (batch/streaming/lambda/kappa)
-- [ ] Late data handling strategy defined (allowed lateness, recovery approach)
-- [ ] Data catalog entry updated with technical and business metadata
-
-### Self-Audit
-
-```
-WorkType classified?                                 -> yes
-Risk at or above floor?                             -> yes
-Idempotency strategy defined?                       -> yes
-Data quality checks defined?                        -> yes
-Schema evolution assessed?                          -> yes
-Failure recovery documented?                        -> yes
-Storage format appropriate?                         -> yes
-Partitioning strategy optimized?                    -> yes
-Monitoring metrics defined?                         -> yes
-Pipeline cost estimate?                             -> yes
-Architecture pattern selected?                      -> yes
-Late data handling defined?                         -> yes
-Data catalog updated?                               -> yes
-No S14 violations?                                  -> yes
-```
-
----
 
 *Synarc S2 risk hard floors, S13 quality gates, S17 zero-tolerance violations apply. Ledger entry for every pipeline, data model, and quality framework decision.*
 

@@ -1,0 +1,56 @@
+# ai-product-manager specific guardrails
+schema: guardrails/v1
+version: 1.0.0
+
+refusal_rules:
+  - id: G-AIPM-001
+    description: Refuse to ship AI feature without eval set
+    trigger: "ship|launch|deploy).*(ai|llm|model|agent).*feature.*(without|no).*(eval|metric|test)"
+    response: "Every AI feature must have a frozen eval set and a defined quality bar before launch."
+    severity: block
+
+  - id: G-AIPM-002
+    description: Refuse to hide AI behind UI
+    trigger: "(hide|don't disclose|not mention).*(ai|model|llm).*(user|customer)"
+    response: "Users must know they are interacting with AI. Transparency is a regulatory and trust requirement."
+    severity: block
+
+  - id: G-AIPM-003
+    description: Refuse AI feature without override path
+    trigger: "ai.*feature.*(without|no).*(undo|regenerat|override|human|escalat)"
+    response: "Every AI output must have an undo, regenerate, or escalate path."
+    severity: block
+
+safety_constraints:
+  - id: C-AIPM-001
+    constraint: "AI features MUST have a frozen eval set with pass/fail criteria"
+    enforcement: strict
+
+  - id: C-AIPM-002
+    constraint: "AI features MUST disclose AI in UI and terms"
+    enforcement: strict
+
+  - id: C-AIPM-003
+    constraint: "AI features in regulated domains MUST map to EU AI Act / NIST AI RMF"
+    enforcement: strict
+
+  - id: C-AIPM-004
+    constraint: "Model upgrades MUST pass frozen eval set before canary, canary before full rollout"
+    enforcement: strict
+
+honesty_rules:
+  - id: H-AIPM-001
+    capability_boundary: "Cannot promise model quality without eval evidence"
+    fallback_response: "Provide a representative eval set (50+ cases) for any quality claim."
+
+  - id: H-AIPM-002
+    capability_boundary: "Cannot guarantee model behavior across model versions"
+    fallback_response: "Re-evaluate on every model upgrade. Do not assume same prompts work."
+
+escalation_policy:
+  auto_escalate_on:
+    - "ai.*feature.*regulated"
+    - "ai.*feature.*(pii|medical|legal|financial)"
+    - "ai.*feature.*user.facing.*scale"
+  escalation_target: "human-review + ai-safety-eval-engineer + legal"
+  max_autonomy_level: 2

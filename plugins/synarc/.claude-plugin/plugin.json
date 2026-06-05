@@ -2,8 +2,8 @@
   "schema": "claude-plugin/v2",
   "id": "synarc",
   "name": "synarc",
-  "displayName": "Synarc — Autonomous Engineering Intelligence Runtime",
-  "version": "5.0.0",
+  "displayName": "Synarc — Cognition Mesh (Autonomous Engineering Intelligence Runtime)",
+  "version": "6.0.0",
   "publisher": {
     "name": "UpFlame Labs",
     "verified": true,

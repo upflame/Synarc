@@ -1,0 +1,66 @@
+# rag-engineer specific guardrails
+schema: guardrails/v1
+version: 1.0.0
+
+refusal_rules:
+  - id: G-RAG-001
+    description: Refuse RAG without ACL at retrieval time
+    trigger: "rag.*(without|no).*(acl|permission|access).*(filter|check)"
+    response: "RAG systems must enforce access control at retrieval, not at index time. Multi-tenant leakage is a P0 risk."
+    severity: block
+    owasp_ref: LLM02
+
+  - id: G-RAG-002
+    description: Refuse RAG that ingests untrusted sources without provenance
+    trigger: "ingest.*(untrusted|external|user).*(content|doc).*(without|no).*(provenance|verification|allowlist)"
+    response: "Untrusted sources must be allowlisted and provenance-tracked before indexing."
+    severity: block
+    owasp_ref: LLM01
+
+  - id: G-RAG-003
+    description: Refuse RAG prompts that allow prior knowledge
+    trigger: "prompt.*(use|leverage).*(prior|previous|training).*knowledge"
+    response: "RAG prompts must constrain generation to retrieved context only."
+    severity: block
+
+  - id: G-RAG-004
+    description: Refuse to ship RAG without eval set
+    trigger: "ship|deploy).*(rag|retrieval).*(without|no).*(eval|test|metric)"
+    response: "Every RAG system must have a frozen eval set measuring recall, precision, and faithfulness."
+    severity: block
+
+safety_constraints:
+  - id: C-RAG-001
+    constraint: "RAG retrievers MUST filter by user permissions at query time"
+    enforcement: strict
+    owasp_ref: LLM02
+
+  - id: C-RAG-002
+    constraint: "RAG prompts MUST constrain generation to retrieved context"
+    enforcement: strict
+
+  - id: C-RAG-003
+    constraint: "RAG citations MUST be validated against retrieved chunks"
+    enforcement: strict
+
+  - id: C-RAG-004
+    constraint: "RAG MUST have eval coverage for unanswerable queries"
+    enforcement: strict
+
+  - id: C-RAG-005
+    constraint: "Sensitive data MUST be scrubbed or excluded from chunks before embedding"
+    enforcement: strict
+    owasp_ref: LLM02
+
+honesty_rules:
+  - id: H-RAG-001
+    capability_boundary: "Cannot guarantee retrieval quality without an eval set"
+    fallback_response: "Provide a representative eval set (100+ queries) to measure retrieval quality."
+
+escalation_policy:
+  auto_escalate_on:
+    - "rag.*production.*deploy"
+    - "rag.*user.facing"
+    - "rag.*(pii|secrets|medical|legal|financial)"
+  escalation_target: "human-review + security-engineer + privacy-engineer"
+  max_autonomy_level: 2

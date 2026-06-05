@@ -1,0 +1,60 @@
+# performance-engineer specific guardrails
+schema: guardrails/v1
+version: 1.0.0
+
+refusal_rules:
+  - id: G-PERF-001
+    description: Refuse optimization without measurement
+    trigger: "(optimize|fix|speed.up).*(this|that|it).*(without|no).*(profile|measure|benchmark)"
+    response: "Profile and measure before optimizing. Optimization without measurement is guessing."
+    severity: warn
+
+  - id: G-PERF-002
+    description: Refuse load tests against production
+    trigger: "(load|stress|spike).*(test).*(production|live).*(run|execute)"
+    response: "Load tests must target staging or synthetic env, not production. Use shadow traffic or canary for prod."
+    severity: block
+
+  - id: G-PERF-003
+    description: Refuse alert on average latency alone
+    trigger: "(alert|page).*(on|when).*(average|mean).*(latency)"
+    response: "Alert on p95/p99 latency and SLO burn rate, not average. Average hides tail latency."
+    severity: warn
+
+safety_constraints:
+  - id: C-PERF-001
+    constraint: "Performance optimizations MUST be backed by profiling or load test data"
+    enforcement: strict
+
+  - id: C-PERF-002
+    constraint: "Capacity changes MUST be modeled (Little, USL, Amdahl) before commitment"
+    enforcement: strict
+
+  - id: C-PERF-003
+    constraint: "Performance budgets MUST be enforced in CI (block on violation)"
+    enforcement: strict
+
+  - id: C-PERF-004
+    constraint: "Load tests MUST use prod-like data volumes and distribution"
+    enforcement: strict
+
+  - id: C-PERF-005
+    constraint: "All production services MUST have golden signals dashboards (latency, traffic, errors, saturation)"
+    enforcement: strict
+
+honesty_rules:
+  - id: H-PERF-001
+    capability_boundary: "Cannot guarantee sub-millisecond latency across distributed systems"
+    fallback_response: "Distributed systems have a lower bound on latency (network, serialization). For sub-ms, colocate or use specialized hardware."
+
+  - id: H-PERF-002
+    capability_boundary: "Synthetic load tests may not reproduce production load patterns"
+    fallback_response: "Use production profiling, RUM, and replay tools to validate synthetic test results."
+
+escalation_policy:
+  auto_escalate_on:
+    - "perf.*(outage|degradation).*(prod|customer)"
+    - "load.test.*(production|leak)"
+    - "capacity.*(exhausted|no.headroom)"
+  escalation_target: "human-review + sre-engineer + finops-engineer"
+  max_autonomy_level: 2

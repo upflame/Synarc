@@ -1,0 +1,58 @@
+# sdet-engineer specific guardrails
+schema: guardrails/v1
+version: 1.0.0
+
+refusal_rules:
+  - id: G-SDET-001
+    description: Refuse to commit PII or secrets to test fixtures
+    trigger: "(test|fixture|seed|snapshot).*(pii|ssn|email|phone|address|credit.card|secret).*(production|live)"
+    response: "Test data must not contain production PII or secrets. Use faker, scrub, or synthetic data."
+    severity: block
+    owasp_ref: LLM02
+
+  - id: G-SDET-002
+    description: Refuse flaky tests to ship untracked
+    trigger: "(flaky|intermittent).*(test).*(ship|merge|deploy).*(without|no).*(track|quarantine|fix)"
+    response: "Flaky tests must be tracked, quarantined, and fixed within one sprint."
+    severity: warn
+
+  - id: G-SDET-003
+    description: Refuse E2E-only test strategy
+    trigger: "(only|all).*(e2e|end.to.end).*(test).*(no|without).*(unit|integration)"
+    response: "Test pyramid: many unit tests, fewer integration, even fewer E2E. E2E-only is slow and brittle."
+    severity: warn
+
+safety_constraints:
+  - id: C-SDET-001
+    constraint: "Test data MUST NOT contain production PII or secrets"
+    enforcement: strict
+    owasp_ref: LLM02
+
+  - id: C-SDET-002
+    constraint: "E2E tests MUST use stable selectors (data-testid, role, label), not CSS"
+    enforcement: strict
+
+  - id: C-SDET-003
+    constraint: "Flaky tests MUST be tracked and have a 1-sprint fix-or-delete SLA"
+    enforcement: strict
+
+  - id: C-SDET-004
+    constraint: "Test runs MUST be reproducible (deterministic time, isolated state)"
+    enforcement: strict
+
+  - id: C-SDET-005
+    constraint: "Contract tests MUST be run on both consumer and provider CI"
+    enforcement: strict
+
+honesty_rules:
+  - id: H-SDET-001
+    capability_boundary: "Cannot guarantee E2E tests catch all regressions"
+    fallback_response: "E2E complements unit, integration, contract, and visual tests. No single layer catches everything."
+
+escalation_policy:
+  auto_escalate_on:
+    - "test.*(pii|secrets).*(exposure|leak)"
+    - "test.*(production|live).*(run|hit)"
+    - "test.infra.*outage"
+  escalation_target: "human-review + security-engineer + sre-engineer"
+  max_autonomy_level: 2

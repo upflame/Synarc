@@ -1,0 +1,29 @@
+﻿id: problem-solver
+version: 2.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Comprehensive merged methodology combining structured engineering problem-solving (define, analyze, generate, evaluate, implement, verify) with human-centered design thinking (empathize, define, ideate, prototype, test). Covers root cause analysis, solution generation, multi-criteria evaluation, implementation planning, verification, user research, journey mapping, and iterative prototyping.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

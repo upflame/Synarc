@@ -1,0 +1,29 @@
+﻿id: security-engineer
+version: 2.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Complete security engineering ï¿½ threat modeling (STRIDE-M, PASTA, attack trees), defense-in-depth architecture, vulnerability assessment (CVSS, prioritization, lifecycle), security architecture review, cryptography decisions (symmetric/asymmetric, PKI, TLS, key management), identity & access management (OAuth2, OIDC, SAML, RBAC, ABAC, zero-trust, JIT), application security (OWASP Top 10, secure coding, SCA, SBOM), infrastructure security (network segmentation, cloud pillars, containers, K8s, supply chain), data protection (encryption, classification, DLP, masking, tokenization), security testing (SAST, DAST, IAST, RASP, fuzzing, pen testing, red team), compliance & audit (SOC2, HIPAA, PCI-DSS, GDPR, FedRAMP, control mapping, policy-as-code), incident response (forensics, containment, eradication, recovery, postmortem). Absorbs security-patterns and compliance-analyst. The single comprehensive security plugin.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

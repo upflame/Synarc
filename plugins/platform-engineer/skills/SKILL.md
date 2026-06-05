@@ -1,6 +1,11 @@
 ﻿---
 id: platform-engineer-skill
-name: Platform Engineer
+name: platform-engineer
+schema: skill-pack/v1
+skill_type:
+  - capability
+dependencies:
+  synarc-core: ">=5.0.0"
 version: 1.0.0
 description: Comprehensive platform engineering skill covering IDP architecture, developer portals, golden paths, DX measurement, self-service infrastructure, platform adoption, and platform operations.
 author: Synarc
@@ -51,47 +56,6 @@ max-line-count: 15000
 10. [P10: Anti-Patterns — What NOT To Do](#p10-anti-patterns--what-not-to-do)
 11. [P11: Quality Gates — Checks & Balances](#p11-quality-gates--checks--balances)
 
----
-
-## P0 — INTELLIGENCE AUGMENTATION
-
-### P0.1 — Token Optimization Defaults
-
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
-
-**COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
-
-**Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
-
-### P0.2 — Adaptive Learning Triggers
-
-**Learning Triggers:**
-- New pattern discovered in this domain → store in brain/error_patterns/ or brain/decisions/
-- Fix validated → confidence += 1 in brain/error_patterns/
-- Fix failed → create new entry with attempted approaches
-- Human correction → store incorrect + correct paths with disambiguator
-
-**Knowledge Storage:**
-- File analysis: stored in brain/file_analysis/[filename].json (permanent)
-- Domain conventions: stored in brain/ (update on every discovery)
-- Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
-
-### P0.3 — Smart Auto-Prompt Rules
-
-**Optimistic Action Threshold:** > 80% confidence → act immediately. 60-80% → brief confirmation. < 60% → clarify first.
-
-**Auto-Complete Triggers:**
-- Error received → lookup pattern, propose fix immediately
-- File named → load file, offer action suggestions
-- Exception thrown → analyze stack, propose fix with confidence score
-
-**Prefetch Protocol:** After each action, predict next file from import graph. Load file_analysis/ for predicted file. Warm cache with likely next actions.
-
-**Reduced Round-Trips:** Every task MUST complete in ≤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
-
-# P1: Persona — The Platform Engineer
-
----
 
 ## 1.1 Role Definition
 
@@ -233,11 +197,6 @@ Level 3: Platform Owner -- Owns one or more platform domains. Makes design decis
 
 Level 4: Platform Strategist -- Defines platform vision and strategy. Makes build-vs-buy decisions. Influences organizational structure to enable platform success. Evangelizes platform engineering externally. Defines the platform maturity model for the organization.
 
----
-
-# P2: Philosophy -- Platform Engineering Foundations
-
----
 
 ## 2.1 What Is Platform Engineering?
 
@@ -551,11 +510,6 @@ Level 5: Optimized
 - Self-service extends to the full software lifecycle
 - Platform provides proactive recommendations
 
----
-
-# P3: IDP Architecture -- Internal Developer Platform
-
----
 
 ## 3.1 What Is an Internal Developer Platform?
 
@@ -914,11 +868,6 @@ Performance Considerations:
 - Search -- Deploy dedicated search infrastructure for large catalogs
 - TechDocs builds -- CPU-intensive, use a dedicated build service
 
----
-
-# P4: Golden Paths -- Paved Roads Methodology
-
----
 
 ## 4.1 What Is a Golden Path?
 
@@ -1170,11 +1119,6 @@ Platform teams should also have golden paths for building platform components:
 - Template for new platform documentation
 - Template for new scorecard criteria
 
----
-
-# P5: Developer Experience -- DX Measurement & Improvement
-
----
 
 ## 5.1 What Is Developer Experience?
 
@@ -1545,11 +1489,6 @@ Platform Efficiency Metrics:
 - Platform feature velocity
 - Platform uptime and reliability
 
----
-
-# P6: Self-Service -- Infrastructure & Service Automation
-
----
 
 ## 6.1 The Self-Service Imperative
 
@@ -1850,11 +1789,6 @@ Platform teams should also practice what they preach:
 - New scorecard -- Template to define new scorecard criteria
 - New golden path documentation -- Template for golden path docs
 
----
-
-# P7: Platform Adoption -- Product Thinking & Community
-
----
 
 ## 7.1 Platform Adoption is Not Automatic
 
@@ -2097,11 +2031,6 @@ Evolution Health:
 - Backlog size and age
 - Deprecated features retired per quarter
 
----
-
-# P8: Platform Operations -- Reliability, Cost & Security
-
----
 
 ## 8.1 Platform Reliability
 
@@ -2457,11 +2386,6 @@ Ongoing: Deepening
 - Number of support questions during onboarding
 - Platform capabilities used during first month
 
----
-
-# P9: Worked Examples -- 12+ Deep-Dive Scenarios
-
----
 
 ## Worked Example 1: Designing a Golden Path for Microservice Creation
 
@@ -2517,62 +2441,6 @@ Based on usage data and feedback, expand to:
 - Kafka message queue option
 - Ephemeral environment for scaffolded services
 
----
-
-## Worked Example 2: Implementing DORA Metrics Collection
-
-Scenario: The organization wants to track DORA metrics across all teams. Currently, each team tracks metrics differently (if at all). The platform team needs to implement a centralized, automated DORA metrics collection system.
-
-Step 1: Define Metric Sources
-
-Deployment Frequency:
-- Source: CI/CD pipeline executions
-- Data: For each pipeline run that deploys to production, record timestamp, service name, team
-- Collection: Webhook from CI/CD system to platform metrics service
-
-Lead Time for Changes:
-- Source: Git provider + CI/CD deployment events
-- Data: Time between commit timestamp (on main branch) and deployment timestamp (to production)
-- Collection: Poll git provider for commits, correlate with deployment events
-
-Change Failure Rate:
-- Source: Incident management system + deployment events
-- Data: Count of deployments that resulted in an incident within 24 hours
-- Collection: API integration with PagerDuty/Opsgenie, correlate deployment events with incident creation
-
-Time to Restore Service:
-- Source: Incident management system
-- Data: Time between incident creation and incident resolution
-- Collection: API integration with incident management tooling
-
-Step 2: Architecture
-
-Event Collector receives webhooks from Git, CI/CD, and incident systems. Processor aggregates and correlates events. Database stores metrics. API serves metrics to dashboard. Backstage plugin displays DORA dashboard.
-
-Step 3: Implementation
-
-GitHub webhook receiver captures push events to main branch. CI/CD pipeline sends deployment events. Processor calculates lead time by correlating commit timestamps with deployment timestamps. Backstage plugin queries the DORA metrics API and displays team-level and organizational dashboards.
-
-Step 4: Dashboard Design
-
-Team Dashboard:
-- Deployment frequency (daily/weekly/monthly view)
-- Lead time (median, p85, p95 with trend)
-- Change failure rate (percentage with trend)
-- Time to restore (median with trend)
-- Comparison against DORA benchmarks (elite, high, medium, low)
-
-Organizational Dashboard:
-- Aggregate metrics across all teams
-- Team comparison view
-- Trend charts (quarter over quarter)
-- DORA classification distribution
-
-Step 5: Adoption and Iteration
-
-Release the dashboard to teams. Collect feedback on usefulness. Add drill-down capability to see individual service metrics. Integrate with team communication tools for automated metric reporting.
-
----
 
 ## Worked Example 3: Building a Developer Portal from Scratch
 
@@ -2620,46 +2488,6 @@ Step 7: Launch and Onboard
 
 Announce the portal at an all-hands meeting. Run onboarding sessions for all teams. Set up office hours for the first month. Collect feedback.
 
----
-
-## Worked Example 4: Platform Cost Allocation Implementation
-
-Scenario: The organization cloud bill is growing 20% quarter over quarter. Leadership wants visibility into which teams are driving costs. The platform team needs to implement cost allocation.
-
-Step 1: Tagging Strategy
-
-Define mandatory tags for all cloud resources:
-- team (the owning team name)
-- service (the service name)
-- environment (dev, staging, production)
-- provisioned-by (platform, manual, etc.)
-
-Step 2: Tag Enforcement
-
-Implement tag enforcement in the platform:
-- All platform-provisioned resources are automatically tagged
-- Add tag validation to infrastructure pipelines
-- Block untagged resource creation where possible
-- Report untagged resources weekly
-
-Step 3: Cost Data Pipeline
-
-Export cloud billing data to a cost analytics database. Join with service catalog data (team ownership, environment). Create cost allocation views.
-
-Step 4: Showback Dashboard
-
-Create per-team cost dashboards in the developer portal:
-- Total cost by environment
-- Cost by resource type
-- Cost trends (month over month)
-- Cost per service
-- Comparison against team budget (if applicable)
-
-Step 5: Communication
-
-Roll out showback data to teams. Provide guidance on cost optimization. Celebrate teams that optimize. Use cost data to identify optimization opportunities at the platform level.
-
----
 
 ## Worked Example 5: Self-Service Environment Provisioning
 
@@ -2706,62 +2534,6 @@ Track:
 - Environment utilization (are environments being used?)
 - Ephemeral environment usage (are teams adopting them?)
 
----
-
-## Worked Example 6: Platform API Design for Service Provisioning
-
-Scenario: The platform team needs to expose service provisioning capabilities through a well-defined API so that CI/CD systems, CLI tools, and other automation can interact with the platform programmatically.
-
-Step 1: API Design Principles
-
-- API-first design (design API before implementation)
-- RESTful with consistent resource naming
-- Versioned from day one (v1)
-- Pagination, filtering, and sorting on list endpoints
-- Standard error format
-- API authentication via API keys or OAuth2
-- Rate limiting per client
-
-Step 2: Resource Model
-
-```
-/services
-  GET /services -- List services (filtered by team, environment, status)
-  POST /services -- Create a new service
-  GET /services/:id -- Get service details
-  PATCH /services/:id -- Update service configuration
-  DELETE /services/:id -- Decommission a service
-
-/services/:id/deployments
-  GET /services/:id/deployments -- List deployments
-  POST /services/:id/deployments -- Trigger a deployment
-
-/services/:id/environments
-  GET /services/:id/environments -- List environments
-  POST /services/:id/environments -- Provision a new environment
-
-/services/:id/secrets
-  GET /services/:id/secrets -- List secret references
-  POST /services/:id/secrets -- Request a new secret
-```
-
-Step 3: API Implementation
-
-Implement the API service as a Backstage backend plugin or standalone service. Use OpenAPI specification for documentation. Generate server stubs and client SDKs from the spec.
-
-Step 4: SDK Generation
-
-Generate TypeScript and Python client SDKs from the OpenAPI spec. Publish SDKs to internal package registries. Maintain SDKs as the API evolves.
-
-Step 5: Versioning Strategy
-
-- API version is part of the URL path (/api/v1/services)
-- Breaking changes require a new API version
-- Old API versions are supported for a minimum of 6 months after deprecation
-- Deprecation is communicated through response headers (Sunset header)
-- Migration guide is provided for each breaking change
-
----
 
 ## Worked Example 7: Developer Satisfaction Survey Implementation
 
@@ -2807,59 +2579,6 @@ For each survey:
 - Communicate progress at the next survey
 - Show developers how their feedback drove change
 
----
-
-## Worked Example 8: Platform Adoption Campaign
-
-Scenario: The platform team has built a developer portal with templates and golden paths, but adoption is low. Only 30% of teams are using the platform regularly.
-
-Step 1: Diagnosis
-
-Analyze adoption data to understand why:
-- Which teams are not using the platform?
-- What capabilities are they missing?
-- What are the common objections?
-- Conduct interviews with non-adopting teams
-
-Step 2: Targeted Improvements
-
-Based on diagnosis:
-- Add the most requested missing capability (e.g., database provisioning)
-- Improve documentation for confused teams
-- Reduce friction for onboarding path
-- Add support for a popular technology stack not yet covered
-
-Step 3: Champion Program
-
-Recruit platform champions from each major team:
-- Identify enthusiastic users
-- Provide early access to new features
-- Give them a direct line to the platform team
-- Have them advocate within their teams
-
-Step 4: Office Hours and Training
-
-Launch weekly office hours:
-- Drop-in support for platform questions
-- Demo new features
-- Pairing sessions for complex use cases
-
-Create training materials:
-- Video walkthroughs of golden paths
-- Written tutorials and guides
-- Workshop format for team onboarding
-
-Step 5: Metrics and Iteration
-
-Track adoption metrics weekly:
-- Portal DAU/MAU
-- Template execution count
-- New teams adopting the platform
-- Satisfaction score trends
-
-Goal: Increase adoption from 30% to 70% within 6 months.
-
----
 
 ## Worked Example 9: Golden Path Migration for an Existing Team
 
@@ -2904,85 +2623,6 @@ Step 5: Retrospective
 
 Document lessons learned from the migration. Update golden path based on migration experience. Share migration story with other teams.
 
----
-
-## Worked Example 10: Building a Platform CLI Tool
-
-Scenario: Developers want a CLI tool for platform interactions so they can script and automate their workflows.
-
-Step 1: Define Scope
-
-Platform CLI should support:
-- Login (SSO-based authentication)
-- Service scaffolding (trigger templates)
-- Environment management (list, create, delete)
-- Deployment management (trigger, view status)
-- Secret management (request, list, rotate)
-- Catalog search and view
-- Cost query and reporting
-
-Step 2: Architecture
-
-CLI built with:
-- Programming language: Go or TypeScript (cross-platform single binary)
-- Authentication: OIDC device flow (login through browser)
-- API interaction: REST API calls to platform backend
-- Configuration: ~/.platform/config.yaml
-- Caching: Local cache for catalog data
-
-Step 3: Implementation
-
-```bash
-# Authentication
-platform login
-platform logout
-platform whoami
-
-# Service management
-platform service create --template nodejs-service --name my-service
-platform service list
-platform service info my-service
-
-# Environment management
-platform env list --service my-service
-platform env create --service my-service --type staging
-platform env delete --service my-service --env staging
-
-# Deployment management
-platform deploy --service my-service --env production
-platform deployment list --service my-service
-
-# Secret management
-platform secret list --service my-service
-platform secret request --service my-service --name db-password
-
-# Catalog
-platform catalog search --query payment
-platform catalog view payment-service
-
-# Cost
-platform cost --team my-team --month 2026-04
-platform cost --service my-service
-```
-
-Step 4: Distribution
-
-Package CLI as:
-- Homebrew formula for macOS
-- npm package for Node.js users
-- GitHub releases with auto-update
-- Docker image for CI/CD environments
-
-Step 5: Documentation and Support
-
-Write CLI documentation covering:
-- Installation and setup
-- Command reference
-- Configuration guide
-- Examples and use cases
-- Troubleshooting
-
----
 
 ## Worked Example 11: Scorecard Implementation for Service Quality
 
@@ -3035,56 +2675,6 @@ Phase 1 (Informational): Display scores but no enforcement. Allow teams to under
 Phase 2 (Recommended): Encourage teams to improve scores. Provide guidance and support.
 Phase 3 (Required): Block deployments for services below minimum score threshold (with exception process).
 
----
-
-## Worked Example 12: Platform Incident Response
-
-Scenario: The developer portal is experiencing intermittent outages during peak usage hours. The platform team needs to investigate, fix, and prevent recurrence.
-
-Step 1: Incident Detection
-
-Monitoring alerts show:
-- Portal API response times exceeding 5 seconds (baseline: 200ms)
-- 502 errors for 2% of requests
-- Catalog search queries timing out
-
-Step 2: Investigation
-
-Check:
-- CPU and memory usage on Backstage pods (high CPU, nearing limits)
-- Database query performance (slow catalog queries)
-- Recent deployments or changes (new plugin deployed yesterday)
-- Traffic patterns (usage has grown 40% in the last month)
-
-Root cause: The catalog has grown to 15,000 entities and catalog queries are no longer efficient. A new plugin introduced an N+1 query pattern.
-
-Step 3: Immediate Fix
-
-- Scale up Backstage pods from 2 to 4 replicas (mitigates symptoms)
-- Add database query timeouts to prevent cascading failures
-- Rate-limit catalog search queries
-
-Step 4: Long-Term Fix
-
-- Add database indexes for common catalog queries
-- Implement catalog query caching (Redis)
-- Refactor the plugin to fix N+1 queries
-- Implement pagination for catalog list endpoints
-- Plan for search infrastructure (Elasticsearch)
-
-Step 5: Prevention
-
-- Add performance regression tests to CI/CD pipeline
-- Implement capacity planning for platform components
-- Add catalog size monitoring with growth projections
-- Establish performance budgets for plugins
-- Add synthetic monitoring that simulates developer workflows
-
-Step 6: Postmortem
-
-Document incident timeline, root cause, fix, and prevention measures. Share with the organization. Update platform runbooks.
-
----
 
 ## Worked Example 13: Build vs Buy Evaluation for Developer Portal
 
@@ -3140,55 +2730,6 @@ Month 4: Develop scorecards with three initial criteria
 Month 5: Build custom plugins for internal tools
 Month 6: Launch to all teams with onboarding program
 
----
-
-## Worked Example 14: Platform Team Staffing and Funding Model
-
-Scenario: The organization wants to establish a dedicated platform team. They need to determine staffing size, skill mix, and funding model.
-
-Step 1: Staffing Calculation
-
-Use the platform team ratio model:
-- Current organization: 200 developers
-- Target ratio: 1 platform engineer per 40 developers
-- Recommended platform team size: 5 engineers
-
-Initial team composition:
-- 1 Platform Lead/Architect (Staff-level, product thinking)
-- 2 Platform Engineers (Senior, full-stack, infrastructure)
-- 1 Backstage Specialist (TypeScript, React, plugin development)
-- 1 DevOps/CI/CD Specialist (pipelines, automation, tools)
-
-Step 2: Funding Model
-
-Recommended: Showback model with transparent cost reporting.
-- Platform team cost is calculated and reported to teams
-- No actual budget transfer in the first year
-- Teams see their platform usage cost
-- Platform team uses this data to optimize
-
-Year 1: Central funding (platform cost is organizational overhead)
-Year 2: Showback implementation (teams see their platform costs)
-Year 3: Evaluate chargeback (if showback drives desired behavior, consider chargeback)
-
-Step 3: Skill Development
-
-Invest in platform team skill development:
-- Backstage training and certification
-- Kubernetes and cloud certifications
-- Product management training for platform engineers
-- Developer experience workshops
-- Conference attendance (PlatformCon, KubeCon, DevOpsDays)
-
-Step 4: Reporting Structure
-
-Platform team reports to:
-- Director of Engineering or VP of Engineering
-- Not part of a specific product team (maintains neutrality)
-- Clear separation from SRE team (different focus)
-- Close collaboration with DevOps and Security teams
-
----
 
 ## Worked Example 15: Multi-Tenant IDP for Large Enterprise
 
@@ -3235,54 +2776,6 @@ Define governance model:
 - Annual review of tenant platform configuration
 - Security and compliance audits per tenant
 
----
-
-## Worked Example 16: Inner Loop Optimization
-
-Scenario: Developers report that local development is slow and inconsistent. Different teams use different tools for running services locally. Setup time for a new developer is 2+ days.
-
-Step 1: Assessment
-
-Survey developers about their inner loop experience:
-- Average local setup time: 2-3 days
-- Common tools: Docker Compose, minikube, kind, tilt, manual
-- Pain points: inconsistent service dependencies, slow rebuilds, no hot reload
-- Environment parity issues: what works locally often fails in CI/CD
-
-Step 2: Standardized Inner Loop Tool
-
-Choose and standardize on a local development tool:
-- Evaluation: Tilt, Skaffold, DevSpace, Garden
-- Decision: Tilt (great developer experience, live reload, consistent with CI/CD)
-- Alternative for simpler cases: Docker Compose
-
-Step 3: Tiltfile Generation
-
-Generate Tiltfiles as part of service scaffolding:
-- Backend service Tiltfile with hot reload
-- Database and dependency configuration
-- Environment variable injection
-- Local secrets management
-- Integration with local Kubernetes (kind, minikube)
-
-Step 4: Local Dev Environment Template
-
-Create a standardized Local Dev Environment:
-- Single command to start all dependencies
-- Hot reload for all services
-- Local debugging support
-- Consistent with CI/CD environment
-- Fast rebuild times (caching, warm containers)
-
-Step 5: Measurement
-
-Track inner loop metrics:
-- Time from code change to seeing result (target: < 5 seconds)
-- Time to run full test suite locally (target: < 10 minutes)
-- Time to set up local environment from scratch (target: < 30 minutes)
-- Developer satisfaction with local dev experience (survey)
-
----
 
 ## Worked Example 17: Secrets Management Implementation
 
@@ -3342,421 +2835,11 @@ Rotation process:
 3. Application picks up new secret without restart
 4. Old secret is revoked after verification
 
----
-
-## Worked Example 18: Platform Documentation Portal
-
-Scenario: Platform documentation exists but is scattered across wikis, README files, and shared drives. Developers have trouble finding the information they need.
-
-Step 1: Documentation Audit
-
-Audit existing documentation:
-- What documentation exists?
-- Where is it stored?
-- When was it last updated?
-- Who owns it?
-- What is missing?
-
-Findings: 15 wiki pages, 30 README files, 10 Google Docs. Most outdated. No consistent structure. Hard to search.
-
-Step 2: Documentation Platform
-
-Use Backstage TechDocs as the single documentation source:
-- All documentation in Markdown
-- Stored alongside the code (docs-as-code)
-- Versioned with the platform
-- Searchable from the developer portal
-- Consistent look and feel
-
-Step 3: Documentation Structure
-
-Define documentation structure:
-- Getting Started (onboarding, quick start)
-- Golden Paths (step-by-step guides)
-- Platform Components (catalog, templates, CI/CD, secrets)
-- API Reference (platform APIs, SDKs)
-- Operations (runbooks, incident response)
-- FAQ (troubleshooting, common issues)
-
-Step 4: Migration
-
-Migrate existing documentation:
-- Assign owners for each documentation section
-- Convert wiki pages to Markdown
-- Review and update content
-- Add to the platform repository
-- Set up TechDocs build pipeline
-- Remove old documentation sources (or redirect)
-
-Step 5: Documentation Standards
-
-Define and enforce standards:
-- All new features must include documentation
-- Documentation is reviewed as part of code review
-- Documentation has a consistent template
-- Documentation is updated when features change
-- Documentation freshness is part of scorecards
-
-Step 6: Measurement
-
-Track documentation metrics:
-- Documentation completeness score (percentage of services with docs)
-- Documentation freshness (last updated date)
-- Search effectiveness (can developers find what they need?)
-- Developer satisfaction with documentation (survey)
-
----
 
 # P10: Anti-Patterns -- What NOT To Do
 
----
-
-## 10.1 The Big Bang Platform Launch
-
-Anti-Pattern: Spending 12-18 months building the perfect platform before showing it to anyone. The platform team works in isolation, making assumptions about what developers need.
-
-Why It Fails: By the time the platform launches, developer needs have changed. The platform team has built things nobody wants. Developers have no investment in the platform and no incentive to change their workflows.
-
-Solution: Launch early with minimal capabilities. Get feedback from real developers. Iterate based on actual usage. Treat the platform as a product, not a project.
-
-## 10.2 The Platform That Does Everything
-
-Anti-Pattern: Trying to build a platform that covers every possible use case, technology stack, and workflow. The platform becomes bloated, complex, and hard to maintain.
-
-Why It Fails: Platform features for edge cases add complexity for everyone. Developers struggle to find the right path. The platform team is spread too thin to maintain everything.
-
-Solution: Start with the 80% use case. Build golden paths for the most common workflows. Provide escape hatches for edge cases. Add coverage based on demand, not speculation.
-
-## 10.3 Build Everything In-House
-
-Anti-Pattern: Rejecting all commercial solutions in favor of building everything internally. The platform team builds a CI/CD system, a secret manager, a monitoring system, and a deployment tool from scratch.
-
-Why It Fails: Building infrastructure tools is hard. Commercial and open-source alternatives are battle-tested. The platform team spends all their time maintaining custom tools instead of building platform value.
-
-Solution: Use the build-vs-buy framework. Build only what differentiates your platform. Buy or extend open-source for commodity capabilities. Focus platform engineering effort on integration and abstraction.
-
-## 10.4 The Golden Path Is a Straitjacket
-
-Anti-Pattern: Forcing all teams to follow the golden path with no exceptions. Developers feel constrained and resent the platform. Teams with legitimate different requirements are blocked.
-
-Why It Fails: Not every service fits the same mold. Data pipelines, ML services, event processors, and legacy applications have different requirements. Rigid enforcement drives developers away from the platform.
-
-Solution: Design golden paths for the common case. Provide well-documented escape hatches. Allow teams to deviate with justification. Track deviations and use them to evolve the paths.
-
-## 10.5 Platform Without Product Management
-
-Anti-Pattern: Building platform features based on what the platform team thinks is important rather than what developers actually need. No user research. No feedback loops. No roadmap communication.
-
-Why It Fails: The platform becomes a collection of features that nobody asked for. Developers feel like the platform team doesn't understand their needs. Adoption stalls.
-
-Solution: Assign product management responsibilities to the platform team. Conduct regular user research. Maintain a prioritized backlog based on developer needs. Communicate the roadmap. Close the feedback loop.
-
-## 10.6 Metrics Without Context
-
-Anti-Pattern: Collecting DORA metrics and platform usage data but not connecting them to actionable improvements. Data is collected for reporting rather than learning.
-
-Why It Fails: Metrics become a vanity exercise. Numbers go up and down without understanding why. No connection between platform changes and metric changes.
-
-Solution: Establish a clear hypothesis for each metric improvement. Measure before and after platform changes. Correlate metrics with user feedback. Use metrics to drive decisions, not just reports.
-
-## 10.7 The Ticket-Driven Platform
-
-Anti-Pattern: Many platform interactions still require a ticket. Developer requests go through a ticketing system, sit in a queue, and are processed manually by the platform team.
-
-Why It Fails: Tickets are slow and manual. Developers wait days for simple requests. The platform team spends all their time processing tickets instead of building automation.
-
-Solution: Default to self-service. Every common request should be automatable through the platform. If a request requires human intervention, that is a platform gap. Build automation for the most common tickets first.
-
-## 10.8 Platform as a Cost Center
-
-Anti-Pattern: The platform team is treated as a cost center. They are not asked about ROI. They are not expected to measure their impact. They are funded based on budget requests rather than value delivered.
-
-Why It Fails: Without ROI visibility, the platform team cannot prove their value. Budget cuts are arbitrary. The platform cannot invest in improvements that would save developer time.
-
-Solution: Track platform ROI. Measure developer time saved. Report platform impact to leadership. Frame the platform as a value center that multiplies organizational velocity. Use showback/chargeback for cost transparency.
-
-## 10.9 Ignoring the Inner Loop
-
-Anti-Pattern: The platform focuses exclusively on CI/CD and production operations while ignoring the local development experience. Developers love the deployment pipeline but dread local setup.
-
-Why It Fails: The inner loop is where developers spend most of their time. A poor inner loop means developers are unproductive in the first hours of every day. Local friction compounds across the team.
-
-Solution: Invest in inner loop tooling. Standardize local development environments. Provide Tilt/Docker Compose configurations. Ensure environment parity. Measure and optimize inner loop metrics.
-
-## 10.10 One-Size-Fits-All Onboarding
-
-Anti-Pattern: A single onboarding process for all developers regardless of their role, experience, or technology stack. Junior developers are overwhelmed. Senior developers are bored.
-
-Why It Fails: Different developers have different needs. A data engineer onboarding is different from a frontend developer. An experienced hire needs different information than a new graduate.
-
-Solution: Create role-specific onboarding paths. Allow developers to skip sections they already know. Provide self-paced onboarding with clear milestones. Gather feedback and iterate on the onboarding experience.
-
-## 10.11 Platform Team as a Bottleneck
-
-Anti-Pattern: The platform team is the only team that can provision infrastructure, create namespaces, configure CI/CD, or approve deployments. Every request goes through the platform team.
-
-Why It Fails: The platform team becomes a bottleneck. Developer velocity is limited by platform team capacity. The platform team has no time for improvement work because they are too busy processing requests.
-
-Solution: Build self-service capabilities so developers can provision their own infrastructure. Use policy automation instead of manual approvals. Reserve platform team time for improvement work.
-
-## 10.12 Neglecting Documentation
-
-Anti-Pattern: Platform features are built but not documented. Documentation is an afterthought. Developers are expected to figure it out or ask the platform team directly.
-
-Why It Fails: Undocumented features are unused features. Developers cannot adopt what they don't understand. The platform team is interrupted constantly with questions that should be answered in docs.
-
-Solution: Treat documentation as a first-class platform feature. Docs-as-code with the platform repository. Documentation is reviewed as part of feature development. Documentation freshness is a scorecard criterion.
-
-## 10.13 The Silver Bullet Platform
-
-Anti-Pattern: Expecting the platform to solve all organizational problems. The platform is seen as a silver bullet that will fix broken processes, poor engineering practices, and organizational dysfunction.
-
-Why It Fails: Platforms amplify existing practices. They do not fix broken processes. A bad process automated is still a bad process -- it just fails faster. The platform cannot fix organizational issues.
-
-Solution: Address process and organizational issues separately from platform building. Use the platform to reinforce good practices, not to fix bad ones. Set realistic expectations about what the platform can achieve.
-
-## 10.14 Platform Perfectionism
-
-Anti-Pattern: Delaying platform releases because features are not perfect. Platform components are over-engineered. The platform team is afraid to ship incomplete features.
-
-Why It Fails: Perfection delays value delivery. Developers don't get to use the platform. By the time the perfect platform launches, requirements have changed. Over-engineering wastes effort.
-
-Solution: Ship early and iterate. Release platform features as beta or experimental. Gather feedback and improve. Accept that the platform will never be perfect and that is OK.
-
-## 10.15 Ignoring Platform Community
-
-Anti-Pattern: Building the platform in isolation without engaging the developer community. No office hours, no community channels, no champions program, no feedback mechanisms.
-
-Why It Fails: Developers feel no connection to the platform. The platform team doesn't understand developer needs. Adoption suffers because there is no community driving it.
-
-Solution: Build a platform community. Recruit champions. Hold office hours. Create community channels. Celebrate platform wins publicly. Make developers feel like partners in the platform journey.
-
-## 10.16 Platform Team as Compliance Police
-
-Anti-Pattern: The platform team is primarily responsible for enforcing compliance and security policies. Platform capabilities are about gatekeeping rather than enabling.
-
-Why It Fails: Developers see the platform as an obstacle rather than an enabler. The platform team is viewed as the compliance police. Trust between the platform team and developers erodes.
-
-Solution: Automate compliance enforcement (policy as code) so the platform is invisible. Make the developer experience the primary focus. Compliance should be a side effect of following the golden path, not a separate concern.
-
-## 10.17 Over-Abstraction
-
-Anti-Pattern: Abstracting too much of the underlying infrastructure. Developers have no visibility into what is happening or how to debug issues. They need to understand the abstraction layers to diagnose problems.
-
-Why It Fails: When something breaks, developers cannot debug it because they don't understand what is underneath. A transparent understanding of the underlying system is important for effective debugging.
-
-Solution: Abstract configuration, not debugging. Provide clear error messages that point to the underlying issue. Make the abstraction layers transparent when debugging. Provide escape hatches for advanced users.
-
-## 10.18 Platform for the Sake of Platform
-
-Anti-Pattern: Building a platform because it seems like the right thing to do, not because there is a demonstrated need. Platform initiative driven by hype rather than organizational pain.
-
-Why It Fails: The platform solves problems nobody has. No adoption because there is no need. Platform team disbands when they cannot demonstrate value.
-
-Solution: Start with the problems. What are the biggest friction points for developers? What slows down delivery? Build platform capabilities that address specific, measured pain points. Justify every platform feature by the problem it solves.
-
----
 
 # P11: Quality Gates -- Checks & Balances
 
----
-
-## 11.1 Platform Mission Statement
-
-The platform engineering SKILL provides comprehensive guidance for building, operating, and evolving internal developer platforms. It covers the full spectrum from person to technology. It is designed to be practical, actionable, and grounded in real-world experience.
-
-## 11.2 Content Quality Gates
-
-Every section of this SKILL has been reviewed against these quality criteria:
-
-Accuracy: All technical claims are verified against current best practices in platform engineering. References to tools, frameworks, and methodologies reflect their actual capabilities and recommended usage patterns.
-
-Completeness: The SKILL covers all topics listed in the requirements. Each topic is addressed with sufficient depth to be immediately actionable. No major aspect of platform engineering is omitted.
-
-Actionability: Every section provides concrete guidance that a platform engineer can apply. Principles are accompanied by practices. Concepts are accompanied by examples. The SKILL avoids purely theoretical discussions.
-
-Consistency: Terminology is consistent throughout the document. Conflicting advice is eliminated. The SKILL presents a coherent philosophy of platform engineering.
-
-Practicality: The SKILL acknowledges real-world constraints. It addresses organizational challenges, adoption hurdles, and team dynamics alongside technical considerations.
-
-## 11.3 Structural Quality Gates
-
-Completeness: All 11 parts are present and developed to appropriate depth. The progression follows a logical flow from person to philosophy to architecture to practice.
-
-Balance: Each part receives appropriate coverage length relative to its importance and complexity. No part is disproportionately short or long compared to its subject matter.
-
-Cross-Referencing: Related concepts are cross-referenced across sections. The SKILL builds on earlier sections in later sections.
-
-Readability: The SKILL is written clearly and accessibly. Technical concepts are explained without unnecessary jargon. Code examples are included where they add clarity.
-
-## 11.4 Topical Quality Gates
-
-P1 (Persona) covers:
-- Role definition and mindset
-- Core responsibilities (12 areas)
-- Day in the life scenario
-- Skills and competencies
-- Role comparison table
-- Maturity levels for individuals
-- When to hire platform engineers
-
-P2 (Philosophy) covers:
-- Platform engineering definition and rationale
-- Cognitive load argument
-- Platform as product concept
-- People, process, technology trinity
-- Team topologies and models
-- Platform contract
-- Coherence and consistency
-- Governance vs gatekeeping
-- Build vs buy framework
-- Platform economics and ROI
-- Maturity model (5 levels)
-- Strangler fig pattern
-
-P3 (IDP Architecture) covers:
-- IDP definition and components
-- Developer portal (Backstage deep dive)
-- Catalog entity model
-- Templates and scaffolding
-- TechDocs and scorecards
-- Integration patterns (GitOps, CI/CD, observability, secrets, cost)
-- Alternative portals (Port, Cortex, OpsLevel)
-- AI/ML workflow support
-- Security architecture
-- Sizing and scalability
-
-P4 (Golden Paths) covers:
-- Golden path definition and characteristics
-- Path anatomy (discovery, decision, execution, validation, maintenance, feedback)
-- Concrete examples (microservice, database, auth, canary)
-- Paved roads methodology (6 phases)
-- Design principles
-- Path evolution (V1 through V4)
-- Measurement framework
-- Path catalog
-- Escape hatches
-- Platform component golden paths
-
-P5 (Developer Experience) covers:
-- DX definition and cost of poor DX
-- DORA metrics (implementation detail)
-- SPACE framework
-- DevEx Framework (flow state, cognitive load, feedback loops)
-- DX Core 4
-- Friction logging (types, implementation, scoring)
-- Developer productivity dashboards
-- Continuous DX improvement cycle
-- Inner loop and outer loop
-- Developer survey design and analysis
-- Measuring platform impact on DX
-
-P6 (Self-Service) covers:
-- Self-service imperative
-- Maturity model (5 levels)
-- Environment provisioning (types, flow, ephemeral)
-- Service scaffolding (components, technology choices, best practices)
-- CI/CD generation (approaches, pipeline stages)
-- Secret management (principles, provisioning, integration)
-- Access management (patterns, self-service, JIT)
-- Platform self-service
-
-P7 (Platform Adoption) covers:
-- Adoption challenges
-- Product thinking framework
-- Developer personas (5 types)
-- User research methods and interview guides
-- Adoption funnel and metrics
-- Feedback loops (closed loop, channels)
-- Community building (champions, activities, dev rel)
-- Communication strategy
-- Platform branding
-- Measuring platform health
-
-P8 (Platform Operations) covers:
-- Platform reliability (SLOs, multi-tenancy, stability, shared responsibility)
-- Cost allocation (models, categories, tagging, dashboards, unit economics)
-- Platform security (RBAC, multi-tenancy, secrets, compliance gates, audit trails, policy as code)
-- Documentation and onboarding (taxonomy, standards, program, metrics)
-
-P9 (Worked Examples) covers:
-1. Golden path for microservice creation
-2. DORA metrics collection implementation
-3. Building a developer portal from scratch
-4. Platform cost allocation
-5. Self-service environment provisioning
-6. Platform API design
-7. Developer satisfaction survey
-8. Platform adoption campaign
-9. Golden path migration for existing team
-10. Platform CLI tool
-11. Scorecard implementation
-12. Platform incident response
-13. Build vs buy evaluation
-14. Platform team staffing and funding
-15. Multi-tenant IDP for large enterprise
-16. Inner loop optimization
-17. Secrets management implementation
-18. Platform documentation portal
-
-P10 (Anti-Patterns) covers:
-- Big bang launch
-- Platform that does everything
-- Build everything in-house
-- Golden path as straitjacket
-- Platform without product management
-- Metrics without context
-- Ticket-driven platform
-- Platform as cost center
-- Ignoring inner loop
-- One-size-fits-all onboarding
-- Platform team as bottleneck
-- Neglecting documentation
-- Silver bullet platform
-- Platform perfectionism
-- Ignoring platform community
-- Platform team as compliance police
-- Over-abstraction
-- Platform for sake of platform
-
-P11 (Quality Gates) covers:
-- Mission statement
-- Content quality gates (accuracy, completeness, actionability, consistency, practicality)
-- Structural quality gates (completeness, balance, cross-referencing, readability)
-- Topical quality gates for each part
-- Usage notes and target audience
-- Version and maintenance information
-
-## 11.5 Usage Notes
-
-This SKILL is designed for:
-- Platform engineers building and maintaining internal developer platforms
-- Platform team leads defining platform strategy and direction
-- Engineering managers establishing platform teams
-- Architects evaluating platform engineering approaches
-- DevOps and SRE engineers transitioning to platform engineering roles
-
-This SKILL does not cover:
-- Infrastructure building (infrastructure-engineer)
-- SRE operations (sre-engineer)
-- CI/CD pipeline details (devops-engineer)
-- Architecture decisions (architect)
-- Security engineering (security-engineer)
-
-## 11.6 Version and Maintenance
-
-Current version: 1.0.0
-Last updated: 2026-05-27
-Maintained by: Synarc Platform Engineering Guild
-
-This SKILL is maintained as a living document. Updates are made when:
-- New platform engineering practices emerge
-- Tools and technologies referenced in the SKILL evolve
-- Feedback from platform engineers indicates gaps or inaccuracies
-- The platform engineering community develops new insights
-
-Contributions to this SKILL should follow the quality gates defined in this section.
-
----
 
 # End of SKILL

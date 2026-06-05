@@ -3,7 +3,7 @@ title: Change Ledger — taskflow-api
 type: change-ledger
 status: active
 version: 3.0.0
-updated: 2026-05-24
+updated: 2026-06-05
 owner: platform-team
 repo: taskflow-api
 tags:
@@ -15,6 +15,48 @@ tags:
 # Change Ledger — taskflow-api
 
 Append-only. Never manually edited. Updated by Synarc at session end.
+
+---
+
+## Session: 20260605-v6plan — 2026-06-05
+
+**Repo:** synarc-v4 (Synarc runtime itself) | **Scale:** LARGE | **Stack:** Markdown skill pack
+**Work:** PLAN:v6.0.0 | **Peak risk:** MEDIUM
+**Owner:** synarc-product
+
+| # | Time     | Type                | Description                                                              | Risk   | Breaking |
+|---|----------|---------------------|--------------------------------------------------------------------------|--------|----------|
+| 1 | 09:00:00 | PLAN                 | v6.0.0 vision + roadmap drafted (Cognition Mesh)                        | LOW    | No       |
+| 2 | 09:15:00 | DOCS:VERSION         | Bumped core metadata: plugin.json, manifest.yaml, README, QUICKSTART     | LOW    | No       |
+| 3 | 09:30:00 | VISION:DOC           | Created brain/V6_VISION.md (north star, pillars, 27 new roles)          | LOW    | No       |
+| 4 | 10:00:00 | SKILLS:NEW           | Drafted 16 P0 new role skills (8 AI-era, 4 product/design, 4 quality)   | MEDIUM | No*      |
+| 5 | 12:00:00 | MANIFEST:EXPAND      | manifest.yaml: 40 → 67 skills (16 P0 done, 11 P1/P2 planned)            | MEDIUM | No       |
+| 6 | 12:30:00 | DOCS:NEW             | v6 architecture doc (Cognition Mesh + MCP)                              | LOW    | No       |
+| 7 | 13:00:00 | DOCS:NEW             | v6 → v5 migration guide                                                 | LOW    | No       |
+| 8 | 13:30:00 | DOCS:UPDATE          | README v6 sections, role count, mesh architecture diagram               | LOW    | No       |
+
+*Additive only — v5 manifest parseable, v6 adds new skill entries.
+
+**Session Cognitive Summary:**
+Synarc v6.0.0 "Cognition Mesh" plan executed. 27 new roles designed
+(16 P0 implemented in this pass, 11 deferred to v6.0.0-beta/GA).
+Core version metadata bumped to 6.0.0 across plugin.json, manifest.yaml,
+README, QUICKSTART, DEPLOYMENT, and synarc-core/skill.yaml. v6 introduces
+the Cognition Mesh (multi-role team simulation), Living Memory v2
+(semantic index), first-party MCP servers, and opt-in telemetry.
+Pricing: Pro tier ($19/dev/mo) monetizes infrastructure only; skills
+remain MIT. v5 consumers unaffected (additive, no breaking changes).
+
+**Risks Introduced:**
+- [MEDIUM] 27-role expansion risks quality dilution → mitigated by v5 quality-bar CI gate
+- [MEDIUM] Mesh runtime latency budget → 75ms cap enforced per-tool
+
+**Risks Resolved:** None (planning session).
+
+**Snapshots Generated:**
+- `brain/snapshots/2026-06-05-v6-vision.md` (mirrors V6_VISION.md)
+
+---
 
 ---
 

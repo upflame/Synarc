@@ -1,0 +1,29 @@
+﻿id: foundational-reasoning
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Dual-track reasoning â€” decompose problems to irreducible truths (first principles) while reasoning holistically about system dynamics (systems thinking). Assumption analysis, constraint-convention distinction, causal reduction, causal loop diagrams, feedback dynamics, leverage points, stock-and-flow analysis, emergent behavior, second-order effects, and interconnected dependency mapping.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

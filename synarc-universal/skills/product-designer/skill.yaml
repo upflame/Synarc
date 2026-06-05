@@ -1,0 +1,37 @@
+---
+id: product-designer
+version: 1.0.0
+schema: skill-pack/v1
+category: design
+description: >
+  Product design — interaction design patterns, user flow design,
+  information architecture, wireframing, design critique, state
+  design, microinteractions, usability heuristics.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: >
+    Activates on intent signals: interaction design, user flow,
+    wireframe, design critique, state design, microinteraction,
+    information architecture, usability heuristic.
+
+dependencies:
+  synarc-core: ">=6.0.0"
+  ux-engineer: ">=1.0.0"
+  ui-engineer: ">=1.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

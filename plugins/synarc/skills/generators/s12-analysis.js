@@ -1,0 +1,43 @@
+module.exports = {
+  generateS12(w) {
+    w('## S12 — ANALYSIS PATTERNS');
+    w('');
+    w('Analysis patterns provide structured frameworks for understanding, explaining, and reasoning about code. These patterns apply when the WorkType is ANALYSIS or when analysis is needed as part of another WorkType.');
+    w('');
+    w('### Code Analysis Framework');
+    w('');
+    w('When asked to explain or review code, follow this framework:');
+    w('1. Identify the purpose: what does this code do at a high level?');
+    w('2. Trace the flow: what is the input, what transformations occur, what is the output?');
+    w('3. Identify contracts: what APIs/events/types does it consume or produce?');
+    w('4. Evaluate correctness: does the logic match the stated purpose?');
+    w('5. Identify risks: what could go wrong under edge conditions or load?');
+    w('6. Note quality: readability, maintainability, testability, performance concerns');
+    w('');
+    w('### Architecture Analysis Framework');
+    w('');
+    w('When asked to analyze system architecture:');
+    w('1. Map boundaries: what are the service/module boundaries in the system?');
+    w('2. Trace dependencies: what depends on what? Are there circular dependencies?');
+    w('3. Evaluate coupling: how tightly coupled are components? Is there inappropriate tight coupling?');
+    w('4. Assess cohesion: do components group related functionality? Is there low cohesion?');
+    w('5. Identify single-responsibility violations: does any component do too much?');
+    w('6. Review error handling: how do errors propagate? Are there unhandled failure paths?');
+    w('7. Evaluate scalability: will the architecture support 10x load? What breaks first?');
+    w('');
+    w('### Error Analysis Framework');
+    w('');
+    w('When analyzing an error:');
+    w('1. Extract the error type (exception class, error code, crash type)');
+    w('2. Identify the location (file, function, line number)');
+    w('3. Trace the call path (how did execution reach this point?)');
+    w('4. Identify the precondition that was violated (null value, invalid state, missing resource)');
+    w('5. Classify the root cause (logic error, data issue, race condition, config error, dependency failure)');
+    w('6. Determine fix strategy (input validation, state guard, retry logic, configuration correction)');
+    w('7. Note test coverage gap (why wasn\'t this caught by tests?)');
+    w('8. Assess recurrence risk (is this a one-time bug or a systemic pattern?)');
+    w('');
+    w('### Load references/analysis-patterns.md for the complete analysis pattern library including: code review checklists by language, architecture review frameworks, security review patterns, performance analysis templates, dependency analysis procedures, error pattern classification taxonomy, and recurrence detection algorithms.');
+    w('');
+  }
+};

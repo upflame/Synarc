@@ -1,0 +1,38 @@
+---
+id: performance-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: quality
+description: >
+  Performance engineering — profiling, load/stress/soak testing,
+  capacity planning, latency analysis, caching strategies, database
+  performance, network optimization, observability, performance
+  budgets, regression detection, continuous profiling.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: >
+    Activates on intent signals: performance, profiling, load test,
+    stress test, latency, throughput, capacity, caching, APM,
+    observability, performance budget, Web Vitals, LCP, INP.
+
+dependencies:
+  synarc-core: ">=6.0.0"
+  sre-engineer: ">=2.0.0"
+  backend-engineer: ">=2.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

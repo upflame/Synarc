@@ -1,0 +1,29 @@
+﻿id: schemas
+version: <semver>
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Canonical document schemas for the cognition layer brain files â€” 12 document types (CURRENT_STATE, SYSTEM_MAP, ARCHITECTURE, MODULE_MAP, API_CONTRACTS, FEATURE_LOG, CHANGELOG_INTELLIGENCE, SESSION_LEDGER, SNAPSHOT, DECISION_LOG, RUNBOOK, SPECIFICATION) with universal frontmatter, H1 titles, H2 sections, quality rules, ADR lifecycle, cross-referencing, versioning, and generation triggers. version: 2.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

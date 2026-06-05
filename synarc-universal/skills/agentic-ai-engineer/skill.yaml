@@ -1,0 +1,36 @@
+---
+id: agentic-ai-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: ai-era
+description: >
+  Agentic AI engineering reasoning — agent loop design, tool calling,
+  sub-agent orchestration, memory architectures, state management,
+  agent observability, evals, and MCP integration. The 2026 #1
+  emerging engineering discipline.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: >
+    Activates on intent signals: build an agent, tool calling,
+    sub-agent, multi-agent, agent loop, MCP, agent observability,
+    prompt injection in agent, agent memory.
+
+dependencies:
+  synarc-core: ">=6.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

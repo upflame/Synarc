@@ -5,7 +5,7 @@
   "name": "Synarc",
   "displayName": "Synarc",
 
-  "version": "5.0.0",
+  "version": "6.0.0",
   "status": "production",
 
   "type": "skill-plugin",
@@ -17,13 +17,18 @@
     "verified": false
   },
 
-  "description": "A production-grade always-on engineering cognition runtime that provides architecture awareness, impact tracing, deployment risk analysis, and adaptive code intelligence across Claude Code, Claude Web, Codex CLI, Cursor, Windsurf, and SKILL.md runtimes.",
+  "description": "A production-grade always-on engineering cognition runtime that provides architecture awareness, impact tracing, deployment risk analysis, adaptive code intelligence, multi-role team collaboration (Cognition Mesh), and first-party MCP integrations across Claude Code, Claude Web, Codex CLI, Cursor, Windsurf, and SKILL.md runtimes.",
 
-  "summary": "Cross-platform engineering cognition for AI coding environments.",
+  "summary": "Cross-platform engineering cognition with multi-role team collaboration for AI coding environments.",
 
   "entrypoints": {
     "skill": "skills/synarc/SKILL.md",
-    "plugin": ".claude-plugin/plugin.json"
+    "plugin": ".claude-plugin/plugin.json",
+    "mcp-servers": [
+      "synarc-brain-mcp",
+      "synarc-risk-mcp",
+      "synarc-context-mcp"
+    ]
   },
 
   "compatibility": {
@@ -34,7 +39,8 @@
       "cursor",
       "windsurf",
       "skillmd-runtime",
-      "agentsmd-runtime"
+      "agentsmd-runtime",
+      "mcp-runtime"
     ],
     "minimumVersion": {
       "claude-code": ">=1.0.0"
@@ -45,7 +51,8 @@
     "mode": "automatic",
     "priority": "critical",
     "alwaysOn": true,
-    "fallback": "manual"
+    "fallback": "manual",
+    "meshMode": "team-preset-or-auto"
   },
 
   "capabilities": [
@@ -55,7 +62,11 @@
     "session-cognition",
     "diff-intelligence",
     "cross-runtime-adaptation",
-    "risk-floor-enforcement"
+    "risk-floor-enforcement",
+    "cognition-mesh-coordination",
+    "multi-role-team-simulation",
+    "living-memory-retrieval",
+    "mcp-server-bundling"
   ],
 
   "triggers": [
@@ -68,20 +79,27 @@
     "review PR",
     "analyze code",
     "safe to deploy",
-    "what changed"
+    "what changed",
+    "ship a feature",
+    "harden production",
+    "review with team"
   ],
 
   "permissions": [
     "context-analysis",
     "session-tracking",
     "code-impact-mapping",
-    "architecture-inference"
+    "architecture-inference",
+    "mesh-orchestration",
+    "cross-skill-handoff",
+    "memory-retrieval"
   ],
 
   "distribution": {
     "marketplace": true,
     "installable": true,
-    "public": true
+    "public": true,
+    "mcp": true
   },
 
   "repository": {
@@ -98,8 +116,12 @@
     "code-intelligence",
     "risk-analysis",
     "cross-platform",
-    "always-on"
+    "always-on",
+    "cognition-mesh",
+    "multi-role",
+    "mcp",
+    "agent-orchestration"
   ],
 
-  "updated": "2026-05-25T00:00:00Z"
+  "updated": "2026-06-05T00:00:00Z"
 }

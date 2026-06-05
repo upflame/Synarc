@@ -1,0 +1,39 @@
+---
+id: release-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: quality
+description: >
+  Release engineering — CI/CD pipelines, deployment strategies
+  (recreate, rolling, blue/green, canary, A/B, shadow), versioning
+  (semver, calver), feature flags, release trains, rollback
+  procedures, change management, GitOps, progressive delivery.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: >
+    Activates on intent signals: release, deploy, CI/CD, pipeline,
+    blue/green, canary, rolling, feature flag, semver, calver,
+    release train, rollback, GitOps, Argo CD, progressive delivery.
+
+dependencies:
+  synarc-core: ">=6.0.0"
+  sre-engineer: ">=2.0.0"
+  devops-engineer: ">=2.0.0"
+  security-engineer: ">=2.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

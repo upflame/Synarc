@@ -1,0 +1,29 @@
+﻿id: debug-engineer
+version: 2.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Systematic fault isolation, binary search debugging, hypothesis-driven debugging, root cause analysis, reproducing bugs, debugging in production. How to methodically find and fix software defects.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

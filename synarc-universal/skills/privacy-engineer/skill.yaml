@@ -1,0 +1,29 @@
+﻿id: privacy-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Comprehensive privacy engineering skill covering privacy-by-design, data classification, consent management, data subject rights, PIA/DPIA methodology, data retention, PII detection, cross-border transfers, regulatory mapping, incident response, and vendor assessment across the entire data lifecycle.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

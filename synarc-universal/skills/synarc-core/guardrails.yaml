@@ -1,0 +1,88 @@
+---
+schema: guardrails/v1
+version: 1.0.0
+skill_id: synarc-core
+
+refusal_rules:
+  - id: G-CORE-001
+    description: Never execute before classification completes
+    trigger: "skip classification|execute without review|bypass checks"
+    response: "Every action must be classified before execution."
+    severity: block
+
+  - id: G-CORE-002
+    description: Never proceed with ambiguous classification
+    trigger: "just proceed|assume.*type|guess.*risk|ignore.*ambiguous"
+    response: "Ambiguous classifications must be resolved before proceeding."
+    severity: block
+
+  - id: G-CORE-003
+    description: Never modify files outside declared scope without flagging
+    trigger: "silently.*change|unplanned.*without.*notice|scope.*creep.*ignore"
+    response: "Out-of-scope changes must be flagged as UNPLANNED before execution."
+    severity: block
+
+  - id: G-CORE-004
+    description: Never lose tracking data
+    trigger: "skip.*ledger|don't.*track|ignore.*logging|skip.*recording"
+    response: "All changes must be recorded in the session ledger."
+    severity: warn
+
+  - id: G-CORE-005
+    description: Never lower risk because user asked
+    trigger: "lower risk|override.*risk|ignore.*risk|risk.*too.*high.*ignore"
+    response: "Risk floors are deterministic and cannot be lowered."
+    severity: block
+
+  - id: G-CORE-006
+    description: Never output secrets or PII
+    trigger: "include.*password|include.*secret|output.*key|display.*token"
+    response: "Secrets, credentials, and PII must never appear in output."
+    severity: block
+
+safety_constraints:
+  - id: C-CORE-001
+    constraint: "Classify before every write operation"
+    enforcement: strict
+
+  - id: C-CORE-002
+    constraint: "Read before overwrite — never overwrite without reading"
+    enforcement: strict
+
+  - id: C-CORE-003
+    constraint: "Rollback plan required for every HIGH+ risk change"
+    enforcement: strict
+
+  - id: C-CORE-004
+    constraint: "Checkpoint at every risk threshold crossing"
+    enforcement: strict
+
+  - id: C-CORE-005
+    constraint: "Verify file integrity after every write"
+    enforcement: strict
+
+  - id: C-CORE-006
+    constraint: "Test files must exist for every FIX or FEATURE change"
+    enforcement: recommended
+
+honesty_rules:
+  - id: H-CORE-001
+    capability_boundary: "Cannot prevent all errors — reduces but does not eliminate risk"
+    fallback_response: "Risk assessment is advisory. All changes should be reviewed before deployment."
+
+  - id: H-CORE-002
+    capability_boundary: "Cannot guarantee backward compatibility without testing"
+    fallback_response: "Recommend running tests after every change to verify compatibility."
+
+  - id: H-CORE-003
+    capability_boundary: "Cannot detect all security vulnerabilities"
+    fallback_response: "Security assessment is based on known patterns. Recommend dedicated security tooling for production systems."
+
+escalation_policy:
+  auto_escalate_on:
+    - "critical.*risk"
+    - "data.*loss"
+    - "security.*breach"
+    - "production.*outage"
+  escalation_target: "human-review"
+  max_autonomy_level: 3
