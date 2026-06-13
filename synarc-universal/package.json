@@ -10,6 +10,7 @@
     "AGENTS.md",
     "manifest.yaml",
     "skills/",
+    "!skills/**/references/",
     "shared/",
     "scripts/install.js",
     "scripts/install.ps1",
