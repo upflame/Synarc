@@ -3,7 +3,7 @@
 ![Synarc Banner](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790150/synarc-banner_lytvq5.png)
 
 
-[![Version](https://img.shields.io/badge/version-6.0.0-blue)](https://github.com/upflame-labs/synarc/releases)
+[![Version](https://img.shields.io/badge/version-6.5.0-blue)](https://github.com/upflame-labs/synarc/releases)
 [![Stage](https://img.shields.io/badge/stage-production-success)](https://github.com/upflame-labs/synarc)
 [![License](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)
 [![Runtime](https://img.shields.io/badge/runtime-Claude_Code%20%7C%20Codex%20%7C%20Cursor%20%7C%20Windsurf%20%7C%20MCP-purple)](https://github.com/upflame-labs/synarc)
@@ -16,7 +16,7 @@
 [![Integrity](https://img.shields.io/badge/integrity-SHA256_Verified-success)](https://github.com/upflame-labs/synarc)
 [![Marketplace](https://img.shields.io/badge/marketplace-upflame/synarc-red)](https://github.com/upflame-labs/synarc)
 
-Build fast with AI, but ship with engineering discipline. Synarc transforms raw vibe coding into context-governed agentic execution by preserving architectural memory, enforcing repository awareness, and maintaining decision continuity across sessions. **v6 introduces the Cognition Mesh: specialized AI engineer roles that collaborate as a team.**
+Build fast with AI, but ship with engineering discipline. Synarc transforms raw vibe coding into context-governed agentic execution by preserving architectural memory, enforcing repository awareness, and maintaining decision continuity across sessions. **v6 introduces the Intent Contract System: formal agent commitments before execution, per-WorkType templates, post-execution verification, immutable audit trail, and rollback-to-intent. Plus the Cognition Mesh: specialized AI engineer roles that collaborate as a team.**
 
 > [!IMPORTANT]
 > Production - always-on, zero-configuration engineering cognition runtime. v6 is additive to v5 — no breaking changes for v5 manifest consumers.
@@ -25,16 +25,20 @@ Change classification, risk tracking, context injection, multi-role team collabo
 
 ---
 
-## v6.0.0 — 4-tier prompt-caching + 38× token reduction
+## v6.5.0 — Intent Contract System + 4-tier prompt-caching
 
-**What's new in 6.0.0:**
+**What's new in 6.5.0:**
 
+- **Intent Contract System** — formal agent commitments before execution. Every change has a contract: scope boundary, explicit promises, risk cap, and post-execution verification.
+- **Intent Templates** — 11 per-WorkType contract templates (FEATURE, FIX, REFACTOR, SCHEMA, CONTRACT, CONFIG, INFRA, INCIDENT, EXPERIMENT, PLAN, GENERIC) with standard promises, scope rules, and clarifying questions.
+- **Verification Engine** — post-execution diff analysis checks scope compliance, promise fulfillment, risk delta, and produces a composite PASS/WARN/BREACH/FAIL verdict.
+- **Audit & Compliance** — immutable audit trail per contract lifecycle event, rollback-to-intent protocol, EU AI Act / SOC2 / HIPAA compliance export.
 - **4-tier prompt-caching architecture** — every skill declares a `cache_tier` (core / domain / reference / context / dynamic). Agents pre-warm the cache once and amortize the cost across many turns.
 - **Intent-based activation via `intent_triggers`** — every skill declares ≥ 2 concrete trigger phrases. Match on user intent, not platform-specific commands.
-- **8-block template** — replaces the v5 12-section structure. Mandatory sections: frontmatter, persona, activation, workflow, decision rules, output format, gotchas, references, changelog.
+- **8-block template** — mandatory sections: frontmatter, persona, activation, workflow, decision rules, output format, gotchas, references, changelog.
 - **38× token reduction** — total pack is now 413 KB (down from 15.67 MB in v5.x). Each SKILL.md is 8-14 KB; the pack fits in a single cache miss.
-- **Universal runtime, no compile step** — same files work in Codex, OpenCode, Cursor, Gemini CLI, Claude Code, Copilot, Windsurf, Cline, RooCode. No platform-specific fields, no compile step.
-- **Vendor-neutral naming** — no `anthropic`, `claude`, `gpt*`, `gemini` in skill names, descriptions, or content. Banned at validator level.
+- **Universal runtime, no compile step** — same files work in Codex, OpenCode, Cursor, Gemini CLI, Claude Code, Copilot, Windsurf, Cline, RooCode.
+- **Vendor-neutral naming** — no `anthropic`, `claude`, `gpt*`, `gemini` in skill names, descriptions, or content.
 
 **The 4-tier cache architecture:**
 
@@ -166,7 +170,7 @@ Full walkthrough: [docs/QUICKSTART.md](docs/QUICKSTART.md)
 
 ## Installation
 
-Synarc v6.0.0 ships **56 skills** (40 carried from v5 + 16 new in the v6 P0 cohort) and the **Cognition Mesh** runtime for 9 AI coding agents. Choose your agent below; the Claude Code plugin marketplace is the fastest path, all other agents use a single drop-in file.
+Synarc v6.5.0 ships **56 skills**, the **Intent Contract System** (Contracts, Templates, Verification, Audit), and the **Cognition Mesh** runtime for 9 AI coding agents. Choose your agent below; the Claude Code plugin marketplace is the fastest path, all other agents use a single drop-in file.
 
 > [!TIP]
 > **AGENTS.md is the cross-tool standard** (governed by the Linux Foundation's Agentic AI Foundation, 2026). Codex CLI, OpenCode, and most modern agents read it from the repo root. Claude Code uses `CLAUDE.md` natively, Gemini CLI uses `GEMINI.md`.
@@ -440,6 +444,31 @@ Zero-tolerance: no execution before classification, no invented context, no miss
 
 ## Capabilities
 
+### Intent Contract System
+
+Every change is formalized via an Intent Contract before execution:
+
+| Phase | What happens | Artifact |
+|-------|-------------|----------|
+| **Propose** | Agent declares scope, WorkType, promises, risk cap | Contract JSON |
+| **Accept** | User reviews and accepts the contract | Signed contract |
+| **Execute** | Agent works within the agreed scope | Ledger entries linked to contract |
+| **Verify** | Post-execution diff vs promises, scope, risk delta | Verdict (PASS/WARN/BREACH/FAIL) |
+| **Fulfill** | Contract closed, audit record written, rollback point saved | Audit record |
+
+11 per-WorkType Intent Templates provide standard defaults: scope rules, promises, clarifying questions, and risk baselines per WorkType.
+
+The Verification Engine checks every diff against the contract: scope violations, unplanned changes, promise breaches, and risk escalation. Composite verdict matrix:
+
+| Scope OK? | Promises kept? | Risk ≤ cap? | Verdict |
+|-----------|---------------|-------------|---------|
+| ✓ | ✓ | ✓ | PASS |
+| ✓ | ~ | ✓ | WARN |
+| ✗ | ✓ | ✓ | BREACH |
+| any | any | ✗ | FAIL |
+
+Audit records are immutable — every contract lifecycle event is logged with timestamp, agent, diff hash, and governance event type.
+
 ### Change Classification
 
 Every interaction classified along 7 dimensions:
@@ -621,9 +650,9 @@ Classification across SDLC: Pre-dev → Development → Review → Pre-deploy �
 | Category | Links |
 |----------|-------|
 | Getting Started | [Quick Start](docs/QUICKSTART.md) · [Deployment Guide](docs/DEPLOYMENT.md) · [Architecture (v6)](docs/ARCHITECTURE.md) · [v5→v6 Migration](docs/MIGRATION_v5_to_v6.md) |
-| Specifications | [change-taxonomy.md](plugins/synarc/skills/references/change-taxonomy.md) · [injection-protocol.md](plugins/synarc/skills/references/injection-protocol.md) · [session-tracking.md](plugins/synarc/skills/references/session-tracking.md) · [coding-agent.md](plugins/synarc/skills/references/coding-agent.md) · [project-scales.md](plugins/synarc/skills/references/project-scales.md) · [analysis-patterns.md](plugins/synarc/skills/references/analysis-patterns.md) · [testing-strategy.md](plugins/synarc/skills/references/testing-strategy.md) · [security-patterns.md](plugins/synarc/skills/references/security-patterns.md) |
-| Architecture | [cognition-layer.md](plugins/synarc/skills/references/cognition-layer.md) · [schemas.md](plugins/synarc/skills/references/schemas.md) · [platform-adapters.md](plugins/synarc/skills/references/platform-adapters.md) |
-| Reference | [SKILL.md](plugins/synarc/skills/SKILL.md) (entry point) · [negative-prompts.md](plugins/synarc/skills/references/negative-prompts.md) |
+| Specifications | [change-classification](synarc-universal/shared/workflows/change-classification.md) · [risk-assessment](synarc-universal/shared/workflows/risk-assessment.md) · [context-injection](synarc-universal/shared/workflows/context-injection.md) · [session-tracking](synarc-universal/shared/workflows/session-tracking.md) · [quality-gates](synarc-universal/shared/workflows/quality-gates.md) · [error-intelligence](synarc-universal/shared/workflows/error-intelligence.md) |
+| Intent Contracts | [intent-contracts](synarc-universal/shared/workflows/intent-contracts.md) · [intent-templates](synarc-universal/shared/workflows/intent-templates.md) · [verification-engine](synarc-universal/shared/workflows/verification-engine.md) · [audit-compliance](synarc-universal/shared/workflows/audit-compliance.md) |
+| Schemas | [intent-contract](synarc-universal/shared/schemas/intent-contract.schema.json) · [intent-template](synarc-universal/shared/schemas/intent-template.schema.json) · [verification-result](synarc-universal/shared/schemas/verification-result.schema.json) · [audit-record](synarc-universal/shared/schemas/audit-record.schema.json) · [ledger-entry](synarc-universal/shared/schemas/ledger-entry.schema.json) · [risk-assessment](synarc-universal/shared/schemas/risk-assessment.schema.json) · [guardrails](synarc-universal/shared/schemas/guardrails.schema.json) |
 | Vision | [v6 Vision](brain/V6_VISION.md) |
 | Integrity | [integrity.json](.claude-plugin/integrity.json) (SHA-256 verified) |
 
