@@ -1,0 +1,167 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://synarc.dev/schemas/verification-result-v1.json",
+  "title": "Verification Result",
+  "description": "Post-execution verification result — compares contract promises against actual execution outcomes",
+  "type": "object",
+  "required": [
+    "contract_id",
+    "verified_at",
+    "scope_verification",
+    "promise_results",
+    "risk_verification",
+    "overall_verdict"
+  ],
+  "properties": {
+    "contract_id": {
+      "type": "string",
+      "pattern": "^CTR-[A-Z0-9]{8}$",
+      "description": "Contract ID being verified"
+    },
+    "verified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When verification was performed"
+    },
+    "scope_verification": {
+      "type": "object",
+      "required": ["files_committed", "files_changed", "scope_violations"],
+      "properties": {
+        "files_committed": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Files committed in the contract scope"
+        },
+        "files_changed": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Files actually changed during execution"
+        },
+        "files_in_scope_changed": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Files that were both in scope and changed"
+        },
+        "files_out_of_scope_changed": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Files changed but not in contract scope"
+        },
+        "scope_violations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["file", "violation_type"],
+            "properties": {
+              "file": { "type": "string" },
+              "violation_type": {
+                "type": "string",
+                "enum": ["UNPLANNED_FILE", "UNPLANNED_MODULE", "CONTRACT_BREACH", "SCHEMA_BREACH", "DESTRUCTIVE_OP"]
+              },
+              "severity": {
+                "type": "string",
+                "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+              }
+            }
+          },
+          "description": "List of scope violations detected"
+        },
+        "scope_verdict": {
+          "type": "string",
+          "enum": ["PASS", "WARN", "BREACH"],
+          "description": "Scope verification verdict"
+        }
+      }
+    },
+    "promise_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["index", "description", "method", "status"],
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Index into the contract's promises array"
+          },
+          "description": {
+            "type": "string",
+            "description": "Promise description from contract"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "test_exists", "test_passes", "type_check", "lint_pass",
+              "manual_review", "compiles", "diff_inspection",
+              "contract_test", "migration_test", "rollback_test"
+            ],
+            "description": "Verification method used"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["kept", "broken", "skipped", "error"],
+            "description": "Verification status"
+          },
+          "evidence": {
+            "type": "string",
+            "description": "Evidence or output from the verification attempt"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message if verification failed with an error"
+          }
+        }
+      },
+      "description": "Per-promise verification results"
+    },
+    "risk_verification": {
+      "type": "object",
+      "required": ["contract_risk_cap", "actual_risk_level", "risk_delta"],
+      "properties": {
+        "contract_risk_cap": {
+          "type": "string",
+          "enum": ["INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+          "description": "Risk cap from the contract"
+        },
+        "actual_risk_level": {
+          "type": "string",
+          "enum": ["INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+          "description": "Actual risk observed during execution"
+        },
+        "risk_delta": {
+          "type": "string",
+          "enum": ["NONE", "ESCALATED", "DE_ESCALATED"],
+          "description": "Direction of risk change from cap"
+        },
+        "risk_delta_details": {
+          "type": "string",
+          "description": "Explanation of what caused the risk delta"
+        }
+      }
+    },
+    "promises_summary": {
+      "type": "object",
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "kept": { "type": "integer", "minimum": 0 },
+        "broken": { "type": "integer", "minimum": 0 },
+        "skipped": { "type": "integer", "minimum": 0 },
+        "errors": { "type": "integer", "minimum": 0 }
+      },
+      "description": "Aggregate promise counts"
+    },
+    "overall_verdict": {
+      "type": "string",
+      "enum": ["PASS", "WARN", "BREACH", "FAIL"],
+      "description": "Overall verification verdict"
+    },
+    "verdict_reason": {
+      "type": "string",
+      "description": "One-line explanation of the verdict"
+    },
+    "recommendation": {
+      "type": "string",
+      "description": "Recommended action: proceed, amend contract, rollback"
+    }
+  }
+}

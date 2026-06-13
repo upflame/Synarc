@@ -1,8 +1,21 @@
 {
   "name": "synarc-universal",
-  "version": "6.0.0",
+  "version": "6.5.0",
   "description": "Universal skill pack for engineering intelligence across all AI coding agents - 4-tier prompt-caching architecture, intent-based activation, 35x token reduction vs v5",
-  "private": true,
+  "private": false,
+  "bin": {
+    "synarc": "./scripts/install.js"
+  },
+  "files": [
+    "AGENTS.md",
+    "manifest.yaml",
+    "skills/",
+    "shared/",
+    "scripts/install.js",
+    "scripts/install.ps1",
+    "docs/",
+    "security/"
+  ],
   "scripts": {
     "sync": "powershell -ExecutionPolicy Bypass -File ./scripts/sync-v6.ps1",
     "validate": "powershell -ExecutionPolicy Bypass -File ./scripts/validate-skills.ps1",

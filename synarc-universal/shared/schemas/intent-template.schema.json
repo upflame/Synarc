@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://synarc.dev/schemas/intent-template-v1.json",
+  "title": "Intent Template",
+  "description": "Reusable contract template for a specific WorkType — provides default scope, promises, and verification criteria",
+  "type": "object",
+  "required": [
+    "template_id",
+    "work_type",
+    "name",
+    "description",
+    "default_promises",
+    "default_scope_rules"
+  ],
+  "properties": {
+    "template_id": {
+      "type": "string",
+      "pattern": "^TMPL-[A-Z]{2,12}-\\d{2}$",
+      "description": "Template identifier (e.g., TMPL-FEATURE-01)"
+    },
+    "work_type": {
+      "type": "string",
+      "enum": [
+        "FEATURE", "FIX", "REFACTOR", "SCHEMA", "CONTRACT",
+        "CONFIG", "INFRA", "EXPERIMENT", "DOCS", "ANALYSIS",
+        "PLAN", "INCIDENT"
+      ],
+      "description": "Target WorkType for this template"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 80,
+      "description": "Human-readable template name"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 500,
+      "description": "When to use this template"
+    },
+    "default_risk_cap": {
+      "type": "string",
+      "enum": ["INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+      "description": "Default risk cap for this template type"
+    },
+    "default_scope_rules": {
+      "type": "object",
+      "properties": {
+        "contract_changes_allowed": { "type": "boolean", "default": false },
+        "schema_changes_allowed": { "type": "boolean", "default": false },
+        "destructive_ops_allowed": { "type": "boolean", "default": false },
+        "new_dependencies_allowed": { "type": "boolean", "default": false },
+        "test_changes_required": { "type": "boolean", "default": true }
+      },
+      "description": "Default scope boundary rules"
+    },
+    "default_promises": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["description", "verification_method"],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Default promise text (may be customized)"
+          },
+          "verification_method": {
+            "type": "string",
+            "enum": [
+              "test_exists", "test_passes", "type_check", "lint_pass",
+              "manual_review", "compiles", "diff_inspection",
+              "contract_test", "migration_test", "rollback_test"
+            ],
+            "description": "Default verification method"
+          },
+          "required": {
+            "type": "boolean",
+            "default": true,
+            "description": "Whether this promise is mandatory or optional"
+          }
+        }
+      },
+      "minItems": 1,
+      "description": "Default promises for this template type"
+    },
+    "clarifying_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["question", "options"],
+        "properties": {
+          "question": {
+            "type": "string",
+            "description": "Question to ask when this field is ambiguous"
+          },
+          "options": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2,
+            "description": "Pre-computed answer options"
+          },
+          "maps_to": {
+            "type": "string",
+            "description": "Which contract field this question populates"
+          }
+        }
+      },
+      "description": "Clarifying questions for template disambiguation"
+    },
+    "example_contract": {
+      "type": "string",
+      "description": "Example contract snippet showing the template in use"
+    }
+  }
+}

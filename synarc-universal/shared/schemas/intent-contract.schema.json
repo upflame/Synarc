@@ -1,0 +1,235 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://synarc.dev/schemas/intent-contract-v1.json",
+  "title": "Intent Contract",
+  "description": "Formal commitment by an agent before executing a change — defines scope, risk, promises, and verification criteria",
+  "type": "object",
+  "required": [
+    "contract_id",
+    "session_id",
+    "timestamp",
+    "work_type",
+    "scope",
+    "promises",
+    "risk_cap"
+  ],
+  "properties": {
+    "contract_id": {
+      "type": "string",
+      "pattern": "^CTR-[A-Z0-9]{8}$",
+      "description": "Unique contract identifier (CTR-XXXXXXXX)"
+    },
+    "session_id": {
+      "type": "string",
+      "description": "Session ID this contract belongs to"
+    },
+    "supersedes": {
+      "type": "string",
+      "pattern": "^CTR-[A-Z0-9]{8}$",
+      "description": "Contract ID this contract replaces (for re-scoping mid-session)"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Contract creation timestamp (ISO 8601)"
+    },
+    "work_type": {
+      "type": "object",
+      "required": ["primary", "sub_type"],
+      "properties": {
+        "primary": {
+          "type": "string",
+          "enum": [
+            "FEATURE", "FIX", "REFACTOR", "SCHEMA", "CONTRACT",
+            "CONFIG", "INFRA", "EXPERIMENT", "DOCS", "ANALYSIS",
+            "PLAN", "INCIDENT"
+          ],
+          "description": "Primary work type"
+        },
+        "sub_type": {
+          "type": "string",
+          "description": "Work type sub-classification (e.g., BUG, PLANNED, DB_ADD)"
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "required": ["files", "modules"],
+      "properties": {
+        "files": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Files the agent commits to change"
+        },
+        "files_excluded": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Files the agent commits NOT to change"
+        },
+        "modules": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Modules the agent commits to touch"
+        },
+        "contract_changes_allowed": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether API/contract changes are within scope"
+        },
+        "schema_changes_allowed": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether schema/migration changes are within scope"
+        },
+        "destructive_ops_allowed": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether delete/drop/remove operations are within scope"
+        },
+        "new_dependencies_allowed": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether adding new dependencies is within scope"
+        }
+      }
+    },
+    "promises": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["description", "verification"],
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Specific, verifiable promise about what will be done"
+          },
+          "verification": {
+            "type": "object",
+            "required": ["method"],
+            "properties": {
+              "method": {
+                "type": "string",
+                "enum": [
+                  "test_exists", "test_passes", "type_check", "lint_pass",
+                  "manual_review", "compiles", "diff_inspection",
+                  "contract_test", "migration_test", "rollback_test"
+                ],
+                "description": "How this promise will be verified"
+              },
+              "target": {
+                "type": "string",
+                "description": "Target for verification (e.g., test file path, function name)"
+              }
+            }
+          }
+        }
+      },
+      "minItems": 1,
+      "description": "Specific, verifiable promises the agent makes"
+    },
+    "risk_cap": {
+      "type": "string",
+      "enum": ["INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+      "description": "Maximum acceptable risk level for this contract"
+    },
+    "domain_hard_floors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["domain", "floor"],
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "Affected domain (e.g., auth, payment, schema)"
+          },
+          "floor": {
+            "type": "string",
+            "enum": ["INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+            "description": "Hard risk floor for this domain"
+          }
+        }
+      },
+      "description": "Domain hard floors that apply to this contract"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["proposed", "accepted", "active", "fulfilled", "breached", "superseded", "cancelled"],
+      "default": "proposed",
+      "description": "Contract lifecycle status"
+    },
+    "fulfillment": {
+      "type": "object",
+      "properties": {
+        "verified_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When verification was performed"
+        },
+        "files_changed": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Files actually changed (post-execution)"
+        },
+        "files_unintended": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Files changed outside the committed scope"
+        },
+        "promises_kept": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of promises successfully verified"
+        },
+        "promises_broken": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of promises that failed verification"
+        },
+        "promise_details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["index", "status"],
+            "properties": {
+              "index": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Index into the promises array"
+              },
+              "status": {
+                "type": "string",
+                "enum": ["kept", "broken", "skipped"]
+              },
+              "evidence": {
+                "type": "string",
+                "description": "Evidence for the verdict"
+              }
+            }
+          },
+          "description": "Per-promise verification results"
+        },
+        "actual_risk": {
+          "type": "string",
+          "enum": ["INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+          "description": "Actual risk level observed during execution"
+        },
+        "risk_delta": {
+          "type": "string",
+          "enum": ["NONE", "ESCALATED", "DE_ESCALATED"],
+          "description": "How actual risk compares to committed risk cap"
+        },
+        "verdict": {
+          "type": "string",
+          "enum": ["PASS", "WARN", "BREACH", "FAIL"],
+          "description": "Overall contract fulfillment verdict"
+        },
+        "summary": {
+          "type": "string",
+          "description": "One-line summary of the fulfillment result"
+        }
+      }
+    }
+  }
+}

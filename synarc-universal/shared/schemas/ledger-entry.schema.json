@@ -22,6 +22,11 @@
       "format": "uuid",
       "description": "Unique session identifier"
     },
+    "contract_id": {
+      "type": "string",
+      "pattern": "^CTR-[A-Z0-9]{8}$",
+      "description": "Intent Contract ID this ledger entry belongs to"
+    },
     "work_type": {
       "type": "object",
       "required": ["primary", "sub_type"],

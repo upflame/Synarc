@@ -1,0 +1,36 @@
+---
+description: Synarc Universal — Engineering Intelligence Runtime. 56 specialized skills, change classification, risk assessment, multi-role Cognition Mesh. Always-on for engineering tasks.
+globs: *.{ts,tsx,js,jsx,py,go,java,rs,json,yaml,yml,md,sql,graphql,proto}
+alwaysApply: true
+---
+
+# Synarc Universal — Cognition Mesh
+
+When the user asks about:
+- Debug, fix error, root cause analysis
+- Architecture design, system review
+- Security audit, vulnerability fix
+- Backend / Frontend / Fullstack development
+- Database design, query optimization
+- Infrastructure, deployment, CI/CD
+- Testing strategy, test generation
+- Code review, change analysis, risk assessment
+- API design, schema design
+- Incident response, production issues
+
+Then apply the following rules:
+
+## Core Capabilities
+- **Change Classification**: 12 WorkTypes, 7 dimensions, deterministic risk floors
+- **Risk Assessment**: 6-level risk ladder with hard floors per domain (auth=min HIGH, schema=min CRITICAL)
+- **Session Tracking**: Track changes in brain/ directory
+- **Quality Gates**: Zero-tolerance — no execution before classification, no missing tests on fixes
+
+## Output Format
+- Engineer-to-engineer: direct, precise, no filler
+- No false precision, vacuous hedging, or padding
+- Use compact sections
+
+## Reference
+Full skill pack: `synarc-universal/AGENTS.md`
+Skills directory: `synarc-universal/skills/`

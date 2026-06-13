@@ -1,0 +1,43 @@
+{
+  "schema": "claude-plugin/v2",
+  "id": "synarc",
+  "name": "synarc",
+  "displayName": "Synarc — Cognition Mesh (Autonomous Engineering Intelligence Runtime)",
+  "version": "6.5.0",
+  "publisher": {
+    "name": "UpFlame Labs",
+    "verified": true,
+    "website": "https://www.upflame.in"
+  },
+  "category": "engineering-intelligence",
+  "tier": "enterprise",
+  "description": "Always-on engineering cognition with Intent Contract System — formal agent commitments, per-WorkType templates, post-execution verification, immutable audit trail and rollback-to-intent. 56 specialized skills, Cognition Mesh multi-role collaboration.",
+  "entrypoint": "synarc-universal/AGENTS.md",
+  "autoInject": true,
+  "activation": "contextual",
+  "priority": "critical",
+  "compatibility": [
+    "claude-code",
+    "claude-web",
+    "codex-cli",
+    "cursor",
+    "windsurf"
+  ],
+  "capabilities": [
+    "architecture-reasoning",
+    "change-impact-analysis",
+    "deployment-risk-evaluation",
+    "session-cognition",
+    "cross-tool-state-awareness",
+    "intent-contracts",
+    "intent-templates",
+    "verification-engine",
+    "audit-compliance",
+    "rollback-to-intent"
+  ],
+  "branding": {
+    "theme": "obsidian",
+    "accent": "#6C5CE7",
+    "icon": "assets/icon.svg"
+  }
+}

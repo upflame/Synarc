@@ -1,7 +1,7 @@
 ---
 title: Synarc Universal — Cognition Mesh (Autonomous Engineering Intelligence Runtime)
-description: Universal agent skill pack for engineering cognition — change classification, risk assessment, context injection, session tracking, quality gates, multi-role team collaboration, first-party MCP. Compatible with all major AI coding agents.
-version: 6.0.0
+description: Universal agent skill pack for engineering cognition — change classification, risk assessment, intent contracts, intent templates, verification engine, audit & compliance, context injection, session tracking, quality gates, multi-role team collaboration, first-party MCP. Compatible with all major AI coding agents.
+version: 6.5.0
 schema: skill-pack/v1
 compatible_agents:
   - codex
@@ -18,7 +18,7 @@ activation: intent-based
 
 # Synarc Universal — Cognition Mesh (Engineering Intelligence Runtime)
 
-This AGENTS.md file activates the Synarc skill pack. **56 domain skills** are shipped in v6.0.0 (40 carried over from v5 + 16 new in the v6 P0 cohort), with 11 more planned for v6.1.0 and v6.2.0 (67 total target). The pack now ships the **Cognition Mesh**: instead of activating one skill at a time, multiple roles can collaborate on a task, with shared context, mesh triggers, and coordinated output.
+This AGENTS.md file activates the Synarc skill pack. **56 domain skills** are shipped in v6.0.0 (40 carried over from v5 + 16 new in the v6 P0 cohort). v6.2-v6.5 add the Intent Contract System: Intent Contracts (formal agent commitments), Intent Templates (per-WorkType defaults), Verification Engine (post-execution promise checking), and Audit & Compliance (immutable audit trail, rollback-to-intent, EU AI Act export). The pack ships the **Cognition Mesh**: instead of activating one skill at a time, multiple roles can collaborate on a task, with shared context, mesh triggers, and coordinated output.
 
 ## How Skills Activate
 
@@ -44,6 +44,10 @@ All skills share these capabilities via `skills/synarc-core/SKILL.md`:
 
 - **Change Classification**: 12 WorkTypes, 7 dimensions, deterministic risk floors
 - **Risk Assessment**: 6-level risk ladder with hard floors per domain
+- **Intent Contracts**: Formal agent commitments before execution — scope, promises, risk cap, post-execution verification
+- **Intent Templates**: Per-WorkType contract templates with standard promises, scope rules, and clarifying questions
+- **Verification Engine**: Post-execution verification — scope checking, promise verification, risk delta, composite verdict
+- **Audit & Compliance**: Immutable audit trail, rollback-to-intent protocol, EU AI Act / SOC2 / HIPAA export
 - **Context Injection**: COMPACT/STANDARD/FULL injection levels
 - **Session Tracking**: Immutable ledger across sessions
 - **Quality Gates**: Zero-tolerance enforcement per work type
@@ -168,9 +172,9 @@ synarc-core (coordinator)
 
 ## Reference
 
-- `shared/workflows/` — Canonical workflow definitions
+- `shared/workflows/` — Canonical workflow definitions (change-classification, risk-assessment, intent-contracts, intent-templates, verification-engine, audit-compliance, context-injection, session-tracking, quality-gates, error-intelligence)
 - `shared/guardrails/` — Constitutional safety rules
-- `shared/schemas/` — JSON Schema for all data structures
+- `shared/schemas/` — JSON Schema for all data structures (risk-assessment, ledger-entry, intent-contract, intent-template, verification-result, audit-record, brain-document, skill-manifest, guardrails)
 - `shared/standards/` — Naming conventions, frontmatter spec
 - `shared/runtime-adapters/` — Per-runtime compilation rules
 - `docs/` — Installation, compatibility, architecture
