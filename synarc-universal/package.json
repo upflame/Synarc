@@ -1,7 +1,7 @@
 {
   "name": "synarc-universal",
   "version": "6.5.0",
-  "description": "Universal skill pack for engineering intelligence across all AI coding agents - 4-tier prompt-caching architecture, intent-based activation, 35x token reduction vs v5",
+  "description": "Engineering Intelligence Runtime for AI-assisted software development. Intent Contracts, change classification, risk assessment, verification engine, audit trails, and session continuity across all major AI coding agents.",
   "private": false,
   "bin": {
     "synarc": "./scripts/install.js"

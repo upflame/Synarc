@@ -1,6 +1,6 @@
 ---
 title: Synarc Universal — Cognition Mesh (Autonomous Engineering Intelligence Runtime)
-description: Universal agent skill pack for engineering cognition — change classification, risk assessment, intent contracts, intent templates, verification engine, audit & compliance, context injection, session tracking, quality gates, multi-role team collaboration, first-party MCP. Compatible with all major AI coding agents.
+description: Cross-platform engineering intelligence runtime for AI-assisted development — change classification, risk assessment, intent contracts, verification engine, audit & compliance, context injection, session tracking, quality gates, multi-role team collaboration. Compatible with all major AI coding agents.
 version: 6.5.0
 schema: skill-pack/v1
 compatible_agents:
