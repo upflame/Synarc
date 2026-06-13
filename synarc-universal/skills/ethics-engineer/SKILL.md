@@ -1,12 +1,10 @@
-﻿---
+---
 name: ethics-engineer
 description: Ethics Engineer - SKILL.md
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
 # Ethics Engineer - SKILL.md
@@ -20,41 +18,41 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 
 
 
-## P0 — INTELLIGENCE AUGMENTATION
+## P0 � INTELLIGENCE AUGMENTATION
 
-### P0.1 — Token Optimization Defaults
+### P0.1 � Token Optimization Defaults
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
+**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process � output the result.
 
 **COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
 
 **Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
 
-### P0.2 — Adaptive Learning Triggers
+### P0.2 � Adaptive Learning Triggers
 
 **Learning Triggers:**
-- New pattern discovered in this domain → store in brain/error_patterns/ or brain/decisions/
-- Fix validated → confidence += 1 in brain/error_patterns/
-- Fix failed → create new entry with attempted approaches
-- Human correction → store incorrect + correct paths with disambiguator
+- New pattern discovered in this domain ? store in brain/error_patterns/ or brain/decisions/
+- Fix validated ? confidence += 1 in brain/error_patterns/
+- Fix failed ? create new entry with attempted approaches
+- Human correction ? store incorrect + correct paths with disambiguator
 
 **Knowledge Storage:**
 - File analysis: stored in brain/file_analysis/[filename].json (permanent)
 - Domain conventions: stored in brain/ (update on every discovery)
 - Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
 
-### P0.3 — Smart Auto-Prompt Rules
+### P0.3 � Smart Auto-Prompt Rules
 
-**Optimistic Action Threshold:** > 80% confidence → act immediately. 60-80% → brief confirmation. < 60% → clarify first.
+**Optimistic Action Threshold:** > 80% confidence ? act immediately. 60-80% ? brief confirmation. < 60% ? clarify first.
 
 **Auto-Complete Triggers:**
-- Error received → lookup pattern, propose fix immediately
-- File named → load file, offer action suggestions
-- Exception thrown → analyze stack, propose fix with confidence score
+- Error received ? lookup pattern, propose fix immediately
+- File named ? load file, offer action suggestions
+- Exception thrown ? analyze stack, propose fix with confidence score
 
 **Prefetch Protocol:** After each action, predict next file from import graph. Load file_analysis/ for predicted file. Warm cache with likely next actions.
 
-**Reduced Round-Trips:** Every task MUST complete in ≤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
+**Reduced Round-Trips:** Every task MUST complete in = 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
 
 
 ## P2: Ethical Frameworks

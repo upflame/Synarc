@@ -1,9 +1,6 @@
 ---
 name: ai-product-manager
 schema: skill-pack/v1
-skill_type:
-  - capability
-  - workflow
 dependencies:
   - synarc-core: ">=6.0.0"
   - product-engineer: ">=2.0.0"
@@ -260,8 +257,8 @@ DASHBOARDS:
 
 ```
 UPGRADE TYPES:
-  - Same model, new version (e.g., gpt-4 → gpt-4.1)
-  - Different model, same capability tier (e.g., gpt-4 → claude-sonnet)
+  - Same model, new version (e.g., model-v4 → model-v4.1)
+  - Different model, same capability tier (e.g., model-v4 → model-sonnet)
   - Different model, different capability tier (capability jump)
 
 UPGRADE PROCESS:
@@ -403,7 +400,7 @@ RISK:            [regression on upgrade, cost spike, edge cases]
 |---|---|---|
 | Ship AI feature without eval set | No quality bar, no regression detection | Frozen eval set, owned by PM, run on every release |
 | Treat model like a vendor with deterministic behavior | It's probabilistic, behavior shifts | Continuous eval, version pinning, A/B on upgrade |
-| "Just use GPT-4" | Often wrong: cost/latency overkill for simple tasks | Match model to use case, use router for mixed |
+| "Just use model-v4" | Often wrong: cost/latency overkill for simple tasks | Match model to use case, use router for mixed |
 | Hide AI behind the scenes | Trust violation, regulatory risk | Disclose AI in UI, terms, marketing |
 | No override path | User cannot correct AI mistakes | Every AI action must be undoable, regenerable, or escalate-able |
 | Optimize one metric to death | Other metrics degrade | Watch a balanced dashboard, segment by user type |

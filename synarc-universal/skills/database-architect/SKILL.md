@@ -1,12 +1,10 @@
-﻿---
+---
 name: database-architect
 description: Database Architect Skill Pack
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
 # Database Architect Skill Pack
@@ -1231,7 +1229,7 @@ ORDER BY timer_wait DESC;
 
 **Oracle ASH:**
 ```
--- Active Session History (ASH) — sampled every 10 seconds
+-- Active Session History (ASH) � sampled every 10 seconds
 -- V$ACTIVE_SESSION_HISTORY
 -- DBA_HIST_ACTIVE_SESS_HISTORY (AWR)
 ```

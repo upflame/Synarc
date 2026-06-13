@@ -1,9 +1,6 @@
 ---
 name: mlops-engineer
 schema: skill-pack/v1
-skill_type:
-  - capability
-  - workflow
 dependencies:
   - synarc-core: ">=6.0.0"
   - ml-engineer: ">=2.0.0"
@@ -185,7 +182,7 @@ BATCHING:
 
 ```
 COST PER 1M TOKENS (LLM example, 2026):
-  GPT-4 class:   $10-30 input, $30-60 output
+  model-v4 class:   $10-30 input, $30-60 output
   Sonnet class:  $3-5   input, $15-20 output
   Haiku class:   $0.5-1 input, $2-4   output
   Open 8B local:  $0.10-0.30 (amortized GPU)

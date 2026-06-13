@@ -1,12 +1,10 @@
-﻿---
+---
 name: api-designer
 description: API Designer Skill
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
 # API Designer Skill
@@ -15,11 +13,11 @@ Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
 
 > **Domain:** API-first design, specification, contracts, developer experience, and lifecycle management
-> **Persona:** API Designer â€” owns the API surface, contract, specification, and developer experience
+> **Persona:** API Designer — owns the API surface, contract, specification, and developer experience
 > **Scope:** Design-first API methodology, contract-driven development, spec authoring, versioning, governance
 
 
-## P2: Philosophy â€” API-First Methodology
+## P2: Philosophy — API-First Methodology
 
 ### Design-First vs Code-First
 
@@ -35,11 +33,11 @@ The specification is written **before** any implementation code begins. This ena
 
 Workflow:
 ```
-Requirements â†’ Spec First Draft â†’ Review â†’ Spec Final â†’ Mock Server
-     â”‚                                                     â”‚
-     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Backend Impl â†â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                                    â”‚
-                            Frontend Impl â†â”€â”€â”€â”€â”€â”€â”€
+Requirements → Spec First Draft → Review → Spec Final → Mock Server
+     │                                                     │
+     └────────────────── Backend Impl ←────────────────────┘
+                                    │
+                            Frontend Impl ←───────
 ```
 
 **Code-First (Not Recommended)**
@@ -56,79 +54,79 @@ The API contract is the **source of truth**. All stakeholders align around it.
 
 **Core Tenets:**
 
-1. **Contract First** â€” Write the contract before any code
-2. **Contract Validation** â€” Every change must validate against the contract
-3. **Contract Testing** â€” Consumers and providers test against the contract
-4. **Contract Versioning** â€” Contracts evolve with explicit versioning
-5. **Contract Discovery** â€” Contracts are published to a registry
+1. **Contract First** — Write the contract before any code
+2. **Contract Validation** — Every change must validate against the contract
+3. **Contract Testing** — Consumers and providers test against the contract
+4. **Contract Versioning** — Contracts evolve with explicit versioning
+5. **Contract Discovery** — Contracts are published to a registry
 
 ### Principles of Good API Design
 
-1. **Consistency** â€” Uniform patterns across all endpoints, error formats, naming
-2. **Evolvability** â€” Design for change; additive changes preferred
-3. **Usability** â€” Intuitive, self-documenting, predictable
-4. **Performance** â€” Pagination, caching, compression, minimal payloads
-5. **Security** â€” Auth by default, least privilege, defense in depth
-6. **Observability** â€” Traceable, measurable, debuggable
-7. **Simplicity** â€” Minimal surface area, clear semantics, no leaky abstractions
-8. **Completeness** â€” Handle all states: success, error, edge cases, empty results
+1. **Consistency** — Uniform patterns across all endpoints, error formats, naming
+2. **Evolvability** — Design for change; additive changes preferred
+3. **Usability** — Intuitive, self-documenting, predictable
+4. **Performance** — Pagination, caching, compression, minimal payloads
+5. **Security** — Auth by default, least privilege, defense in depth
+6. **Observability** — Traceable, measurable, debuggable
+7. **Simplicity** — Minimal surface area, clear semantics, no leaky abstractions
+8. **Completeness** — Handle all states: success, error, edge cases, empty results
 
 ### API Design Process
 
 ```
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚ 1. Requirements Gathering                       â”‚
-â”‚    - Identify resources, actions, data fields   â”‚
-â”‚    - Define consumer personas                   â”‚
-â”‚    - Map user stories to API interactions        â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                      â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚ 2. Spec Drafting                                â”‚
-â”‚    - Choose API style (REST/GraphQL/gRPC)       â”‚
-â”‚    - Draft specification                        â”‚
-â”‚    - Define data models and schemas              â”‚
-â”‚    - Plan error responses                       â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                      â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚ 3. Design Review                                â”‚
-â”‚    - Peer review of spec                        â”‚
-â”‚    - Breaking change detection                  â”‚
-â”‚    - Governance linting                         â”‚
-â”‚    - Consumer feedback                          â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                      â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚ 4. Contract Publication                         â”‚
-â”‚    - Publish to API registry                    â”‚
-â”‚    - Generate mock server                       â”‚
-â”‚    - Generate client SDKs                       â”‚
-â”‚    - Generate documentation                     â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                      â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚ 5. Contract Testing                             â”‚
-â”‚    - Consumer contract tests                    â”‚
-â”‚    - Provider verification                      â”‚
-â”‚    - Spec validation                            â”‚
-â”‚    - Security scanning                          â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                      â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚ 6. Implementation & Deployment                  â”‚
-â”‚    - Backend implementation                     â”‚
-â”‚    - Contract compliance CI                     â”‚
-â”‚    - Integration tests                          â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                      â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚ 7. Monitoring & Iteration                       â”‚
-â”‚    - API analytics                              â”‚
-â”‚    - Consumer feedback                          â”‚
-â”‚    - Deprecation planning                       â”‚
-â”‚    - Version evolution                          â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+┌─────────────────────────────────────────────────┐
+│ 1. Requirements Gathering                       │
+│    - Identify resources, actions, data fields   │
+│    - Define consumer personas                   │
+│    - Map user stories to API interactions        │
+└─────────────────────┬───────────────────────────┘
+                      ▼
+┌─────────────────────────────────────────────────┐
+│ 2. Spec Drafting                                │
+│    - Choose API style (REST/GraphQL/gRPC)       │
+│    - Draft specification                        │
+│    - Define data models and schemas              │
+│    - Plan error responses                       │
+└─────────────────────┬───────────────────────────┘
+                      ▼
+┌─────────────────────────────────────────────────┐
+│ 3. Design Review                                │
+│    - Peer review of spec                        │
+│    - Breaking change detection                  │
+│    - Governance linting                         │
+│    - Consumer feedback                          │
+└─────────────────────┬───────────────────────────┘
+                      ▼
+┌─────────────────────────────────────────────────┐
+│ 4. Contract Publication                         │
+│    - Publish to API registry                    │
+│    - Generate mock server                       │
+│    - Generate client SDKs                       │
+│    - Generate documentation                     │
+└─────────────────────┬───────────────────────────┘
+                      ▼
+┌─────────────────────────────────────────────────┐
+│ 5. Contract Testing                             │
+│    - Consumer contract tests                    │
+│    - Provider verification                      │
+│    - Spec validation                            │
+│    - Security scanning                          │
+└─────────────────────┬───────────────────────────┘
+                      ▼
+┌─────────────────────────────────────────────────┐
+│ 6. Implementation & Deployment                  │
+│    - Backend implementation                     │
+│    - Contract compliance CI                     │
+│    - Integration tests                          │
+└─────────────────────┬───────────────────────────┘
+                      ▼
+┌─────────────────────────────────────────────────┐
+│ 7. Monitoring & Iteration                       │
+│    - API analytics                              │
+│    - Consumer feedback                          │
+│    - Deprecation planning                       │
+│    - Version evolution                          │
+└─────────────────────────────────────────────────┘
 ```
 
 ### API Styles Decision Matrix
@@ -2444,25 +2442,25 @@ paths:
         Retrieves a paginated list of orders based on the provided filters.
         
         ## Filter Examples
-        - `?status=shipped` â€” Orders with status "shipped"
-        - `?status=shipped,delivered` â€” Orders with status "shipped" or "delivered"
-        - `?total[gte]=10000` â€” Orders with total >= 100.00
-        - `?createdAt[gte]=2026-01-01&createdAt[lte]=2026-12-31` â€” Orders within date range
-        - `?customerId=cust_123` â€” Orders for a specific customer
-        - `?filter=status eq 'shipped' and total gte 10000` â€” Complex filter expression
+        - `?status=shipped` — Orders with status "shipped"
+        - `?status=shipped,delivered` — Orders with status "shipped" or "delivered"
+        - `?total[gte]=10000` — Orders with total >= 100.00
+        - `?createdAt[gte]=2026-01-01&createdAt[lte]=2026-12-31` — Orders within date range
+        - `?customerId=cust_123` — Orders for a specific customer
+        - `?filter=status eq 'shipped' and total gte 10000` — Complex filter expression
         
         ## Sort Examples
-        - `?sort=-createdAt` â€” Sort by creation date descending (newest first)
-        - `?sort=total,status` â€” Sort by total ascending, then status ascending
-        - `?sort=-priority,createdAt:asc` â€” Complex sort with direction
+        - `?sort=-createdAt` — Sort by creation date descending (newest first)
+        - `?sort=total,status` — Sort by total ascending, then status ascending
+        - `?sort=-priority,createdAt:asc` — Complex sort with direction
         
         ## Including Related Resources
-        - `?include=items` â€” Include order items in response
-        - `?include=items,customer` â€” Include items and customer
-        - `?include=items.product` â€” Include items with nested product expansion
+        - `?include=items` — Include order items in response
+        - `?include=items,customer` — Include items and customer
+        - `?include=items.product` — Include items with nested product expansion
         
         ## Sparse Fieldsets
-        - `?fields=id,orderNumber,total,status` â€” Only return specific fields
+        - `?fields=id,orderNumber,total,status` — Only return specific fields
       parameters:
         - name: "status"
           in: "query"
@@ -2689,12 +2687,12 @@ paths:
         
         ## Including Related Resources
         Use the `include` parameter to embed related resources:
-        - `items` â€” Order line items
-        - `shipments` â€” Shipment details
-        - `payments` â€” Payment information
-        - `returns` â€” Return/refund details
-        - `customer` â€” Customer information
-        - `items.product` â€” Items with product details
+        - `items` — Order line items
+        - `shipments` — Shipment details
+        - `payments` — Payment information
+        - `returns` — Return/refund details
+        - `customer` — Customer information
+        - `items.product` — Items with product details
         
         ## Sparse Fieldsets
         Use the `fields` parameter to limit response fields.
@@ -2761,17 +2759,17 @@ paths:
         Performs a partial update on the specified order.
         
         ## Updatable Fields
-        - `notes` â€” Order notes
-        - `shippingAddress` â€” Shipping address
-        - `billingAddress` â€” Billing address
-        - `metadata` â€” Custom key-value pairs
+        - `notes` — Order notes
+        - `shippingAddress` — Shipping address
+        - `billingAddress` — Billing address
+        - `metadata` — Custom key-value pairs
         
         ## Non-Updatable Fields
         The following fields cannot be updated via PATCH:
-        - `status` â€” Use dedicated status endpoints
-        - `items` â€” Use order items endpoints
-        - `total` â€” Computed from items
-        - `createdAt` â€” Immutable
+        - `status` — Use dedicated status endpoints
+        - `items` — Use order items endpoints
+        - `total` — Computed from items
+        - `createdAt` — Immutable
         
         ## Idempotency
         Include `Idempotency-Key` header for safe retries.

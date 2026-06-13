@@ -1,15 +1,13 @@
-﻿---
+---
 name: coding-agent
-description: Coding Agent â€” Autonomous Code Generation & Execution
+description: Coding Agent — Autonomous Code Generation & Execution
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# Coding Agent â€” Autonomous Code Generation & Execution
+# Coding Agent — Autonomous Code Generation & Execution
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -17,20 +15,20 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 This plugin extends S18 with: comprehensive execution model, tool call classification matrix, scope enforcement, checkpoint protocol, risk aggregation, multi-file coordination, error recovery, security scanning, self-review gates, code generation patterns, refactoring safety, scaffold generation, execution limits, and sandbox interaction rules.
 
 
-## P2 â€” EXECUTION MODEL â€” Plan â†’ Execute â†’ Verify â†’ Iterate
+## P2 — EXECUTION MODEL — Plan → Execute → Verify → Iterate
 
 The coding agent operates on a four-phase autonomous execution cycle. Unlike simple single-turn models, the autonomous coding agent recursively applies this cycle until the task is complete or an escalation condition is met.
 
-### P2.1 â€” The Four-Phase Cycle
+### P2.1 — The Four-Phase Cycle
 
 | Phase | Activity | Duration Estimate | Output |
 |---|---|---|---|
 | PLAN | Analyze task, read relevant files, determine scope, produce step plan | 1-3 tool calls | Scope declaration, ordered step list |
-| EXECUTE | Perform tool calls per plan â€” writes, edits, commands | N tool calls | Modified files, command outputs |
-| VERIFY | Run quality gates â€” parse, lint, type check, test, security scan | 1-5 tool calls | Pass/fail per gate, error details |
+| EXECUTE | Perform tool calls per plan — writes, edits, commands | N tool calls | Modified files, command outputs |
+| VERIFY | Run quality gates — parse, lint, type check, test, security scan | 1-5 tool calls | Pass/fail per gate, error details |
 | ITERATE | If verify fails: diagnose, re-plan, execute fix. If passes: done. | Variable | Either fixed code or completed task |
 
-### P2.2 â€” Detailed Phase Behavior
+### P2.2 — Detailed Phase Behavior
 
 **PLAN Phase:**
 1. Read task description
@@ -56,7 +54,7 @@ The coding agent operates on a four-phase autonomous execution cycle. Unlike sim
 3. Run linter on modified files
 4. Run existing test suite (or relevant subset)
 5. Verify no new secrets introduced
-6. Verify scope compliance â€” no unintended files modified
+6. Verify scope compliance — no unintended files modified
 7. Run self-review (P11.2)
 
 **ITERATE Phase:**
@@ -66,23 +64,23 @@ The coding agent operates on a four-phase autonomous execution cycle. Unlike sim
    b. If transient: retry with backoff
    c. If permanent: diagnose root cause, adjust plan
    d. Re-enter PLAN phase with adjusted plan
-   e. Track iteration count â€” if > 3 iterations on same task, escalate
+   e. Track iteration count — if > 3 iterations on same task, escalate
 
-### P2.3 â€” ALWAYS-ON RULE
+### P2.3 — ALWAYS-ON RULE
 
 Classification occurs BEFORE tool execution. The agent never acts without knowing the WorkType and risk. In single-turn mode: one classification, one response. In autonomous mode: classification per tool call, scope tracked across session, checkpoint at risk thresholds.
 
-### P2.4 â€” Recursion Depth Control
+### P2.4 — Recursion Depth Control
 
 | Iteration | Action |
 |---|---|
 | 1-3 | Normal operation |
 | 4-5 | Log warning, tighten scope |
-| 6+ | Escalate â€” human intervention required |
+| 6+ | Escalate — human intervention required |
 
 The agent tracks its own iteration count per task. If stuck in a loop (same verify failure > 2 times), the agent must checkpoint and escalate rather than continuing to retry.
 
-### P2.5 â€” Step-by-Step Tool Call Cycle
+### P2.5 — Step-by-Step Tool Call Cycle
 
 Every individual tool call follows the 5-step micro-cycle:
 
@@ -94,7 +92,7 @@ Every individual tool call follows the 5-step micro-cycle:
 | LOG | Record to session ledger per P10 | Ledger entry written |
 | CHECKPOINT | If aggregate risk crosses threshold, serialize state per P5 | State saved or confirmed safe to continue |
 
-### P2.6 â€” Execution Modes
+### P2.6 — Execution Modes
 
 **Single-Turn Mode:**
 - User provides one instruction, agent produces one response
@@ -116,9 +114,9 @@ Every individual tool call follows the 5-step micro-cycle:
 - Reports per-task status
 
 
-## P3a â€” TOOL CALL SAFETY AND VALIDATION
+## P3a — TOOL CALL SAFETY AND VALIDATION
 
-### P3a.1 â€” Pre-Execution Validation
+### P3a.1 — Pre-Execution Validation
 
 Before any tool call executes, the agent performs these validations:
 
@@ -131,7 +129,7 @@ Before any tool call executes, the agent performs these validations:
 7. **Duplicate check**: Has this exact operation been performed before? (prevent redundant work)
 8. **Idempotency check**: If the operation is not idempotent, can we make it so?
 
-### P3a.2 â€” Safety Checks by Tool Category
+### P3a.2 — Safety Checks by Tool Category
 
 **Read checks:**
 - Path does not contain symlink loops
@@ -176,20 +174,20 @@ Before any tool call executes, the agent performs these validations:
 - Request does not send sensitive data
 - Response size is within limits
 
-### P3a.3 â€” Validation Failure Handling
+### P3a.3 — Validation Failure Handling
 
 | Validation Failure | Action |
 |---|---|
 | Path does not exist | Log warning, suggest alternative, continue if non-critical |
 | Parent directory missing | Create directory if in scope, else abort |
 | Risk exceeds cap | Pause, checkpoint, escalate |
-| Scope violation | P4.2 â€” pause or log based on risk |
-| Secret detected | P6.2 â€” redact, replace with env var, log |
-| Forbidden command | P8.3 â€” do not execute, log violation |
+| Scope violation | P4.2 — pause or log based on risk |
+| Secret detected | P6.2 — redact, replace with env var, log |
+| Forbidden command | P8.3 — do not execute, log violation |
 | Duplicate operation | Skip, log, continue |
 | Invalid parameters | Fix parameters if possible, else abort and log |
 
-### P3a.4 â€” Tool Call Timeout and Limits
+### P3a.4 — Tool Call Timeout and Limits
 
 | Limit | Default | Override |
 |---|---|---|
@@ -202,7 +200,7 @@ Before any tool call executes, the agent performs these validations:
 | Batch read limit | 10 files per batch | Per-session limit |
 | Concurrent operations | 1 (serial), max 3 (parallel reads only) | Mode-specific |
 
-### P3a.5 â€” Tool Call Audit Trail
+### P3a.5 — Tool Call Audit Trail
 
 Every tool call produces an audit entry in the ledger:
 
@@ -219,9 +217,9 @@ Tool Call #<N>:
 ```
 
 
-## P5 â€” CHECKPOINT PROTOCOL
+## P5 — CHECKPOINT PROTOCOL
 
-### P5.1 â€” Purpose of Checkpoints
+### P5.1 — Purpose of Checkpoints
 
 Checkpoints provide:
 1. Recovery point in case of error or interruption
@@ -232,7 +230,7 @@ Checkpoints provide:
 
 Checkpoints are not optional. The agent checkpoints at every trigger event.
 
-### P5.2 â€” When to Checkpoint
+### P5.2 — When to Checkpoint
 
 **Frequency-based triggers:**
 - Every 5 tool calls (hard threshold)
@@ -262,13 +260,13 @@ Checkpoints are not optional. The agent checkpoints at every trigger event.
 **User-requested triggers:**
 - On user request at any time
 
-### P5.3 â€” Checkpoint Procedure
+### P5.3 — Checkpoint Procedure
 
 1. **Serialize session state:**
    - Ledger entries (full list)
    - Scope declaration (current)
    - Files written (paths, content hashes)
-   - Files read (paths only â€” content not stored in checkpoint)
+   - Files read (paths only — content not stored in checkpoint)
    - Aggregate risk (current value, cap, remaining budget)
    - Contract breaks (count, details)
    - Iteration count
@@ -295,7 +293,7 @@ Checkpoints are not optional. The agent checkpoints at every trigger event.
 
 6. **Continue execution**
 
-### P5.4 â€” Milestone Checkpoints
+### P5.4 — Milestone Checkpoints
 
 Some checkpoints are designated as milestones:
 
@@ -309,14 +307,14 @@ Some checkpoints are designated as milestones:
 
 Milestone checkpoints are never pruned automatically. They serve as definitive recovery points.
 
-### P5.5 â€” Resume from Checkpoint
+### P5.5 — Resume from Checkpoint
 
 1. **Load checkpoint** from `.brain/checkpoints/ckpt-{id}.json`
 2. **Verify scope still valid** (task has not changed fundamentally)
 3. **Verify file integrity:**
    - Recompute SHA256 for each written file
    - Compare against stored hash
-   - If mismatch: file was modified externally â€” re-read, re-assess
+   - If mismatch: file was modified externally — re-read, re-assess
 4. **Restore ledger** from checkpoint
 5. **Restore risk state** from checkpoint
 6. **Restore execution limits** from checkpoint
@@ -327,7 +325,7 @@ Milestone checkpoints are never pruned automatically. They serve as definitive r
    - If interrupted during checkpoint itself: restart checkpoint
 8. **Continue execution** from resume point
 
-### P5.6 â€” Checkpoint Failure Recovery
+### P5.6 — Checkpoint Failure Recovery
 
 | Failure | Cause | Recovery |
 |---|---|---|
@@ -337,7 +335,7 @@ Milestone checkpoints are never pruned automatically. They serve as definitive r
 | Hash mismatch on resume | External modification | Re-read file, re-assess, re-declare scope if needed |
 | Session ID mismatch | Wrong checkpoint loaded | Reject checkpoint, request correct one |
 
-### P5.7 â€” Checkpoint Storage Format
+### P5.7 — Checkpoint Storage Format
 
 ```json
 {
@@ -385,7 +383,7 @@ Milestone checkpoints are never pruned automatically. They serve as definitive r
 }
 ```
 
-### P5.8 â€” Checkpoint Cost
+### P5.8 — Checkpoint Cost
 
 Checkpoints have a cost in time and tokens. The agent balances:
 - Too few checkpoints: high risk of lost work on failure
@@ -395,9 +393,9 @@ Checkpoints have a cost in time and tokens. The agent balances:
 The agent tracks checkpoint overhead (time spent serializing + writing) and reports it if it exceeds 10% of total execution time.
 
 
-## P7 â€” MULTI-FILE COORDINATION
+## P7 — MULTI-FILE COORDINATION
 
-### P7.1 â€” When Multi-File Coordination Applies
+### P7.1 — When Multi-File Coordination Applies
 
 Multi-file coordination is required when:
 - A task involves changes to 3+ files
@@ -406,7 +404,7 @@ Multi-file coordination is required when:
 - Schema/model/view changes must be synchronized
 - Dependency graph changes (adding/removing imports, modules)
 
-### P7.2 â€” Batch Read Protocol
+### P7.2 — Batch Read Protocol
 
 Before making any writes:
 
@@ -416,7 +414,7 @@ Before making any writes:
 4. **Verify all reads complete**: No missing or failed reads
 5. **Build dependency graph**: Determine write order from read content
 
-### P7.3 â€” Dependency Graph Construction
+### P7.3 — Dependency Graph Construction
 
 ```
 For each proposed change:
@@ -430,25 +428,25 @@ Build graph:
 Write order: C -> B -> A (dependents last)
 ```
 
-### P7.4 â€” Write Order Rules
+### P7.4 — Write Order Rules
 
 | Scenario | Order | Rationale |
 |---|---|---|
-| Schema + model + query | Schema â†’ Model â†’ Query | Query depends on model, model depends on schema |
-| Interface + implementation | Interface â†’ Implementation | Implementation must match interface contract |
-| Migration + model + code | Migration â†’ Model â†’ Code | Code uses model, model reflects migration |
-| Config + reader | Config â†’ Reader | Reader parses config format |
-| Module A depends on B | B â†’ A | A imports B, so B must be valid first |
-| Base class + subclass | Base class â†’ Subclass | Subclass extends base |
-| Type definitions + usage | Types â†’ Usage | Usage references types |
-| Constants + business logic | Constants â†’ Logic | Logic uses constants |
-| Test + implementation | Implementation â†’ Test | Test must match actual behavior |
-| Hook + component | Hook â†’ Component | Component uses hook |
-| Store + page | Store â†’ Page | Page consumes store |
-| API route + client | Route â†’ Client | Client calls route |
-| Error type + error handling | Error type â†’ Handler | Handler catches typed errors |
+| Schema + model + query | Schema → Model → Query | Query depends on model, model depends on schema |
+| Interface + implementation | Interface → Implementation | Implementation must match interface contract |
+| Migration + model + code | Migration → Model → Code | Code uses model, model reflects migration |
+| Config + reader | Config → Reader | Reader parses config format |
+| Module A depends on B | B → A | A imports B, so B must be valid first |
+| Base class + subclass | Base class → Subclass | Subclass extends base |
+| Type definitions + usage | Types → Usage | Usage references types |
+| Constants + business logic | Constants → Logic | Logic uses constants |
+| Test + implementation | Implementation → Test | Test must match actual behavior |
+| Hook + component | Hook → Component | Component uses hook |
+| Store + page | Store → Page | Page consumes store |
+| API route + client | Route → Client | Client calls route |
+| Error type + error handling | Error type → Handler | Handler catches typed errors |
 
-### P7.5 â€” Batch Write Protocol
+### P7.5 — Batch Write Protocol
 
 1. **Read all affected files first** (batch reads in parallel)
 2. **Determine write order**: dependents last, shared schemas first (P7.4)
@@ -458,7 +456,7 @@ Write order: C -> B -> A (dependents last)
 6. **After all writes**: Run project-level validation (compile, lint, type check, test)
 7. **After validation**: If failures found, diagnose and fix per P9
 
-### P7.6 â€” Cross-File Consistency Checks
+### P7.6 — Cross-File Consistency Checks
 
 After all writes, the agent verifies:
 
@@ -474,7 +472,7 @@ After all writes, the agent verifies:
 | No orphaned exports | No exported symbols that no longer exist |
 | No dangling references | No references to deleted files |
 
-### P7.7 â€” File Locking and Write Serialization
+### P7.7 — File Locking and Write Serialization
 
 | Scenario | Strategy |
 |---|---|
@@ -484,12 +482,12 @@ After all writes, the agent verifies:
 | Multiple agents, different files | No coordination needed |
 | Multiple agents, dependent files | Checkpoint + handoff protocol (P12) |
 
-### P7.8 â€” Change Propagation
+### P7.8 — Change Propagation
 
 When a change in one file must propagate to dependent files:
 
 1. **Identify the root change** (e.g., schema change)
-2. **Trace the dependency chain** (schema â†’ model â†’ repository â†’ service â†’ controller â†’ route)
+2. **Trace the dependency chain** (schema → model → repository → service → controller → route)
 3. **For each dependency, determine if change is needed**:
    - Does the dependency use the changed API?
    - Is the change backward-compatible? (additive change = no propagation needed)
@@ -497,7 +495,7 @@ When a change in one file must propagate to dependent files:
 4. **Propagate changes in dependency order**
 5. **Verify at each propagation step**
 
-### P7.9 â€” Interface Contract Tracking
+### P7.9 — Interface Contract Tracking
 
 When modifying shared interfaces/types/contracts:
 
@@ -510,7 +508,7 @@ When modifying shared interfaces/types/contracts:
 4. **For additive changes**: update interface, then update consumers as optional
 5. **Flag in ledger**: any interface change is a contract change
 
-### P7.10 â€” Multi-Task Coordination
+### P7.10 — Multi-Task Coordination
 
 When multiple tasks affect the same files:
 
@@ -521,9 +519,9 @@ When multiple tasks affect the same files:
 5. **Conflict resolution**: checkpoint, present options to user
 
 
-## P9 â€” ERROR RECOVERY â€” Retry, Rollback, Graceful Degradation
+## P9 — ERROR RECOVERY — Retry, Rollback, Graceful Degradation
 
-### P9.1 â€” Error Classification
+### P9.1 — Error Classification
 
 | Type | Characteristics | Examples | Recovery Strategy |
 |---|---|---|---|
@@ -534,7 +532,7 @@ When multiple tasks affect the same files:
 | Logical | Code compiles but logic is wrong | Wrong business logic, incorrect algorithm, off-by-one, race condition | Re-plan, re-execute |
 | Cascading | Primary error causes secondary errors | Schema change breaks downstream, interface change breaks consumers | Rollback, re-plan with full dependency map |
 
-### P9.2 â€” Error Detection Points
+### P9.2 — Error Detection Points
 
 Errors are detected at:
 
@@ -546,18 +544,18 @@ Errors are detected at:
 6. **Runtime check**: Test flakiness, performance regression
 7. **Cross-file check**: Interface mismatch, contract break
 
-### P9.3 â€” Recovery by Type
+### P9.3 — Recovery by Type
 
 | Error Type | Action | Max Retries | Escalation If Exceeded |
 |---|---|---|---|
 | Transient | Retry with exponential backoff: wait 1s, 2s, 4s, 8s, 16s | 5 | Classify as permanent after max retries |
-| Permanent | Log error, checkpoint current state, report to human with error details | 0 | N/A â€” do not retry |
+| Permanent | Log error, checkpoint current state, report to human with error details | 0 | N/A — do not retry |
 | Partial | Log which steps succeeded and which failed. Resume from last successful step. | 1 (full retry of failed steps) | Rollback partial changes |
 | Environmental | Checkpoint, attempt cleanup, report | 0 | Cannot retry in same environment |
 | Logical | Log expected vs actual behavior, re-enter PLAN phase | 3 iterations | Escalate to human |
 | Cascading | Checkpoint, rollback root change, re-plan | 2 | Escalate with full dependency trace |
 
-### P9.4 â€” Retry with Exponential Backoff
+### P9.4 — Retry with Exponential Backoff
 
 ```
 Attempt 1: Execute
@@ -582,25 +580,25 @@ Attempt 5: Retry
 ```
 
 **Notes:**
-- Jitter: Add random Â±20% to wait time to avoid thundering herd
+- Jitter: Add random ±20% to wait time to avoid thundering herd
 - Only transient errors are retried
 - Count resets to 1 after a successful execution
 - Different error types at the same call site reset the retry counter
 
-### P9.5 â€” Rollback Procedure
+### P9.5 — Rollback Procedure
 
 1. **List all files written or modified** in this session/step
 2. **For each file, determine rollback method:**
    - Git-tracked file: `git checkout -- <file>` (if no intermediate commits)
    - Backed-up file: copy from `.brain/backups/{session}/{timestamp}.bak`
    - No backup, no git: report as unrecoverable
-3. **Sort files in reverse write order** (last written â†’ first written)
+3. **Sort files in reverse write order** (last written → first written)
 4. **Execute rollback** for each file
 5. **Verify rollback**: Check file state matches original
 6. **Run tests** to confirm system is intact
 7. **Log rollback** in session ledger with reason and files affected
 
-### P9.6 â€” Partial Rollback
+### P9.6 — Partial Rollback
 
 | Scenario | Rollback Strategy |
 |---|---|
@@ -610,27 +608,27 @@ Attempt 5: Retry
 | Migration partially applied | Run down-migration for failed steps |
 | Git commit partially pushed | `git revert` the commit |
 
-### P9.7 â€” Graceful Degradation
+### P9.7 — Graceful Degradation
 
 When full task completion is not possible:
 
-1. **Complete what can be completed** â€” do not halt on partial failure
-2. **Document incomplete items** â€” what remains and why
-3. **Leave system in a working state** â€” no half-applied changes
+1. **Complete what can be completed** — do not halt on partial failure
+2. **Document incomplete items** — what remains and why
+3. **Leave system in a working state** — no half-applied changes
 4. **Roll back breaking changes** that cannot be completed
-5. **Save non-breaking partial work** â€” commented code, WIP files
-6. **Report** â€” what was done, what was not, what is blocked
+5. **Save non-breaking partial work** — commented code, WIP files
+6. **Report** — what was done, what was not, what is blocked
 
-### P9.8 â€” Stuck Agent Diagnosis
+### P9.8 — Stuck Agent Diagnosis
 
 When agent loops, repeats, or fails to progress:
 
-1. **Check ledger**: same file read 5+ times â†’ scope confusion or incomplete information
-2. **Check scope**: files touched outside declared scope â†’ cascading scope expansion
-3. **Check errors**: same error repeating â†’ permanent failure not escalated
-4. **Check token usage**: context window full â†’ checkpoint and resume
-5. **Check execution limits**: tool call or time limit exhausted â†’ exceeded
-6. **Check iteration count**: same PLAN â†’ EXECUTE â†’ VERIFY loop > 3 â†’ stuck
+1. **Check ledger**: same file read 5+ times → scope confusion or incomplete information
+2. **Check scope**: files touched outside declared scope → cascading scope expansion
+3. **Check errors**: same error repeating → permanent failure not escalated
+4. **Check token usage**: context window full → checkpoint and resume
+5. **Check execution limits**: tool call or time limit exhausted → exceeded
+6. **Check iteration count**: same PLAN → EXECUTE → VERIFY loop > 3 → stuck
 
 **Stuck Agent Recovery:**
 
@@ -643,7 +641,7 @@ When agent loops, repeats, or fails to progress:
 | Infinite loop | Logical error or impossible task | Escalate to human |
 | No progress in N tool calls | Agent directionless | Checkpoint, re-plan from scratch |
 
-### P9.9 â€” Error Reporting Format
+### P9.9 — Error Reporting Format
 
 When escalating an error:
 
@@ -658,38 +656,38 @@ ERROR REPORT:
   attempts: <number of retry attempts>
   recovery: <rollback|retry|report|escalate>
   checkpoint_id: <latest checkpoint ID>
-  suggested_fix: <optional â€” agent's best guess at resolution>
+  suggested_fix: <optional — agent's best guess at resolution>
 ```
 
 
-## P11 â€” TESTING, QUALITY GATES & CODE REVIEW
+## P11 — TESTING, QUALITY GATES & CODE REVIEW
 
-### P11.1 â€” Quality Gate Execution
+### P11.1 — Quality Gate Execution
 
-After every set of related changes, all quality gates execute. Gates run in order â€” each gate must pass before the next runs.
+After every set of related changes, all quality gates execute. Gates run in order — each gate must pass before the next runs.
 
 | Gate | Command | Scope | Enforced | On Failure |
 |---|---|---|---|---|
-| G1 Syntax | Parse file(s) â€” `node -e "require('./file')"`, `python -c "import ast; ast.parse(open('file').read())"`, `dotnet build --no-restore --no-dependencies` | Every file write | Immediate | Log, checkpoint, report â€” do not retry for same content |
-| G2 Types | `tsc --noEmit`, `pyright`, `go vet`, `dotnet build`, `cargo check` | Every file write | Immediate | Log, checkpoint, report â€” do not retry |
+| G1 Syntax | Parse file(s) — `node -e "require('./file')"`, `python -c "import ast; ast.parse(open('file').read())"`, `dotnet build --no-restore --no-dependencies` | Every file write | Immediate | Log, checkpoint, report — do not retry for same content |
+| G2 Types | `tsc --noEmit`, `pyright`, `go vet`, `dotnet build`, `cargo check` | Every file write | Immediate | Log, checkpoint, report — do not retry |
 | G3 Tests | `npm test`, `pytest`, `go test ./...`, `dotnet test`, `cargo test` | Per task | All pass, new code has tests | Log, checkpoint, report |
 | G4 Lint | `eslint`, `ruff check`, `golangci-lint`, `dotnet format --verify-no-changes` | Per task | No errors, matches conventions | Log, checkpoint, report |
-| G5 Security | Custom scan for secrets, injection vectors, unsafe patterns | Per task | No hardcoded secrets, no injection | Log, checkpoint, report â€” block write if needed |
+| G5 Security | Custom scan for secrets, injection vectors, unsafe patterns | Per task | No hardcoded secrets, no injection | Log, checkpoint, report — block write if needed |
 | G6 Architecture | Circular dependency check, layer violation check, module boundary check | Per task | No circular deps, no layer violations | Log, checkpoint, report |
 | G7 License | Check no GPL dependency added to non-GPL project | Per task | License compatibility | Log, checkpoint, report |
 | G8 Performance | Detect N+1 queries, missing indexes, O(n^2) algorithms | Per task | Performance-impacting patterns flagged | Log (warning level) |
 
-### P11.2 â€” Auto-Run After Every File Write
+### P11.2 — Auto-Run After Every File Write
 
 | Check | When | Command/Method | On Failure |
 |---|---|---|---|
 | Syntax | Immediate after write | Language-appropriate parser | Log, checkpoint, report |
-| Type check | After syntax passes | `tsc --noEmit`, `pyright`, `go vet` | Log, checkpoint, report â€” do not retry |
+| Type check | After syntax passes | `tsc --noEmit`, `pyright`, `go vet` | Log, checkpoint, report — do not retry |
 | Lint | After type check passes | `eslint`, `ruff`, `golangci-lint` | Log, checkpoint, report |
 | Existing tests | After lint passes | `npm test -- --related`, `pytest --related`, `go test --run` | Log, checkpoint, report |
 | New code tests | After existing tests pass | Verify test exists for new code | Flag, do not block |
 
-### P11.3 â€” Test Selection Strategy
+### P11.3 — Test Selection Strategy
 
 When running tests after a change:
 
@@ -703,7 +701,7 @@ When running tests after a change:
 | Dependency change | Run full test suite |
 | Refactoring (no behavior change) | Run full test suite |
 
-### P11.4 â€” Self-Review After Code Generation
+### P11.4 — Self-Review After Code Generation
 
 After every code generation or modification, the agent performs a structured self-review:
 
@@ -760,7 +758,7 @@ After every code generation or modification, the agent performs a structured sel
 - Are variable names consistent with surrounding code?
 - Are function signatures consistent with related functions?
 
-### P11.5 â€” Self-Review Scoring
+### P11.5 — Self-Review Scoring
 
 Each review dimension gets a score:
 
@@ -774,13 +772,13 @@ Each review dimension gets a score:
 
 The agent does NOT continue past a FAIL_MAJOR or FAIL_CRITICAL review. It must checkpoint and re-enter the PLAN phase.
 
-### P11.6 â€” Review Against Existing Patterns
+### P11.6 — Review Against Existing Patterns
 
 After generation, the agent compares code against:
 
 1. **Project structure**: Does the new file go in the right directory?
 2. **Module conventions**: Does the file follow conventions used by sibling files?
-3. **Export pattern**: Named exports vs default exports â€” matches project?
+3. **Export pattern**: Named exports vs default exports — matches project?
 4. **Testing pattern**: Same test framework, same file naming convention?
 5. **Configuration pattern**: Does new functionality require config in expected format?
 6. **Error handling pattern**: Custom error classes? Error middleware? Error codes?
@@ -791,7 +789,7 @@ After generation, the agent compares code against:
 
 If the new code deviates from existing patterns, the agent must justify the deviation. If it cannot justify it, the code must be refactored.
 
-### P11.7 â€” Generated Code Verification Checklist
+### P11.7 — Generated Code Verification Checklist
 
 ```
 [ ] LANGUAGES: correct syntax per language family
@@ -811,7 +809,7 @@ If the new code deviates from existing patterns, the agent must justify the devi
 [ ] COMPLETE: all task requirements met
 ```
 
-### P11.8 â€” Dependency Quality Check
+### P11.8 — Dependency Quality Check
 
 When adding new dependencies:
 
@@ -824,9 +822,9 @@ When adding new dependencies:
 7. **Check peer dependency** requirements
 
 
-## P13 â€” REFACTORING SAFETY â€” Behavior Preservation, Testing, Incremental Steps
+## P13 — REFACTORING SAFETY — Behavior Preservation, Testing, Incremental Steps
 
-### P13.1 â€” Refactoring Principles
+### P13.1 — Refactoring Principles
 
 1. **Behavior preservation**: Refactoring MUST NOT change observable behavior
 2. **Test before refactor**: Existing tests must pass before refactoring starts
@@ -835,7 +833,7 @@ When adding new dependencies:
 5. **No mixed changes**: Never refactor and fix a bug in the same step
 6. **Contract awareness**: Understand what contracts exist (APIs, types, schemas)
 
-### P13.2 â€” Refactoring Decision Framework
+### P13.2 — Refactoring Decision Framework
 
 Before refactoring, evaluate:
 
@@ -850,11 +848,11 @@ Before refactoring, evaluate:
 | Refactoring type | Rename, extract | Restructure, redesign |
 
 **Decision:**
-- All factors LOW â†’ safe to proceed
-- Any factor HIGH â†’ add tests first, or break into smaller steps
-- Multiple HIGH factors â†’ checkpoint, consider escalation
+- All factors LOW → safe to proceed
+- Any factor HIGH → add tests first, or break into smaller steps
+- Multiple HIGH factors → checkpoint, consider escalation
 
-### P13.3 â€” Safe Refactoring Steps
+### P13.3 — Safe Refactoring Steps
 
 | Step | Description | Verification |
 |---|---|---|
@@ -867,7 +865,7 @@ Before refactoring, evaluate:
 | 7. Final verify | Full test suite, lint, type check | All gates pass |
 | 8. Clean up | Remove unused code, old snapshot references | No dead code |
 
-### P13.4 â€” Refactoring Patterns
+### P13.4 — Refactoring Patterns
 
 | Pattern | Description | Risk |
 |---|---|---|
@@ -884,7 +882,7 @@ Before refactoring, evaluate:
 | Restructure module | Reorganize module boundaries | HIGH |
 | Redesign type system | Change type hierarchy | HIGH |
 
-### P13.5 â€” Behavior Preservation Verification
+### P13.5 — Behavior Preservation Verification
 
 After each refactoring step, verify:
 
@@ -896,7 +894,7 @@ After each refactoring step, verify:
 6. **Database schema unchanged**: Migrations unaffected
 7. **Wire format unchanged**: HTTP, RPC, message format unchanged
 
-### P13.6 â€” Contract Break Detection
+### P13.6 — Contract Break Detection
 
 A contract break occurs when:
 
@@ -909,7 +907,7 @@ A contract break occurs when:
 
 Contract breaks are tracked and logged. If contract_changes_allowed is false and a contract break is detected, the refactoring must be rolled back.
 
-### P13.7 â€” Refactoring with Poor Test Coverage
+### P13.7 — Refactoring with Poor Test Coverage
 
 When the code to refactor has poor test coverage:
 
@@ -920,7 +918,7 @@ When the code to refactor has poor test coverage:
 5. **Add proper tests**: Tests for intended behavior with better coverage
 6. **Remove characterization tests** (or convert to proper tests)
 
-### P13.8 â€” Large Refactoring Strategy
+### P13.8 — Large Refactoring Strategy
 
 For refactorings touching 10+ files:
 
@@ -931,7 +929,7 @@ For refactorings touching 10+ files:
 5. **Review**: After all phases, full quality gate run
 6. **Rollback plan**: Document what to roll back if issues arise
 
-### P13.9 â€” Refactoring Anti-Patterns
+### P13.9 — Refactoring Anti-Patterns
 
 | Anti-Pattern | Why It's Dangerous | Better Approach |
 |---|---|---|
@@ -944,9 +942,9 @@ For refactorings touching 10+ files:
 | Refactoring without understanding | Changes code without understanding its purpose | Read and understand before changing |
 
 
-## P15 â€” SCAFFOLD AND BOILERPLATE GENERATION PATTERNS
+## P15 — SCAFFOLD AND BOILERPLATE GENERATION PATTERNS
 
-### P15.1 â€” When to Generate Scaffold
+### P15.1 — When to Generate Scaffold
 
 Scaffold generation is appropriate when:
 1. Creating a new module with standard structure
@@ -955,7 +953,7 @@ Scaffold generation is appropriate when:
 4. Creating a new component in a framework
 5. Starting a project from scratch
 
-### P15.2 â€” Scaffold Structure Discovery
+### P15.2 — Scaffold Structure Discovery
 
 Before generating scaffold, discover:
 
@@ -966,16 +964,16 @@ Before generating scaffold, discover:
 5. **Test file location**: Co-located vs `__tests__/` directory
 6. **Configuration files**: How are modules registered?
 
-### P15.3 â€” Scaffold Generation Process
+### P15.3 — Scaffold Generation Process
 
 1. **Analyze existing module** to extract directory structure and file patterns
 2. **Determine scaffold parameters**: module name, entity name, endpoints, fields
-3. **Generate files in dependency order**: Types â†’ Schema â†’ Model â†’ Repository â†’ Service â†’ Controller â†’ Routes â†’ Tests â†’ Index
+3. **Generate files in dependency order**: Types → Schema → Model → Repository → Service → Controller → Routes → Tests → Index
 4. **Verify each file**: Syntax, type check after each
 5. **Register module**: Add to app configuration, import in module index
 6. **Verify full integration**: Build, run tests
 
-### P15.4 â€” Standard Scaffold Templates
+### P15.4 — Standard Scaffold Templates
 
 **REST API Module:**
 ```
@@ -1024,7 +1022,7 @@ src/config/
   index.ts              # Re-export
 ```
 
-### P15.5 â€” Boilerplate Reduction
+### P15.5 — Boilerplate Reduction
 
 The agent should:
 1. **Identify repeated patterns** in the codebase
@@ -1032,7 +1030,7 @@ The agent should:
 3. **Use code generation** for repeated patterns
 4. **Follow DRY principle** but avoid premature abstraction
 
-### P15.6 â€” Scaffold Testing
+### P15.6 — Scaffold Testing
 
 After generating scaffold:
 1. **Verify no syntax errors**
@@ -1040,12 +1038,12 @@ After generating scaffold:
 3. **Verify type consistency** across scaffold files
 4. **Verify scaffold compiles/type-checks**
 5. **Verify tests run** (if generated)
-6. **Verify integration** â€” new module/component is properly registered
+6. **Verify integration** — new module/component is properly registered
 
 
-## P17 â€” SAFE SANDBOX INTERACTION
+## P17 — SAFE SANDBOX INTERACTION
 
-### P17.1 â€” Sandbox Environment
+### P17.1 — Sandbox Environment
 
 The agent operates in a sandboxed environment with:
 
@@ -1059,7 +1057,7 @@ The agent operates in a sandboxed environment with:
 | Execution limits | CPU, memory, time limits | Must be efficient |
 | Audit logging | All actions logged | Cannot hide actions |
 
-### P17.2 â€” Sandbox Boundaries
+### P17.2 — Sandbox Boundaries
 
 The agent must never attempt to:
 
@@ -1074,7 +1072,7 @@ The agent must never attempt to:
 9. **Read environment variables that contain secrets** (except those explicitly provided)
 10. **Access cloud metadata endpoints** (169.254.169.254)
 
-### P17.3 â€” Network Interaction Rules
+### P17.3 — Network Interaction Rules
 
 | Destination | Allowed | Conditions |
 |---|---|---|
@@ -1087,7 +1085,7 @@ The agent must never attempt to:
 | cloud metadata endpoints | No | Could leak cloud credentials |
 | localhost services | Conditional | Only if explicitly declared for development |
 
-### P17.4 â€” Testing Sandbox Constraints
+### P17.4 — Testing Sandbox Constraints
 
 Before running tests, verify:
 
@@ -1098,24 +1096,24 @@ Before running tests, verify:
 5. **Test completes within timeout**
 6. **Test respects rate limits** for external services
 
-### P17.5 â€” Sensitive Data Handling
+### P17.5 — Sensitive Data Handling
 
 In the sandbox:
 
-1. **Never write secrets to disk** â€” use environment variables or secret store
-2. **Never log secrets** â€” redact before logging
-3. **Never send secrets to external APIs** â€” unless the API is the intended destination
-4. **Never display secrets in output** â€” redact or mask
-5. **Never store secrets in checkpoint** â€” exclude from serialized state
+1. **Never write secrets to disk** — use environment variables or secret store
+2. **Never log secrets** — redact before logging
+3. **Never send secrets to external APIs** — unless the API is the intended destination
+4. **Never display secrets in output** — redact or mask
+5. **Never store secrets in checkpoint** — exclude from serialized state
 
-### P17.6 â€” Sandbox Exit Strategy
+### P17.6 — Sandbox Exit Strategy
 
 When the agent determines the sandbox is compromised or misconfigured:
 
 1. **Stop all execution** immediately
 2. **Do not read or write any files**
 3. **Log the issue** with details
-4. **Escalate** â€” report the security concern
+4. **Escalate** — report the security concern
 5. **Do not attempt** to self-correct
 
 Indicators of compromise:
@@ -1126,7 +1124,7 @@ Indicators of compromise:
 - Missing expected tools or files
 
 
-## P19 â€” LEDGER INTEGRATION WITH RISK TRACKING
+## P19 — LEDGER INTEGRATION WITH RISK TRACKING
 
 The ledger entries feed directly into risk aggregation:
 

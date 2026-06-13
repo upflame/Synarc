@@ -1,8 +1,6 @@
 ---
 name: content-designer
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
   - synarc-core: ">=6.0.0"
   - product-designer: ">=1.0.0"

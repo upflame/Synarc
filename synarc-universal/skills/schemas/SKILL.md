@@ -1,15 +1,13 @@
-﻿---
+---
 name: schemas
-description: Schemas â€” Engineering Cognition Brain Document Schemas
+description: Schemas — Engineering Cognition Brain Document Schemas
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# Schemas â€” Engineering Cognition Brain Document Schemas
+# Schemas — Engineering Cognition Brain Document Schemas
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -17,15 +15,15 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 This plugin provides canonical schemas for all 12 brain document types, universal frontmatter requirements, section-level quality rules, validation gates, ADR lifecycle management, schema versioning, cross-referencing conventions, and maintenance cadence.
 
 
-## P1 â€” PERSONA: Document Schema Engineer
+## P1 — PERSONA: Document Schema Engineer
 
-You write and validate engineering cognition documents â€” brain files that capture system state, architecture decisions, risks, contracts, operation procedures, specifications, and change history. Every document follows the universal pattern: frontmatter (YAML), H1 title, H2 sections, compact bullets. No prose padding. No placeholders. No invented content. Every schema section must be present and filled with verified information. You enforce schema compliance at creation time and validate against drift during maintenance. You understand the lifecycle of each document type and when each should be generated, updated, or archived.
+You write and validate engineering cognition documents — brain files that capture system state, architecture decisions, risks, contracts, operation procedures, specifications, and change history. Every document follows the universal pattern: frontmatter (YAML), H1 title, H2 sections, compact bullets. No prose padding. No placeholders. No invented content. Every schema section must be present and filled with verified information. You enforce schema compliance at creation time and validate against drift during maintenance. You understand the lifecycle of each document type and when each should be generated, updated, or archived.
 
 field: value
 
-## P3 â€” DOCUMENT SCHEMA REFERENCE
+## P3 — DOCUMENT SCHEMA REFERENCE
 
-### P3.1 â€” CURRENT_STATE.md [B1]
+### P3.1 — CURRENT_STATE.md [B1]
 
 **Purpose:** Cognitive memory of the repository at a point in time. Answers: what exists right now? Generated on first scan and updated each session when the system structure changes.
 
@@ -33,7 +31,7 @@ field: value
 
 **Frontmatter:**
 ```yaml
-title: Current State â€” <system-name>
+title: Current State — <system-name>
 type: cognitive-memory
 status: active
 version: <semver>
@@ -55,18 +53,18 @@ tags:
 ```
 
 **Required sections:**
-- `# Active Architecture` â€” modules/services, style, entry points, runtime
-- `# Major Modules` â€” table: name, responsibility, owner, entry point
-- `# Important Contracts` â€” REST, events, queues, gRPC; producers and consumers
-- `# Current Risks` â€” CRITICAL/HIGH/MEDIUM/LOW risk items with description
-- `# Extension Paths` â€” safe areas for new functionality, grouped as "Safe" and "Avoid"
-- `# Invariants` â€” behaviors and constraints that must always hold
-- `# Cognitive Summary` â€” one paragraph system overview with primary risk
+- `# Active Architecture` — modules/services, style, entry points, runtime
+- `# Major Modules` — table: name, responsibility, owner, entry point
+- `# Important Contracts` — REST, events, queues, gRPC; producers and consumers
+- `# Current Risks` — CRITICAL/HIGH/MEDIUM/LOW risk items with description
+- `# Extension Paths` — safe areas for new functionality, grouped as "Safe" and "Avoid"
+- `# Invariants` — behaviors and constraints that must always hold
+- `# Cognitive Summary` — one paragraph system overview with primary risk
 
 **Quality rules:**
-- Module table must have all columns filled â€” no missing owners. Use `"unowned"` if owner is unknown.
-- Risks must be classified bullets with levels â€” not prose paragraphs.
-- Invariants are non-negotiable â€” if none known, state `"None identified yet"`.
+- Module table must have all columns filled — no missing owners. Use `"unowned"` if owner is unknown.
+- Risks must be classified bullets with levels — not prose paragraphs.
+- Invariants are non-negotiable — if none known, state `"None identified yet"`.
 - Cognitive Summary: one paragraph, 4-6 sentences, includes primary risk and extension path.
 - Extension Paths must be split into `Safe` and `Avoid` subsections.
 - Active Architecture must list all entry points with paths and ports/queue names.
@@ -77,7 +75,7 @@ tags:
 **Maintenance cadence:** Every session that modifies the system structure.
 
 
-### P3.3 â€” ARCHITECTURE.md [B3]
+### P3.3 — ARCHITECTURE.md [B3]
 
 **Purpose:** Architectural principles, layers, service design, failure modes. The authoritative reference for _why_ the system is structured as it is.
 
@@ -85,7 +83,7 @@ tags:
 
 **Frontmatter:**
 ```yaml
-title: Architecture â€” <system-name>
+title: Architecture — <system-name>
 type: cognitive-memory
 status: active
 version: <semver>
@@ -103,36 +101,36 @@ tags:
 ```
 
 **Required sections:**
-- `# Principles` â€” list with brief rationale. Each principle: one bullet, one sentence of rationale.
-- `# Layers` â€” table: layer, responsibility, modules in that layer
-- `# Services` â€” table: service, type (API/Worker/Cron), responsibility, port/queue, replicas
-- `# Contracts` â€” table: contract, type (REST/Event/Queue/gRPC), producer, consumers, schema location
-- `# Data Flow` â€” request/event path through layers. Must reference layers table.
-- `# Failure Modes` â€” table: failure, cause, effect, mitigation. Each row: one concrete scenario.
+- `# Principles` — list with brief rationale. Each principle: one bullet, one sentence of rationale.
+- `# Layers` — table: layer, responsibility, modules in that layer
+- `# Services` — table: service, type (API/Worker/Cron), responsibility, port/queue, replicas
+- `# Contracts` — table: contract, type (REST/Event/Queue/gRPC), producer, consumers, schema location
+- `# Data Flow` — request/event path through layers. Must reference layers table.
+- `# Failure Modes` — table: failure, cause, effect, mitigation. Each row: one concrete scenario.
 - `# Cognitive Summary`
 
 **Quality rules:**
-- At least 3 architectural principles stated with rationale. Principles must be specific â€” no generic statements like "prefer simplicity".
+- At least 3 architectural principles stated with rationale. Principles must be specific — no generic statements like "prefer simplicity".
 - Failure modes must include at minimum: DB failure, upstream API failure, downstream consumer failure, queue broker failure.
-- Each failure mode must have concrete mitigation â€” not `"handle gracefully"` but `"circuit breaker opens after 3 failures, fallback returns cached response"`.
-- Services table replicas column must distinguish `active/passive`, `active/active`, or `single` â€” not just a number.
+- Each failure mode must have concrete mitigation — not `"handle gracefully"` but `"circuit breaker opens after 3 failures, fallback returns cached response"`.
+- Services table replicas column must distinguish `active/passive`, `active/active`, or `single` — not just a number.
 - Data Flow must name the layers traversed (matching the Layers table) at each step.
-- Contracts table must reference the API_CONTRACTS document for details â€” never inline schema definitions.
+- Contracts table must reference the API_CONTRACTS document for details — never inline schema definitions.
 
 **Generation trigger:** Initial architecture design, new service added, layer restructured, failure mode discovered.
 
 **Maintenance cadence:** Every session that adds a service, changes a layer, or identifies a new failure mode.
 
 
-### P3.5 â€” API_CONTRACTS.md [B5]
+### P3.5 — API_CONTRACTS.md [B5]
 
-**Purpose:** All API contracts â€” REST, gRPC, events, queues. The single source of truth for every interface boundary.
+**Purpose:** All API contracts — REST, gRPC, events, queues. The single source of truth for every interface boundary.
 
 **File:** `brain/API_CONTRACTS.md`
 
 **Frontmatter:**
 ```yaml
-title: API Contracts â€” <system-name>
+title: API Contracts — <system-name>
 type: cognitive-memory
 status: active
 version: <semver>
@@ -152,19 +150,19 @@ tags:
 ```
 
 **Required sections:**
-- `# Auth` â€” method (JWT/OAuth2/API Key/mTLS), token location (header/cookie), refresh mechanism, scope/permission model
-- `# Endpoints` â€” per endpoint: method, path, purpose, auth required, rate limit, idempotency; request/response schema (typed references); status codes (success + errors); error cases with examples
-- `# Events / Queue Messages` â€” per event: name, producer, consumers, queue/topic, delivery guarantee (at-least-once/exactly-once/at-most-once); event schema reference
-- `# gRPC Services` â€” per service: package, service name, RPC methods, request/response types, streaming mode (unary/server-stream/client-stream/bidi)
-- `# Invariants` â€” what this API always guarantees (ordering, delivery, consistency model)
+- `# Auth` — method (JWT/OAuth2/API Key/mTLS), token location (header/cookie), refresh mechanism, scope/permission model
+- `# Endpoints` — per endpoint: method, path, purpose, auth required, rate limit, idempotency; request/response schema (typed references); status codes (success + errors); error cases with examples
+- `# Events / Queue Messages` — per event: name, producer, consumers, queue/topic, delivery guarantee (at-least-once/exactly-once/at-most-once); event schema reference
+- `# gRPC Services` — per service: package, service name, RPC methods, request/response types, streaming mode (unary/server-stream/client-stream/bidi)
+- `# Invariants` — what this API always guarantees (ordering, delivery, consistency model)
 - `# Cognitive Summary`
 
 **Quality rules:**
 - Every endpoint must have at least one error case documented with HTTP status code and error body shape.
-- Request/response schemas reference typed models â€” never inline JSON blobs. Use `â†’ src/types/api.ts:42`.
-- Events must specify delivery guarantee. If unknown, state `"delivery guarantee not specified"` â€” never leave blank.
-- Breaking changes must be flagged with migration path. Flag format: `âš  BREAKING: [migration description]`.
-- `# gRPC Services` section is optional â€” only present if the system uses gRPC.
+- Request/response schemas reference typed models — never inline JSON blobs. Use `→ src/types/api.ts:42`.
+- Events must specify delivery guarantee. If unknown, state `"delivery guarantee not specified"` — never leave blank.
+- Breaking changes must be flagged with migration path. Flag format: `⚠ BREAKING: [migration description]`.
+- `# gRPC Services` section is optional — only present if the system uses gRPC.
 - Auth section must specify which endpoints bypass auth (health checks, public webhooks).
 - Rate limits must be specified per-endpoint with window: `100 req/min` not `rate limited`.
 - Idempotency must state the idempotency key location and which methods are idempotent.
@@ -174,7 +172,7 @@ tags:
 **Maintenance cadence:** Every session that modifies an API endpoint, event schema, or auth mechanism. Validate against route definitions at maintenance time.
 
 
-### P3.7 â€” CHANGELOG_INTELLIGENCE.md [B7]
+### P3.7 — CHANGELOG_INTELLIGENCE.md [B7]
 
 **Purpose:** Curated, impact-aware analysis of what changed and why it matters. Not a raw git log. Distinguishes meaningful changes from noise.
 
@@ -182,7 +180,7 @@ tags:
 
 **Frontmatter:**
 ```yaml
-title: Changelog Intelligence â€” <system-name>
+title: Changelog Intelligence — <system-name>
 type: cognitive-memory
 status: active
 version: <semver>
@@ -201,14 +199,14 @@ tags:
 **Schema per commit/PR:**
 
 ```
-## Commit: <SHA or PR> â€” YYYY-MM-DD
+## Commit: <SHA or PR> — YYYY-MM-DD
 
 ### Summary
-<what changed, at what layer, why â€” with impact statement>
+<what changed, at what layer, why — with impact statement>
 
 ### Impact
 - **Layer changed:** <layer name from ARCHITECTURE.md>
-- **Breaking?** <yes/no â€” if yes, describe what breaks>
+- **Breaking?** <yes/no — if yes, describe what breaks>
 - **Affected modules:** <comma-separated list>
 - **Downstream risk:** <HIGH/MEDIUM/LOW description>
 
@@ -218,17 +216,17 @@ tags:
 | <path> | added/modified/removed | <level> |
 
 ### Risks
-- <risk level> â€” <description>
+- <risk level> — <description>
 
 ### Follow-Up
-- [ ] <actionable item> â€” <owner if known>
+- [ ] <actionable item> — <owner if known>
 ```
 
 **Quality rules:**
-- Summary must state impact, not just what changed â€” `"why it matters"` is required.
+- Summary must state impact, not just what changed — `"why it matters"` is required.
 - Breaking changes must specify exactly what breaks and who is affected.
-- Follow-Up items are actionable â€” not `"improve tests"` but `"add integration test for payment callback in src/payments/callback.test.ts"`.
-- Entries are curated, not every commit â€” only meaningful changes with risk impact. Patches and formatting changes are excluded.
+- Follow-Up items are actionable — not `"improve tests"` but `"add integration test for payment callback in src/payments/callback.test.ts"`.
+- Entries are curated, not every commit — only meaningful changes with risk impact. Patches and formatting changes are excluded.
 - Affected Areas table change type must be one of: `added`, `modified`, `removed`, `deprecated`, `fixed`.
 - Risks must reference the risk level taxonomy: CRITICAL, HIGH, MEDIUM, LOW, NONE.
 
@@ -237,7 +235,7 @@ tags:
 **Maintenance cadence:** After each meaningful commit or PR. Session start reviews unreported commits.
 
 
-### P3.9 â€” SNAPSHOT [B9] (`/brain/snapshots/<timestamp>-<name>.md`)
+### P3.9 — SNAPSHOT [B9] (`/brain/snapshots/<timestamp>-<name>.md`)
 
 **Purpose:** Immutable cognitive snapshot at a point in time. Captures the reasoning context for a change. Never updated, only superseded.
 
@@ -245,7 +243,7 @@ tags:
 
 **Frontmatter:**
 ```yaml
-title: Snapshot â€” <name>
+title: Snapshot — <name>
 type: snapshot
 status: snapshot
 version: 1.0.0
@@ -265,25 +263,25 @@ tags:
 ```
 
 **Required sections:**
-- `# Metadata` â€” timestamp (ISO 8601 with time), commit SHA, branch, author, PR link
-- `# Purpose` â€” why this change exists, what problem it solves
-- `# Systems Affected` â€” modules, contracts, config, schema â€” with specific file paths
-- `# Architecture Changes` â€” structural changes, new boundaries, new layers
-- `# Data Flow` â€” before/after request path illustrating the change
-- `# Dependencies Added` â€” table: type (lib/service/infra), name, used by, purpose
-- `# Extension Points` â€” where future features can be safely added building on this change
-- `# Risks Introduced` â€” table: level, risk, affected module, mitigation
-- `# Breaking Changes` â€” table: what breaks, affected consumers, migration path
-- `# Cognitive Summary` â€” what changed, why it matters, main risks
+- `# Metadata` — timestamp (ISO 8601 with time), commit SHA, branch, author, PR link
+- `# Purpose` — why this change exists, what problem it solves
+- `# Systems Affected` — modules, contracts, config, schema — with specific file paths
+- `# Architecture Changes` — structural changes, new boundaries, new layers
+- `# Data Flow` — before/after request path illustrating the change
+- `# Dependencies Added` — table: type (lib/service/infra), name, used by, purpose
+- `# Extension Points` — where future features can be safely added building on this change
+- `# Risks Introduced` — table: level, risk, affected module, mitigation
+- `# Breaking Changes` — table: what breaks, affected consumers, migration path
+- `# Cognitive Summary` — what changed, why it matters, main risks
 
 **Quality rules:**
-- NEVER update an existing snapshot â€” create a new one with incremented or updated timestamp.
-- Status must be `"snapshot"`, never `"active"` â€” current system state lives in CURRENT_STATE.md.
-- All sections must be filled â€” no placeholders. If a section has no content, write `"None"`.
-- Breaking Changes must include migration path for each break â€” `"None"` is acceptable if verified no breaking changes.
+- NEVER update an existing snapshot — create a new one with incremented or updated timestamp.
+- Status must be `"snapshot"`, never `"active"` — current system state lives in CURRENT_STATE.md.
+- All sections must be filled — no placeholders. If a section has no content, write `"None"`.
+- Breaking Changes must include migration path for each break — `"None"` is acceptable if verified no breaking changes.
 - Cognitive Summary must not exceed one paragraph.
-- Breaking Changes section must be explicit â€” `"No breaking changes"` if none exist.
-- Risks Introduced must include mitigations â€” not just risk identification.
+- Breaking Changes section must be explicit — `"No breaking changes"` if none exist.
+- Risks Introduced must include mitigations — not just risk identification.
 - Timestamp in filename must match the `created` frontmatter field. Use `YYYY-MM-DDTHH-mm-ss` format for Windows-safe filenames.
 - Snapshot must be created BEFORE the FEATURE_LOG entry that references it.
 
@@ -292,7 +290,7 @@ tags:
 **Maintenance cadence:** Never updated. Superseded by newer snapshots. Archived when referenced system state is no longer relevant.
 
 
-### P3.11 â€” RUNBOOK.md [B11]
+### P3.11 — RUNBOOK.md [B11]
 
 **Purpose:** Operational procedures for running, monitoring, and recovering the system. The authoritative guide for on-call engineers and incident response.
 
@@ -300,7 +298,7 @@ tags:
 
 **Frontmatter:**
 ```yaml
-title: Runbook â€” <system-name>
+title: Runbook — <system-name>
 type: runbook
 status: active
 version: <semver>
@@ -319,26 +317,26 @@ tags:
 ```
 
 **Required sections:**
-- `# System Overview` â€” brief architecture summary, deployment topology, environment names (dev/staging/prod)
-- `# Monitoring` â€” dashboards (links), key metrics, alert rules, log sources
-- `# Health Checks` â€” endpoints, expected responses, frequency, who pages
-- `# Common Procedures` â€” table: procedure, steps (numbered), expected duration, verification step
-- `# Incident Response` â€” per incident type: severity, symptoms, immediate actions, escalation path, post-incident steps
-- `# Recovery Procedures` â€” per failure scenario: backup restore, failover, data recovery, rollback instructions
-- `# Maintenance Windows` â€” scheduled maintenance procedure, notification requirements, approval chain
-- `# Contacts` â€” table: role, name/team, phone/pager, escalation order
+- `# System Overview` — brief architecture summary, deployment topology, environment names (dev/staging/prod)
+- `# Monitoring` — dashboards (links), key metrics, alert rules, log sources
+- `# Health Checks` — endpoints, expected responses, frequency, who pages
+- `# Common Procedures` — table: procedure, steps (numbered), expected duration, verification step
+- `# Incident Response` — per incident type: severity, symptoms, immediate actions, escalation path, post-incident steps
+- `# Recovery Procedures` — per failure scenario: backup restore, failover, data recovery, rollback instructions
+- `# Maintenance Windows` — scheduled maintenance procedure, notification requirements, approval chain
+- `# Contacts` — table: role, name/team, phone/pager, escalation order
 - `# Cognitive Summary`
 
 **Quality rules:**
-- Common Procedures must have numbered steps â€” not bullet lists. Each step must be a single actionable instruction.
+- Common Procedures must have numbered steps — not bullet lists. Each step must be a single actionable instruction.
 - Incident Response must cover at minimum: outage (severity 1), degraded performance (severity 2), partial feature failure (severity 3).
 - Recovery Procedures must include rollback instructions for the last 3 deployments.
 - Health Checks must list the check endpoint, the expected response (status code + body), and the check frequency.
-- Monitoring section must include links or paths to dashboards â€” if none exist, state `"No dashboards configured"`.
+- Monitoring section must include links or paths to dashboards — if none exist, state `"No dashboards configured"`.
 - Procedures must include expected duration: `"Step 1: SSH to bastion host (30s)"`.
-- Contacts table must include escalation order â€” `"1st: primary on-call, 2nd: secondary on-call, 3rd: engineering manager"`.
+- Contacts table must include escalation order — `"1st: primary on-call, 2nd: secondary on-call, 3rd: engineering manager"`.
 - Never include production secrets, passwords, or API keys in the runbook. Reference vault paths or secret store keys.
-- Verification step must be included for each procedure â€” how to confirm the procedure succeeded.
+- Verification step must be included for each procedure — how to confirm the procedure succeeded.
 
 **Procedure template:**
 
@@ -356,7 +354,7 @@ tags:
 **Incident response template:**
 
 ```
-### Incident: <Type â€” e.g., "Database Connection Saturation">
+### Incident: <Type — e.g., "Database Connection Saturation">
 **Severity:** <1/2/3>
 **Symptoms:** <observable signs>
 **Immediate actions:**
@@ -371,21 +369,21 @@ tags:
 **Maintenance cadence:** Every deployment (verify procedures still match), every incident (update with lessons learned), every new dependency (add recovery procedure).
 
 
-## P4 â€” SECTION QUALITY RULES
+## P4 — SECTION QUALITY RULES
 
-### P4.1 â€” Cognitive Summary Rules
+### P4.1 — Cognitive Summary Rules
 
 The Cognitive Summary is the most important section in every brain document.
 - Exactly one paragraph (4-6 sentences)
 - No bullet points or numbered lists
 - No S14 prohibited words (leverage, robust, scalable, utilize, etc.)
-- No passive voice for risk statements (`"may be affected"` â†’ `"breaks X"`)
+- No passive voice for risk statements (`"may be affected"` → `"breaks X"`)
 - Must include primary risk
 - Must include architectural significance (not just what code does)
 - No calls to action (`"engineers should review this carefully"`)
 - No weak openers (`"This is a..."`, `"The following describes..."`)
 - Must not contradict any other section in the same document
-- Must be self-contained â€” readable without reading the rest of the document
+- Must be self-contained — readable without reading the rest of the document
 - Must include the extension path or next-action context where applicable
 
 **Cognitive Summary structure:**
@@ -395,41 +393,41 @@ The Cognitive Summary is the most important section in every brain document.
 4. Sentence 5: Extension path or recommended next action.
 5. Sentence 6 (optional): Constraint or invariant that bounds the system.
 
-### P4.2 â€” Table Rules
+### P4.2 — Table Rules
 
 - All tables use markdown pipe format.
-- No empty cells â€” if data is unknown, state `"Unknown"` or `"Not specified"`.
+- No empty cells — if data is unknown, state `"Unknown"` or `"Not specified"`.
 - Sort tables by meaningful column (name, risk level, date, module).
 - Consistent column alignment within a document.
-- Risk tables sorted by severity: CRITICAL â†’ HIGH â†’ MEDIUM â†’ LOW â†’ NONE.
+- Risk tables sorted by severity: CRITICAL → HIGH → MEDIUM → LOW → NONE.
 - Tables must have a header row separated by a delimiter row (`|---|---|---|`).
 - Column values must not contain pipe characters. Escape with `\|` if necessary.
-- Multi-line cell content is not allowed in markdown tables â€” use multiple rows or abbreviate.
+- Multi-line cell content is not allowed in markdown tables — use multiple rows or abbreviate.
 - Table width should not exceed 120 characters per row to maintain readability in narrow terminals.
 
-### P4.3 â€” Token Efficiency Rules
+### P4.3 — Token Efficiency Rules
 
 - Use compact bullets, not full sentences. `"Module X calls Y via gRPC"` not `"Module X is responsible for making calls to Y using the gRPC protocol"`.
 - Use tables instead of lists for structured data (risks, modules, contracts, dependencies).
-- Use abbreviations consistently within a document â€” define abbreviation on first use.
-- No duplicate information across sections. Use cross-references instead: `"See P3.5 â€” API_CONTRACTS.md"`.
-- No external references to documents that don't exist â€” verify path exists before writing reference.
-- Use consistent terminology within a document â€” don't mix `"module"` and `"service"` interchangeably.
-- Minimize markdown formatting overhead â€” no unnecessary bold, italics, or horizontal rules.
+- Use abbreviations consistently within a document — define abbreviation on first use.
+- No duplicate information across sections. Use cross-references instead: `"See P3.5 — API_CONTRACTS.md"`.
+- No external references to documents that don't exist — verify path exists before writing reference.
+- Use consistent terminology within a document — don't mix `"module"` and `"service"` interchangeably.
+- Minimize markdown formatting overhead — no unnecessary bold, italics, or horizontal rules.
 - H3 subsections only when required by the schema (DECISION_LOG, SPECIFICATION). Otherwise use H2 + compact bullets.
 
-### P4.4 â€” Section Presence and Ordering
+### P4.4 — Section Presence and Ordering
 
 - Sections must appear in the exact order specified in the schema reference (P3.x). No reordering.
-- Every required section must have content. `"None"` or `"Not applicable"` are acceptable content â€” blank lines are not.
+- Every required section must have content. `"None"` or `"Not applicable"` are acceptable content — blank lines are not.
 - No additional sections beyond those specified in the schema unless explicitly approved by the architect plugin.
-- Sections are identified by H2 heading text match â€” heading text must match the schema exactly (whitespace-normalized).
+- Sections are identified by H2 heading text match — heading text must match the schema exactly (whitespace-normalized).
 - Cognitive Summary is always the last section.
 
 
-## P6 â€” SCHEMA VERSIONING AND MIGRATION
+## P6 — SCHEMA VERSIONING AND MIGRATION
 
-### P6.1 â€” Schema Version Strategy
+### P6.1 — Schema Version Strategy
 
 The schema definition itself (this SKILL.md) is versioned separately from the documents it governs. Document schemas evolve independently.
 
@@ -438,9 +436,9 @@ The schema definition itself (this SKILL.md) is versioned separately from the do
 - **Major:** Required section added or removed, section heading renamed, frontmatter field added or removed.
 - **Minor:** New optional section added, new conditional frontmatter field added, quality rule relaxed.
 - **Patch:** Quality rule clarified, example corrected, template formatting updated.
-- Documents are validated against the schema version they declare â€” not against the latest schema version.
+- Documents are validated against the schema version they declare — not against the latest schema version.
 
-### P6.2 â€” Document Schema Version Declaration
+### P6.2 — Document Schema Version Declaration
 
 Each document type declares its current schema version in the frontmatter:
 
@@ -450,14 +448,14 @@ schema_version: 2.0.0
 
 If `schema_version` is absent, the document is assumed to conform to `1.0.0` of the schema it matches.
 
-### P6.3 â€” Migration Between Schema Versions
+### P6.3 — Migration Between Schema Versions
 
 When a schema major version changes:
 
 1. **Detection:** Schema validation gate detects documents with `schema_version < current`.
 2. **Assessment:** Document schema engineer evaluates each affected document for migration effort.
 3. **Migration:** Update frontmatter `schema_version`, add/remove/modify sections as required by the schema diff.
-4. **Validation:** Run full schema validation pass â€” all documents must pass Hard Block gates.
+4. **Validation:** Run full schema validation pass — all documents must pass Hard Block gates.
 5. **Bulk migration:** For automated migrations (e.g., new frontmatter field), use a script to update all matching documents.
 
 **Migration path table:**
@@ -471,7 +469,7 @@ When a schema major version changes:
 | 1.0.0 | 2.0.0 | `# Security Considerations` required for SPECIFICATION | Add section to all active specifications |
 | 1.0.0 | 2.0.0 | ADR lifecycle states expanded | Migrate existing ADR status values to new states |
 
-### P6.4 â€” Schema Migration Script
+### P6.4 — Schema Migration Script
 
 When bulk schema migration is needed, use the following template:
 
@@ -485,7 +483,7 @@ foreach ($file in Get-ChildItem -LiteralPath "brain" -Filter "*.md" -Recurse) {
 }
 ```
 
-### P6.5 â€” Schema Deprecation Policy
+### P6.5 — Schema Deprecation Policy
 
 - A schema version is deprecated when the next major version is released.
 - Documents at a deprecated schema version generate a `WARN` in validation but do not fail Hard Block gates.
@@ -493,9 +491,9 @@ foreach ($file in Get-ChildItem -LiteralPath "brain" -Filter "*.md" -Recurse) {
 - Schema migration is expected within 1 session of a major version release.
 
 
-## P8 â€” OUTPUT FORMAT PATTERNS
+## P8 — OUTPUT FORMAT PATTERNS
 
-### P8.1 â€” Full Document Generation Output
+### P8.1 — Full Document Generation Output
 
 When generating a new brain document, the output follows this format:
 
@@ -516,13 +514,13 @@ When generating a new brain document, the output follows this format:
 ```
 DOCUMENT GENERATED: <path>
 TYPE: <B1-B12>
-SECTIONS: <count> â€” <all present>
-FRONTMATTER: <fields count>/<required> â€” <PASS>
-COGNITIVE SUMMARY: <sentences> sentences, risk included â€” <PASS>
+SECTIONS: <count> — <all present>
+FRONTMATTER: <fields count>/<required> — <PASS>
+COGNITIVE SUMMARY: <sentences> sentences, risk included — <PASS>
 QUALITY: <PASS|WARN>
 ```
 
-### P8.2 â€” Document Update Output
+### P8.2 — Document Update Output
 
 When updating an existing document, the output shows the diff:
 
@@ -533,7 +531,7 @@ schema: skill-pack/v1
 skill_type:
   - capability
 dependencies:
-  synarc-core: ">=5.0.0" â†’ <new>
+  synarc-core: ">=5.0.0" → <new>
 CHANGES:
   + <added section or field>
   ~ <modified section or field>
@@ -543,7 +541,7 @@ VERSION INCREMENT: <reason>
   - <reason 2>
 ```
 
-### P8.3 â€” Validation Output
+### P8.3 — Validation Output
 
 ```
 DOCUMENT: <path>
@@ -565,15 +563,15 @@ QUALITY: <PASS|WARN|FAIL>
 - `WARN`: Tier 2 gates fail but Tier 1 passes. Document is usable but has quality issues.
 - `FAIL`: One or more Tier 1 gates fail. Document must be corrected.
 
-### P8.4 â€” Batch Validation Output
+### P8.4 — Batch Validation Output
 
 ```
-SCHEMA VALIDATION â€” <timestamp>
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-<path> â€” B1 â€” v2.0.0 â€” PASS
-<path> â€” B2 â€” v2.0.0 â€” PASS
-<path> â€” B3 â€” v1.0.0 â€” WARN (schema outdated: v2.0.0 available)
-<path> â€” B10 â€” v1.0.0 â€” FAIL (missing: Required sections)
+SCHEMA VALIDATION — <timestamp>
+────────────────────────────────
+<path> — B1 — v2.0.0 — PASS
+<path> — B2 — v2.0.0 — PASS
+<path> — B3 — v1.0.0 — WARN (schema outdated: v2.0.0 available)
+<path> — B10 — v1.0.0 — FAIL (missing: Required sections)
 
 SUMMARY:
   PASS: <count>
@@ -582,20 +580,20 @@ SUMMARY:
   TOTAL: <count>
 ```
 
-### P8.5 â€” Snapshot Generation Output
+### P8.5 — Snapshot Generation Output
 
 ```
 SNAPSHOT GENERATED: brain/snapshots/<timestamp>-<name>.md
-PRECEDING STATE: brain/CURRENT_STATE.md (updated â†’ version <new>)
+PRECEDING STATE: brain/CURRENT_STATE.md (updated → version <new>)
 FEATURE LOG ENTRY: brain/FEATURE_LOG.md#Feature-<name> (created/updated)
-SNAPSHOT STATUS: snapshot (immutable â€” never update)
-RELATED ADR: â†’ ADR-<NNN> (if applicable)
+SNAPSHOT STATUS: snapshot (immutable — never update)
+RELATED ADR: → ADR-<NNN> (if applicable)
 ```
 
 
-## P10 â€” QUALITY GATES
+## P10 — QUALITY GATES
 
-### P10.1 â€” Tier 1 â€” Hard Block
+### P10.1 — Tier 1 — Hard Block
 
 These gates must all pass. Any failure blocks the document from being accepted.
 
@@ -604,32 +602,32 @@ These gates must all pass. Any failure blocks the document from being accepted.
 - [ ] All required sections present per document schema (P3.x)
 - [ ] Cognitive Summary: one paragraph, includes primary risk
 - [ ] No S14 prohibited words anywhere in document
-- [ ] No invented or assumed context â€” every statement verifiable against codebase
-- [ ] Snapshot is never updated â€” new snapshot created with new timestamp
+- [ ] No invented or assumed context — every statement verifiable against codebase
+- [ ] Snapshot is never updated — new snapshot created with new timestamp
 - [ ] All cross-references point to existing documents or identifiers
 - [ ] Document type matches declared type in frontmatter
-- [ ] Frontmatter dates valid â€” created â‰¤ updated, neither in future
+- [ ] Frontmatter dates valid — created ≤ updated, neither in future
 
-### P10.2 â€” Tier 2 â€” Standard
+### P10.2 — Tier 2 — Standard
 
 These gates should pass. Warnings are generated for failures but documents are usable.
 
-- [ ] Tables have no empty cells â€” unknown values use `"Unknown"` or `"Not specified"`
+- [ ] Tables have no empty cells — unknown values use `"Unknown"` or `"Not specified"`
 - [ ] Cognitive Summary includes extension path
 - [ ] Breaking changes include migration path
-- [ ] Date formats consistent (ISO 8601 â€” YYYY-MM-DD)
-- [ ] Risks sorted by severity (CRITICAL â†’ HIGH â†’ MEDIUM â†’ LOW â†’ NONE)
+- [ ] Date formats consistent (ISO 8601 — YYYY-MM-DD)
+- [ ] Risks sorted by severity (CRITICAL → HIGH → MEDIUM → LOW → NONE)
 - [ ] No duplicate information across sections
 - [ ] External references point to existing files
 - [ ] ADR lifecycle states valid and consistent
 - [ ] Tables sorted by meaningful column
 - [ ] Abbreviations defined on first use
 - [ ] Section order matches schema exactly
-- [ ] No empty sections â€” each section has substantive content
+- [ ] No empty sections — each section has substantive content
 - [ ] SNAPSHOT status is `"snapshot"` not `"active"`
 - [ ] SNAPSHOT filename timestamp matches frontmatter `created` field
 
-### P10.3 â€” Tier 3 â€” Excellence
+### P10.3 — Tier 3 — Excellence
 
 These gates are aspirational. Failure does not generate warnings but is tracked for improvement.
 
@@ -643,10 +641,10 @@ These gates are aspirational. Failure does not generate warnings but is tracked 
 - [ ] SNAPSHOT Data Flow includes before/after ASCII diagram
 - [ ] ARCHITECTURE Failure Modes each reference a RUNBOOK procedure
 
-### P10.4 â€” Self-Audit Template
+### P10.4 — Self-Audit Template
 
 ```
-Frontmatter complete?                    â†’ yes | no
+Frontmatter complete?                    → yes | no
   title: <value>
   type: <value>
   status: <value>
@@ -654,25 +652,25 @@ Frontmatter complete?                    â†’ yes | no
   updated: <value>
   version: <value>
   owner: <value>
-No placeholders?                         â†’ yes | no
-All required sections present?           â†’ yes | no
+No placeholders?                         → yes | no
+All required sections present?           → yes | no
   Missing: <list>
-Cognitive Summary valid?                 â†’ yes | no
+Cognitive Summary valid?                 → yes | no
   Paragraphs: <count> (must be 1)
   Risk included: yes | no
   S14 words: <count> (must be 0)
   Contradictions: yes | no
-No invented context?                     â†’ yes | no
-Cross-references valid?                  â†’ yes | no
+No invented context?                     → yes | no
+Cross-references valid?                  → yes | no
   Broken: <list>
-Tables complete (no empty cells)?        â†’ yes | no
-Risks sorted by severity?                â†’ yes | no
-Version appropriate for change?          â†’ yes | no
-Schema version current?                  â†’ yes | no
+Tables complete (no empty cells)?        → yes | no
+Risks sorted by severity?                → yes | no
+Version appropriate for change?          → yes | no
+Schema version current?                  → yes | no
 ```
 
 
-## P12 â€” EXAMPLES
+## P12 — EXAMPLES
 
 ### Example 1: Generate CURRENT_STATE.md on first scan
 
@@ -685,29 +683,29 @@ with async side effects (email, webhooks) handled by BullMQ workers. The main ri
 surfaces are: the JWT secret startup gap (silent crash on misconfigured deploy), the
 synchronous Slack call in the integrations module (user-facing timeout risk), and the
 absent dead-letter queue in notifications (silent email loss). The DB schema is tightly
-coupled â€” the tasks and users tables are referenced across four modules, making
+coupled — the tasks and users tables are referenced across four modules, making
 schema changes system-wide events. Extension is safest by adding new queue processors
 or new route modules that follow the established pattern. The JWT payload shape is the
-most fragile contract in the system â€” 12 guards consume it directly.
+most fragile contract in the system — 12 guards consume it directly.
 ```
 
 ### Example 2: Update CHANGELOG_INTELLIGENCE after a FIX
 
-Record the fix commit, what layer changed (payment service), whether it was breaking (no), affected modules (2: payment API, webhook handler), risks (MEDIUM â€” webhook retry logic changed, verify idempotency), follow-up (add integration test for webhook duplicate detection).
+Record the fix commit, what layer changed (payment service), whether it was breaking (no), affected modules (2: payment API, webhook handler), risks (MEDIUM — webhook retry logic changed, verify idempotency), follow-up (add integration test for webhook duplicate detection).
 
 ```
-## Commit: a1b2c3d â€” 2026-05-24
+## Commit: a1b2c3d — 2026-05-24
 
 ### Summary
-Fixed payment webhook retry logic in the webhook handler â€” retries were
+Fixed payment webhook retry logic in the webhook handler — retries were
 not respecting idempotency keys, causing duplicate payments under retry.
 Layer: payment-service.
 
 ### Impact
 - **Layer changed:** Payment Service
-- **Breaking?** No â€” payload shape unchanged
+- **Breaking?** No — payload shape unchanged
 - **Affected modules:** payment-api, webhook-handler
-- **Downstream risk:** MEDIUM â€” webhook retry path changed
+- **Downstream risk:** MEDIUM — webhook retry path changed
 
 ### Affected Areas
 | File/Module | Change Type | Risk |
@@ -716,7 +714,7 @@ Layer: payment-service.
 | src/payments/idempotency.ts | modified | LOW |
 
 ### Risks
-- MEDIUM â€” Retry idempotency change may affect webhook duplicate detection
+- MEDIUM — Retry idempotency change may affect webhook duplicate detection
 
 ### Follow-Up
 - [ ] Add integration test for webhook duplicate detection with retry
@@ -739,20 +737,20 @@ Add org_id column to users table for multi-tenant data isolation.
 Required for enterprise tier deployment.
 
 ## Systems Affected
-- `src/users/` â€” user service (model, repository, controller)
-- `src/infra/` â€” migration 042 (new migration script)
-- `src/auth/` â€” org-scoped token claims
+- `src/users/` — user service (model, repository, controller)
+- `src/infra/` — migration 042 (new migration script)
+- `src/auth/` — org-scoped token claims
 
 ## Architecture Changes
 - New column `org_id` on `users` table (nullable, foreign key to `organizations`)
 - Dual-write pattern during migration: old code writes to both old and new schema
 
 ## Data Flow
-Before: `POST /users` â†’ INSERT into users (name, email)
-After:  `POST /users` â†’ INSERT into users (name, email, org_id)
+Before: `POST /users` → INSERT into users (name, email)
+After:  `POST /users` → INSERT into users (name, email, org_id)
 
 ## Dependencies Added
-None â€” schema change only, no new services or libraries.
+None — schema change only, no new services or libraries.
 
 ## Extension Points
 - org-scoped API keys
@@ -767,16 +765,16 @@ None â€” schema change only, no new services or libraries.
 | MEDIUM | Performance impact on users table index | users | Add index concurrently, monitor query plans |
 
 ## Breaking Changes
-None â€” additive change only. org_id is nullable for backward compatibility.
+None — additive change only. org_id is nullable for backward compatibility.
 
 ## Cognitive Summary
-Add org_id to users table with dual-write migration path. Risk is CRITICAL during cutover window â€” rollback requires coordinated code revert and migration rollback. Extension path enables tenant isolation for enterprise tier. No breaking changes: existing rows get NULL org_id and continue functioning.
+Add org_id to users table with dual-write migration path. Risk is CRITICAL during cutover window — rollback requires coordinated code revert and migration rollback. Extension path enables tenant isolation for enterprise tier. No breaking changes: existing rows get NULL org_id and continue functioning.
 ```
 
-### Example 4: ADR â€” Technology Choice
+### Example 4: ADR — Technology Choice
 
 ```
-## ADR-007: JWT over Session Tokens â€” 2026-04-15
+## ADR-007: JWT over Session Tokens — 2026-04-15
 Status: accepted
 Supersedes: None
 Superseded By: None
@@ -796,16 +794,16 @@ and verified by all services via public key.
 ### Alternatives Considered
 | Alternative | Reason Rejected |
 |---|---|
-| Session tokens (opaque) | Requires centralized Redis â€” adds failure point and 2-5ms lookup latency per request |
-| API Key per service | No user-level auth granularity â€” can't support per-user permissions |
+| Session tokens (opaque) | Requires centralized Redis — adds failure point and 2-5ms lookup latency per request |
+| API Key per service | No user-level auth granularity — can't support per-user permissions |
 
 ### Consequences
-- **Positive:** Stateless auth â€” servers scale horizontally without session affinity
+- **Positive:** Stateless auth — servers scale horizontally without session affinity
 - **Negative:** Token revocation requires an allowlist or short TTL
-- **Risks:** MEDIUM â€” revoked users remain authorized until token expires
+- **Risks:** MEDIUM — revoked users remain authorized until token expires
 
 ### Compliance
-- **Enforced by:** Code review â€” new services must use auth middleware with JWT verification
+- **Enforced by:** Code review — new services must use auth middleware with JWT verification
 - **Verification:** CI pipeline checks that auth middleware is applied to all non-public routes
 ```
 
@@ -816,15 +814,15 @@ and verified by all services via public key.
 **Duration:** 15 minutes
 **Risk:** CRITICAL
 
-1. SSH to bastion host â€” `ssh bastion-1.internal` (30s)
-2. Connect to PostgreSQL â€” `psql -h $DB_HOST -d $DB_NAME` (10s)
-3. Check active connections â€” `SELECT count(*) FROM pg_stat_activity WHERE state = 'active';` (5s)
-4. Identify blocking queries â€” `SELECT pid, query, state, age(now(), query_start) FROM pg_stat_activity WHERE wait_event IS NOT NULL;` (10s)
-5. Terminate runaway query â€” `SELECT pg_terminate_backend(<pid>);` (5s)
-6. Restart connection pool â€” `kubectl rollout restart deployment/api-gateway` (2min)
-7. Verify â€” check `GET /health` returns 200 and active connections < threshold (30s)
+1. SSH to bastion host — `ssh bastion-1.internal` (30s)
+2. Connect to PostgreSQL — `psql -h $DB_HOST -d $DB_NAME` (10s)
+3. Check active connections — `SELECT count(*) FROM pg_stat_activity WHERE state = 'active';` (5s)
+4. Identify blocking queries — `SELECT pid, query, state, age(now(), query_start) FROM pg_stat_activity WHERE wait_event IS NOT NULL;` (10s)
+5. Terminate runaway query — `SELECT pg_terminate_backend(<pid>);` (5s)
+6. Restart connection pool — `kubectl rollout restart deployment/api-gateway` (2min)
+7. Verify — check `GET /health` returns 200 and active connections < threshold (30s)
 
-**Verify:** Run step 3 â€” active connections should return to baseline. Confirm `GET /health` passes.
+**Verify:** Run step 3 — active connections should return to baseline. Confirm `GET /health` passes.
 ```
 
 ### Example 6: Specification Requirements Table
@@ -841,26 +839,26 @@ and verified by all services via public key.
 ```
 
 
-## P14 â€” DOCUMENT RETENTION AND ARCHIVAL
+## P14 — DOCUMENT RETENTION AND ARCHIVAL
 
-### P14.1 â€” Retention Policy
+### P14.1 — Retention Policy
 
 | Document Type | Active Retention | Archive After |
 |---|---|---|
-| CURRENT_STATE | Always active â€” one per repo | Never archived |
-| SYSTEM_MAP | Always active â€” one per repo | Never archived |
-| ARCHITECTURE | Always active â€” one per repo | Never archived |
-| MODULE_MAP | Always active â€” one per repo | Never archived |
-| API_CONTRACTS | Always active â€” one per repo | Never archived |
-| FEATURE_LOG | Always active â€” one per repo | Never archived |
-| CHANGELOG_INTELLIGENCE | Always active â€” one per repo | Never archived |
-| SESSION_LEDGER | Active â€” one per repo | Archived after 30 days or 100 sessions |
+| CURRENT_STATE | Always active — one per repo | Never archived |
+| SYSTEM_MAP | Always active — one per repo | Never archived |
+| ARCHITECTURE | Always active — one per repo | Never archived |
+| MODULE_MAP | Always active — one per repo | Never archived |
+| API_CONTRACTS | Always active — one per repo | Never archived |
+| FEATURE_LOG | Always active — one per repo | Never archived |
+| CHANGELOG_INTELLIGENCE | Always active — one per repo | Never archived |
+| SESSION_LEDGER | Active — one per repo | Archived after 30 days or 100 sessions |
 | SNAPSHOT | Active | Archived when superseded by 3+ newer snapshots |
-| DECISION_LOG | Always active â€” one per repo | Never archived (ADRs may be deprecated/superseded in place) |
-| RUNBOOK | Always active â€” one per repo | Never archived |
+| DECISION_LOG | Always active — one per repo | Never archived (ADRs may be deprecated/superseded in place) |
+| RUNBOOK | Always active — one per repo | Never archived |
 | SPECIFICATION | Active while component exists | Archived when component is removed or replaced |
 
-### P14.2 â€” Archive Procedure
+### P14.2 — Archive Procedure
 
 1. Move document to `brain/archive/<original-path>` preserving directory structure.
 2. Update frontmatter `status` to `archived`.
@@ -868,7 +866,7 @@ and verified by all services via public key.
 4. Add archive metadata: `archived: YYYY-MM-DD`, `archived_by: <owner>`.
 5. Create a note in FEATURE_LOG.md if the archived document represents a significant loss of documentation.
 
-### P14.3 â€” Archive Directory Structure
+### P14.3 — Archive Directory Structure
 
 ```
 brain/
@@ -882,4 +880,4 @@ brain/
 
 ---
 
-**Synarc S14 language rules, S15 reference files, S16 negative prompt rules, S17 zero-tolerance violations apply. All brain files must follow these schemas without deviation. Schema version 2.0.0 â€” introduced DECISION_LOG (B10), RUNBOOK (B11), SPECIFICATION (B12), ADR lifecycle, cross-referencing, frontmatter field definitions, and generation triggers.**
+**Synarc S14 language rules, S15 reference files, S16 negative prompt rules, S17 zero-tolerance violations apply. All brain files must follow these schemas without deviation. Schema version 2.0.0 — introduced DECISION_LOG (B10), RUNBOOK (B11), SPECIFICATION (B12), ADR lifecycle, cross-referencing, frontmatter field definitions, and generation triggers.**

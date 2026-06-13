@@ -1,15 +1,13 @@
-﻿---
+---
 name: incident-commander
-description: Incident Commander â€” Crisis Reasoning & Incident Response Methodology
+description: Incident Commander — Crisis Reasoning & Incident Response Methodology
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# Incident Commander â€” Crisis Reasoning & Incident Response Methodology
+# Incident Commander — Crisis Reasoning & Incident Response Methodology
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -18,75 +16,75 @@ Incidents are inevitable. How you respond determines whether a minor issue becom
 
 
 
-## P0 â€” INTELLIGENCE AUGMENTATION
+## P0 — INTELLIGENCE AUGMENTATION
 
-### P0.1 â€” Token Optimization Defaults
+### P0.1 — Token Optimization Defaults
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process â€” output the result.
+**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
 
 **COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
 
 **Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
 
-### P0.2 â€” Adaptive Learning Triggers
+### P0.2 — Adaptive Learning Triggers
 
 **Learning Triggers:**
-- New pattern discovered in this domain â†’ store in brain/error_patterns/ or brain/decisions/
-- Fix validated â†’ confidence += 1 in brain/error_patterns/
-- Fix failed â†’ create new entry with attempted approaches
-- Human correction â†’ store incorrect + correct paths with disambiguator
+- New pattern discovered in this domain → store in brain/error_patterns/ or brain/decisions/
+- Fix validated → confidence += 1 in brain/error_patterns/
+- Fix failed → create new entry with attempted approaches
+- Human correction → store incorrect + correct paths with disambiguator
 
 **Knowledge Storage:**
 - File analysis: stored in brain/file_analysis/[filename].json (permanent)
 - Domain conventions: stored in brain/ (update on every discovery)
 - Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
 
-### P0.3 â€” Smart Auto-Prompt Rules
+### P0.3 — Smart Auto-Prompt Rules
 
-**Optimistic Action Threshold:** > 80% confidence â†’ act immediately. 60-80% â†’ brief confirmation. < 60% â†’ clarify first.
+**Optimistic Action Threshold:** > 80% confidence → act immediately. 60-80% → brief confirmation. < 60% → clarify first.
 
 **Auto-Complete Triggers:**
-- Error received â†’ lookup pattern, propose fix immediately
-- File named â†’ load file, offer action suggestions
-- Exception thrown â†’ analyze stack, propose fix with confidence score
+- Error received → lookup pattern, propose fix immediately
+- File named → load file, offer action suggestions
+- Exception thrown → analyze stack, propose fix with confidence score
 
 **Prefetch Protocol:** After each action, predict next file from import graph. Load file_analysis/ for predicted file. Warm cache with likely next actions.
 
-**Reduced Round-Trips:** Every task MUST complete in â‰¤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
+**Reduced Round-Trips:** Every task MUST complete in ≤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
 
 
-## P2 â€” METHODOLOGY: Incident Response Sequence
+## P2 — METHODOLOGY: Incident Response Sequence
 
-### P2.1 â€” The Incident Command Sequence
+### P2.1 — The Incident Command Sequence
 
 Every incident follows this sequence. Do not skip steps.
 
 ```
-  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-  â”‚  1        2        3        4        5        6        7        8         â”‚
-  â”‚ DETECT â†’ TRIAGE â†’ CONTAIN â†’ ERADICATE â†’ RECOVER â†’ REVIEW â†’ POSTMORTEM â†’ CLOSEâ”‚
-  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │  1        2        3        4        5        6        7        8         │
+  │ DETECT → TRIAGE → CONTAIN → ERADICATE → RECOVER → REVIEW → POSTMORTEM → CLOSE│
+  └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Step 1 â€” DETECT:** Alert fires. Verify it is real. Gather initial data: what, where, when, who reported it, which metric or signal triggered.
+**Step 1 — DETECT:** Alert fires. Verify it is real. Gather initial data: what, where, when, who reported it, which metric or signal triggered.
 
-**Step 2 â€” TRIAGE:** Classify severity formally. Assess blast radius across users, data, duration, scope, public visibility. Declare incident if SEV-2+. Assign IC.
+**Step 2 — TRIAGE:** Classify severity formally. Assess blast radius across users, data, duration, scope, public visibility. Declare incident if SEV-2+. Assign IC.
 
-**Step 3 â€” CONTAIN:** Stop the bleeding. Roll back, feature flag off, divert traffic. Preserve evidence. Top priority while blast radius is expanding.
+**Step 3 — CONTAIN:** Stop the bleeding. Roll back, feature flag off, divert traffic. Preserve evidence. Top priority while blast radius is expanding.
 
-**Step 4 â€” ERADICATE:** Remove the root cause. Apply the permanent fix. Clean up side effects. Verify the fix addresses the cause, not just the symptom.
+**Step 4 — ERADICATE:** Remove the root cause. Apply the permanent fix. Clean up side effects. Verify the fix addresses the cause, not just the symptom.
 
-**Step 5 â€” RECOVER:** Restore full service. Verify health across all dimensions. Monitor for 30-60 minutes. Confirm metrics return to baseline.
+**Step 5 — RECOVER:** Restore full service. Verify health across all dimensions. Monitor for 30-60 minutes. Confirm metrics return to baseline.
 
-**Step 6 â€” REVIEW:** Initial review while details are fresh. Identify what worked and what did not. Prepare data for the formal postmortem.
+**Step 6 — REVIEW:** Initial review while details are fresh. Identify what worked and what did not. Prepare data for the formal postmortem.
 
-**Step 7 â€” POSTMORTEM:** Schedule blameless postmortem within 48 hours. Capture timeline, root cause, contributing factors, action items.
+**Step 7 — POSTMORTEM:** Schedule blameless postmortem within 48 hours. Capture timeline, root cause, contributing factors, action items.
 
-**Step 8 â€” CLOSE:** Update status page. Log all actions. File action item tickets. Update runbooks.
+**Step 8 — CLOSE:** Update status page. Log all actions. File action item tickets. Update runbooks.
 
-### P2.2 â€” Severity Classification
+### P2.2 — Severity Classification
 
-#### P2.2.1 â€” Severity Definitions
+#### P2.2.1 — Severity Definitions
 
 | Severity | Definition | Response Time | Communication | SLA Impact |
 |---|---|---|---|---|
@@ -95,38 +93,38 @@ Every incident follows this sequence. Do not skip steps.
 | SEV-3 | Minor feature broken, single user or small cohort, cosmetic issue | <4 hours | Team lead | No SLA impact |
 | SEV-4 | Question, bug report, non-urgent, internal tooling issue | <24 hours | Team backlog | No SLA impact |
 
-#### P2.2.2 â€” Declaration Rules
+#### P2.2.2 — Declaration Rules
 
 - When in doubt, classify higher. Can downgrade later. Upgrading mid-incident erodes trust.
 - SEV-1 and SEV-2 require an incident commander. SEV-3 and SEV-4 are handled by on-call.
 - SEV-1 requires a postmortem. SEV-2 requires a postmortem if duration > 1 hour or systemic risk.
 - SEV-3 incidents may get a lightweight incident report if they reveal interesting failure modes.
 
-#### P2.2.3 â€” Severity Classification Decision Tree
+#### P2.2.3 — Severity Classification Decision Tree
 
 ```
-Is the service completely unavailable for all users?                     â†’ SEV-1
-Is data being corrupted or lost?                                         â†’ SEV-1
-Is there a security breach or credential exposure?                       â†’ SEV-1
-Is revenue being impacted? Are we losing >1% of revenue?                 â†’ SEV-1
-Are >5% of users impacted?                                               â†’ SEV-2
-Is a major feature broken?                                               â†’ SEV-2
-Is a minor feature broken or cosmetic?                                   â†’ SEV-3
-Otherwise                                                                â†’ SEV-4
+Is the service completely unavailable for all users?                     → SEV-1
+Is data being corrupted or lost?                                         → SEV-1
+Is there a security breach or credential exposure?                       → SEV-1
+Is revenue being impacted? Are we losing >1% of revenue?                 → SEV-1
+Are >5% of users impacted?                                               → SEV-2
+Is a major feature broken?                                               → SEV-2
+Is a minor feature broken or cosmetic?                                   → SEV-3
+Otherwise                                                                → SEV-4
 ```
 
-#### P2.2.4 â€” Severity Upgrade Signals
+#### P2.2.4 — Severity Upgrade Signals
 
 ```
-Is blast radius expanding despite containment?                           â†’ Upgrade one level
-Are we approaching SLA breach window?                                    â†’ Upgrade to SEV-2+
-Has incident duration exceeded 2 hours?                                  â†’ Consider upgrade
-Has executive attention been requested?                                  â†’ Upgrade to SEV-1
-Has a second service/team become involved?                               â†’ Consider upgrade
-Has customer-facing communication become necessary?                      â†’ Upgrade to SEV-2+
+Is blast radius expanding despite containment?                           → Upgrade one level
+Are we approaching SLA breach window?                                    → Upgrade to SEV-2+
+Has incident duration exceeded 2 hours?                                  → Consider upgrade
+Has executive attention been requested?                                  → Upgrade to SEV-1
+Has a second service/team become involved?                               → Consider upgrade
+Has customer-facing communication become necessary?                      → Upgrade to SEV-2+
 ```
 
-#### P2.2.5 â€” Severity by Service Tier
+#### P2.2.5 — Severity by Service Tier
 
 | Tier | Examples | SEV-1 Trigger | SEV-2 Trigger |
 |---|---|---|---|
@@ -135,21 +133,21 @@ Has customer-facing communication become necessary?                      â†�
 | Supporting | Admin panel, reporting | Outage >30 min | Degraded >20% |
 | Experimental | Beta features | Any data loss | >100 users affected |
 
-### P2.3 â€” Blast Radius Assessment
+### P2.3 — Blast Radius Assessment
 
 ```
 USER IMPACT:    none | single | few (<5%) | many (5-20%) | most (>20%) | all
 DATA IMPACT:    none | inconsistent | corrupted | lost
 DURATION:       seconds | minutes | hours | days
 SCOPE:          single-service | multi-service | entire-platform | customer-facing
-PUBLIC VISIBLE: no | yes â€” users see errors | yes â€” media/customers notified
+PUBLIC VISIBLE: no | yes — users see errors | yes — media/customers notified
 REVENUE IMPACT: none | minimal (<1%) | significant (1-10%) | critical (>10%)
 
 Automatic SEV-1 if: data impact >= corrupted, scope >= entire-platform,
 public visible = yes, or revenue impact >= significant.
 ```
 
-#### P2.3.1 â€” Blast Radius Expansion Monitoring
+#### P2.3.1 — Blast Radius Expansion Monitoring
 
 **Expansion indicators:** Error rate increasing minute-over-minute, additional services degrading, new user segments affected, latency creeping up, dependent services failing, queue depths growing.
 
@@ -161,21 +159,21 @@ public visible = yes, or revenue impact >= significant.
 - Fast: expands over 2-5 minutes (cascading cache failure)
 - Immediate: expands in under 1 minute (credential leak, config push)
 
-Faster expansion velocity requires more aggressive containment. A cascading failure at immediate velocity may require full platform restart even if it causes brief total outage â€” controlled stop > uncontrolled crash.
+Faster expansion velocity requires more aggressive containment. A cascading failure at immediate velocity may require full platform restart even if it causes brief total outage — controlled stop > uncontrolled crash.
 
-### P2.4 â€” Crisis Reasoning Under Pressure
+### P2.4 — Crisis Reasoning Under Pressure
 
-#### P2.4.1 â€” The OODA Loop
+#### P2.4.1 — The OODA Loop
 
 The OODA loop (Observe-Orient-Decide-Act) is the foundational framework for decision-making under pressure.
 
 ```
-OBSERVE â†’ ORIENT â†’ DECIDE â†’ ACT (loop repeats)
+OBSERVE → ORIENT → DECIDE → ACT (loop repeats)
 ```
 
-**Observe:** Collect raw data from monitoring, alerts, user reports, team members. What is happening right now? Observation is neutral â€” no interpretation yet.
+**Observe:** Collect raw data from monitoring, alerts, user reports, team members. What is happening right now? Observation is neutral — no interpretation yet.
 
-**Orient:** Interpret observations against your mental model of the system. What does this data mean? Which services are affected? Orientation is the most critical step â€” experience, training, and system knowledge combine to form situational awareness.
+**Orient:** Interpret observations against your mental model of the system. What does this data mean? Which services are affected? Orientation is the most critical step — experience, training, and system knowledge combine to form situational awareness.
 
 **Decide:** Choose a course of action. Every decision should have a clear rationale and explicit success criteria.
 
@@ -183,7 +181,7 @@ OBSERVE â†’ ORIENT â†’ DECIDE â†’ ACT (loop repeats)
 
 **Loop back:** After acting, observe results. Did it work? Is blast radius shrinking? If not, re-orient and decide again.
 
-#### P2.4.2 â€” OODA Loop in Practice
+#### P2.4.2 — OODA Loop in Practice
 
 ```
 Situation: Alert fires for p99 latency > 2000ms
@@ -200,7 +198,7 @@ DECIDE:
   Backup: if rollback fails, escalate to SEV-1, pull platform team.
 
 ACT:
-  Initiate rollback (v2.14.3 â†’ v2.14.2). Notify SMEs. Log timestamp.
+  Initiate rollback (v2.14.3 → v2.14.2). Notify SMEs. Log timestamp.
 
 OBSERVE:
   3 min post-rollback: latency 1400ms, error rate 4%
@@ -213,7 +211,7 @@ DECIDE:
   Continue monitoring 15 min. Assign SME to identify specific change.
 ```
 
-#### P2.4.3 â€” Cognitive Biases in Incident Response
+#### P2.4.3 — Cognitive Biases in Incident Response
 
 **Anchoring:** Fixating on the first information received. Mitigation: list at least three possible causes before investigating any one.
 
@@ -227,7 +225,7 @@ DECIDE:
 
 **Authority bias:** Deferring to the most senior person's opinion even when incorrect. Mitigation: actively solicit input from all team members, not just senior voices.
 
-#### P2.4.4 â€” Decision Quality Framework
+#### P2.4.4 — Decision Quality Framework
 
 | Decision Type | Time Available | Approach | Example |
 |---|---|---|---|
@@ -238,13 +236,13 @@ DECIDE:
 
 Every significant decision should be recorded with: what was decided, what information was available, who decided, alternatives considered, and the outcome.
 
-#### P2.4.5 â€” Stress Management
+#### P2.4.5 — Stress Management
 
 **During incidents:** Breathe deliberately, stay hydrated, take 2-minute breaks, speak slowly, delegate aggressively, stick to your role, use the framework to reduce cognitive load.
 
 **After incidents:** Debrief immediately, step away from the screen, get sleep before writing the postmortem, talk to someone about the incident.
 
-#### P2.4.6 â€” Situational Awareness Maintenance
+#### P2.4.6 — Situational Awareness Maintenance
 
 Write the timeline log. Summarize current state every 15 minutes. Question assumptions aloud. Ask "what changed?" Draw a system diagram for multi-service incidents. Track who is working on what.
 
@@ -252,32 +250,32 @@ Write the timeline log. Summarize current state every 15 minutes. Question assum
 
 **Recovery:** Pause all investigation for 2 minutes, read the timeline aloud, have each SME summarize their understanding, identify what is known/unknown/assumed.
 
-### P2.5 â€” Command Structure Roles
+### P2.5 — Command Structure Roles
 
-#### P2.5.1 â€” The Incident Command System
+#### P2.5.1 — The Incident Command System
 
 ```
                     INCIDENT COMMANDER
-                          â”‚
-            â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-            â”‚             â”‚             â”‚              â”‚
+                          │
+            ┌─────────────┼─────────────┬──────────────┐
+            │             │             │              │
          SCRIBE         SMEs        COMMS LEAD    EXEC LIAISON
         (logging)   (investigation) (updates)   (exec comms)
 ```
 
-#### P2.5.2 â€” Role Definitions
+#### P2.5.2 — Role Definitions
 
 **Incident Commander:** Overall responsibility. Does not investigate or fix. Makes escalation and resource decisions. Ensures process is followed. Authorizes containment and resolution actions.
 
 **Scribe:** Maintains real-time timeline log. Records every action, observation, decision with timestamp. Tracks who is working on what. Manages incident document. Ideal training role for apprentice ICs.
 
-**Subject Matter Experts (SMEs):** Investigate the technical issue. Report findings to the IC (not to each other â€” IC coordinates). Propose and execute containment and resolution actions.
+**Subject Matter Experts (SMEs):** Investigate the technical issue. Report findings to the IC (not to each other — IC coordinates). Propose and execute containment and resolution actions.
 
 **Communications Lead:** Drafts and sends internal updates. Updates public status page. Coordinates with support. Manages stakeholder questions. Frees IC from communication overhead.
 
 **Executive Liaison:** Single point of contact for executive leadership. Provides high-level status. Shields IC from executive interruptions. Translates technical details to business impact.
 
-#### P2.5.3 â€” Role Assignments by Severity
+#### P2.5.3 — Role Assignments by Severity
 
 | Role | SEV-1 | SEV-2 | SEV-3 |
 |---|---|---|---|
@@ -288,7 +286,7 @@ Write the timeline log. Summarize current state every 15 minutes. Question assum
 | Exec Liaison | EM/Director | Optional | Not needed |
 | War Room | Physical/virtual room | Virtual channel | Slack thread |
 
-#### P2.5.4 â€” Role Switching Protocol
+#### P2.5.4 — Role Switching Protocol
 
 1. New IC announced by name in incident channel
 2. New IC reads timeline log, gets verbal summary from outgoing IC
@@ -296,38 +294,38 @@ Write the timeline log. Summarize current state every 15 minutes. Question assum
 4. All stakeholders notified of handoff
 5. Timeline updated with handoff timestamp
 
-Escalating IC duties is not failure â€” it is responsible leadership.
+Escalating IC duties is not failure — it is responsible leadership.
 
-### P2.6 â€” Communication Trees
+### P2.6 — Communication Trees
 
-#### P2.6.1 â€” Primary Communication Tree
+#### P2.6.1 — Primary Communication Tree
 
 ```
-INCIDENT DECLARED â†’ COMMANDER ASSIGNED
-  â”œâ”€â”€ SCRIBE: "Start timeline log. Incident ID: [ID]. Severity: [SEV]."
-  â”œâ”€â”€ SMEs: "Severity: [SEV]. Here is what we know. Investigate [area].
-  â”‚         Report back every 15 minutes."
-  â”œâ”€â”€ COMMS LEAD: "SEV-[N]. Blast radius: [X]. Prepare internal/external
-  â”‚               updates using standard template."
-  â”œâ”€â”€ ENGINEERING MANAGER: "SEV-[N]. Blast radius: [X]. Containment in
-  â”‚                        progress. Next update in 30 min."
-  â”œâ”€â”€ EXEC LIAISON: "SEV-[N]. Blast radius: [X]. Status: [Y]. Next in 30."
-  â”œâ”€â”€ SUPPORT: "Incident declared. Prepare for customer inquiries.
-  â”‚            Template: [link]. Route queries to comms lead."
-  â””â”€â”€ STATUS PAGE: "Investigating [symptom]. Next update in 30 min."
+INCIDENT DECLARED → COMMANDER ASSIGNED
+  ├── SCRIBE: "Start timeline log. Incident ID: [ID]. Severity: [SEV]."
+  ├── SMEs: "Severity: [SEV]. Here is what we know. Investigate [area].
+  │         Report back every 15 minutes."
+  ├── COMMS LEAD: "SEV-[N]. Blast radius: [X]. Prepare internal/external
+  │               updates using standard template."
+  ├── ENGINEERING MANAGER: "SEV-[N]. Blast radius: [X]. Containment in
+  │                        progress. Next update in 30 min."
+  ├── EXEC LIAISON: "SEV-[N]. Blast radius: [X]. Status: [Y]. Next in 30."
+  ├── SUPPORT: "Incident declared. Prepare for customer inquiries.
+  │            Template: [link]. Route queries to comms lead."
+  └── STATUS PAGE: "Investigating [symptom]. Next update in 30 min."
 ```
 
-#### P2.6.2 â€” Escalation Path
+#### P2.6.2 — Escalation Path
 
 | Level | Trigger | Action |
 |---|---|---|
-| L1 â€” Technical | SME expertise exceeded | Engage secondary SMEs or platform team |
-| L2 â€” Resource | Need more engineers | EM authorizes pulling from other projects |
-| L3 â€” Severity | Incident should be upgraded | EM concurs, new protocols activated |
-| L4 â€” Executive | Cross-org coordination needed | Director/VP activated as exec liaison |
-| L5 â€” Crisis | Company-wide crisis | C-level involved, PR, legal |
+| L1 — Technical | SME expertise exceeded | Engage secondary SMEs or platform team |
+| L2 — Resource | Need more engineers | EM authorizes pulling from other projects |
+| L3 — Severity | Incident should be upgraded | EM concurs, new protocols activated |
+| L4 — Executive | Cross-org coordination needed | Director/VP activated as exec liaison |
+| L5 — Crisis | Company-wide crisis | C-level involved, PR, legal |
 
-#### P2.6.3 â€” Notification Timing Matrix
+#### P2.6.3 — Notification Timing Matrix
 
 | Role | SEV-1 | SEV-2 |
 |---|---|---|
@@ -340,11 +338,11 @@ INCIDENT DECLARED â†’ COMMANDER ASSIGNED
 | Status Page | 10 min | 15 min |
 | Legal/PR | If security/data loss | No |
 
-#### P2.6.4 â€” Communication Templates
+#### P2.6.4 — Communication Templates
 
 **Initial declaration:**
 ```
-INCIDENT DECLARED â€” INC-[YYYYMMDD]-[NNN]
+INCIDENT DECLARED — INC-[YYYYMMDD]-[NNN]
 TIME: [UTC]  SEVERITY: SEV-[N]  STATUS: INVESTIGATING
 SERVICE: [affected]  IMPACT: [user impact]
 COMMANDER: [name]  SMEs: [names]
@@ -353,7 +351,7 @@ NEXT UPDATE: [time]
 
 **Status update:**
 ```
-STATUS UPDATE [N] â€” TIME: [UTC]
+STATUS UPDATE [N] — TIME: [UTC]
 STATUS: [INVESTIGATING | CONTAINING | RESOLVING | MONITORING | RESOLVED]
 IMPACT: [updated user impact]  ACTIONS: [what was done]
 NEXT: [next steps]  CONTAINED? [yes/no]
@@ -362,7 +360,7 @@ NEXT UPDATE: [time]
 
 **Incident resolved:**
 ```
-INCIDENT RESOLVED â€” TIME: [UTC]  DURATION: [total]
+INCIDENT RESOLVED — TIME: [UTC]  DURATION: [total]
 SEVERITY: SEV-[N]  RESOLUTION: [what fixed it]
 VERIFIED: [how]  MONITORING: [period]
 POSTMORTEM: [scheduled date/time]
@@ -370,22 +368,22 @@ POSTMORTEM: [scheduled date/time]
 
 **Status page update:**
 ```
-[Time] â€” We are investigating reports of [symptom]. Next update in 30 min.
-[Time] â€” Cause identified, working on fix. Users may still experience [impact].
-[Time] â€” Fix applied, monitoring results.
-[Time] â€” Issue resolved. Full report within 48 hours.
+[Time] — We are investigating reports of [symptom]. Next update in 30 min.
+[Time] — Cause identified, working on fix. Users may still experience [impact].
+[Time] — Fix applied, monitoring results.
+[Time] — Issue resolved. Full report within 48 hours.
 ```
 
-#### P2.6.5 â€” Communication Principles
+#### P2.6.5 — Communication Principles
 
 **Do:** Be honest, be timely ("no new information" is valid), be structured, be targeted, be brief.
 
 **Do not:** Blame individuals, share unverified info, disclose vulnerabilities, speculate about data exposure, promise resolution times, use vague language.
 
 
-## P4 â€” CONTAINMENT STRATEGIES DEEP DIVE
+## P4 — CONTAINMENT STRATEGIES DEEP DIVE
 
-### P4.1 â€” Containment Decision Framework
+### P4.1 — Containment Decision Framework
 
 ```
 CONTAINMENT SPEED: How quickly can we stop damage? (seconds / minutes / tens of minutes)
@@ -398,7 +396,7 @@ Choose the best combination of speed, completeness, low side effects,
 reversibility, and evidence preservation.
 ```
 
-### P4.2 â€” Strategy Selection Matrix
+### P4.2 — Strategy Selection Matrix
 
 | Situation | Best Strategy | Second Option | Avoid |
 |---|---|---|---|
@@ -412,7 +410,7 @@ reversibility, and evidence preservation.
 | Security breach | Kill switch | Quarantine | Traffic shifting |
 | Cascading failure | Kill switch | Circuit breaker | Rate limiting |
 
-### P4.3 â€” Containment Action Plan Template
+### P4.3 — Containment Action Plan Template
 
 ```
 CONTAINMENT ACTION #[N]
@@ -425,7 +423,7 @@ OUTCOME: [success | partial | failed]
 NOTES: [observations]
 ```
 
-### P4.4 â€” Containment Failure Modes
+### P4.4 — Containment Failure Modes
 
 **Rollback failures:** Database migrations cannot roll back cleanly, dependencies changed, rollback script broken, automated rollback disables monitoring.
 
@@ -436,24 +434,24 @@ NOTES: [observations]
 **Rate limiting failures:** Limits too high (no effect), limits too low (blocking legitimate users), implementation has performance impact, distributed traffic bypasses per-IP limits.
 
 
-## P6 â€” ON-CALL BEST PRACTICES
+## P6 — ON-CALL BEST PRACTICES
 
-### P6.1 â€” Schedule Design
+### P6.1 — Schedule Design
 
 | Model | Description | Pros | Cons |
 |---|---|---|---|
 | 24/7 primary | Single person, 1 week | Clear ownership | Fatigue, burnout |
 | Follow-the-sun | Regional teams cover business hours | Fresh engineers, sleep-friendly | Handoff overhead |
 | Primary + secondary | Main + backup | Buffer for complex incidents | Secondary underutilized |
-| Tiered escalation | Appâ†’platformâ†’infra | Right person gets alert | Complex setup |
+| Tiered escalation | App→platform→infra | Right person gets alert | Complex setup |
 
 **Recommendation:** Primary + secondary, weekly rotations, minimum 4 people per rotation so no one is on call more than 1 week in 4.
 
 **Parameters:** Rotation 7 days, handoff at 10 AM local, 30-minute handoff duration, same rotation covers weekdays and weekends. Track on-call hours per person per quarter. Equal distribution of holiday coverage.
 
-### P6.2 â€” Escalation Policies
+### P6.2 — Escalation Policies
 
-#### P6.2.1 â€” Escalation Tiers
+#### P6.2.1 — Escalation Tiers
 
 | Tier | Role | Response |
 |---|---|---|
@@ -463,22 +461,22 @@ NOTES: [observations]
 | 4 | Engineering Management | Notified for SEV-1, provides resources |
 | 5 | Full Incident Response Team | War room activation |
 
-#### P6.2.2 â€” Escalation Timers
+#### P6.2.2 — Escalation Timers
 
 ```
 Primary does not acknowledge:
-  2 min â†’ Alert secondary
-  5 min â†’ Alert primary's manager
-  10 min â†’ Alert all on-call
-  15 min â†’ Page entire engineering team
+  2 min → Alert secondary
+  5 min → Alert primary's manager
+  10 min → Alert all on-call
+  15 min → Page entire engineering team
 
 Primary acknowledges but no progress:
-  15 min â†’ Alert secondary for assistance
-  30 min â†’ Alert primary's manager
-  60 min â†’ Initiate incident command if not active
+  15 min → Alert secondary for assistance
+  30 min → Alert primary's manager
+  60 min → Initiate incident command if not active
 ```
 
-### P6.3 â€” On-Call Handoff Protocol
+### P6.3 — On-Call Handoff Protocol
 
 **Outgoing prepares (30 min before):** Review active alerts/incidents, document ongoing investigations, list known issues, identify scheduled changes, update handoff document.
 
@@ -486,8 +484,8 @@ Primary acknowledges but no progress:
 
 **Handoff document:**
 ```
-ON-CALL HANDOFF â€” [DATE]
-OUTGOING: [name]  INCOMING: [name]  PERIOD: [startâ†’end]
+ON-CALL HANDOFF — [DATE]
+OUTGOING: [name]  INCOMING: [name]  PERIOD: [start→end]
 ACTIVE INCIDENTS: [ID, status, next action]
 ONGOING INVESTIGATIONS: [issue, state, next step]
 KNOWN ISSUES: [issue, workaround, ticket]
@@ -498,7 +496,7 @@ ADVICE: [top tip for incoming]
 
 **Emergency handoff:** Contact secondary immediately. Secondary assumes primary. Manager arranges coverage extension. No penalties for emergency handoffs.
 
-### P6.4 â€” Burnout Prevention
+### P6.4 — Burnout Prevention
 
 **Individual signs:** Dread of on-call phone, anxiety, sleep difficulty, compulsive checking, declining work quality, cynicism.
 
@@ -511,13 +509,13 @@ ADVICE: [top tip for incoming]
 **Cultural prevention:** Shared responsibility, not burden. Rotate undesirable shifts equitably. Celebrate on-call successes. Managers carry on-call shifts too. On-call experience valued in performance reviews.
 
 
-## P8 â€” POST-INCIDENT COMMUNICATION
+## P8 — POST-INCIDENT COMMUNICATION
 
-### P8.1 â€” Internal Communication
+### P8.1 — Internal Communication
 
 **Immediate summary (1 hour post-incident):**
 ```
-POST-INCIDENT SUMMARY â€” INC-[YYYYMMDD]-[NNN]
+POST-INCIDENT SUMMARY — INC-[YYYYMMDD]-[NNN]
 SEVERITY: SEV-[N]  DURATION: [time]
 SUMMARY: [what happened, impact, resolution]
 POSTMORTEM: Scheduled [date/time]
@@ -525,7 +523,7 @@ POSTMORTEM: Scheduled [date/time]
 
 **Postmortem distribution (7 days for SEV-1, 14 for SEV-2):**
 ```
-POSTMORTEM â€” INC-[ID]
+POSTMORTEM — INC-[ID]
 [Full postmortem]
 KEY TAKEAWAYS:
   Root cause: [1 sentence]  Why: [1-2 sentences]
@@ -534,51 +532,51 @@ KEY TAKEAWAYS:
 
 **All-hands (SEV-1 with significant impact):**
 Subject: Incident Report: [title]
-What happened â†’ Why it happened â†’ How resolved â†’ Prevention actions.
+What happened → Why it happened → How resolved → Prevention actions.
 
-### P8.2 â€” External Communication
+### P8.2 — External Communication
 
 **Status page resolution:**
 ```
-[Service] â€” Resolved
-[Date] â€” Issue affecting [service] resolved. All systems normal.
+[Service] — Resolved
+[Date] — Issue affecting [service] resolved. All systems normal.
 Full report within 48 hours.
-Duration: [startâ†’end]  Affected: [services]  Impact: [description]
+Duration: [start→end]  Affected: [services]  Impact: [description]
 ```
 
 **Customer-facing postmortem (for significant incidents):**
-Summary â†’ Timeline (plain language) â†’ What went wrong â†’ Prevention actions.
+Summary → Timeline (plain language) → What went wrong → Prevention actions.
 
 **Media/PR (for high-profile incidents):**
 Do not speculate. Do not blame. Be transparent. Show action. Timeliness matters. Single designated spokesperson.
 
-### P8.3 â€” Communication Best Practices
+### P8.3 — Communication Best Practices
 
 **Do:** Communicate early, acknowledge uncertainty, use clear language, provide regular updates, admit mistakes, focus on user impact, end with clear resolution.
 
 **Do not:** Wait for all answers, present guesses as facts, use jargon, go silent, cover up, use vague language.
 
 
-## P10 â€” INCIDENT RETROSPECTIVES AND PROCESS IMPROVEMENT
+## P10 — INCIDENT RETROSPECTIVES AND PROCESS IMPROVEMENT
 
-### P10.1 â€” Beyond Individual Postmortems
+### P10.1 — Beyond Individual Postmortems
 
 Retrospectives examine patterns across multiple incidents. Hold them quarterly, after large incidents, or when incident volume spikes.
 
-### P10.2 â€” Retrospective Structure
+### P10.2 — Retrospective Structure
 
 ```
-RETROSPECTIVE â€” [PERIOD]
+RETROSPECTIVE — [PERIOD]
 INCIDENTS: Total [N]  SEV-1 [N]  SEV-2 [N]  SEV-3 [N]
 MTTD: [time] (trend)  MTTR: [time] (trend)  MTBF: [time] (trend)
-TOP CAUSES: 1. [cause â€” N] 2. [cause â€” N] 3. [cause â€” N]
+TOP CAUSES: 1. [cause — N] 2. [cause — N] 3. [cause — N]
 WHAT WENT WELL: [examples]
 WHAT NEEDS IMPROVEMENT: [process/tooling/knowledge gaps]
 ACTION ITEMS: [actions with owners and dates]
 NEXT PERIOD GOALS: [e.g., reduce SEV-1 MTTR by 20%]
 ```
 
-### P10.3 â€” Process Improvement Areas
+### P10.3 — Process Improvement Areas
 
 **Detection:** Are we detecting fast enough? Are there undetected incident types? Are false positives wasting time?
 
@@ -590,7 +588,7 @@ NEXT PERIOD GOALS: [e.g., reduce SEV-1 MTTR by 20%]
 
 **Tooling:** Is incident management platform effective? Monitoring and alerting adequate? Collaboration tooling working?
 
-### P10.4 â€” Incident Response Maturity Model
+### P10.4 — Incident Response Maturity Model
 
 | Level | Name | Characteristics |
 |---|---|---|
@@ -603,7 +601,7 @@ NEXT PERIOD GOALS: [e.g., reduce SEV-1 MTTR by 20%]
 
 Target: Level 3 for most organizations. Level 4-5 for critical infrastructure.
 
-### P10.5 â€” Key Improvement Metrics
+### P10.5 — Key Improvement Metrics
 
 | Metric | How to Improve |
 |---|---|
@@ -616,7 +614,7 @@ Target: Level 3 for most organizations. Level 4-5 for critical infrastructure.
 | Alert noise | Tune thresholds, silence non-actionable alerts |
 
 
-## P12 â€” WORKED EXAMPLES
+## P12 — WORKED EXAMPLES
 
 ### E1: Database Connection Pool Exhaustion
 
@@ -624,9 +622,9 @@ Target: Level 3 for most organizations. Level 4-5 for critical infrastructure.
 
 **Triage:** Blast radius: all API requests touching user service. 23% of users affected. Severity: SEV-2.
 
-**Containment:** SME reports DB pool maxed (100/100). Blast radius growing (23%â†’31% in 3 min). Rollback at 14:27. Connections dropped to 45/100. Latency returned to 200ms.
+**Containment:** SME reports DB pool maxed (100/100). Blast radius growing (23%→31% in 3 min). Rollback at 14:27. Connections dropped to 45/100. Latency returned to 200ms.
 
-**Root cause:** Deploy added a connection leak â€” new code opened connections without closing them.
+**Root cause:** Deploy added a connection leak — new code opened connections without closing them.
 
 **Postmortem:** (1) Connection pool monitoring alert. (2) Connection leak detection in CI. (3) Runbook for "DB connection pool exhaustion." (4) Connection count metric on deploy dashboard.
 
@@ -658,7 +656,7 @@ Target: Level 3 for most organizations. Level 4-5 for critical infrastructure.
 16:48  Cache cluster restart initiated.
 16:50  Read traffic redirected to DB replicas.
 16:51  Cache cluster back up. Populating.
-16:58  Cache hit ratio 70%, climbing. 17:05 â†’ 92%. Normal.
+16:58  Cache hit ratio 70%, climbing. 17:05 → 92%. Normal.
 17:20  Incident closed.
 ```
 
@@ -726,7 +724,7 @@ Target: Level 3 for most organizations. Level 4-5 for critical infrastructure.
 
 ---
 
-## P13 â€” ANTI-PATTERNS
+## P13 — ANTI-PATTERNS
 
 | Anti-Pattern | Problem | Correct |
 |---|---|---|
@@ -734,7 +732,7 @@ Target: Level 3 for most organizations. Level 4-5 for critical infrastructure.
 | Analysis paralysis | Discussing root cause during containment | Contain first. Analyze after. |
 | Severity optimism | Declaring SEV-3 for what becomes SEV-1 | Declare higher, downgrade later. |
 | Communication silence | 45+ min without update | Update every 15 min. "No news" is valid. |
-| Blame in timeline | "Bob broke it" | Timeline is neutral â€” what happened, not who. |
+| Blame in timeline | "Bob broke it" | Timeline is neutral — what happened, not who. |
 | Premature closure | Resolving before monitoring period | Minimum 15-min monitoring window. |
 | Heroic single-debugger | One person fixing everything | Pull in SMEs early. Delegate. |
 | Fix without containment | Code fix while blast radius grows | Contain first. Then fix. |
@@ -753,9 +751,9 @@ Target: Level 3 for most organizations. Level 4-5 for critical infrastructure.
 
 ---
 
-## P14 â€” QUALITY GATES
+## P14 — QUALITY GATES
 
-### P14.1 â€” Tier 1 â€” Hard Gates
+### P14.1 — Tier 1 — Hard Gates
 
 - [X] Severity declared and documented
 - [X] Blast radius assessed (user, data, duration, scope)
@@ -768,7 +766,7 @@ Target: Level 3 for most organizations. Level 4-5 for critical infrastructure.
 - [X] Postmortem scheduled within 48 hours
 - [X] Action items have owners and due dates
 
-### P14.2 â€” Tier 2 â€” Standard Gates
+### P14.2 — Tier 2 — Standard Gates
 
 - [X] Root cause identified (not just symptom)
 - [X] Contributing factors listed
@@ -781,7 +779,7 @@ Target: Level 3 for most organizations. Level 4-5 for critical infrastructure.
 - [X] Stakeholder communication completed
 - [X] Incident cost estimated
 
-### P14.3 â€” Tier 3 â€” Excellence Gates
+### P14.3 — Tier 3 — Excellence Gates
 
 - [X] Cross-team postmortem review conducted
 - [X] Systemic prevention action identified
@@ -791,7 +789,7 @@ Target: Level 3 for most organizations. Level 4-5 for critical infrastructure.
 - [X] Monitoring improvements deployed before incident close
 - [X] Customer-facing postmortem published (if public)
 
-### P14.4 â€” Self-Audit
+### P14.4 — Self-Audit
 
 ```
 Severity declared?               yes
@@ -808,7 +806,7 @@ Action items assigned?           yes
 Runbook updated?                 yes
 ```
 
-### P14.5 â€” Incident Response Readiness Checklist (Quarterly)
+### P14.5 — Incident Response Readiness Checklist (Quarterly)
 
 **People:** 3+ qualified ICs, on-call coverage adequate, all team members trained, IC knowledge distributed.
 
@@ -819,7 +817,7 @@ Runbook updated?                 yes
 **Runbooks:** P0 runbooks cover all critical services, P1 runbooks cover major incident types, runbooks reviewed within the last quarter, accessible in under 30 seconds.
 
 
-## P16 â€” COMMAND STRUCTURE ROLES (REFERENCE)
+## P16 — COMMAND STRUCTURE ROLES (REFERENCE)
 
 ### Role Card: Incident Commander
 
@@ -849,7 +847,7 @@ Next update in 15 min."
 
 **Responsibility:** Investigate technical issue, identify root cause, propose/execute fixes.
 
-**Constraints:** Investigate what IC assigns. Report to IC, not other SMEs. Do not make decisions â€” propose to IC.
+**Constraints:** Investigate what IC assigns. Report to IC, not other SMEs. Do not make decisions — propose to IC.
 
 **Reporting format:**
 ```
@@ -876,7 +874,7 @@ NEXT STEP: [what you'll do next] NEEDS HELP: [what you need]
 
 ---
 
-## P17 â€” GLOSSARY
+## P17 — GLOSSARY
 
 | Term | Definition |
 |---|---|
@@ -888,7 +886,7 @@ NEXT STEP: [what you'll do next] NEEDS HELP: [what you need]
 | Escalation | Involving additional people/teams to handle an incident |
 | Feature flag | Mechanism to enable/disable functionality without deploying |
 | Handoff | Transfer of command or responsibilities between people |
-| IC | Incident Commander â€” coordinates response, does not fix |
+| IC | Incident Commander — coordinates response, does not fix |
 | Kill switch | Global disable of specific functionality |
 | MTTD | Mean Time to Detect (introduction to detection) |
 | MTTR | Mean Time to Resolve (detection to resolution) |
@@ -899,9 +897,9 @@ NEXT STEP: [what you'll do next] NEEDS HELP: [what you need]
 | Rollback | Revert to previous known-good version |
 | Runbook | Documented procedure for a specific incident type |
 | Scribe | Person documenting the incident timeline |
-| SLA | Service Level Agreement â€” contractual commitment |
-| SLI | Service Level Indicator â€” quantitative measure |
-| SLO | Service Level Objective â€” target for an SLI |
+| SLA | Service Level Agreement — contractual commitment |
+| SLI | Service Level Indicator — quantitative measure |
+| SLO | Service Level Objective — target for an SLI |
 | SME | Subject Matter Expert |
 | Tabletop exercise | Discussion-based simulation of an incident scenario |
 | Timeline log | Chronological record of events during an incident |

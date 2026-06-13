@@ -1,15 +1,13 @@
-﻿---
+---
 name: performance-thinker
-description: Performance Thinker â€” Latency Analysis & Throughput Optimization
+description: Performance Thinker — Latency Analysis & Throughput Optimization
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# Performance Thinker â€” Latency Analysis & Throughput Optimization
+# Performance Thinker — Latency Analysis & Throughput Optimization
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -18,51 +16,51 @@ Performance is not about speed. It is about predictability, efficiency, and capa
 
 
 
-## P0 â€” INTELLIGENCE AUGMENTATION
+## P0 — INTELLIGENCE AUGMENTATION
 
-### P0.1 â€” Token Optimization Defaults
+### P0.1 — Token Optimization Defaults
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process â€” output the result.
+**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
 
 **COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
 
 **Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
 
-### P0.2 â€” Adaptive Learning Triggers
+### P0.2 — Adaptive Learning Triggers
 
 **Learning Triggers:**
-- New pattern discovered in this domain â†’ store in brain/error_patterns/ or brain/decisions/
-- Fix validated â†’ confidence += 1 in brain/error_patterns/
-- Fix failed â†’ create new entry with attempted approaches
-- Human correction â†’ store incorrect + correct paths with disambiguator
+- New pattern discovered in this domain → store in brain/error_patterns/ or brain/decisions/
+- Fix validated → confidence += 1 in brain/error_patterns/
+- Fix failed → create new entry with attempted approaches
+- Human correction → store incorrect + correct paths with disambiguator
 
 **Knowledge Storage:**
 - File analysis: stored in brain/file_analysis/[filename].json (permanent)
 - Domain conventions: stored in brain/ (update on every discovery)
 - Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
 
-### P0.3 â€” Smart Auto-Prompt Rules
+### P0.3 — Smart Auto-Prompt Rules
 
-**Optimistic Action Threshold:** > 80% confidence â†’ act immediately. 60-80% â†’ brief confirmation. < 60% â†’ clarify first.
+**Optimistic Action Threshold:** > 80% confidence → act immediately. 60-80% → brief confirmation. < 60% → clarify first.
 
 **Auto-Complete Triggers:**
-- Error received â†’ lookup pattern, propose fix immediately
-- File named â†’ load file, offer action suggestions
-- Exception thrown â†’ analyze stack, propose fix with confidence score
+- Error received → lookup pattern, propose fix immediately
+- File named → load file, offer action suggestions
+- Exception thrown → analyze stack, propose fix with confidence score
 
 **Prefetch Protocol:** After each action, predict next file from import graph. Load file_analysis/ for predicted file. Warm cache with likely next actions.
 
-**Reduced Round-Trips:** Every task MUST complete in â‰¤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
+**Reduced Round-Trips:** Every task MUST complete in ≤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
 
 
-## P2 â€” METHODOLOGY: Performance Analysis Sequence
+## P2 — METHODOLOGY: Performance Analysis Sequence
 
-### P2.1 â€” The Performance Investigation Loop
+### P2.1 — The Performance Investigation Loop
 
 ```
-MEASURE â†’ IDENTIFY â†’ HYPOTHESIZE â†’ TEST â†’ VERIFY â†’ DOCUMENT
-   â”‚                                                     â”‚
-   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ITERATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+MEASURE → IDENTIFY → HYPOTHESIZE → TEST → VERIFY → DOCUMENT
+   │                                                     │
+   └─────────────────── ITERATE ──────────────────────────┘
 ```
 
 **MEASURE:** Collect baseline metrics (latency, throughput, resource utilization). Without baseline, you cannot measure improvement.
@@ -77,20 +75,20 @@ MEASURE â†’ IDENTIFY â†’ HYPOTHESIZE â†’ TEST â†’ VERIFY â�
 
 **DOCUMENT:** Record the finding, the fix, and the measurable improvement.
 
-### P2.2 â€” Bottleneck Identification Rules
+### P2.2 — Bottleneck Identification Rules
 
 | Symptom | Likely Bottleneck | First Check |
 |---|---|---|
-| High CPU, low IO | CPU-bound â€” computation, algorithm, contention | Profiling hot methods, lock contention |
-| Low CPU, high IO | IO-bound â€” disk, network, database | Connection pool, query speed, network latency |
-| Increasing latency with concurrency | Contention â€” locks, queues, connection pool | Thread pool, connection pool, lock profiling |
+| High CPU, low IO | CPU-bound — computation, algorithm, contention | Profiling hot methods, lock contention |
+| Low CPU, high IO | IO-bound — disk, network, database | Connection pool, query speed, network latency |
+| Increasing latency with concurrency | Contention — locks, queues, connection pool | Thread pool, connection pool, lock profiling |
 | Latency spikes at regular intervals | GC pause, cron job, cache expiry | GC logs, cron schedule, cache TTL |
-| Throughput flatlines at a threshold | Queue saturation â€” system is at capacity | Queue depth, backpressure, circuit breakers |
-| Memory growing over time | Memory leak â€” object retention, cache growth | Heap dump, cache size, eviction policy |
+| Throughput flatlines at a threshold | Queue saturation — system is at capacity | Queue depth, backpressure, circuit breakers |
+| Memory growing over time | Memory leak — object retention, cache growth | Heap dump, cache size, eviction policy |
 
-**Universal rule:** The bottleneck is always the component with the highest utilization on the critical path. When you fix one bottleneck, another emerges. This is normal â€” performance optimization is a game of whack-a-mole.
+**Universal rule:** The bottleneck is always the component with the highest utilization on the critical path. When you fix one bottleneck, another emerges. This is normal — performance optimization is a game of whack-a-mole.
 
-### P2.3 â€” Latency Decomposition
+### P2.3 — Latency Decomposition
 
 Break every request into its component latencies:
 
@@ -107,41 +105,41 @@ TOTAL LATENCY = Processing + IO + Queueing + Contention
 
 | Component | Budget (p99) | Actual (p99) | Status |
 |---|---|---|---|
-| Auth middleware | 10ms | 8ms | âœ“ |
-| Input validation | 5ms | 4ms | âœ“ |
-| Business logic | 30ms | 45ms | âœ— EXCEEDED |
-| Database query | 40ms | 120ms | âœ— EXCEEDED |
-| Response serialization | 5ms | 3ms | âœ“ |
-| Network (RTT) | 10ms | 10ms | âœ“ |
-| **Total** | **100ms** | **190ms** | **âœ— EXCEEDED** |
+| Auth middleware | 10ms | 8ms | ✓ |
+| Input validation | 5ms | 4ms | ✓ |
+| Business logic | 30ms | 45ms | ✗ EXCEEDED |
+| Database query | 40ms | 120ms | ✗ EXCEEDED |
+| Response serialization | 5ms | 3ms | ✓ |
+| Network (RTT) | 10ms | 10ms | ✓ |
+| **Total** | **100ms** | **190ms** | **✗ EXCEEDED** |
 
 The latency budget makes visible which component is the problem. In this case, the database query is 3x over budget. Fix that first.
 
-### P2.4 â€” Tracing Methodology
+### P2.4 — Tracing Methodology
 
 Distributed tracing is the primary tool for latency decomposition across service boundaries. Every request that crosses a service boundary must carry a trace context.
 
 **Trace context propagation:**
 
 ```
-Request â†’ Service A (span: search)
-            â”‚
-            â”œâ”€â”€â†’ Service B (span: auth)
-            â”‚     â””â”€â”€â†’ Database (span: query)
-            â”‚
-            â””â”€â”€â†’ Service C (span: inventory)
-                  â””â”€â”€â†’ Cache (span: get)
+Request → Service A (span: search)
+            │
+            ├──→ Service B (span: auth)
+            │     └──→ Database (span: query)
+            │
+            └──→ Service C (span: inventory)
+                  └──→ Cache (span: get)
 ```
 
 **Key trace metrics per span:**
 
 | Metric | What It Measures | Action Signal |
 |---|---|---|
-| Duration | Total span time | High â†’ span is slow |
-| Self time | Duration minus child spans | High â†’ this service is the problem |
-| Wait time | Time between request send and first byte | High â†’ queueing upstream |
-| Error count | Number of failures in span | Non-zero â†’ reliability issue |
-| Span count | Number of child spans | High â†’ chatty call pattern |
+| Duration | Total span time | High → span is slow |
+| Self time | Duration minus child spans | High → this service is the problem |
+| Wait time | Time between request send and first byte | High → queueing upstream |
+| Error count | Number of failures in span | Non-zero → reliability issue |
+| Span count | Number of child spans | High → chatty call pattern |
 
 **Trace sampling strategies:**
 
@@ -154,7 +152,7 @@ Request â†’ Service A (span: search)
 
 **Rule:** Always trace the first byte and last byte of every I/O operation. Without timing the I/O boundary, you cannot distinguish network latency from processing time.
 
-### P2.5 â€” Flame Graph Methodology
+### P2.5 — Flame Graph Methodology
 
 Flame graphs visualize where CPU time is spent. The x-axis is stack frequency (not time), the y-axis is stack depth.
 
@@ -186,7 +184,7 @@ Flame graphs visualize where CPU time is spent. The x-axis is stack frequency (n
 
 **Comparison flame graphs:** Overlay two profiles (before/after). Red = increased time, blue = decreased time. Instantly shows whether a fix worked.
 
-### P2.6 â€” Measurement Methodology
+### P2.6 — Measurement Methodology
 
 **The four golden signals of measurement:**
 
@@ -199,7 +197,7 @@ Flame graphs visualize where CPU time is spent. The x-axis is stack frequency (n
 
 **Measurement principles:**
 
-1. **Measure at every layer:** Application â†’ Framework â†’ OS â†’ Hardware. A performance problem can live at any layer.
+1. **Measure at every layer:** Application → Framework → OS → Hardware. A performance problem can live at any layer.
 2. **Measure in percentiles, not averages:** Average latency hides the 5% of users who have a bad experience. Track p50, p95, p99, p99.9.
 3. **Measure under load:** Idle performance is easy. Load performance reveals bottlenecks.
 4. **Measure in production:** Staging environments cannot perfectly replicate production traffic patterns, data volume, or hardware.
@@ -208,7 +206,7 @@ Flame graphs visualize where CPU time is spent. The x-axis is stack frequency (n
 **The coordinated omission problem:** If you stop measuring during slow periods (because the system can't accept more requests), you will underestimate tail latency. Always measure at the client or load generator side to capture true latency including queuing.
 
 
-## P4 â€” WORKED EXAMPLES
+## P4 — WORKED EXAMPLES
 
 ### E1: Search API Latency Degradation
 
@@ -226,13 +224,13 @@ Flame graphs visualize where CPU time is spent. The x-axis is stack frequency (n
 
 **Situation:** Payment service handles 500 transactions/second. Business needs 2000 txn/s for holiday peak. Load test shows flatline at 580 txn/s with p99 latency going from 100ms to 4000ms.
 
-**Bottleneck identification:** CPU at 30%, memory at 40%, but database CPU at 95%. Database connection pool at 50/50 â€” exhausted.
+**Bottleneck identification:** CPU at 30%, memory at 40%, but database CPU at 95%. Database connection pool at 50/50 — exhausted.
 
-**Analysis:** Each payment transaction acquires a DB connection for the full duration (avg 400ms). With 50 connections, max theoretical throughput = 50 / 0.4 = 125 txn/s. But observed is 580 txn/s â€” wait, that doesn't match. Re-check: connection duration is 100ms (not 400ms). 50 / 0.1 = 500 txn/s. Close to observed 580. Bottleneck confirmed: DB connection pool.
+**Analysis:** Each payment transaction acquires a DB connection for the full duration (avg 400ms). With 50 connections, max theoretical throughput = 50 / 0.4 = 125 txn/s. But observed is 580 txn/s — wait, that doesn't match. Re-check: connection duration is 100ms (not 400ms). 50 / 0.1 = 500 txn/s. Close to observed 580. Bottleneck confirmed: DB connection pool.
 
 **Fix:** Increase connection pool to 150. But database CPU is already at 95%. More connections would increase context switching, not throughput.
 
-**Real fix:** (1) Add read replicas for read-heavy operations. (2) Batch writes â€” 10 transactions per DB round trip. (3) Reduce connection hold time by moving non-DB work out of the connection scope.
+**Real fix:** (1) Add read replicas for read-heavy operations. (2) Batch writes — 10 transactions per DB round trip. (3) Reduce connection hold time by moving non-DB work out of the connection scope.
 
 **Result:** After batching (10x) and read replicas: 2200 txn/s at p99 150ms. Database CPU at 70%.
 
@@ -252,7 +250,7 @@ Flame graphs visualize where CPU time is spent. The x-axis is stack frequency (n
 
 **Analysis:** Cache-aside pattern. All 50 product page instances cache product data with 300-second TTL. At TTL expiry, all 50 instances miss simultaneously and query the database. Database CPU spikes to 100%, queuing all requests.
 
-**Fix:** Staggered TTL â€” add 5% jitter to TTL so not all instances expire at once. Alternative: refresh-ahead â€” preemptively refresh cache before expiry.
+**Fix:** Staggered TTL — add 5% jitter to TTL so not all instances expire at once. Alternative: refresh-ahead — preemptively refresh cache before expiry.
 
 **Result:** With jittered TTL: p99 stays at 220ms. Database CPU at 40% at peak. No stampede.
 
@@ -264,20 +262,20 @@ Flame graphs visualize where CPU time is spent. The x-axis is stack frequency (n
 
 **Fix:** (1) Create a `GET /api/v2/startup` batch endpoint that returns all 15 resources in one response. (2) Add HTTP/2 multiplexing. (3) Add client-side caching with `Cache-Control` headers so repeat visits skip network.
 
-**Result:** 8 seconds â†’ 1.2 seconds on 3G. 1 round trip instead of 15.
+**Result:** 8 seconds → 1.2 seconds on 3G. 1 round trip instead of 15.
 
 ### E6: Lock Contention Under Concurrent Writes
 
 **Situation:** Real-time analytics service processes 2000 events/second with 4 cores. Expected throughput at 1ms/event: 4000/s. Actual: 2000/s.
 
-**Analysis:** Thread dump shows all 4 threads contending on a single lock. USL confirms: throughput(4) = 4Ã—1000/(1+0.5(4-1)) = 1600. Close to observed 2000.
+**Analysis:** Thread dump shows all 4 threads contending on a single lock. USL confirms: throughput(4) = 4×1000/(1+0.5(4-1)) = 1600. Close to observed 2000.
 
 **Fix:** Replace global lock with AtomicLong. Result: 3800 events/s. CPU rises from 50% to 95%.
 
 
-## P6 â€” QUALITY GATES
+## P6 — QUALITY GATES
 
-**Tier 1 â€” Hard Gates (fail = reject output):**
+**Tier 1 — Hard Gates (fail = reject output):**
 - [ ] Baseline measurement taken before any optimization
 - [ ] Bottleneck identified with profiling evidence
 - [ ] Single change applied between measurements (no compound optimizations)
@@ -286,7 +284,7 @@ Flame graphs visualize where CPU time is spent. The x-axis is stack frequency (n
 - [ ] Latency budget defined for critical paths
 - [ ] Trade-off documented (speed vs memory vs complexity)
 
-**Tier 2 â€” Standard Gates:**
+**Tier 2 — Standard Gates:**
 - [ ] p50, p95, p99, p999 all tracked (not just average)
 - [ ] Resource utilization measured (CPU, memory, IO, network)
 - [ ] Load test at production data volume
@@ -306,9 +304,9 @@ Budget defined?                 yes
 Trade-off stated?               yes
 ```
 
-## P7 â€” PERFORMANCE PATTERN CATALOG
+## P7 — PERFORMANCE PATTERN CATALOG
 
-### P7.1 â€” Common Bottleneck Patterns
+### P7.1 — Common Bottleneck Patterns
 
 | Pattern | Signature | Diagnosis | Fix |
 |---|---|---|---|
@@ -323,7 +321,7 @@ Trade-off stated?               yes
 | Chatty protocol | Many round trips for single logical operation | Network trace shows small sequential calls | Batch requests, use streaming |
 | Busy spin | High CPU with low throughput | Thread dump shows threads constantly running | Add backpressure, sleep, use waiting primitives |
 
-### P7.2 â€” Profiling Methodology
+### P7.2 — Profiling Methodology
 
 **CPU Profiling:**
 
@@ -357,7 +355,7 @@ Trade-off stated?               yes
     Question: "Why is this method consuming X% of CPU?"
 
 5. Form hypothesis about the improvement
-    Example: "Cache the result of getUserPermissions() â€” called 5000x/s"
+    Example: "Cache the result of getUserPermissions() — called 5000x/s"
 
 6. Apply fix, re-profile, compare flame graphs
 ```
@@ -412,9 +410,9 @@ Trade-off stated?               yes
     - GC frequency and pause time
 
 2. Identify the problem
-    - Is heap growing over time? â†’ Memory leak
-    - Is GC frequency too high? â†’ Object churn
-    - Is heap too large? â†’ Cache or data structure issue
+    - Is heap growing over time? → Memory leak
+    - Is GC frequency too high? → Object churn
+    - Is heap too large? → Cache or data structure issue
 
 3. Memory leak investigation:
     a. Take heap dump #1
@@ -438,9 +436,9 @@ Trade-off stated?               yes
 | Young GC pause | Time per minor collection | > 100ms |
 | Full GC frequency | Old gen filling up | > 1/hour |
 | Full GC pause | Time per major collection | > 1s |
-| Promotion rate | Objects moving to old gen | Increasing â†’ potential leak |
-| Heap after GC | Live data size | Growing â†’ memory leak |
-| Allocation rate | Bytes allocated per second | > 1GB/s â†’ churn problem |
+| Promotion rate | Objects moving to old gen | Increasing → potential leak |
+| Heap after GC | Live data size | Growing → memory leak |
+| Allocation rate | Bytes allocated per second | > 1GB/s → churn problem |
 
 **I/O Profiling:**
 
@@ -468,9 +466,9 @@ Trade-off stated?               yes
     strace -e trace=read,write -p <pid>  # IO operations
     
 4. Analyze IO patterns:
-    - Random IO (high iops, low throughput) â†’ indexing, database
-    - Sequential IO (high throughput, low iops) â†’ logging, streaming
-    - Metadata operations (stat, open, close) â†’ file system overhead
+    - Random IO (high iops, low throughput) → indexing, database
+    - Sequential IO (high throughput, low iops) → logging, streaming
+    - Metadata operations (stat, open, close) → file system overhead
 ```
 
 **Network Profiling:**
@@ -506,7 +504,7 @@ Trade-off stated?               yes
     #   - TCP handshake timing (high = connection overhead)
 ```
 
-### P7.3 â€” Performance Pattern Selection Guide
+### P7.3 — Performance Pattern Selection Guide
 
 | Symptom | Most Likely Pattern | Initial Action |
 |---|---|---|
@@ -521,39 +519,39 @@ Trade-off stated?               yes
 | Degradation after deploy | Code regression | Profile the new code path, compare with previous |
 | Degradation over months | Data growth / fragmentation | Check query performance growth, index fragmentation |
 
-### P7.4 â€” Performance Optimization Decision Tree
+### P7.4 — Performance Optimization Decision Tree
 
 ```
 Is the system meeting performance targets?
-  YES â†’ Stop. Do not optimize.
-  NO  â†’ Is there a measurable baseline?
-          NO  â†’ Measure first. Without baseline, "improvement" is guesswork.
-          YES â†’ Is the bottleneck identified?
-                  NO  â†’ Profile. Find the hottest part of the critical path.
-                  YES â†’ Is there a known fix for this bottleneck?
-                          YES â†’ Apply fix, measure, confirm improvement.
-                          NO  â†’ Research fix. Check: caching, algorithm change,
+  YES → Stop. Do not optimize.
+  NO  → Is there a measurable baseline?
+          NO  → Measure first. Without baseline, "improvement" is guesswork.
+          YES → Is the bottleneck identified?
+                  NO  → Profile. Find the hottest part of the critical path.
+                  YES → Is there a known fix for this bottleneck?
+                          YES → Apply fix, measure, confirm improvement.
+                          NO  → Research fix. Check: caching, algorithm change,
                                 resource scaling, architecture change.
-                                  â†’ Fix not found? Accept the constraint.
-                                  â†’ Fix found? Apply, measure, confirm.
+                                  → Fix not found? Accept the constraint.
+                                  → Fix found? Apply, measure, confirm.
 
 After fix: Is the bottleneck resolved (shifted elsewhere or target met)?
-  YES â†’ Document. Update performance budget.
-  NO  â†’ Identify next bottleneck. Loop.
+  YES → Document. Update performance budget.
+  NO  → Identify next bottleneck. Loop.
 ```
 
-### P7.5 â€” Capacity Planning Heuristics
+### P7.5 — Capacity Planning Heuristics
 
 | Resource | Planning Rule | Warning Sign |
 |---|---|---|
-| CPU | Keep average < 80%, peak < 90% | Run queue > 2Ã— cores |
+| CPU | Keep average < 80%, peak < 90% | Run queue > 2× cores |
 | Memory | Keep heap usage < 70% of max | GC frequency > 1/min |
 | Disk | Keep IOPS usage < 70% of provisioned | Queue depth > 1 |
 | Network | Keep bandwidth < 60% of link capacity | Retransmit rate > 0.1% |
 | Database | Keep connections < 80% of max | Connection wait time > 10ms |
 | Cache | Keep hit rate > 80% | Eviction rate > 1% of total |
 
-### P7.6 â€” Throughput Optimization Patterns
+### P7.6 — Throughput Optimization Patterns
 
 **Pattern: Concurrency Scaling**
 
@@ -569,10 +567,10 @@ After fix: Is the bottleneck resolved (shifted elsewhere or target met)?
 ```
 CPU-bound threads = Number of cores + 1
 
-I/O-bound threads = Number of cores Ã— (1 + Wait time / Service time)
+I/O-bound threads = Number of cores × (1 + Wait time / Service time)
 
 Example: 8 cores, 100ms I/O wait, 10ms CPU
-  I/O threads = 8 Ã— (1 + 100/10) = 8 Ã— 11 = 88 threads
+  I/O threads = 8 × (1 + 100/10) = 8 × 11 = 88 threads
 ```
 
 **Pattern: Connection Pooling**
@@ -588,10 +586,10 @@ Example: 8 cores, 100ms I/O wait, 10ms CPU
 **Connection pool sizing (from Little's law):**
 
 ```
-Pool size = Max throughput Ã— Connection hold time
+Pool size = Max throughput × Connection hold time
 
 Example: Need 2000 req/s, each holds connection for 50ms
-  Pool size = 2000 Ã— 0.05 = 100 connections
+  Pool size = 2000 × 0.05 = 100 connections
 
 Validation: 100 connections at 50ms hold = 100 / 0.05 = 2000 req/s max
 ```
@@ -600,7 +598,7 @@ Validation: 100 connections at 50ms hold = 100 / 0.05 = 2000 req/s max
 
 | Batch Style | Mechanism | Latency Impact | Throughput Impact |
 |---|---|---|---|
-| Size-based | Collect N items, then process | Adds up to batch wait | NÃ— throughput |
+| Size-based | Collect N items, then process | Adds up to batch wait | N× throughput |
 | Time-based | Process every T ms | Adds T ms max latency | Smooth, predictable |
 | Size + time (hybrid) | Process when N items OR T ms elapses | Min(T, batch time) | Best of both |
 | Adaptive | Adjust batch size based on load | Controlled | Optimal |
@@ -624,12 +622,12 @@ Validation: 100 connections at 50ms hold = 100 / 0.05 = 2000 req/s max
 
 ```
 Are the operations independent (no shared state)?
-  YES â†’ Parallelize with bounded thread pool
-  NO  â†’ Can state be partitioned?
-          YES â†’ Partitioned parallelism (shard by key)
-          NO  â†’ Can state access be optimized (read-only, atomic)?
-                  YES â†’ Use lock-free structures, parallelize
-                  NO  â†’ Single-threaded is safer. Optimize the serial path.
+  YES → Parallelize with bounded thread pool
+  NO  → Can state be partitioned?
+          YES → Partitioned parallelism (shard by key)
+          NO  → Can state access be optimized (read-only, atomic)?
+                  YES → Use lock-free structures, parallelize
+                  NO  → Single-threaded is safer. Optimize the serial path.
 ```
 
 **Pattern: Compression**
@@ -650,9 +648,9 @@ Are the operations independent (no shared state)?
 - Use fast compression (LZ4, zstd) over high-compression (gzip -9, xz) for real-time systems.
 
 
-## P9 â€” NETWORK PERFORMANCE
+## P9 — NETWORK PERFORMANCE
 
-### P9.1 â€” Content Delivery Network (CDN)
+### P9.1 — Content Delivery Network (CDN)
 
 **When to use a CDN:**
 
@@ -677,8 +675,8 @@ Downloads (binaries, PDFs): Recommended for large files
 **CDN caching strategy:**
 
 ```
-Content type â†’ Cache duration â†’ Invalidation strategy
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+Content type → Cache duration → Invalidation strategy
+─────────────────────────────────────────────────────
 Static JS/CSS      1 year       Versioned URLs (cache-bust)
 Images            30 days       File hash in URL
 API responses      60 seconds   Sub-second purge API
@@ -686,7 +684,7 @@ HTML pages         5 minutes    Instant purge on publish
 User data          Never         Private, no-cache
 ```
 
-### P9.2 â€” Protocol Optimization
+### P9.2 — Protocol Optimization
 
 **HTTP/1.1 limitations:**
 
@@ -700,10 +698,10 @@ User data          Never         Private, no-cache
 **HTTP/2 benefits:**
 
 ```
-Single connection â†’ Multiplexed streams
-Header compression (HPACK) â†’ 90% header size reduction
-Server push â†’ Proactive resource delivery
-Stream priority â†’ Critical resources first
+Single connection → Multiplexed streams
+Header compression (HPACK) → 90% header size reduction
+Server push → Proactive resource delivery
+Stream priority → Critical resources first
 
 Measured improvement:
   - 1 HTTP/2 connection vs 6 HTTP/1.1 connections
@@ -737,7 +735,7 @@ Measured improvement:
 | Real-time, streaming | HTTP/3 or WebSocket |
 | IoT, constrained devices | MQTT or CoAP |
 
-### P9.3 â€” Compression
+### P9.3 — Compression
 
 **HTTP compression:**
 
@@ -768,12 +766,12 @@ Level 9: Best ratio, 3x CPU of level 6
 Rule: For dynamic content, use level 3-4. For static pre-compressed, use max.
 ```
 
-### P9.4 â€” TLS/SSL Performance
+### P9.4 — TLS/SSL Performance
 
 **TLS handshake cost:**
 
 ```
-TCP â†’ TLS 1.3 â†’ Application data
+TCP → TLS 1.3 → Application data
   RTTs: 2 (1 for TCP + 1 for TLS 1.3)
   TLS 1.2: 3 RTTs (1 TCP + 2 TLS)
 
@@ -805,7 +803,7 @@ With connection reuse (session resumption):
 | TLS_CHACHA20_POLY1305 | Strong | Fast (mobile, no AES-NI) | Good for mobile |
 | ECDHE_RSA_WITH_AES_128_GCM | Strong | Medium | TLS 1.2 fallback |
 
-### P9.5 â€” TCP Performance
+### P9.5 — TCP Performance
 
 **TCP optimization parameters:**
 
@@ -821,13 +819,13 @@ With connection reuse (session resumption):
 **Bandwidth-Delay Product (BDP):**
 
 ```
-BDP = Bandwidth Ã— RTT
+BDP = Bandwidth × RTT
 
 Example: 1 Gbps link, 50ms RTT
-  BDP = 1,000,000,000 bps Ã— 0.05s = 50,000,000 bits = ~6 MB
+  BDP = 1,000,000,000 bps × 0.05s = 50,000,000 bits = ~6 MB
 
 TCP window must be at least 6 MB to saturate the link.
-Default window on many systems: 64 KB â†’ only 1% utilization.
+Default window on many systems: 64 KB → only 1% utilization.
 ```
 
 **TCP optimization checklist:**
@@ -841,16 +839,16 @@ Default window on many systems: 64 KB â†’ only 1% utilization.
 - [ ] No unnecessary firewalls or proxies
 
 
-## P11 â€” ASYNC PROCESSING AND BACKGROUND JOBS
+## P11 — ASYNC PROCESSING AND BACKGROUND JOBS
 
-### P11.1 â€” Async vs Sync Decision
+### P11.1 — Async vs Sync Decision
 
 ```
-Request arrives â†’ Is response time < budget?
-  YES â†’ Handle synchronously. Simple, predictable.
-  NO  â†’ Can the work be deferred?
-          YES â†’ Offload to async processing.
-          NO  â†’ Optimize sync path or accept the latency.
+Request arrives → Is response time < budget?
+  YES → Handle synchronously. Simple, predictable.
+  NO  → Can the work be deferred?
+          YES → Offload to async processing.
+          NO  → Optimize sync path or accept the latency.
 
 When to use async:
   - Email sending, notification delivery
@@ -861,16 +859,16 @@ When to use async:
   - Any operation that exceeds the latency budget
 ```
 
-### P11.2 â€” Job Queue Architecture
+### P11.2 — Job Queue Architecture
 
 **Queue model:**
 
 ```
-Producer â†’ Queue â†’ Consumer(s)
+Producer → Queue → Consumer(s)
                    Wait for work
-                   Process â†’ Success â†’ Done
-                   Process â†’ Retry â†’ Re-queue
-                   Process â†’ Dead letter â†’ Alert
+                   Process → Success → Done
+                   Process → Retry → Re-queue
+                   Process → Dead letter → Alert
 ```
 
 **Queue characteristics:**
@@ -888,9 +886,9 @@ Producer â†’ Queue â†’ Consumer(s)
 **Job failure handling:**
 
 ```
-Job fails â†’ Retry (exponential backoff)
-  3 retries â†’ Dead letter queue
-  Dead letter â†’ Alert + manual investigation
+Job fails → Retry (exponential backoff)
+  3 retries → Dead letter queue
+  Dead letter → Alert + manual investigation
 
 Causes of permanent failure:
   - Invalid input data (will always fail)
@@ -904,19 +902,19 @@ Transient failures (should retry):
   - Service temporarily unavailable
 ```
 
-### P11.3 â€” Consumer Concurrency
+### P11.3 — Consumer Concurrency
 
 **Consumer scaling:**
 
 ```
 Throughput per consumer = 1 / Average processing time
 
-Total throughput = Concurrency Ã— Throughput per consumer
+Total throughput = Concurrency × Throughput per consumer
 
 Example: Job takes 500ms to process
   Throughput per consumer = 2 jobs/sec
   With 10 concurrent consumers = 20 jobs/sec
-  Need 100 jobs/sec â†’ 50 consumers
+  Need 100 jobs/sec → 50 consumers
 ```
 
 **Consumer pooling:**
@@ -931,7 +929,7 @@ Example: Job takes 500ms to process
 **Backpressure in async systems:**
 
 ```
-Producer â†’ Queue â†’ Consumer
+Producer → Queue → Consumer
 
 When queue grows beyond threshold:
   1. Slow down producer (flow control)
@@ -956,7 +954,7 @@ Investigation:
   - Is the downstream service accepting work?
 ```
 
-### P11.4 â€” Batch Processing
+### P11.4 — Batch Processing
 
 **Batch vs stream:**
 
@@ -980,15 +978,15 @@ Investigation:
 **Batch size optimization:**
 
 ```
-Batch processing time = Setup overhead + N Ã— Per-item time + Commit overhead
+Batch processing time = Setup overhead + N × Per-item time + Commit overhead
 
-Optimal batch size = âˆš(2 Ã— Setup overhead Ã— Throughput / Per-item time)
+Optimal batch size = √(2 × Setup overhead × Throughput / Per-item time)
 
 Rule: 10-1000 items per batch is a good starting point.
 Measure throughput vs batch size curve to find the sweet spot.
 ```
 
-### P11.5 â€” Idempotency for Async Jobs
+### P11.5 — Idempotency for Async Jobs
 
 **Why idempotency matters:**
 
@@ -1010,13 +1008,13 @@ If processing is not idempotent, duplicate side effects occur:
 | Idempotency key | Generate unique key per request | `POST /payments` with `Idempotency-Key` header |
 | Dedup table | Record processed job IDs in DB | `INSERT ... ON CONFLICT DO NOTHING` |
 | Optimistic locking | Version check before update | `UPDATE ... WHERE version = X` |
-| State machine | Process only if state allows | "Pending" â†’ "Processing" â†’ "Completed" |
+| State machine | Process only if state allows | "Pending" → "Processing" → "Completed" |
 | Conditional update | Only apply if not already applied | `UPDATE ... WHERE status = 'pending'` |
 
 
-## P13 â€” OBSERVABILITY FOR PERFORMANCE
+## P13 — OBSERVABILITY FOR PERFORMANCE
 
-### P13.1 â€” The Three Pillars
+### P13.1 — The Three Pillars
 
 | Pillar | What | How | Signal |
 |---|---|---|---|
@@ -1026,7 +1024,7 @@ If processing is not idempotent, duplicate side effects occur:
 
 **Metrics-first, traces for investigation, logs for debugging.**
 
-### P13.2 â€” What to Measure
+### P13.2 — What to Measure
 
 **RED metrics (microservices):** Rate (req/s by endpoint), Errors (rate by endpoint/code), Duration (p50/p95/p99/p99.9 by endpoint).
 
@@ -1036,7 +1034,7 @@ If processing is not idempotent, duplicate side effects occur:
 
 **Application-level metrics:** HTTP (rate, latency, errors, size), Database (query latency, count, connections, locks), Cache (hit/miss/eviction rate, memory), Queue (depth, processing time, age, retries), External calls (latency, error rate, timeouts), JVM/GC (GC freq, pause time, heap, allocation rate), Business (conversion rate, order completion).
 
-### P13.3 â€” Distributed Tracing
+### P13.3 — Distributed Tracing
 
 **Mandatory fields:** trace_id, span_id, parent_span_id, service, operation, start_time, duration, status, tags (endpoint, method, status_code, user_id, error_detail).
 
@@ -1044,7 +1042,7 @@ If processing is not idempotent, duplicate side effects occur:
 
 **Granularity rule:** One span per service boundary, database call, and external dependency. 10-30 spans per request. Too coarse (entire request) hides location. Too fine (every method) adds noise and overhead.
 
-### P13.4 â€” Service Level Indicators (SLIs)
+### P13.4 — Service Level Indicators (SLIs)
 
 | SLI | Measurement | Target |
 |---|---|---|
@@ -1054,32 +1052,32 @@ If processing is not idempotent, duplicate side effects occur:
 
 **SLO tiers:** Critical (99.99%, <100ms p99), Standard (99.9%, <500ms), Best effort (99%, <2s), Batch (N/A, <1 hour).
 
-### P13.5 â€” Performance Alerting
+### P13.5 — Performance Alerting
 
 **Strategies:** Static threshold (simple, doesn't adapt), Dynamic baseline (adapts to traffic), Rate of change (detects sudden shifts), Budget-based (SLO-aligned, complex), Anomaly detection (finds unknowns, false positives).
 
 **Severity:** p99 exceeds SLO <2x = Warning (24h), 2-5x = Critical (1h), >5x = Incident (page). Error rate >1% = Warning, >5% = Critical, >10% = Incident.
 
-### P13.6 â€” Performance Regression Detection
+### P13.6 — Performance Regression Detection
 
-**CI/CD detection:** Baseline current perf â†’ Run against candidate â†’ Compare distributions. If p99 degraded >10% flag, >20% block. Use Mann-Whitney U test for statistical significance (p < 0.05 = regression).
+**CI/CD detection:** Baseline current perf → Run against candidate → Compare distributions. If p99 degraded >10% flag, >20% block. Use Mann-Whitney U test for statistical significance (p < 0.05 = regression).
 
 **False positive reduction:** Multiple runs (3+, median), minimum 1000 samples, discard warmup period, filter GC outliers, compare against 7-day rolling average, A/A testing to establish noise floor.
 
 
-## P15 â€” COST-PERFORMANCE TRADE-OFFS
+## P15 — COST-PERFORMANCE TRADE-OFFS
 
-### P15.1 â€” The Cost-Performance Curve
+### P15.1 — The Cost-Performance Curve
 
 ```
 Performance (latency, throughput)
-        â”‚
-        â”‚              â—â€”â€”â€”â— (diminishing returns)
-        â”‚         â—â€”â€”â€”â—
-        â”‚    â—â€”â€”â€”â—
-        â—â€”â€”â€”â—
-        â”‚
-        â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Cost ($)
+        │
+        │              ●———● (diminishing returns)
+        │         ●———●
+        │    ●———●
+        ●———●
+        │
+        └────────────────────── Cost ($)
 
 Zone 1: Low cost, large gains (low-hanging fruit)
   - Missing indexes
@@ -1131,7 +1129,7 @@ Zone 3: High cost, small gains
    - Custom protocol implementation
 ```
 
-### P15.2 â€” When to Stop Optimizing
+### P15.2 — When to Stop Optimizing
 
 **The "good enough" criteria:**
 1. p99 latency is within budget
@@ -1144,23 +1142,23 @@ If all five are true: STOP. Further optimization has negative ROI.
 
 **Optimization ROI checklist:** If users won't notice, stop. If business metrics won't improve, stop. If engineering cost exceeds benefit, stop. If risk or complexity outweighs gain, stop.
 
-### P15.3 â€” Right-Sizing
+### P15.3 — Right-Sizing
 
-**Right-sizing signals:** CPU avg < 40% â†’ downsize, > 80% â†’ upsize. Memory < 50% â†’ reduce, > 80% â†’ increase. Disk IOPS < 40% â†’ downgrade, > 80% â†’ upgrade. Network bandwidth < 30% â†’ downgrade, > 60% â†’ upgrade.
+**Right-sizing signals:** CPU avg < 40% → downsize, > 80% → upsize. Memory < 50% → reduce, > 80% → increase. Disk IOPS < 40% → downgrade, > 80% → upgrade. Network bandwidth < 30% → downgrade, > 60% → upgrade.
 
-### P15.4 â€” Cost-Efficient Caching
+### P15.4 — Cost-Efficient Caching
 
-**Cache cost-benefit:** Benefit = (Hit rate Ã— Read volume Ã— DB query cost) - Cache cost. Example: 10M reads/day Ã— $0.001/query at 90% hit rate saves $9K - $500 cache cost = $8.5K/month. Don't cache when cache cost exceeds DB query savings.
+**Cache cost-benefit:** Benefit = (Hit rate × Read volume × DB query cost) - Cache cost. Example: 10M reads/day × $0.001/query at 90% hit rate saves $9K - $500 cache cost = $8.5K/month. Don't cache when cache cost exceeds DB query savings.
 
 **Cache eviction cost trade-off:** LRU (medium memory, low CPU) for general. LFU (high memory, medium CPU) for skewed access. ARC (high memory, high CPU) for mixed workloads. TTL-only (dependent on TTL, very low CPU) for time-bounded data.
 
-### P15.5 â€” Scaling Cost Analysis
+### P15.5 — Scaling Cost Analysis
 
 **Vertical vs horizontal:** Vertical scales linearly with cost but hits hardware limits. Horizontal scales near-linearly but adds complexity (load balancers, distributed state, coordination). Example: 10 m5.large ($700) = 20 vCPU/80GB vs 1 m5.4xlarge ($560) = 16 vCPU/64GB. Horizontal is often cheaper per unit capacity.
 
-**When horizontal is required:** When single-instance throughput cannot meet demand. Example: need 10,000 req/s, single m5.xlarge handles 1,000 req/s, max m5.16xlarge handles ~8,000 â€” must go horizontal.
+**When horizontal is required:** When single-instance throughput cannot meet demand. Example: need 10,000 req/s, single m5.xlarge handles 1,000 req/s, max m5.16xlarge handles ~8,000 — must go horizontal.
 
-### P15.6 â€” Cloud Cost-Performance Decisions
+### P15.6 — Cloud Cost-Performance Decisions
 
 | Decision | High Performance | Low Cost | Trade-off |
 |---|---|---|---|
@@ -1172,7 +1170,7 @@ If all five are true: STOP. Further optimization has negative ROI.
 
 **Cost optimization levers:** Rightsize instances (20-40% savings, no perf impact), Spot for batch (60-90%, weaker reliability), Reserved instances (40-60%, no perf impact), Compress data (30-70% storage, slight CPU increase), Archive old data (50-90% storage cost).
 
-### P15.7 â€” Performance Tiers by Cost
+### P15.7 — Performance Tiers by Cost
 
 | Tier | Latency Target | Cost Factor | Use Case |
 |---|---|---|---|

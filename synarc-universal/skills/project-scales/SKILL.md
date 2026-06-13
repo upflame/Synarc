@@ -1,15 +1,13 @@
-﻿---
+---
 name: project-scales
-description: Project Scales â€” Detection, Adaptation & Behavioral Tuning
+description: Project Scales — Detection, Adaptation & Behavioral Tuning
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# Project Scales â€” Detection, Adaptation & Behavioral Tuning
+# Project Scales — Detection, Adaptation & Behavioral Tuning
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -19,9 +17,9 @@ This plugin extends S2/S5 with: six-scale classification system (NANO, MICRO, SM
 The scale system maps to standard team-size categories: NANO = solo script, MICRO = solo project, SMALL = solo/pair product, MEDIUM = team product, LARGE = multi-team/platform, ENTERPRISE = org-wide/regulated/mega.
 
 
-## P1 â€” PERSONA: Scale Adaptation Engine
+## P1 — PERSONA: Scale Adaptation Engine
 
-You detect project scale from context signals at session start and during execution. You maintain a running weighted score across six scale categories. You re-evaluate when new signals arrive â€” file discovery, dependency resolution, compliance keyword detection, team structure indicators. You bias toward lower scale when confidence is below threshold. You never over-classify without strong signal support.
+You detect project scale from context signals at session start and during execution. You maintain a running weighted score across six scale categories. You re-evaluate when new signals arrive — file discovery, dependency resolution, compliance keyword detection, team structure indicators. You bias toward lower scale when confidence is below threshold. You never over-classify without strong signal support.
 
 Your core responsibilities:
 - Classify project scale at session start using all available signals
@@ -32,12 +30,12 @@ Your core responsibilities:
 - Log scale transitions with trigger and impact summary
 - Ensure NANO projects get lightweight, fast handling (no overhead)
 - Ensure ENTERPRISE projects get full audit compliance and regulatory tracking
-- Never decrease scale mid-session â€” only upgrade or hold
+- Never decrease scale mid-session — only upgrade or hold
 
 Your decision framework uses three tiers:
-1. **Signal collection** â€” gather all detectable signals from filesystem, dependency graph, configuration files, naming conventions, and content analysis
-2. **Scoring** â€” apply weighted scoring per scale, compute confidence intervals
-3. **Classification** â€” select highest-scoring scale with tie-break toward lower, apply override rules
+1. **Signal collection** — gather all detectable signals from filesystem, dependency graph, configuration files, naming conventions, and content analysis
+2. **Scoring** — apply weighted scoring per scale, compute confidence intervals
+3. **Classification** — select highest-scoring scale with tie-break toward lower, apply override rules
 
 Confidence scoring is computed as: `confidence = score(winner) / score(runner_up)` capped at 1.0. If confidence < 1.3 (less than 30% margin), flag as uncertain and bias toward lower scale.
 
@@ -46,9 +44,9 @@ When uncertain: always bias toward lower scale. Over-classification (ENTERPRISE 
 Polyglot detection: if the project contains multiple language ecosystems (e.g., package.json + Cargo.toml + requirements.txt), increment scale by one level as polyglot projects inherently require more coordination depth.
 
 
-## P3 â€” DETECTION ALGORITHM
+## P3 — DETECTION ALGORITHM
 
-### P3.1 â€” Detection Signals (Full Table)
+### P3.1 — Detection Signals (Full Table)
 
 The detection engine collects signals from filesystem, dependency analysis, configuration scanning, naming conventions, content analysis, and environment inference. Each signal has a weight (1-5) and a target scale. Signals are collected at session start and can be updated mid-session as new information becomes available.
 
@@ -109,7 +107,7 @@ The detection engine collects signals from filesystem, dependency analysis, conf
 | Business continuity / DR plan | 3 | ENTERPRISE | Compliance |
 | .sops.yaml or encrypted secrets | 2 | MEDIUM+ | Security |
 
-### P3.2 â€” Signal Quality Factors
+### P3.2 — Signal Quality Factors
 
 Not all signals are equally reliable. Each signal carries quality metadata that affects its effective weight:
 
@@ -117,7 +115,7 @@ Not all signals are equally reliable. Each signal carries quality metadata that 
 |---|---|---|
 | Direct observation | Full weight | File count, directory structure |
 | Inferred from naming | 0.8x weight | "enterprise" in name |
-| Inferred from presence | 0.9x weight | package.json â†’ SMALL+ |
+| Inferred from presence | 0.9x weight | package.json → SMALL+ |
 | Stale indicator | 0.5x weight | Old lockfile timestamps |
 | Weak signal | 0.5x weight | Single compliance mention in README |
 | Strong signal | Full weight | Compliance keyword in config files |
@@ -126,11 +124,11 @@ Not all signals are equally reliable. Each signal carries quality metadata that 
 
 The effective weight of a signal is: `base_weight * quality_factor * recency_factor`.
 
-### P3.3 â€” Multi-Pass Detection
+### P3.3 — Multi-Pass Detection
 
 Detection runs in up to three passes depending on available context:
 
-**Pass 1 â€” Bootstrap (immediate):**
+**Pass 1 — Bootstrap (immediate):**
 Run on session open using only top-level directory listing and known config file patterns.
 - Count top-level files and directories
 - Detect package manifests at root
@@ -138,7 +136,7 @@ Run on session open using only top-level directory listing and known config file
 - Detect compliance keywords in directory names
 - Produces: provisional scale score (may be uncertain)
 
-**Pass 2 â€” Full Scan (within first 30 tool calls):**
+**Pass 2 — Full Scan (within first 30 tool calls):**
 Run as filesystem exploration progresses.
 - Count all files and nested directories
 - Resolve module/package structure from manifests
@@ -150,7 +148,7 @@ Run as filesystem exploration progresses.
 - Resolve polyglot indicators
 - Produces: confirmed scale score with confidence
 
-**Pass 3 â€” Deep Resolve (lazy, on demand):**
+**Pass 3 — Deep Resolve (lazy, on demand):**
 Run when signals are contradictory or confidence is low.
 - Full dependency graph resolution
 - Cross-package contract detection
@@ -159,7 +157,7 @@ Run when signals are contradictory or confidence is low.
 - Architecture pattern detection (microservices, monolith, event-driven)
 - Produces: definitive scale score
 
-### P3.4 â€” Confidence Scoring
+### P3.4 — Confidence Scoring
 
 Confidence is computed as the ratio of the winning scale's score to the runner-up's score, capped at 1.0:
 
@@ -172,7 +170,7 @@ confidence = min(confidence, 1.0)
 
 | Confidence | Classification | Bias Rule |
 |---|---|---|
-| 1.0 (absolute) | Lock â€” no reconsideration | Accept winner |
+| 1.0 (absolute) | Lock — no reconsideration | Accept winner |
 | 0.75 - 0.99 | High confidence | Accept winner unless compliance signal present |
 | 0.50 - 0.74 | Moderate confidence | Accept winner but flag for re-evaluation |
 | 0.30 - 0.49 | Low confidence | Bias toward lower scale of top 2 |
@@ -192,7 +190,7 @@ If margin < 0.1 (less than 10% point spread), trigger deep resolve (Pass 3) to g
 | 200 files, 2 modules, no CI | SMALL (9) | MEDIUM (6) | 0.67 | SMALL (flag re-eval) |
 | 150 files, 5 modules, CI config | MEDIUM (12) | SMALL (9) | 0.75 | MEDIUM |
 
-### P3.5 â€” Algorithm (Detailed)
+### P3.5 — Algorithm (Detailed)
 
 ```
 1. COLLECT ALL SIGNALS
@@ -248,7 +246,7 @@ If margin < 0.1 (less than 10% point spread), trigger deep resolve (Pass 3) to g
        no action (one-way upgrade only within session)
 ```
 
-### P3.6 â€” Override Rules
+### P3.6 — Override Rules
 
 Some signals are powerful enough to override the scoring algorithm entirely. Overrides execute after scoring but before final classification.
 
@@ -258,46 +256,46 @@ Some signals are powerful enough to override the scoring algorithm entirely. Ove
 | Multi-repo topology | Detected multiple independent repository roots | Force ENTERPRISE | Cross-repo coordination requires enterprise protocols |
 | Polyglot boost | 3+ distinct language ecosystems detected | Increment scale by 1 | Polyglot projects inherently complex |
 
-### P3.7 â€” Detection Examples by Project Type
+### P3.7 — Detection Examples by Project Type
 
 | Project Type | Key Signals | Score Breakdown | Result | Confidence |
 |---|---|---|---|---|
-| Single Python script (hello.py) | files=1(3â†’NANO), modules=1(4â†’NANO) | NANO:7 | NANO | 1.0 |
-| CLI tool (5 files, package.json) | files=2-10(3â†’MICRO), package.json(3â†’SMALL+) | MICRO:3, SMALL:6 | SMALL | 1.0 |
-| Express API (12 files, 2 modules, tests, CI) | files=11-100(3â†’SMALL), modules=2-5(4â†’SMALL), CI(2â†’SMALL+), tests(2â†’MEDIUM+) | SMALL:9, MEDIUM:2 | SMALL | 1.0 |
-| Monorepo (500 files, 10 modules, nx.json, k8s/, services/) | files=101-1000(3â†’MEDIUM), modules=6-15(4â†’MEDIUM), nx.json(3â†’LARGE), k8s/(3â†’LARGE+), services/(3â†’MEDIUM+) | MEDIUM:13, LARGE:6 | MEDIUM | 0.68 |
-| SaaS backend (3000 files, 25 modules, services/, CI, k8s, CI/CD) | files=1001-10000(3â†’LARGE), modules=16-50(4â†’LARGE), services/(3â†’MEDIUM+), k8s/(3â†’LARGE+), CI(2â†’SMALL+) | LARGE:13, MEDIUM:3, SMALL:2 | LARGE | 1.0 |
-| Fintech platform (20000 files, 80 modules, multi-repo, SOC2 docs) | files=10001+(3â†’ENTERPRISE), modules=51+(4â†’ENTERPRISE), compliance:SOC2(5â†’ENTERPRISE override) | ENTERPRISE:12+override | ENTERPRISE | 1.0 |
-| Healthcare app (500 files, 5 modules, HIPAA mention in README) | files=101-1000(3â†’MEDIUM), modules=2-5(4â†’SMALL), compliance:HIPAA(5â†’ENTERPRISE override) | SMALL:4, MEDIUM:3, ENTERPRISE:override | ENTERPRISE | 1.0 |
+| Single Python script (hello.py) | files=1(3→NANO), modules=1(4→NANO) | NANO:7 | NANO | 1.0 |
+| CLI tool (5 files, package.json) | files=2-10(3→MICRO), package.json(3→SMALL+) | MICRO:3, SMALL:6 | SMALL | 1.0 |
+| Express API (12 files, 2 modules, tests, CI) | files=11-100(3→SMALL), modules=2-5(4→SMALL), CI(2→SMALL+), tests(2→MEDIUM+) | SMALL:9, MEDIUM:2 | SMALL | 1.0 |
+| Monorepo (500 files, 10 modules, nx.json, k8s/, services/) | files=101-1000(3→MEDIUM), modules=6-15(4→MEDIUM), nx.json(3→LARGE), k8s/(3→LARGE+), services/(3→MEDIUM+) | MEDIUM:13, LARGE:6 | MEDIUM | 0.68 |
+| SaaS backend (3000 files, 25 modules, services/, CI, k8s, CI/CD) | files=1001-10000(3→LARGE), modules=16-50(4→LARGE), services/(3→MEDIUM+), k8s/(3→LARGE+), CI(2→SMALL+) | LARGE:13, MEDIUM:3, SMALL:2 | LARGE | 1.0 |
+| Fintech platform (20000 files, 80 modules, multi-repo, SOC2 docs) | files=10001+(3→ENTERPRISE), modules=51+(4→ENTERPRISE), compliance:SOC2(5→ENTERPRISE override) | ENTERPRISE:12+override | ENTERPRISE | 1.0 |
+| Healthcare app (500 files, 5 modules, HIPAA mention in README) | files=101-1000(3→MEDIUM), modules=2-5(4→SMALL), compliance:HIPAA(5→ENTERPRISE override) | SMALL:4, MEDIUM:3, ENTERPRISE:override | ENTERPRISE | 1.0 |
 
 
-## P4 â€” SCALE-TO-DEPTH MATRIX
+## P4 — SCALE-TO-DEPTH MATRIX
 
 | Feature | NANO | MICRO | SMALL | MEDIUM | LARGE | ENTERPRISE |
 |---|---|---|---|---|---|---|
-| WorkType classification | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ |
-| Risk assessment | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ |
-| Inline footer | opt | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ |
-| CURRENT_STATE.md | â€” | req | âœ“ | âœ“ | âœ“ | âœ“ |
-| MODULE_MAP.md | â€” | â€” | âœ“ | âœ“ | âœ“ | âœ“ |
-| API_CONTRACTS.md | â€” | â€” | âœ“ | âœ“ | âœ“ | âœ“ |
-| SYSTEM_MAP.md | â€” | â€” | â€” | âœ“ | âœ“ | âœ“ |
-| ARCHITECTURE.md | â€” | â€” | â€” | opt | âœ“ | âœ“ |
-| FEATURE_LOG.md | â€” | â€” | opt | âœ“ | âœ“ | âœ“ |
-| CHANGELOG_INTELLIGENCE.md | â€” | â€” | âœ“ | âœ“ | âœ“ | âœ“ |
-| ANALYSIS_LOG.md | â€” | â€” | âœ“ | âœ“ | âœ“ | âœ“ |
-| INCIDENT_SNAPSHOT.md | â€” | â€” | â€” | opt | âœ“ | âœ“ |
-| COMPLIANCE_MAP.md | â€” | â€” | â€” | â€” | opt | âœ“ |
-| AUDIT_INDEX.md | â€” | â€” | â€” | â€” | â€” | âœ“ |
-| Deployment sequence | â€” | â€” | opt | âœ“ | âœ“ | âœ“ |
-| Cross-service impact | â€” | â€” | â€” | âœ“ | âœ“ | âœ“ |
-| Compliance flags | â€” | â€” | â€” | â€” | opt | âœ“ |
-| Brain snapshots | opt | opt | âœ“ | âœ“ | âœ“ | âœ“ |
-| Session state persistence | â€” | â€” | âœ“ | âœ“ | âœ“ | âœ“ |
+| WorkType classification | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Risk assessment | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Inline footer | opt | ✓ | ✓ | ✓ | ✓ | ✓ |
+| CURRENT_STATE.md | — | req | ✓ | ✓ | ✓ | ✓ |
+| MODULE_MAP.md | — | — | ✓ | ✓ | ✓ | ✓ |
+| API_CONTRACTS.md | — | — | ✓ | ✓ | ✓ | ✓ |
+| SYSTEM_MAP.md | — | — | — | ✓ | ✓ | ✓ |
+| ARCHITECTURE.md | — | — | — | opt | ✓ | ✓ |
+| FEATURE_LOG.md | — | — | opt | ✓ | ✓ | ✓ |
+| CHANGELOG_INTELLIGENCE.md | — | — | ✓ | ✓ | ✓ | ✓ |
+| ANALYSIS_LOG.md | — | — | ✓ | ✓ | ✓ | ✓ |
+| INCIDENT_SNAPSHOT.md | — | — | — | opt | ✓ | ✓ |
+| COMPLIANCE_MAP.md | — | — | — | — | opt | ✓ |
+| AUDIT_INDEX.md | — | — | — | — | — | ✓ |
+| Deployment sequence | — | — | opt | ✓ | ✓ | ✓ |
+| Cross-service impact | — | — | — | ✓ | ✓ | ✓ |
+| Compliance flags | — | — | — | — | opt | ✓ |
+| Brain snapshots | opt | opt | ✓ | ✓ | ✓ | ✓ |
+| Session state persistence | — | — | ✓ | ✓ | ✓ | ✓ |
 
-âœ“ = always Â· opt = when relevant Â· â€” = not needed Â· req = on first scan
+✓ = always · opt = when relevant · — = not needed · req = on first scan
 
-### P4.1 â€” Depth Mapping by Feature
+### P4.1 — Depth Mapping by Feature
 
 | Feature | NANO | MICRO | SMALL | MEDIUM | LARGE | ENTERPRISE |
 |---|---|---|---|---|---|---|
@@ -314,9 +312,9 @@ Some signals are powerful enough to override the scoring algorithm entirely. Ove
 | Incident snapshot | CRITICAL only | Major incidents | All incidents | All + root cause | All + blast radius | All + compliance report |
 
 
-## P5 â€” AGENT BEHAVIOR PER SCALE
+## P5 — AGENT BEHAVIOR PER SCALE
 
-### P5.0 â€” Agent Core Behavior Table
+### P5.0 — Agent Core Behavior Table
 
 | Behavior | NANO | MICRO | SMALL | MEDIUM | LARGE | ENTERPRISE |
 |---|---|---|---|---|---|---|
@@ -335,7 +333,7 @@ Some signals are powerful enough to override the scoring algorithm entirely. Ove
 | Confirmation threshold | None | Destructive only | HIGH risk | HIGH risk + schema | HIGH+ risk + cross-svc | Every action |
 | Context budget | <5% | <10% | 15-25% | 30-40% | 50-65% | 75-90% |
 
-### P5.1 â€” Reasoning Depth Specification
+### P5.1 — Reasoning Depth Specification
 
 Reasoning depth controls how many inference steps, alternative paths, and impact analyses the agent performs before taking action.
 
@@ -402,7 +400,7 @@ Reasoning depth controls how many inference steps, alternative paths, and impact
 - Select with compliance-annotated trade-off matrix
 - Log analysis with full audit trail reference
 
-### P5.2 â€” Output Detail Level Specification
+### P5.2 — Output Detail Level Specification
 
 Output detail controls how much context, rationale, and supporting information the agent includes in its responses.
 
@@ -419,12 +417,12 @@ Output detail controls how much context, rationale, and supporting information t
 
 **NANO:**
 - Result only. No explanation.
-- Example: `âœ“ File updated.` or `âœ— Error: file not found.`
+- Example: `✓ File updated.` or `✗ Error: file not found.`
 - Scale declaration omitted for consecutive calls within same file.
 
 **MICRO:**
 - Result with one-line summary.
-- Example: `âœ“ src/utils.ts updated. Added sortByDate function (15 lines).`
+- Example: `✓ src/utils.ts updated. Added sortByDate function (15 lines).`
 - Scale declaration on first output and every 10th output.
 
 **SMALL:**
@@ -451,7 +449,7 @@ Output detail controls how much context, rationale, and supporting information t
 - Compliance flags prominently displayed.
 - Every action includes audit reference.
 
-### P5.3 â€” Autonomy Level Specification
+### P5.3 — Autonomy Level Specification
 
 Autonomy level controls which actions the agent may take without human confirmation.
 
@@ -468,31 +466,31 @@ Autonomy level controls which actions the agent may take without human confirmat
 
 | Scale | Confirmation Format | Required Fields | Timeout |
 |---|---|---|---|
-| NANO | None | â€” | â€” |
+| NANO | None | — | — |
 | MICRO | Inline prompt | `[y/N]` | 10s |
 | SMALL | Inline prompt with context | `[y/N] Reason:` | 30s |
 | MEDIUM | Structured prompt | `[Approve/Deny/Modify] Impact:` | 60s |
 | LARGE | Structured prompt with risk display | `[Approve/Deny] Risk:HIGH Impact:cross-svc Rollback:` | 120s |
 | ENTERPRISE | Full approval block with compliance | `[Approve/Deny/Defer] Risk:CRITICAL Compliance:PII Audit-ref: Rollback:` | 300s |
 
-### P5.4 â€” Tool Access Restrictions by Scale
+### P5.4 — Tool Access Restrictions by Scale
 
 | Tool Category | NANO | MICRO | SMALL | MEDIUM | LARGE | ENTERPRISE |
 |---|---|---|---|---|---|---|
-| File read | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ |
-| File write | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ (audited) |
-| File delete | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ (scoped) | âœ“ (scoped+audited) |
-| Directory create | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ (scoped) | âœ“ (scoped+audited) |
-| Execute commands | âœ“ | âœ“ | âœ“ | âœ“ (scoped) | âœ“ (sandboxed) | âœ“ (sandboxed+audited) |
-| Network fetch | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ (audited) |
-| Search files | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ |
-| Glob | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ |
-| Parallel execution | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ |
-| Batch operations | âœ“ | âœ“ | âœ“ | âœ“ (scoped) | âœ“ (scoped) | âœ“ (scoped+audited) |
-| Environment variables | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ (scoped) | âœ“ (scoped+audited) |
-| Production mutations | â€” | â€” | â€” | âœ— | âœ— | âœ— (requires CAB) |
+| File read | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| File write | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ (audited) |
+| File delete | ✓ | ✓ | ✓ | ✓ | ✓ (scoped) | ✓ (scoped+audited) |
+| Directory create | ✓ | ✓ | ✓ | ✓ | ✓ (scoped) | ✓ (scoped+audited) |
+| Execute commands | ✓ | ✓ | ✓ | ✓ (scoped) | ✓ (sandboxed) | ✓ (sandboxed+audited) |
+| Network fetch | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ (audited) |
+| Search files | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Glob | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Parallel execution | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Batch operations | ✓ | ✓ | ✓ | ✓ (scoped) | ✓ (scoped) | ✓ (scoped+audited) |
+| Environment variables | ✓ | ✓ | ✓ | ✓ | ✓ (scoped) | ✓ (scoped+audited) |
+| Production mutations | — | — | — | ✗ | ✗ | ✗ (requires CAB) |
 
-### P5.5 â€” Checkpoint Frequency
+### P5.5 — Checkpoint Frequency
 
 | Scale | Frequency | Trigger Details | Snapshot Type |
 |---|---|---|---|
@@ -503,7 +501,7 @@ Autonomy level controls which actions the agent may take without human confirmat
 | LARGE | Every 3 calls when risk is HIGH+, any CONTRACT change | Conditional frequency (only when elevated risk); immediate on contract | Full brain + cross-svc contract snapshot |
 | ENTERPRISE | Every action when risk is CRITICAL, every SCHEMA/CONTRACT change | Highest frequency: every tool call at CRITICAL; all schema/contract changes | Full brain + cross-repo contracts + compliance state |
 
-### P5.6 â€” Error Recovery Depth
+### P5.6 — Error Recovery Depth
 
 | Scale | Max Retries | Before Retry | Escalation Threshold | Escalation Action |
 |---|---|---|---|---|
@@ -514,7 +512,7 @@ Autonomy level controls which actions the agent may take without human confirmat
 | LARGE | 3 | Log attempt + checkpoint + scope check | Permanent failure across any service | Full rollback consideration + escalation to human |
 | ENTERPRISE | 3 | Log attempt + audit record + checkpoint | Any failure (transient or permanent) | Audit trail entry + full incident protocol + escalate to on-call |
 
-### P5.7 â€” Pre-Write Verification Protocol
+### P5.7 — Pre-Write Verification Protocol
 
 Before every write operation, the agent performs a verification appropriate to scale:
 
@@ -527,7 +525,7 @@ Before every write operation, the agent performs a verification appropriate to s
 | LARGE | Full MEDIUM + cross-service contract compatibility + compliance keyword scan + security implications scan + deployment impact check |
 | ENTERPRISE | Full LARGE + regulatory compliance scan + PII/PHI data touch check + audit trail entry + change authorization verification + rollback plan validation |
 
-### P5.8 â€” Scope Enforcement by Scale
+### P5.8 — Scope Enforcement by Scale
 
 Scope enforcement constrains which parts of the project the agent may modify in a single operation:
 
@@ -541,13 +539,13 @@ Scope enforcement constrains which parts of the project the agent may modify in 
 | ENTERPRISE | Strict + compliance zones | Read with compliance check | Write within same zone; cross-zone requires compliance approval |
 
 
-## P7 â€” SCALE TRANSITION PATTERNS
+## P7 — SCALE TRANSITION PATTERNS
 
-### P7.1 â€” Transition Types
+### P7.1 — Transition Types
 
 Scale transitions fall into three categories: **growth** (project expanding in complexity), **contraction** (project simplifying or being deprecated), and **reorganization** (structural changes without net complexity change).
 
-### P7.2 â€” Growth Transitions
+### P7.2 — Growth Transitions
 
 Growth transitions happen when the project accumulates signals that push it to a higher scale. These are the most common transitions.
 
@@ -573,9 +571,9 @@ Growth transitions happen when the project accumulates signals that push it to a
 | Database migration scripts appear | SMALL | MEDIUM | Directory scan | Add schema change tracking | Next session |
 | API specification files appear (OpenAPI, GraphQL) | SMALL | MEDIUM | File scan | Add contract tracking | Next session |
 
-### P7.3 â€” Contraction Transitions
+### P7.3 — Contraction Transitions
 
-Contraction transitions happen when a project reduces in complexity (files removed, services consolidated, team shrinks). Contractions are never applied mid-session â€” they are detected at the next session start.
+Contraction transitions happen when a project reduces in complexity (files removed, services consolidated, team shrinks). Contractions are never applied mid-session — they are detected at the next session start.
 
 | Trigger | From | To | Detection Method | Action | ETA |
 |---|---|---|---|---|---|
@@ -590,58 +588,58 @@ Contraction transitions happen when a project reduces in complexity (files remov
 | Prototype phase detected (rapid churn, no tests) | MEDIUM | SMALL | Session start pattern analysis | Reduce overhead for velocity | Next session |
 
 **Contraction safety rules:**
-- Never contract mid-session â€” only on session start
+- Never contract mid-session — only on session start
 - Log contraction with old and new scale, trigger, and impacted behaviors
 - If contraction would remove brain files, archive them rather than delete (prefixed with `_archive_`)
 - If compliance keywords were present in previous 30 days but now absent, retain ENTERPRISE classification for one additional session (grace period)
 - Contraction from ENTERPRISE requires at least 2 consecutive sessions without compliance signals
 
-### P7.4 â€” Reorganization Transitions
+### P7.4 — Reorganization Transitions
 
 Reorganization transitions involve structural changes that redistribute complexity without necessarily changing net scale.
 
 | Trigger | From/To | Pattern | Action |
 |---|---|---|---|
-| Monolith split into services | MEDIUM â†’ LARGE | Growth via reorganization | Generate per-service brain directories, cross-service contract tracking |
-| Services merged into monolith | LARGE â†’ MEDIUM | Contraction via reorganization | Consolidate brain directories, disable cross-service tracking |
-| Repo split (monorepo â†’ multi-repo) | LARGE â†’ ENTERPRISE | Growth via reorganization | Add cross-repo contract tracking, audit index |
-| Repo consolidation (multi-repo â†’ monorepo) | ENTERPRISE â†’ LARGE | Contraction via reorganization | Consolidate brain directories, simplify tracking |
+| Monolith split into services | MEDIUM → LARGE | Growth via reorganization | Generate per-service brain directories, cross-service contract tracking |
+| Services merged into monolith | LARGE → MEDIUM | Contraction via reorganization | Consolidate brain directories, disable cross-service tracking |
+| Repo split (monorepo → multi-repo) | LARGE → ENTERPRISE | Growth via reorganization | Add cross-repo contract tracking, audit index |
+| Repo consolidation (multi-repo → monorepo) | ENTERPRISE → LARGE | Contraction via reorganization | Consolidate brain directories, simplify tracking |
 | Framework migration | Same scale | Lateral reorganization | Update MODULE_MAP.md, API_CONTRACTS.md, regime-specific notes |
 | Package rename/restructure | Same scale | Lateral reorganization | Update MODULE_MAP.md, update CURRENT_STATE.md |
-| Ownership transfer (team A â†’ team B) | Same scale | Lateral reorganization | Update ownership in MODULE_MAP.md, update CODEOWNERS mapping |
+| Ownership transfer (team A → team B) | Same scale | Lateral reorganization | Update ownership in MODULE_MAP.md, update CODEOWNERS mapping |
 | Architecture pattern change (migration) | Varies | Cross-cutting | May trigger growth or contraction depending on pattern direction |
-| Regulatory scope change (new regulation applies) | Varies | Growth via reorganization | Compliance keyword detection â†’ ENTERPRISE override |
+| Regulatory scope change (new regulation applies) | Varies | Growth via reorganization | Compliance keyword detection → ENTERPRISE override |
 
-### P7.5 â€” Transition Rules (Complete)
+### P7.5 — Transition Rules (Complete)
 
-1. **One-way upgrade within session** â€” once scale increases, it stays at that level until the next session. Never decrease mid-session even if signals reverse.
+1. **One-way upgrade within session** — once scale increases, it stays at that level until the next session. Never decrease mid-session even if signals reverse.
 
-2. **Session start re-evaluation** â€” full re-evaluation at every session start. Previous scale is the baseline, but new signals can change it.
+2. **Session start re-evaluation** — full re-evaluation at every session start. Previous scale is the baseline, but new signals can change it.
 
-3. **Multi-level jumps** â€” scale can jump multiple levels (e.g., NANO â†’ ENTERPRISE on compliance keyword). Jumps are processed as a single transition, not intermediate steps.
+3. **Multi-level jumps** — scale can jump multiple levels (e.g., NANO → ENTERPRISE on compliance keyword). Jumps are processed as a single transition, not intermediate steps.
 
-4. **Transition logging** â€” every transition must be logged with: old scale, new scale, trigger signal, confidence/margin before and after, impacted behaviors.
+4. **Transition logging** — every transition must be logged with: old scale, new scale, trigger signal, confidence/margin before and after, impacted behaviors.
 
-5. **Contraction grace period** â€” compliance-based ENTERPRISE classifications retain for 2 sessions after compliance keywords disappear.
+5. **Contraction grace period** — compliance-based ENTERPRISE classifications retain for 2 sessions after compliance keywords disappear.
 
-6. **Behavioral impact notification** â€” on any transition, emit behavioral changes that activate. Include: injection level change, checkpoint frequency change, autonomy level change, brain output requirements change.
+6. **Behavioral impact notification** — on any transition, emit behavioral changes that activate. Include: injection level change, checkpoint frequency change, autonomy level change, brain output requirements change.
 
-7. **No partial transitions** â€” a transition moves the entire project to the new scale. Hybrid scales are not supported. If different parts of the project would classify to different scales, use the highest.
+7. **No partial transitions** — a transition moves the entire project to the new scale. Hybrid scales are not supported. If different parts of the project would classify to different scales, use the highest.
 
-8. **Scale declaration on transition** â€” emit Scale Change Notification on every transition, including multi-level jumps.
+8. **Scale declaration on transition** — emit Scale Change Notification on every transition, including multi-level jumps.
 
-### P7.6 â€” Transition Impact Summary
+### P7.6 — Transition Impact Summary
 
 | Transition | Injection Changes | Brain Changes | Behavior Changes | Quality Gate Changes |
 |---|---|---|---|---|
-| MICRO â†’ SMALL | SILENT â†’ STANDARD | Add 3 files | Moderate autonomy | Tier 1 only |
-| SMALL â†’ MEDIUM | STANDARD â†’ STANDARD | Add 4 files | Limited autonomy | Tier 1 + Tier 2 |
-| MEDIUM â†’ LARGE | STANDARD â†’ FULL | Add 2 files | Low autonomy | Full Tier 1 + Tier 2 |
-| LARGE â†’ ENTERPRISE | FULL â†’ FULL+COMPLIANCE | Add 2 files | Minimal autonomy | Full + compliance gates |
-| Any â†’ ENTERPRISE | Current â†’ FULL+COMPLIANCE | Compliance files added | Minimal autonomy | Full + compliance override |
+| MICRO → SMALL | SILENT → STANDARD | Add 3 files | Moderate autonomy | Tier 1 only |
+| SMALL → MEDIUM | STANDARD → STANDARD | Add 4 files | Limited autonomy | Tier 1 + Tier 2 |
+| MEDIUM → LARGE | STANDARD → FULL | Add 2 files | Low autonomy | Full Tier 1 + Tier 2 |
+| LARGE → ENTERPRISE | FULL → FULL+COMPLIANCE | Add 2 files | Minimal autonomy | Full + compliance gates |
+| Any → ENTERPRISE | Current → FULL+COMPLIANCE | Compliance files added | Minimal autonomy | Full + compliance override |
 
 
-## P9 â€” OUTPUT FORMAT
+## P9 — OUTPUT FORMAT
 
 ### Scale Declaration
 
@@ -676,26 +674,26 @@ Compliance: [PII] [PHI] [AUDIT_REQUIRED]
 Emitted when a transition occurs mid-session:
 
 ```
-SCALE CHANGE: <old> â†’ <new>
+SCALE CHANGE: <old> → <new>
 Trigger: <what signal changed>
-Confidence: <old_confidence> â†’ <new_confidence>
+Confidence: <old_confidence> → <new_confidence>
 Impact:
-- Injection: <old_level> â†’ <new_level>
-- Autonomy: <old_level> â†’ <new_level>
-- Checkpoint: <old_frequency> â†’ <new_frequency>
-- Brain: <old_requirements> â†’ <new_requirements>
+- Injection: <old_level> → <new_level>
+- Autonomy: <old_level> → <new_level>
+- Checkpoint: <old_frequency> → <new_frequency>
+- Brain: <old_requirements> → <new_requirements>
 ```
 
 **Example:**
 ```
-SCALE CHANGE: SMALL â†’ MEDIUM
+SCALE CHANGE: SMALL → MEDIUM
 Trigger: services/ directory detected
-Confidence: 0.67 â†’ 0.75
+Confidence: 0.67 → 0.75
 Impact:
-- Injection: STANDARD â†’ STANDARD (no change)
-- Autonomy: moderate â†’ limited
-- Checkpoint: 5 calls/HIGH â†’ 5 calls/HIGH/schema
-- Brain: 3 files â†’ 7 files
+- Injection: STANDARD → STANDARD (no change)
+- Autonomy: moderate → limited
+- Checkpoint: 5 calls/HIGH → 5 calls/HIGH/schema
+- Brain: 3 files → 7 files
 ```
 
 ### Session Start Block
@@ -722,30 +720,30 @@ Active Behaviors:
 When risk flags are injected (ENTERPRISE or when compliance-relevant):
 
 ```
-[PII] â€” Change touches personally identifiable information
-[PHI] â€” Change touches protected health information
-[PAYMENT] â€” Change touches payment card data
-[AUTH_CRITICAL] â€” Change touches authentication/authorization
-[AUDIT_REQUIRED] â€” Change requires audit trail entry
-[DATA_SOVEREIGNTY] â€” Change affects data residency/cross-border data flow
-[REGULATED] â€” Change subject to regulatory compliance
+[PII] — Change touches personally identifiable information
+[PHI] — Change touches protected health information
+[PAYMENT] — Change touches payment card data
+[AUTH_CRITICAL] — Change touches authentication/authorization
+[AUDIT_REQUIRED] — Change requires audit trail entry
+[DATA_SOVEREIGNTY] — Change affects data residency/cross-border data flow
+[REGULATED] — Change subject to regulatory compliance
 ```
 
 
-## P11 â€” QUALITY GATES
+## P11 — QUALITY GATES
 
-### P11.1 â€” Tier 1: Hard Block Gates
+### P11.1 — Tier 1: Hard Block Gates
 
 These gates must pass before any work can proceed. Failure blocks all operations.
 
 - [ ] Scale detected at session start (or explicitly set by user)
 - [ ] Behavior configuration matches detected scale
-- [ ] Compliance keyword detection â†’ ENTERPRISE classification applied
+- [ ] Compliance keyword detection → ENTERPRISE classification applied
 - [ ] Universal rules applied (all 10 from P8)
 - [ ] Brain output requirements met per scale (from P6.1)
 - [ ] Scale confidence > 0 or manually overridden
 
-### P11.2 â€” Tier 2: Standard Gates
+### P11.2 — Tier 2: Standard Gates
 
 These gates apply during execution. Failure triggers warning and re-evaluation, but does not block.
 
@@ -759,7 +757,7 @@ These gates apply during execution. Failure triggers warning and re-evaluation, 
 - [ ] Output format matches scale requirements
 - [ ] Scale declaration present in output (at required frequency)
 
-### P11.3 â€” Scale-Specific Quality Gates
+### P11.3 — Scale-Specific Quality Gates
 
 **NANO gates:**
 - [ ] WorkType classified on every interaction
@@ -810,7 +808,7 @@ These gates apply during execution. Failure triggers warning and re-evaluation, 
 - [ ] COMPLIANCE_MAP.md and AUDIT_INDEX.md maintained
 - [ ] Compliance flags auto-injected: [PII], [PHI], [PAYMENT], [AUTH_CRITICAL], [AUDIT_REQUIRED]
 - [ ] Every SCHEMA/CONTRACT/CONFIG/INFRA change explicitly audit-logged
-- [ ] Breaking change gate enforced â€” CRITICAL+IRREVERSIBLE requires migration plan
+- [ ] Breaking change gate enforced — CRITICAL+IRREVERSIBLE requires migration plan
 - [ ] Full+COMPLIANCE injection always
 - [ ] Snapshots mandatory per PR
 - [ ] Pre-write check includes regulatory impact assessment
@@ -818,7 +816,7 @@ These gates apply during execution. Failure triggers warning and re-evaluation, 
 - [ ] No auto-approve for any write operation
 - [ ] Handoff includes compliance summary and audit reference
 
-### P11.4 â€” Gate Failure Handling
+### P11.4 — Gate Failure Handling
 
 | Gate Tier | Failure | Action | Escalation |
 |---|---|---|---|
@@ -833,7 +831,7 @@ These gates apply during execution. Failure triggers warning and re-evaluation, 
 | Tier 2 (Standard) | Injection level wrong | Adjust injection to correct level | Auto-fix |
 | Tier 2 (Standard) | Checkpoint frequency wrong | Adjust checkpoint config | Auto-fix |
 
-### P11.5 â€” Gate Audit Log
+### P11.5 — Gate Audit Log
 
 Every gate check and gate failure is logged to the audit trail (ENTERPRISE) or internal ledger (all others):
 
@@ -849,26 +847,26 @@ Timestamp: <ISO 8601>
 ### Self-Audit Checklist
 
 ```
-Scale detected?                  â†’ yes / no (HARD BLOCK)
-Behavior matches scale?          â†’ yes / no (HARD BLOCK)
-Compliance flagged?              â†’ yes / no / N/A (HARD BLOCK if applicable)
-Brain output requirements met?   â†’ yes / no (HARD BLOCK)
-Universal rules applied?         â†’ yes / no (HARD BLOCK)
-Confidence acceptable?           â†’ yes / no
-Scale transitions logged?        â†’ yes / no / N/A
-No over-classification?          â†’ yes / no
-Re-evaluation on signal change?  â†’ yes / no
-Injection level correct?         â†’ yes / no
-Checkpoint frequency correct?    â†’ yes / no
-Error recovery depth correct?    â†’ yes / no
-Pre-write verification depth?    â†’ yes / no
-Output format correct?           â†’ yes / no
+Scale detected?                  → yes / no (HARD BLOCK)
+Behavior matches scale?          → yes / no (HARD BLOCK)
+Compliance flagged?              → yes / no / N/A (HARD BLOCK if applicable)
+Brain output requirements met?   → yes / no (HARD BLOCK)
+Universal rules applied?         → yes / no (HARD BLOCK)
+Confidence acceptable?           → yes / no
+Scale transitions logged?        → yes / no / N/A
+No over-classification?          → yes / no
+Re-evaluation on signal change?  → yes / no
+Injection level correct?         → yes / no
+Checkpoint frequency correct?    → yes / no
+Error recovery depth correct?    → yes / no
+Pre-write verification depth?    → yes / no
+Output format correct?           → yes / no
 ```
 
 
-## P13 â€” COMPATIBILITY WITH SYNC ENGINES
+## P13 — COMPATIBILITY WITH SYNC ENGINES
 
-### P13.1 â€” Scale-Aware Sync
+### P13.1 — Scale-Aware Sync
 
 | Sync Engine | NANO | MICRO | SMALL | MEDIUM | LARGE | ENTERPRISE |
 |---|---|---|---|---|---|---|
@@ -877,7 +875,7 @@ Output format correct?           â†’ yes / no
 | Config sync | None | None | Per session | Per session | Per service | Cross-repo |
 | State sync | None | None | Per session | Per session + persisted | Per session + cross-svc | Per session + compliance state |
 
-### P13.2 â€” Scale-Aware Caching
+### P13.2 — Scale-Aware Caching
 
 | Cache | NANO | MICRO | SMALL | MEDIUM | LARGE | ENTERPRISE |
 |---|---|---|---|---|---|---|

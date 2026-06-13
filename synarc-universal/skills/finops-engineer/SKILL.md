@@ -1,12 +1,10 @@
-﻿---
+---
 name: finops-engineer
 description: FinOps Engineer
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
 # FinOps Engineer
@@ -18,41 +16,41 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 
 
 
-## P0 — INTELLIGENCE AUGMENTATION
+## P0 � INTELLIGENCE AUGMENTATION
 
-### P0.1 — Token Optimization Defaults
+### P0.1 � Token Optimization Defaults
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
+**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process � output the result.
 
 **COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
 
 **Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
 
-### P0.2 — Adaptive Learning Triggers
+### P0.2 � Adaptive Learning Triggers
 
 **Learning Triggers:**
-- New pattern discovered in this domain → store in brain/error_patterns/ or brain/decisions/
-- Fix validated → confidence += 1 in brain/error_patterns/
-- Fix failed → create new entry with attempted approaches
-- Human correction → store incorrect + correct paths with disambiguator
+- New pattern discovered in this domain ? store in brain/error_patterns/ or brain/decisions/
+- Fix validated ? confidence += 1 in brain/error_patterns/
+- Fix failed ? create new entry with attempted approaches
+- Human correction ? store incorrect + correct paths with disambiguator
 
 **Knowledge Storage:**
 - File analysis: stored in brain/file_analysis/[filename].json (permanent)
 - Domain conventions: stored in brain/ (update on every discovery)
 - Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
 
-### P0.3 — Smart Auto-Prompt Rules
+### P0.3 � Smart Auto-Prompt Rules
 
-**Optimistic Action Threshold:** > 80% confidence → act immediately. 60-80% → brief confirmation. < 60% → clarify first.
+**Optimistic Action Threshold:** > 80% confidence ? act immediately. 60-80% ? brief confirmation. < 60% ? clarify first.
 
 **Auto-Complete Triggers:**
-- Error received → lookup pattern, propose fix immediately
-- File named → load file, offer action suggestions
-- Exception thrown → analyze stack, propose fix with confidence score
+- Error received ? lookup pattern, propose fix immediately
+- File named ? load file, offer action suggestions
+- Exception thrown ? analyze stack, propose fix with confidence score
 
 **Prefetch Protocol:** After each action, predict next file from import graph. Load file_analysis/ for predicted file. Warm cache with likely next actions.
 
-**Reduced Round-Trips:** Every task MUST complete in ≤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
+**Reduced Round-Trips:** Every task MUST complete in = 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
 
 
 ## P2: FinOps Philosophy
@@ -288,12 +286,12 @@ Cost per Active User: $0.50/month
 
 ```
 Cost per Active User Breakdown:
-├── Compute: $0.20 (40%)
-├── Storage: $0.10 (20%)
-├── Database: $0.08 (16%)
-├── Networking: $0.05 (10%)
-├── Serverless: $0.04 (8%)
-└── Other: $0.03 (6%)
++-- Compute: $0.20 (40%)
++-- Storage: $0.10 (20%)
++-- Database: $0.08 (16%)
++-- Networking: $0.05 (10%)
++-- Serverless: $0.04 (8%)
++-- Other: $0.03 (6%)
 ```
 
 ### 4.6 Forecasting
@@ -301,7 +299,7 @@ Cost per Active User Breakdown:
 **Methods of Cloud Cost Forecasting:**
 
 1. **Linear Extrapolation**: Low-effort, rough estimate. Use for steady-state workloads.
-   - `Forecast = Current Spend × (1 + Growth Rate)`
+   - `Forecast = Current Spend � (1 + Growth Rate)`
 
 2. **Time Series Forecasting**: ARIMA, Exponential Smoothing. Use for workloads with seasonal patterns.
    - Accounts for weekly, monthly, seasonal cycles.
@@ -354,8 +352,8 @@ Build automated reporting pipelines:
 
 **Data Pipeline:**
 ```
-Cloud Provider API → Cost Export (CSV/Parquet) → Data Lake (S3/Blob/GCS)
-→ ETL (Athena/BigQuery/Synapse) → Dashboard (QuickSight/Power BI/Looker)
+Cloud Provider API ? Cost Export (CSV/Parquet) ? Data Lake (S3/Blob/GCS)
+? ETL (Athena/BigQuery/Synapse) ? Dashboard (QuickSight/Power BI/Looker)
 ```
 
 **Automation Triggers:**
@@ -365,9 +363,9 @@ Cloud Provider API → Cost Export (CSV/Parquet) → Data Lake (S3/Blob/GCS)
 - On-threshold: Alert when spend exceeds budget
 
 **Tooling for Automation:**
-- AWS: Cost and Usage Report (CUR) → Athena → QuickSight
-- Azure: Cost Export → Power BI
-- GCP: Billing Export BigQuery → Looker
+- AWS: Cost and Usage Report (CUR) ? Athena ? QuickSight
+- Azure: Cost Export ? Power BI
+- GCP: Billing Export BigQuery ? Looker
 - Third-party: CloudHealth, Cloudability, Vantage APIs
 
 ### 4.9 Cost Intelligence
@@ -619,9 +617,9 @@ Storage: $0.001/GB/month (Glacier Deep Archive) vs $0.023/GB/month (Standard)
 | Unattached volumes | Waste identification | Any |
 
 
-## 8 — UNIT ECONOMICS AND VALUE DRIVERS
+## 8 � UNIT ECONOMICS AND VALUE DRIVERS
 
-### 8.1 — Unit Economics Framework
+### 8.1 � Unit Economics Framework
 
 **Unit Economics Definition:**
 
@@ -629,7 +627,7 @@ Unit economics measures the cost and revenue associated with a single unit of bu
 
 ```
 Gross Margin per Unit = Revenue per Unit - Cost per Unit
-LTV (Lifetime Value) = Gross Margin per Unit × Average Customer Lifetime
+LTV (Lifetime Value) = Gross Margin per Unit � Average Customer Lifetime
 CAC (Customer Acquisition Cost) = Total Sales and Marketing Costs / New Customers Acquired
 LTV:CAC Ratio = LTV / CAC
 Payback Period = CAC / Monthly Gross Margin per Customer
@@ -644,7 +642,7 @@ Payback Period = CAC / Monthly Gross Margin per Customer
 | Gross Margin | > 60% | 40-60% | < 40% |
 | Churn | < 5% monthly | 5-10% monthly | > 10% monthly |
 
-### 8.2 — Cloud Cost per Unit
+### 8.2 � Cloud Cost per Unit
 
 **Calculating Cost per Feature:**
 
@@ -675,7 +673,7 @@ for feature, calls in feature_api_calls.items():
 2. Medium-cost features (20-60%) get periodic review
 3. Low-cost features (bottom 40%) are left as-is unless obvious waste
 
-### 8.3 — Margins by Service Tier
+### 8.3 � Margins by Service Tier
 
 **Cost-to-Serve Analysis:**
 
@@ -717,7 +715,7 @@ for tier, costs in service_tiers.items():
 
 Free tier is a customer acquisition channel, not a profit center. If free tier conversion rate is < 5%, reconsider free tier offering.
 
-### 8.4 — Optimization ROI Framework
+### 8.4 � Optimization ROI Framework
 
 **Prioritizing Optimization Projects:**
 

@@ -1,9 +1,6 @@
 ---
 name: sdet-engineer
 schema: skill-pack/v1
-skill_type:
-  - capability
-  - workflow
 dependencies:
   - synarc-core: ">=6.0.0"
   - testing-strategy: ">=2.0.0"

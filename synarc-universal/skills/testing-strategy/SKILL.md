@@ -1,23 +1,21 @@
-﻿---
+---
 name: testing-strategy
-description: Testing Strategy â€” Risk-Based Testing & Coverage
+description: Testing Strategy — Risk-Based Testing & Coverage
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# Testing Strategy â€” Risk-Based Testing & Coverage
+# Testing Strategy — Risk-Based Testing & Coverage
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
 
-Test requirements scale with risk â€” a LOW-risk ANALYSIS change needs less verification than a HIGH-risk CONTRACT change. These rules are additive to any project-specific test conventions.
+Test requirements scale with risk — a LOW-risk ANALYSIS change needs less verification than a HIGH-risk CONTRACT change. These rules are additive to any project-specific test conventions.
 
 
-## P2 â€” RISK-BASED TESTING APPROACH
+## P2 — RISK-BASED TESTING APPROACH
 
 ### Core Principle
 
@@ -98,7 +96,7 @@ Reassess risk classification when:
 - Change modifies retry, timeout, or circuit-breaker logic
 
 
-## P4 â€” TEST TYPE SELECTION FRAMEWORK
+## P4 — TEST TYPE SELECTION FRAMEWORK
 
 ### Selection by WorkType
 
@@ -143,23 +141,23 @@ Reassess risk classification when:
 ### Test Type Decision Matrix
 
 ```
-Is new logic added?           â†’ Unit test required
-Does change touch I/O?        â†’ Integration test required
-Does API/event contract change? â†’ Contract test required
-Is change CRITICAL risk?      â†’ E2E smoke test required
-Is this a FIX?                â†’ Reproduction test required
-Is this a SCHEMA change?      â†’ Migration test required
-Is this a CONFIG change?      â†’ Startup validation test required
-Is this INFRA change?         â†’ Idempotency test required
-Is this an INCIDENT?          â†’ Reproduction test required
+Is new logic added?           → Unit test required
+Does change touch I/O?        → Integration test required
+Does API/event contract change? → Contract test required
+Is change CRITICAL risk?      → E2E smoke test required
+Is this a FIX?                → Reproduction test required
+Is this a SCHEMA change?      → Migration test required
+Is this a CONFIG change?      → Startup validation test required
+Is this INFRA change?         → Idempotency test required
+Is this an INCIDENT?          → Reproduction test required
 
-If 0 required tests:          â†’ No test needed (documentation/content)
-If 1+ required tests:         â†’ All must pass before merge
-If CRITICAL risk:             â†’ Add performance + security tests
+If 0 required tests:          → No test needed (documentation/content)
+If 1+ required tests:         → All must pass before merge
+If CRITICAL risk:             → Add performance + security tests
 ```
 
 
-## P6 â€” TEST REQUIREMENTS BY WORKTYPE
+## P6 — TEST REQUIREMENTS BY WORKTYPE
 
 ### FEATURE
 
@@ -178,9 +176,9 @@ If CRITICAL risk:             â†’ Add performance + security tests
 - If the feature includes a state machine: all states and transitions tested
 
 **Examples:**
-- Add user registration endpoint â†’ unit test validation logic, integration test DB insert, contract test endpoint request/response, E2E for full registration flow
-- Add caching layer â†’ unit test cache hit/miss/expiry, integration test with real cache, performance test for latency improvement
-- Add reporting dashboard â†’ unit test aggregation logic, integration test data query, snapshot test dashboard render
+- Add user registration endpoint → unit test validation logic, integration test DB insert, contract test endpoint request/response, E2E for full registration flow
+- Add caching layer → unit test cache hit/miss/expiry, integration test with real cache, performance test for latency improvement
+- Add reporting dashboard → unit test aggregation logic, integration test data query, snapshot test dashboard render
 
 ### FIX
 
@@ -198,17 +196,17 @@ If CRITICAL risk:             â†’ Add performance + security tests
 - If the bug was a logic error: add tests for all related edge cases
 
 **Examples:**
-- Fix off-by-one in pagination â†’ test page boundaries, last page, empty page
-- Fix null pointer on user profile â†’ test user with missing fields
-- Fix race condition in inventory update â†’ integration test with concurrent requests
-- Fix wrong currency conversion â†’ test with multiple currency pairs, zero values, very large values
+- Fix off-by-one in pagination → test page boundaries, last page, empty page
+- Fix null pointer on user profile → test user with missing fields
+- Fix race condition in inventory update → integration test with concurrent requests
+- Fix wrong currency conversion → test with multiple currency pairs, zero values, very large values
 
 ### REFACTOR
 
 **Minimum requirements:**
 - No new tests if behavior is unchanged
 - All existing tests pass without modification
-- If any test changes: the change is not a pure refactor â€” classify as FEATURE or FIX
+- If any test changes: the change is not a pure refactor — classify as FEATURE or FIX
 
 **Quality checks:**
 - Verify that the public API and behavior are identical before and after
@@ -238,10 +236,10 @@ If CRITICAL risk:             â†’ Add performance + security tests
 - Performance: migration runs within acceptable time on production-scale data
 
 **Examples:**
-- Add a column â†’ test that existing rows get the default, new rows can set the column, rollback removes the column without affecting data
-- Remove a column â†’ test that dependent queries fail clearly, rollback restores the column, archived data is not affected
-- Rename a column â†’ test that old and new queries work during transition, rollback restores the old name
-- Add a table â†’ test that migrations apply in order, seed data is valid, rollback removes the table
+- Add a column → test that existing rows get the default, new rows can set the column, rollback removes the column without affecting data
+- Remove a column → test that dependent queries fail clearly, rollback restores the column, archived data is not affected
+- Rename a column → test that old and new queries work during transition, rollback restores the old name
+- Add a table → test that migrations apply in order, seed data is valid, rollback removes the table
 
 ### CONTRACT
 
@@ -259,11 +257,11 @@ If CRITICAL risk:             â†’ Add performance + security tests
 - Semantic versioning is respected: major for breaking, minor for additive, patch for fixes
 
 **Examples:**
-- REST API â†’ Pact contract per consumer, OpenAPI/Swagger validation
-- gRPC â†’ Protobuf contract, backward compatibility checked with buf
-- Event/Message â†’ Avro/Protobuf schema registry, compatibility check on publish
-- GraphQL â†’ Schema diff, field deprecation before removal
-- Shared library â†’ public API surface test, binary compatibility with previous version
+- REST API → Pact contract per consumer, OpenAPI/Swagger validation
+- gRPC → Protobuf contract, backward compatibility checked with buf
+- Event/Message → Avro/Protobuf schema registry, compatibility check on publish
+- GraphQL → Schema diff, field deprecation before removal
+- Shared library → public API surface test, binary compatibility with previous version
 
 ### CONFIG
 
@@ -280,11 +278,11 @@ If CRITICAL risk:             â†’ Add performance + security tests
 - Environment-specific: test that per-environment overrides work correctly
 
 **Examples:**
-- Feature flag change â†’ test feature enabled, disabled, no flag set
-- Rate limit change â†’ test limit applied, limit removed, limit at boundary
-- Log level change â†’ test that log output level changes correctly
-- Timeout change â†’ test that timeout is respected and overridable
-- Connection string change â†’ test that reconnection works with new string
+- Feature flag change → test feature enabled, disabled, no flag set
+- Rate limit change → test limit applied, limit removed, limit at boundary
+- Log level change → test that log output level changes correctly
+- Timeout change → test that timeout is respected and overridable
+- Connection string change → test that reconnection works with new string
 
 ### INFRA
 
@@ -294,18 +292,18 @@ If CRITICAL risk:             â†’ Add performance + security tests
 - Rollback test: destroy and recreate the resource cleanly
 
 **Quality checks:**
-- Declarative infrastructure: apply â†’ verify state â†’ apply again â†’ verify no changes
+- Declarative infrastructure: apply → verify state → apply again → verify no changes
 - Resource creation: test with minimum required properties
 - Resource deletion: test that dependent resources are handled correctly
 - Permissions: test that the service principal has required permissions
 - Secrets: test that secrets are not exposed in logs or state files
 
 **Examples:**
-- Terraform module â†’ init, plan, apply, verify state, second apply is no-op, destroy
-- Docker Compose â†’ start services, verify health, stop, verify cleanup
-- Helm chart â†’ install, upgrade, rollback, verify
-- Kubernetes manifest â†’ apply, verify pod/deployment/service, delete, verify cleanup
-- CI pipeline â€” run pipeline, verify each step, verify cleanup
+- Terraform module → init, plan, apply, verify state, second apply is no-op, destroy
+- Docker Compose → start services, verify health, stop, verify cleanup
+- Helm chart → install, upgrade, rollback, verify
+- Kubernetes manifest → apply, verify pod/deployment/service, delete, verify cleanup
+- CI pipeline — run pipeline, verify each step, verify cleanup
 
 ### INCIDENT
 
@@ -321,13 +319,13 @@ If CRITICAL risk:             â†’ Add performance + security tests
 - If hotfix: follow-up PR adds full test coverage within 48 hours
 
 **Examples:**
-- Service outage due to DB connection exhaustion â†’ reproduction with max connections, verification with connection pool limit, monitoring assertion on connection pool metrics
-- Data corruption due to concurrent write â†’ reproduction with concurrent writes, verification with locking/transaction, monitoring assertion on integrity check
-- Auth bypass â†’ reproduction with missing token edge case, verification with correct validation, monitoring assertion on auth failure metrics
-- Memory leak â†’ reproduction with sustained load, verification with fix applied, monitoring assertion on memory metrics
+- Service outage due to DB connection exhaustion → reproduction with max connections, verification with connection pool limit, monitoring assertion on connection pool metrics
+- Data corruption due to concurrent write → reproduction with concurrent writes, verification with locking/transaction, monitoring assertion on integrity check
+- Auth bypass → reproduction with missing token edge case, verification with correct validation, monitoring assertion on auth failure metrics
+- Memory leak → reproduction with sustained load, verification with fix applied, monitoring assertion on memory metrics
 
 
-## P8 â€” FLAKY TEST REMEDIATION
+## P8 — FLAKY TEST REMEDIATION
 
 ### Detection
 
@@ -369,30 +367,30 @@ on nightly:
 
 ### Quarantine Protocol
 
-**Step 1 â€” Detect and report:**
+**Step 1 — Detect and report:**
 - CI detects flaky test (fails then passes on retry)
 - Test is logged to flaky test ledger
 - Notification sent to team channel
 
-**Step 2 â€” Triage (within 24 hours):**
+**Step 2 — Triage (within 24 hours):**
 - Assign owner based on test location (module owner)
 - Classify root cause using classification table above
 - Determine fix approach
 - If no clear root cause: mark as "needs investigation"
 
-**Step 3 â€” Quarantine decision:**
+**Step 3 — Quarantine decision:**
 - If fix expected within 48 hours: leave in suite, skip on flaky retry
 - If fix expected > 48 hours: move to quarantine suite
 - If 3+ non-reproducible failures: delete test
 - Quarantine suite runs nightly but does not block any gate
 
-**Step 4 â€” Fix:**
+**Step 4 — Fix:**
 - Apply targeted fix based on root cause
 - Verify fix: test passes 10 consecutive runs in CI
 - Move test back to main suite
 - Document root cause and fix in test ledger
 
-**Step 5 â€” Track:**
+**Step 5 — Track:**
 - Maintain a flaky test ledger: date, test name, root cause, fix, owner
 - Weekly review of flaky test metrics
 - Score teams on flaky test count trend (downward is good)
@@ -478,52 +476,52 @@ Before deletion:
 | CI-agnostic | BuildPulse, FlakyTestTracker, TestFlaky |
 
 
-## P10 â€” TEST EXECUTION IN CI/CD
+## P10 — TEST EXECUTION IN CI/CD
 
 ### Pipeline Stages
 
-**Stage 1 â€” Pre-flight (0-30 seconds):**
+**Stage 1 — Pre-flight (0-30 seconds):**
 - Lint and static analysis
 - Type checking
 - Dependency vulnerability scan (fail on CRITICAL/HIGH)
 - Build compilation
 - No tests run at this stage
 
-**Stage 2 â€” Unit tests (1-5 minutes):**
+**Stage 2 — Unit tests (1-5 minutes):**
 - All unit tests, parallelized by module
 - Max time depends on project scale
 - Fail fast: stop on first failure (configurable)
 - Coverage report generated
 
-**Stage 3 â€” Integration tests (2-10 minutes):**
+**Stage 3 — Integration tests (2-10 minutes):**
 - All integration tests, sharded by database/resource
 - Testcontainers or CI-managed services
 - Retry flaky tests once automatically
 - Coverage report merged with unit
 
-**Stage 4 â€” Contract tests (2-5 minutes):**
+**Stage 4 — Contract tests (2-5 minutes):**
 - Consumer contract verification
 - Provider contract verification
 - Schema compatibility check
 - Published to contract broker
 
-**Stage 5 â€” E2E smoke tests (5-15 minutes):**
+**Stage 5 — E2E smoke tests (5-15 minutes):**
 - Critical user journeys only (not full E2E suite)
 - Deployed to preview/staging environment
 - Run in parallel by journey
 
-**Stage 6 â€” Coverage gate (30 seconds):**
+**Stage 6 — Coverage gate (30 seconds):**
 - Line coverage >= threshold
 - Branch coverage >= threshold
 - Mutation score >= threshold
 - Report generated and published
 
-**Stage 7 â€” Performance (10-30 minutes) â€” nightly only:**
+**Stage 7 — Performance (10-30 minutes) — nightly only:**
 - Load test on critical endpoints
 - Latency comparison against baseline
 - Throughput degradation detection
 
-**Stage 8 â€” Security (5-15 minutes) â€” nightly only:**
+**Stage 8 — Security (5-15 minutes) — nightly only:**
 - SAST scan
 - DAST scan on staging
 - Dependency vulnerability scan (full)
@@ -615,32 +613,32 @@ Automatically skip known flaky tests from the PR gate. Run them in a nightly qua
 
 | Gate | Stages | Max Time | Blocking | Retry Policy |
 |---|---|---|---|---|
-| PR (blocks merge) | Lint â†’ Unit â†’ Integration â†’ Contract â†’ Coverage | 15 min | Yes | 1 retry for flaky, fail on second |
-| Merge Queue | Full Unit+Integration â†’ E2E Smoke â†’ Perf Spot Check | 25 min | Yes | No retry â€” must pass clean |
-| Nightly | Full E2E â†’ Load â†’ Mutation â†’ Vuln Scan â†’ All Contracts | 60 min | No (file bugs) | 3 retries per flaky test |
+| PR (blocks merge) | Lint → Unit → Integration → Contract → Coverage | 15 min | Yes | 1 retry for flaky, fail on second |
+| Merge Queue | Full Unit+Integration → E2E Smoke → Perf Spot Check | 25 min | Yes | No retry — must pass clean |
+| Nightly | Full E2E → Load → Mutation → Vuln Scan → All Contracts | 60 min | No (file bugs) | 3 retries per flaky test |
 | Release | Full Nightly + Security Audit + Pen Test | 120 min | Yes | No retry |
 | On-Demand | Full suite, any branch | 120 min | No | As configured |
 
 ### Test Failure Response Protocol
 
 **PR failures:**
-1. Unit / Integration / Contract failure â†’ block merge, notify author
+1. Unit / Integration / Contract failure → block merge, notify author
 2. Author has 2 hours to fix during business hours, next morning otherwise
 3. If not fixed within SLA: revert the change, reassign
-4. Coverage below threshold â†’ block merge, author must add tests or justify
-5. Perf regression > 5% â†’ block merge, author must optimize or document acceptance
+4. Coverage below threshold → block merge, author must add tests or justify
+5. Perf regression > 5% → block merge, author must optimize or document acceptance
 
 **Merge queue failures:**
-1. Any failure â†’ remove from merge queue
+1. Any failure → remove from merge queue
 2. Author is notified before the next attempt
 3. Same fix timeline as PR failures
-4. Three consecutive failures â†’ file a bug, notify tech lead
+4. Three consecutive failures → file a bug, notify tech lead
 
 **Nightly failures:**
-1. E2E failure â†’ file a bug, no block unless 3+ consecutive nights
-2. Perf regression â†’ file a bug, add to perf tracking dashboard
-3. Security vulnerability â†’ CRITICAL: page on-call; HIGH: file bug with 48h SLA
-4. Mutation score drop â†’ file a bug, add to tech debt tracker
+1. E2E failure → file a bug, no block unless 3+ consecutive nights
+2. Perf regression → file a bug, add to perf tracking dashboard
+3. Security vulnerability → CRITICAL: page on-call; HIGH: file bug with 48h SLA
+4. Mutation score drop → file a bug, add to tech debt tracker
 
 ### Test Result Artifacts
 
@@ -653,7 +651,7 @@ Every CI run must produce:
 - Environment information (OS, language version, dependency versions)
 
 
-## P12 â€” PERFORMANCE TESTING METHODOLOGY
+## P12 — PERFORMANCE TESTING METHODOLOGY
 
 ### When to Performance Test
 
@@ -731,7 +729,7 @@ Test how the system performs as resources are added (horizontal or vertical scal
 | Gate | Test | Threshold | Action |
 |---|---|---|---|
 | PR | None required | N/A | No performance test in PR gate |
-| Merge Queue | Spot check on changed endpoint | p95 latency Â± 10% of baseline | Warn if exceeded |
+| Merge Queue | Spot check on changed endpoint | p95 latency ± 10% of baseline | Warn if exceeded |
 | Nightly | Full load test | p50 < 200ms, p99 < 1000ms | File bug if exceeded |
 | Release | Full load + stress + 1h soak | All thresholds | Block if exceeded |
 
@@ -758,7 +756,7 @@ Test how the system performs as resources are added (horizontal or vertical scal
 | Garbage collection | Latency spikes periodically | Too many short-lived objects |
 
 
-## P14 â€” TESTING IN PRODUCTION
+## P14 — TESTING IN PRODUCTION
 
 ### Why Test in Production
 
@@ -781,7 +779,7 @@ Testing in production is not a substitute for pre-production testing. It complem
 
 **Smoke tests in production:**
 - Run a subset of smoke tests against the production environment after every deploy
-- Test the critical user journey: login â†’ search â†’ action â†’ logout
+- Test the critical user journey: login → search → action → logout
 - Verify that the deployment was successful and the service is healthy
 - Fail the deployment pipeline if production smoke tests fail
 
@@ -824,7 +822,7 @@ Testing in production is not a substitute for pre-production testing. It complem
 | A/B test comparison | Per experiment | Low | Experimentation platform |
 
 
-## P16 â€” TEST REPORTING AND METRICS
+## P16 — TEST REPORTING AND METRICS
 
 ### Metrics to Track
 
@@ -897,7 +895,7 @@ Score: 90-100 (excellent), 80-89 (good), 70-79 (needs improvement), < 70 (critic
 | Executive summary | Leadership | Quarterly | PDF / slide deck |
 
 
-## P18 â€” TEST ORGANIZATION BY SCALE
+## P18 — TEST ORGANIZATION BY SCALE
 
 ### Directory Structure
 
@@ -941,10 +939,10 @@ Tags enable selective test execution in CI. Standard tags:
 
 | Tag | Meaning | Used By |
 |---|---|---|
-| `unit` | Unit test â€” no I/O, fast | PR gate |
-| `integration` | Integration test â€” uses real I/O | PR gate |
-| `contract` | Contract test â€” service boundary | PR gate |
-| `e2e` | End-to-end test â€” full system | Merge queue, nightly |
+| `unit` | Unit test — no I/O, fast | PR gate |
+| `integration` | Integration test — uses real I/O | PR gate |
+| `contract` | Contract test — service boundary | PR gate |
+| `e2e` | End-to-end test — full system | Merge queue, nightly |
 | `smoke` | Critical path validation | Deploy pipeline |
 | `slow` | Test takes > 5 seconds | Nightly, not PR |
 | `flaky` | Known flaky test | Quarantine, nightly only |
@@ -968,7 +966,7 @@ Integration and E2E tests should additionally document:
 - Known failure modes
 
 
-## P20 â€” TOOL REFERENCE
+## P20 — TOOL REFERENCE
 
 ### Testing Frameworks by Language
 
@@ -979,7 +977,7 @@ Integration and E2E tests should additionally document:
 | JavaScript/TypeScript | Jest, Vitest, Mocha | Supertest, Testcontainers | Pact, MSW | Playwright, Cypress |
 | Python | pytest, unittest | pytest-docker, Testcontainers | Pact | Playwright, Selenium |
 | Go | testing, testify | testcontainers-go | Pact | Playwright, Selenium |
-| Rust | #[test], proptest | testcontainers-rs | Pact | â€” |
+| Rust | #[test], proptest | testcontainers-rs | Pact | — |
 | Ruby | RSpec, Minitest | Database Cleaner, VCR | Pact | Capybara, Selenium |
 | C# | xUnit, NUnit, MSTest | Testcontainers, WebApplicationFactory | Pact | Playwright, Selenium |
 
@@ -1019,4 +1017,4 @@ Integration and E2E tests should additionally document:
 | Best for | Microservices HTTP/gRPC | Spring Boot ecosystem | Event-driven architecture |
 
 
-**Synarc S2 risk floors, S6 error intelligence, S13 quality gates, S17 zero-tolerance violations apply. Test requirements scale with risk â€” never skip tests for HIGH+ changes.**
+**Synarc S2 risk floors, S6 error intelligence, S13 quality gates, S17 zero-tolerance violations apply. Test requirements scale with risk — never skip tests for HIGH+ changes.**

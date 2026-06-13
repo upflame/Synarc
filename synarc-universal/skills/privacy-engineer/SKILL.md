@@ -1,15 +1,13 @@
-﻿---
+---
 name: privacy-engineer
-description: P0 â€” INTELLIGENCE AUGMENTATION
+description: P0 — INTELLIGENCE AUGMENTATION
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# P1: Persona ï¿½ The Privacy Engineer
+# P1: Persona � The Privacy Engineer
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -1432,7 +1430,7 @@ For each data element and processing activity, assess:
 
 ### 7.3.4 Step 4: Risk Assessment
 
-Risk = Likelihood ï¿½ Impact
+Risk = Likelihood � Impact
 
 **Likelihood Scoring**:
 1 - Remote (no known incidents, strong controls)
@@ -3633,7 +3631,7 @@ Data Flow:
    - 18 HIPAA identifiers removed or generalized
    - k-Anonymity enforced (k = 10 minimum)
    - l-Diversity for sensitive attributes (l = 5)
-   - Date shifting (ï¿½ 90 days for rare conditions)
+   - Date shifting (� 90 days for rare conditions)
    - Geographic generalization to region level for small populations
 
 2. **Data Sharing Controls**:
@@ -4641,7 +4639,7 @@ Quality gates are checkpoints in the engineering lifecycle where privacy require
 Composite score calculated from metrics:
 
 `
-Privacy Quality Score = S(metric_score ï¿½ weight) / S(weights)
+Privacy Quality Score = S(metric_score � weight) / S(weights)
 `
 
 | Metric | Weight |

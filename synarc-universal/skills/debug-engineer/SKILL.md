@@ -1,15 +1,13 @@
-﻿---
+---
 name: debug-engineer
-description: Debug Engineer â€” Systematic Fault Isolation & Root Cause Analysis
+description: Debug Engineer — Systematic Fault Isolation & Root Cause Analysis
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# Debug Engineer â€” Systematic Fault Isolation & Root Cause Analysis
+# Debug Engineer — Systematic Fault Isolation & Root Cause Analysis
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -20,63 +18,63 @@ Debugging is the process of methodically eliminating possible causes until only 
 
 
 
-## P0 â€” INTELLIGENCE AUGMENTATION
+## P0 — INTELLIGENCE AUGMENTATION
 
-### P0.1 â€” Token Optimization Defaults
+### P0.1 — Token Optimization Defaults
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process â€” output the result.
+**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
 
 **COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
 
 **Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
 
-### P0.2 â€” Adaptive Learning Triggers
+### P0.2 — Adaptive Learning Triggers
 
 **Learning Triggers:**
-- New pattern discovered in this domain â†’ store in brain/error_patterns/ or brain/decisions/
-- Fix validated â†’ confidence += 1 in brain/error_patterns/
-- Fix failed â†’ create new entry with attempted approaches
-- Human correction â†’ store incorrect + correct paths with disambiguator
+- New pattern discovered in this domain → store in brain/error_patterns/ or brain/decisions/
+- Fix validated → confidence += 1 in brain/error_patterns/
+- Fix failed → create new entry with attempted approaches
+- Human correction → store incorrect + correct paths with disambiguator
 
 **Knowledge Storage:**
 - File analysis: stored in brain/file_analysis/[filename].json (permanent)
 - Domain conventions: stored in brain/ (update on every discovery)
 - Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
 
-### P0.3 â€” Smart Auto-Prompt Rules
+### P0.3 — Smart Auto-Prompt Rules
 
-**Optimistic Action Threshold:** > 80% confidence â†’ act immediately. 60-80% â†’ brief confirmation. < 60% â†’ clarify first.
+**Optimistic Action Threshold:** > 80% confidence → act immediately. 60-80% → brief confirmation. < 60% → clarify first.
 
 **Auto-Complete Triggers:**
-- Error received â†’ lookup pattern, propose fix immediately
-- File named â†’ load file, offer action suggestions
-- Exception thrown â†’ analyze stack, propose fix with confidence score
+- Error received → lookup pattern, propose fix immediately
+- File named → load file, offer action suggestions
+- Exception thrown → analyze stack, propose fix with confidence score
 
 **Prefetch Protocol:** After each action, predict next file from import graph. Load file_analysis/ for predicted file. Warm cache with likely next actions.
 
-**Reduced Round-Trips:** Every task MUST complete in â‰¤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
+**Reduced Round-Trips:** Every task MUST complete in ≤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
 
 
-## P2 â€” CORE METHODOLOGY
+## P2 — CORE METHODOLOGY
 
-### P2.1 â€” The Debugging Cycle
+### P2.1 — The Debugging Cycle
 
 ```
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚                  DEBUGGING CYCLE                   â”‚
-â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-â”‚  1. REPRODUCE  â†’ Can we make it happen reliably? â”‚
-â”‚  2. ISOLATE    â†’ Where in the code does it occur?â”‚
-â”‚  3. HYPOTHESIZEâ†’ What is the root cause?          â”‚
-â”‚  4. TEST       â†’ Does the evidence support/falsifyâ”‚
-â”‚  5. FIX        â†’ Apply the minimal correction      â”‚
-â”‚  6. VERIFY     â†’ Bug gone? Test that proves it.    â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+┌──────────────────────────────────────────────────┐
+│                  DEBUGGING CYCLE                   │
+├──────────────────────────────────────────────────┤
+│  1. REPRODUCE  → Can we make it happen reliably? │
+│  2. ISOLATE    → Where in the code does it occur?│
+│  3. HYPOTHESIZE→ What is the root cause?          │
+│  4. TEST       → Does the evidence support/falsify│
+│  5. FIX        → Apply the minimal correction      │
+│  6. VERIFY     → Bug gone? Test that proves it.    │
+└──────────────────────────────────────────────────┘
 ```
 
 Each step in the cycle must be completed before proceeding to the next. Skipping reproduction leads to guessing. Skipping isolation leads to shotgun fixes. Skipping verification leads to regressions.
 
-### P2.2 â€” Bug Classification
+### P2.2 — Bug Classification
 
 | Class | Definition | Debug Approach |
 |-------|------------|----------------|
@@ -91,23 +89,23 @@ Each step in the cycle must be completed before proceeding to the next. Skipping
 | PERFORMANCE | Too slow, too much memory | Profile, benchmark, identify bottleneck |
 | SECURITY | Unauthorized access, data leak, injection | Trace auth path, check input validation boundaries |
 
-### P2.3 â€” The Bug Lifecycle
+### P2.3 — The Bug Lifecycle
 
 ```
-BUG ENTRY â†’ REPRODUCIBILITY CHECK â†’ ROOT CAUSE â†’ FIX â†’ VERIFY â†’ CLOSE
+BUG ENTRY → REPRODUCIBILITY CHECK → ROOT CAUSE → FIX → VERIFY → CLOSE
                 |
-                +â€” UNREPRODUCIBLE â†’ Add instrumentation â†’ Re-check
+                +— UNREPRODUCIBLE → Add instrumentation → Re-check
                 |                        |
-                |                        +â€” Still unreproducible â†’ Monitor â†’ Revisit
+                |                        +— Still unreproducible → Monitor → Revisit
                 |
-                +â€” INTERMITTENT â†’ Increase reproduction rate â†’ Isolate condition
+                +— INTERMITTENT → Increase reproduction rate → Isolate condition
 ```
 
 **Rule:** A bug that cannot be reproduced cannot be fixed. Your first job is to find a way to reproduce it. If you cannot, add logging and monitoring to capture the conditions when it next occurs.
 
 **Sub-rule:** A bug that you cannot reproduce but can observe in production requires production-level instrumentation. Add structured logging with correlation IDs, capture request/response payloads for the failing path, and deploy a canary that collects verbose diagnostics.
 
-### P2.4 â€” Divide and Conquer Strategy
+### P2.4 — Divide and Conquer Strategy
 
 The fundamental algorithm for fault isolation is divide and conquer. Given a system with N components where one is faulty:
 
@@ -120,14 +118,14 @@ The fundamental algorithm for fault isolation is divide and conquer. Given a sys
 ```
 
 **Application at multiple scales:**
-- **System scale**: Load balancer â†’ middleware â†’ service â†’ database â†’ external API
-- **Module scale**: Input validation â†’ business logic â†’ data access â†’ serialization
-- **Function scale**: Parameter setup â†’ computation â†’ state mutation â†’ return value
-- **Data pipeline scale**: Source â†’ transform 1 â†’ transform 2 â†’ transform 3 â†’ sink
+- **System scale**: Load balancer → middleware → service → database → external API
+- **Module scale**: Input validation → business logic → data access → serialization
+- **Function scale**: Parameter setup → computation → state mutation → return value
+- **Data pipeline scale**: Source → transform 1 → transform 2 → transform 3 → sink
 
 **Key insight:** The cost of divide and conquer scales logarithmically with the number of components. A system with 1024 components requires at most 10 checkpoints. Linear tracing through the same system could require checking all 1024.
 
-### P2.5 â€” Systematic Elimination (Differential Diagnosis)
+### P2.5 — Systematic Elimination (Differential Diagnosis)
 
 Modeled on medical differential diagnosis: list all possible causes, then eliminate them one by one through targeted tests.
 
@@ -145,7 +143,7 @@ Step 5: Remaining candidate(s) after all eliminations = root cause
 **Elimination is stronger than confirmation.** A test that rules out a cause is more valuable than a test that supports a hypothesis, because ruling out reduces the search space. Design tests that can definitively falsify.
 
 
-## P4 â€” STEP-BY-STEP PROCESS
+## P4 — STEP-BY-STEP PROCESS
 
 ### Step 1: Reproduce the Bug
 
@@ -189,7 +187,7 @@ Checklist:
 - Is it time-specific? Check if it correlates with time of day, day of week, or a cron job.
 ```
 
-**The 5-minute rule:** Spend no more than 5 minutes on obvious causes. If none are found, move to structured hypothesis formation. Do not keep re-checking the same obvious causes â€” document that you checked them and move on.
+**The 5-minute rule:** Spend no more than 5 minutes on obvious causes. If none are found, move to structured hypothesis formation. Do not keep re-checking the same obvious causes — document that you checked them and move on.
 
 ### Step 3: Formulate and Test Hypotheses
 
@@ -209,7 +207,7 @@ EVIDENCE AGAINST:
 EXPERIMENT: Call the downstream service directly with the same parameters
 PREDICTION: If downstream is the cause, the direct call will also timeout
 RESULT: Direct call succeeds in 50ms
-CONCLUSION: HYPOTHESIS FALSIFIED â€” downstream is not the cause
+CONCLUSION: HYPOTHESIS FALSIFIED — downstream is not the cause
 
 HYPOTHESIS 2: The timeout is caused by a connection pool exhaustion
 
@@ -224,7 +222,7 @@ EVIDENCE AGAINST:
 EXPERIMENT: Log connection acquisition time and pool wait time
 PREDICTION: If pool exhaustion, wait time will be > 0
 RESULT: Wait time is 0-2ms, pool has 20/50 connections in use
-CONCLUSION: HYPOTHESIS FALSIFIED â€” pool is not exhausted
+CONCLUSION: HYPOTHESIS FALSIFIED — pool is not exhausted
 ```
 
 **Hypothesis documentation standards:**
@@ -240,11 +238,11 @@ Use binary search (P3.3) or delta debugging (P3.4) to narrow the location.
 ```
 Binary search through request lifecycle:
 
-Checkpoint 1: Load balancer receives request â€” OK (metrics show request arrived)
-Checkpoint 2: Auth middleware validates token â€” OK (logged successful validation)
-Checkpoint 3: Route handler receives request â€” OK (log shows function entry)
-Checkpoint 4: Database query executes â€” OK (query log shows 5ms response)
-Checkpoint 5: External API call â€” FAIL (log shows 30s timeout, then fallback)
+Checkpoint 1: Load balancer receives request — OK (metrics show request arrived)
+Checkpoint 2: Auth middleware validates token — OK (logged successful validation)
+Checkpoint 3: Route handler receives request — OK (log shows function entry)
+Checkpoint 4: Database query executes — OK (query log shows 5ms response)
+Checkpoint 5: External API call — FAIL (log shows 30s timeout, then fallback)
 
 Narrowing: external API call is the failure point.
 
@@ -254,7 +252,7 @@ Now binary search within the external API call function:
 - Midpoint: Is the response received? NO (read timeout after 30s)
 
 Root cause: The response is not being received from the external API.
-Further analysis: The request body is malformed â€” the API is waiting for more data.
+Further analysis: The request body is malformed — the API is waiting for more data.
 Root cause: Serialization of the request body produces incomplete JSON.
 ```
 
@@ -286,11 +284,11 @@ Verify:
 ```
 
 **Fix principles:**
-- The fix should be as minimal as possible â€” one line if one line suffices
+- The fix should be as minimal as possible — one line if one line suffices
 - The fix must address the root cause, not a proximate cause
 - The fix must not introduce new bugs (check for side effects)
 - The fix should be reversible (if it causes problems, easy to roll back)
-- If the fix requires changes in multiple places, reconsider â€” the root cause may be at a higher level
+- If the fix requires changes in multiple places, reconsider — the root cause may be at a higher level
 
 **Symptom-fix examples (WRONG):**
 
@@ -336,9 +334,9 @@ Recurrence prevention:
 Always verify at least two levels deep. Unit test + integration test is the minimum.
 
 
-## P6 â€” READING STACK TRACES AND CRASH DUMPS
+## P6 — READING STACK TRACES AND CRASH DUMPS
 
-### P6.1 â€” Anatomy of a Stack Trace
+### P6.1 — Anatomy of a Stack Trace
 
 A stack trace shows the call chain at the point of failure. It is the single most valuable piece of debugging information.
 
@@ -358,10 +356,10 @@ ERROR: TypeError: Cannot read property 'id' of undefined
 ```
 
 **Reading order:**
-1. **First line** â€” the exception type and message (the immediate problem)
-2. **Top of stack** â€” the exact function and line where the error was thrown
-3. **Middle frames** â€” the call chain leading to the error
-4. **Bottom frames** â€” entry points (event loop, framework code, main)
+1. **First line** — the exception type and message (the immediate problem)
+2. **Top of stack** — the exact function and line where the error was thrown
+3. **Middle frames** — the call chain leading to the error
+4. **Bottom frames** — entry points (event loop, framework code, main)
 
 **Key information in each frame:**
 
@@ -373,25 +371,25 @@ ERROR: TypeError: Cannot read property 'id' of undefined
 | Column number | (in some stacks) the exact character position |
 | Native/Internal | The error is in runtime code, not yours (but your code triggered it) |
 
-### P6.2 â€” Reading from Bottom to Top
+### P6.2 — Reading from Bottom to Top
 
 Conventional wisdom says "read stack traces from top to bottom." For debugging, read from bottom to top:
 
 ```
-Bottom: server.js:120 â€” HTTP server received a request
-         â†“ called
-    router.js:56 â€” Router dispatched to the handler
-         â†“ called
-checkout.js:87 â€” CheckoutController started processing
-         â†“ called
-  orders.js:142 â€” OrderService.calculateTotal failed
-         â†“
+Bottom: server.js:120 — HTTP server received a request
+         ↓ called
+    router.js:56 — Router dispatched to the handler
+         ↓ called
+checkout.js:87 — CheckoutController started processing
+         ↓ called
+  orders.js:142 — OrderService.calculateTotal failed
+         ↓
 Top: TypeError: Cannot read property 'id' of undefined
 ```
 
 Reading bottom-to-top tells the story in chronological order. The bottom frames are the entry points, each subsequent frame was called by the previous one, and the top is where it broke.
 
-### P6.3 â€” Common Stack Trace Patterns
+### P6.3 — Common Stack Trace Patterns
 
 | Pattern | Interpretation |
 |---|---|
@@ -403,9 +401,9 @@ Reading bottom-to-top tells the story in chronological order. The bottom frames 
 | TimeoutException | Operation did not complete within expected time |
 | ConcurrentModificationException | Collection modified while being iterated |
 | ClassCastException | Type mismatch in serialization/deserialization |
-| Multiple stack traces in one error | Cascading failure â€” one exception triggered another |
+| Multiple stack traces in one error | Cascading failure — one exception triggered another |
 
-### P6.4 â€” Reading Crash Dumps
+### P6.4 — Reading Crash Dumps
 
 Crash dumps contain the full state of the process at the point of failure. They are more informative than stack traces but require more analysis.
 
@@ -432,13 +430,13 @@ Crash dumps contain the full state of the process at the point of failure. They 
 
 | Finding | Interpretation |
 |---|---|
-| Same class has millions of instances | Object leak â€” instances are never released |
+| Same class has millions of instances | Object leak — instances are never released |
 | char[] dominates heap | String leak (often from logging, caching, or XML parsing) |
-| Thread objects accumulating | Thread leak â€” threads created but not terminated |
+| Thread objects accumulating | Thread leak — threads created but not terminated |
 | Classloader instances growing | Classloader leak (common in redeploy scenarios) |
 | Large byte[] arrays | Buffers not being released or cleared |
 
-### P6.5 â€” Crash Dump Analysis Process
+### P6.5 — Crash Dump Analysis Process
 
 ```
 1. COLLECT the dump at the point of failure (do not restart before collecting)
@@ -463,9 +461,9 @@ Crash dumps contain the full state of the process at the point of failure. They 
 | Python traceback | pdb / traceback module | `where`, `print`, `list` |
 
 
-## P8 â€” DEBUGGING STACK: APPLICATION, SYSTEM, NETWORK, DATA
+## P8 — DEBUGGING STACK: APPLICATION, SYSTEM, NETWORK, DATA
 
-### P8.1 â€” Application Layer
+### P8.1 — Application Layer
 
 The application layer is the most accessible and the first place to look for bugs.
 
@@ -493,7 +491,7 @@ The application layer is the most accessible and the first place to look for bug
 - Closure scoping (loop variables in closures)
 - Mutation of shared state (objects passed by reference, modified in unexpected places)
 
-### P8.2 â€” System Layer
+### P8.2 — System Layer
 
 The system layer includes the operating system, runtime, container, and infrastructure.
 
@@ -533,7 +531,7 @@ The system layer includes the operating system, runtime, container, and infrastr
 | Zombie processes | Parent process not reaping child processes |
 | TCP TIME_WAIT accumulation | Too many short-lived connections |
 
-### P8.3 â€” Network Layer
+### P8.3 — Network Layer
 
 Network issues manifest as timeouts, connection resets, or intermittent failures.
 
@@ -571,7 +569,7 @@ Network issues manifest as timeouts, connection resets, or intermittent failures
 | Partial response received | Service crashed mid-request, or proxy timeout |
 | DNS resolution failure | Service discovery issue, DNS cache expired, network split |
 
-### P8.4 â€” Data Layer
+### P8.4 — Data Layer
 
 Data issues involve incorrect, corrupt, missing, or inconsistent data.
 
@@ -609,9 +607,9 @@ Data issues involve incorrect, corrupt, missing, or inconsistent data.
 | Migration data loss | Missing columns/rows after migration | Test migration on copy of production data, verify row counts |
 
 
-## P10 â€” DEBUGGING MEMORY ISSUES
+## P10 — DEBUGGING MEMORY ISSUES
 
-### P10.1 â€” Memory Leaks
+### P10.1 — Memory Leaks
 
 A memory leak occurs when memory that is no longer needed is not released, causing heap growth over time.
 
@@ -664,7 +662,7 @@ A memory leak occurs when memory that is no longer needed is not released, causi
 | OQL (Object Query Language) | SQL-like queries for objects |
 | Top Consumers | Classes with the most instances or largest retained size |
 
-### P10.2 â€” Memory Corruption
+### P10.2 — Memory Corruption
 
 Memory corruption involves writing to memory that was not allocated, overwriting data structures.
 
@@ -711,7 +709,7 @@ Memory corruption involves writing to memory that was not allocated, overwriting
    - Check string operations (strcpy, sprintf without bounds)
 ```
 
-### P10.3 â€” Memory Fragmentation
+### P10.3 — Memory Fragmentation
 
 Memory fragmentation occurs when free memory is broken into small pieces, making it impossible to allocate large contiguous blocks.
 
@@ -742,7 +740,7 @@ Memory fragmentation occurs when free memory is broken into small pieces, making
 | GC tuning | Larger heap, different GC algorithm (G1, Shenandoah) |
 | slab allocator | Fixed-size allocation for kernel objects |
 
-### P10.4 â€” Out of Memory (OOM)
+### P10.4 — Out of Memory (OOM)
 
 OOM occurs when the system or process cannot allocate more memory.
 
@@ -771,7 +769,7 @@ OOM occurs when the system or process cannot allocate more memory.
 2. Is it a leak or just undersized?
    - Leak: heap grows unboundedly over time
    - Undersized: heap grows to limit and stabilizes, then OOM
-   - Test: increase heap size â€” if OOM takes longer, it's undersized; if OOM still happens same time, it's a leak
+   - Test: increase heap size — if OOM takes longer, it's undersized; if OOM still happens same time, it's a leak
 
 3. What is using the memory?
    - Heap dump analysis: largest retained objects
@@ -796,9 +794,9 @@ OOM occurs when the system or process cannot allocate more memory.
 | Stream processing | Process data in chunks instead of loading everything |
 
 
-## P12 â€” DEBUGGING DISTRIBUTED SYSTEMS
+## P12 — DEBUGGING DISTRIBUTED SYSTEMS
 
-### P12.1 â€” Network Partitions
+### P12.1 — Network Partitions
 
 A network partition splits a distributed system into groups that cannot communicate.
 
@@ -842,7 +840,7 @@ A network partition splits a distributed system into groups that cannot communic
 | Leader election with quorum | Only one partition can have a leader |
 | Graceful degradation | Serve stale data or reduced functionality |
 
-### P12.2 â€” Consensus Failures
+### P12.2 — Consensus Failures
 
 Consensus failures occur when distributed agreement protocols (Raft, Paxos, Zab) fail to reach agreement.
 
@@ -881,21 +879,21 @@ Consensus failures occur when distributed agreement protocols (Raft, Paxos, Zab)
    - Can the current nodes form a quorum?
 ```
 
-### P12.3 â€” Timeout Cascades
+### P12.3 — Timeout Cascades
 
 A timeout cascade occurs when one slow component causes dependent components to also time out, spreading failure through the system.
 
 **Cascade mechanism:**
 
 ```
-Service A (SLA: 500ms) â†’ calls Service B (SLA: 200ms)
-                         â†’ if B is slow (1s), A's requests queue up
-                         â†’ A's response time increases
-                         â†’ Clients of A start timing out
-                         â†’ Clients retry, adding more load
-                         â†’ A gets more requests while already overloaded
-                         â†’ A's threads/timeouts compound
-                         â†’ System collapse
+Service A (SLA: 500ms) → calls Service B (SLA: 200ms)
+                         → if B is slow (1s), A's requests queue up
+                         → A's response time increases
+                         → Clients of A start timing out
+                         → Clients retry, adding more load
+                         → A gets more requests while already overloaded
+                         → A's threads/timeouts compound
+                         → System collapse
 ```
 
 **Debugging timeout cascades:**
@@ -934,7 +932,7 @@ Service A (SLA: 500ms) â†’ calls Service B (SLA: 200ms)
 | Load shedding | Reject requests early when resource utilization is high |
 | Priority queues | Process high-priority requests first during overload |
 
-### P12.4 â€” Distributed Tracing
+### P12.4 — Distributed Tracing
 
 Every debug session in a distributed system should start with distributed tracing.
 
@@ -973,18 +971,18 @@ Every debug session in a distributed system should start with distributed tracin
 | Logs | Detailed error messages, stack traces |
 
 
-## P14 â€” GIT BISECT AND BINARY SEARCH THROUGH COMMITS
+## P14 — GIT BISECT AND BINARY SEARCH THROUGH COMMITS
 
-### P14.1 â€” Basic Git Bisect
+### P14.1 — Basic Git Bisect
 
 Git bisect performs a binary search through commit history to find the commit that introduced a bug.
 
 ```
 Start: Known good commit (G) and known bad commit (B)
-  G â† ... â† ... â† ... â† B
+  G ← ... ← ... ← ... ← B
 
 Step 1: Checkout the middle commit (M)
-  G â† ... â† M â† ... â† B
+  G ← ... ← M ← ... ← B
   Test: is the bug present at M?
   - If YES: bug exists at M, search the G-M range is clean, bug is in M-B range
   - If NO: bug does not exist at M, search the M-B range
@@ -1016,7 +1014,7 @@ git bisect good
 git bisect reset
 ```
 
-### P14.2 â€” Automated Bisect
+### P14.2 — Automated Bisect
 
 For bugs with automated reproduction scripts, bisect can run automatically.
 
@@ -1044,7 +1042,7 @@ git bisect run ./test.sh
 - The environment must be reproducible (same dependencies, configuration, data)
 - The test must detect the specific bug, not other failures
 
-### P14.3 â€” Bisect with Large Repositories
+### P14.3 — Bisect with Large Repositories
 
 For repositories with thousands of commits, optimize the bisect process.
 
@@ -1063,7 +1061,7 @@ Optimization 3: Use patch-level bisect
   - This is not git bisect but manual binary search through filtered commits
 ```
 
-### P14.4 â€” Bisect Beyond Git
+### P14.4 — Bisect Beyond Git
 
 The binary search concept applies beyond git commits.
 
@@ -1078,7 +1076,7 @@ The binary search concept applies beyond git commits.
 | Feature flags | Working with flag off | Broken with flag on | Binary search through flag combinations |
 | Deployment regions | Working region | Broken region | Binary search through deployment regions |
 
-### P14.5 â€” Commit Inspection
+### P14.5 — Commit Inspection
 
 Once bisect identifies the breaking commit, inspect it thoroughly:
 
@@ -1106,9 +1104,9 @@ Once bisect identifies the breaking commit, inspect it thoroughly:
 ```
 
 
-## P16 â€” DEFECT PREVENTION
+## P16 — DEFECT PREVENTION
 
-### P16.1 â€” Lessons Learned Process
+### P16.1 — Lessons Learned Process
 
 Every debugging session should produce a lessons learned artifact that prevents similar bugs.
 
@@ -1140,7 +1138,7 @@ Action Items:
   - [ ] Owner, Description, Deadline
 ```
 
-### P16.2 â€” Testing Strategies from Debugging Insights
+### P16.2 — Testing Strategies from Debugging Insights
 
 Each bug reveals a gap in the test suite. Close the gap.
 
@@ -1164,7 +1162,7 @@ Each bug reveals a gap in the test suite. Close the gap.
 3. **Regression test suite addition**: Add the reproduction test to CI regression suite
 4. **Systemic test**: If similar bugs exist elsewhere, add tests for those too
 
-### P16.3 â€” Monitoring and Alerting from Bugs
+### P16.3 — Monitoring and Alerting from Bugs
 
 Every bug that reaches production is a monitoring failure. The gap between "detectable" and "detected" must be closed.
 
@@ -1190,7 +1188,7 @@ For each production bug, ask:
   - [ ] Is there a leading indicator that could predict this bug before user impact?
   - [ ] Is the error rate, latency, or throughput threshold set appropriately?
   - [ ] Is the on-call engineer notified within 5 minutes of the condition?
-  - [ ] Is the alert actionable? (Not: "something is weird" â€” but: "X is failing because Y")
+  - [ ] Is the alert actionable? (Not: "something is weird" — but: "X is failing because Y")
 ```
 
 **Leading indicators for common bug types:**
@@ -1205,7 +1203,7 @@ For each production bug, ask:
 | Cache stampede | Cache miss ratio | Cache hit rate, origin load |
 | Request rate spike | RPS increase | Request rate, rate of change |
 
-### P16.4 â€” Systemic Prevention Patterns
+### P16.4 — Systemic Prevention Patterns
 
 | Pattern | Description | Example |
 |---|---|---|
@@ -1221,9 +1219,9 @@ For each production bug, ask:
 | Pin dependencies | Prevent unexpected dependency changes | Lockfiles, vendor directory, version pins |
 
 
-## P18 â€” QUALITY GATES
+## P18 — QUALITY GATES
 
-### Tier 1 â€” Hard Block
+### Tier 1 — Hard Block
 
 - [ ] Bug reproduction steps established (exact inputs, conditions, and frequency)
 - [ ] At least one hypothesis formed and tested before the fix
@@ -1232,7 +1230,7 @@ For each production bug, ask:
 - [ ] Fix verified: reproduction steps no longer produce the failure
 - [ ] Test added that covers the exact failure path (failed before fix, passes after)
 
-### Tier 2 â€” Standard
+### Tier 2 — Standard
 
 - [ ] Symptom traced through levels 1-4 of the debugging stack (P3.1)
 - [ ] Other hypotheses documented and eliminated
@@ -1245,7 +1243,7 @@ For each production bug, ask:
 - [ ] Monitoring gap identified and closed (P16.3 checklist)
 - [ ] Leading indicator added if applicable
 
-### Tier 3 â€” Excellence
+### Tier 3 — Excellence
 
 - [ ] Systemic prevention identified (P16.4): would this bug type be impossible after the change?
 - [ ] Related code paths audited for the same pattern

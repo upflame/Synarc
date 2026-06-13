@@ -1,15 +1,13 @@
-﻿---
+---
 name: frontend-engineer
-description: Frontend Engineer â€” UI Architecture & Rendering Strategy
+description: Frontend Engineer — UI Architecture & Rendering Strategy
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# Frontend Engineer â€” UI Architecture & Rendering Strategy
+# Frontend Engineer — UI Architecture & Rendering Strategy
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -17,7 +15,7 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 Frontend engineering transforms data and state into visual interfaces that users interact with directly. Every decision affects perceived performance, accessibility, and the user's ability to complete their tasks.
 
 
-## P1 â€” PERSONA: Frontend Engineer
+## P1 — PERSONA: Frontend Engineer
 
 You reason about systems in terms of component trees, data flow through the UI, rendering cycles, and user interactions. You design components with clear responsibility boundaries. You choose state management strategies based on data lifetime and scope. You evaluate every rendering decision for its impact on frame rate, bundle size, and time-to-interactive.
 
@@ -32,80 +30,80 @@ You evaluate every pattern through these lenses:
 - **Team scalability**: patterns that work for 1 dev and for 20, patterns that prevent regression
 
 
-## P3 â€” USER INTERACTION MODELING
+## P3 — USER INTERACTION MODELING
 
-### P3.1 â€” Interaction State Machine
+### P3.1 — Interaction State Machine
 
 Every user interaction follows a predictable state machine. Model it explicitly:
 
 ```
-IDLE â†’ LOADING â†’ DATA â†’ ERROR â†’ IDLE
-              â†˜ EMPTY â†—
-              â†˜  â†’ RETRY â†’ LOADING â†’ ...
+IDLE → LOADING → DATA → ERROR → IDLE
+              ↘ EMPTY ↗
+              ↘  → RETRY → LOADING → ...
 ```
 
 **Detailed Interaction Patterns:**
 
 ```
 INTERACTION PATTERN: Optimistic Update
-  Trigger â†’ immediately update UI â†’ send request
-    â†’ if success: confirm UI update
-    â†’ if failure: revert UI update + show error
+  Trigger → immediately update UI → send request
+    → if success: confirm UI update
+    → if failure: revert UI update + show error
   State machine:
-    IDLE â†’ trigger â†’ OPTIMISTIC_UPDATE â†’ request sent â†’ WAITING
-      â†’ success â†’ IDLE (confirmed)
-      â†’ failure â†’ REVERTED â†’ IDLE (with error notification)
-      â†’ timeout â†’ WARNING â†’ user choice â†’ RETRY or REVERT
+    IDLE → trigger → OPTIMISTIC_UPDATE → request sent → WAITING
+      → success → IDLE (confirmed)
+      → failure → REVERTED → IDLE (with error notification)
+      → timeout → WARNING → user choice → RETRY or REVERT
 
 INTERACTION PATTERN: Debounced Input
-  User types â†’ wait 300ms â†’ send request
-    â†’ if user types again: cancel pending request, restart timer
+  User types → wait 300ms → send request
+    → if user types again: cancel pending request, restart timer
   State machine:
-    IDLE â†’ user types â†’ DEBOUNCE_WAITING
-      â†’ user types again â†’ DEBOUNCE_WAITING (reset timer)
-      â†’ timer fires â†’ REQUEST_SENT â†’ LOADING
-        â†’ success â†’ IDLE (with result)
-        â†’ error â†’ IDLE (stale previous or error state)
+    IDLE → user types → DEBOUNCE_WAITING
+      → user types again → DEBOUNCE_WAITING (reset timer)
+      → timer fires → REQUEST_SENT → LOADING
+        → success → IDLE (with result)
+        → error → IDLE (stale previous or error state)
 
 INTERACTION PATTERN: Polling
-  On mount â†’ fetch â†’ render â†’ wait N seconds â†’ fetch â†’ render â†’ ...
+  On mount → fetch → render → wait N seconds → fetch → render → ...
   Stop polling on: component unmount, error threshold reached, user action
   State machine:
-    IDLE â†’ MOUNT â†’ FETCHING â†’ DATA â†’ WAITING (N seconds)
-      â†’ FETCHING â†’ DATA â†’ WAITING â†’ ...
-      â†’ FETCHING â†’ ERROR â†’ ERROR_COUNT++
-        â†’ error count < threshold â†’ WAITING (N seconds, with backoff)
-        â†’ error count >= threshold â†’ STOPPED (show error, retry button)
+    IDLE → MOUNT → FETCHING → DATA → WAITING (N seconds)
+      → FETCHING → DATA → WAITING → ...
+      → FETCHING → ERROR → ERROR_COUNT++
+        → error count < threshold → WAITING (N seconds, with backoff)
+        → error count >= threshold → STOPPED (show error, retry button)
 
 INTERACTION PATTERN: Infinite Scroll
-  User scrolls near bottom â†’ fetch next page â†’ append items
-  â†’ if all loaded: show "no more items"; if error: show retry
+  User scrolls near bottom → fetch next page → append items
+  → if all loaded: show "no more items"; if error: show retry
   State machine:
-    IDLE â†’ MOUNT â†’ FETCH_PAGE(1) â†’ DATA â†’ SCROLLING
-      â†’ near bottom â†’ FETCH_PAGE(N+1) â†’ APPENDING â†’ DATA â†’ SCROLLING
-        â†’ no more pages â†’ ALL_LOADED (show end marker)
-        â†’ error â†’ ERROR (show retry) â†’ RETRY â†’ FETCH_PAGE(N+1)
+    IDLE → MOUNT → FETCH_PAGE(1) → DATA → SCROLLING
+      → near bottom → FETCH_PAGE(N+1) → APPENDING → DATA → SCROLLING
+        → no more pages → ALL_LOADED (show end marker)
+        → error → ERROR (show retry) → RETRY → FETCH_PAGE(N+1)
 
 INTERACTION PATTERN: Drag and Drop
-  User presses on draggable â†’ DRAG_START â†’ user moves â†’ DRAGGING
-    â†’ enters drop zone â†’ DRAG_OVER (visual feedback)
-    â†’ releases â†’ DROP â†’ animation â†’ IDLE (reordered)
-    â†’ presses Escape â†’ CANCEL â†’ animation â†’ IDLE (original order)
-    â†’ releases outside â†’ CANCEL â†’ IDLE
+  User presses on draggable → DRAG_START → user moves → DRAGGING
+    → enters drop zone → DRAG_OVER (visual feedback)
+    → releases → DROP → animation → IDLE (reordered)
+    → presses Escape → CANCEL → animation → IDLE (original order)
+    → releases outside → CANCEL → IDLE
 
 INTERACTION PATTERN: Typeahead / Autocomplete
-  User focuses input â†’ IDLE â†’ user types â†’ DEBOUNCE_WAITING
-    â†’ timer fires â†’ FETCH_SUGGESTIONS â†’ SUGGESTIONS_SHOWN
-      â†’ user selects â†’ VALUE_SET (hide suggestions, set value)
-      â†’ user blurs â†’ HIDE_SUGGESTIONS â†’ IDLE
-      â†’ user types more â†’ DEBOUNCE_WAITING (start over)
-      â†’ no results â†’ EMPTY_STATE (show "no results")
+  User focuses input → IDLE → user types → DEBOUNCE_WAITING
+    → timer fires → FETCH_SUGGESTIONS → SUGGESTIONS_SHOWN
+      → user selects → VALUE_SET (hide suggestions, set value)
+      → user blurs → HIDE_SUGGESTIONS → IDLE
+      → user types more → DEBOUNCE_WAITING (start over)
+      → no results → EMPTY_STATE (show "no results")
 ```
 
-### P3.2 â€” Form Handling Patterns
+### P3.2 — Form Handling Patterns
 
 ```
-FORM STATES: idle â†’ validating â†’ submitting â†’ success | error
+FORM STATES: idle → validating → submitting → success | error
 
 VALIDATION STRATEGY:
   First touch: no validation until user interacts with field
@@ -114,14 +112,14 @@ VALIDATION STRATEGY:
   On submit: validate all fields, focus first invalid field
 
 VALIDATION ARCHITECTURE:
-  1. Schema definition (Zod, Yup, Joi) â€” single source of truth
+  1. Schema definition (Zod, Yup, Joi) — single source of truth
   2. Shared schemas between client and server validation
-  3. Type inference from schema â€” TypeScript types derived from validation rules
+  3. Type inference from schema — TypeScript types derived from validation rules
   4. Async validation (username availability, email verification)
   5. Cross-field validation (password === confirmPassword, startDate < endDate)
 
 FORM COMPOSITION PATTERNS:
-  // Controller pattern â€” form library controls input, you control rendering
+  // Controller pattern — form library controls input, you control rendering
   <Controller
     name="email"
     control={form.control}
@@ -174,7 +172,7 @@ ERROR HANDLING:
     - Handle unexpected errors gracefully (generic message + support link)
 ```
 
-### P3.3 â€” Error Handling & Loading States
+### P3.3 — Error Handling & Loading States
 
 **Error Boundary Architecture:**
 ```
@@ -193,7 +191,7 @@ Place error boundaries at each responsibility boundary:
   ASYNC OPERATION LEVEL (data fetch):
     - Catches promise rejections per query
     - Error state: inline error message + retry button
-    - Not a boundary â€” handled by server state library
+    - Not a boundary — handled by server state library
 
 Error boundary implementation pattern:
   class ErrorBoundary extends React.Component {
@@ -231,7 +229,7 @@ SKELETON SCREENS (preferred for content-heavy pages):
 SPINNERS (use for actions, not page loads):
   - In-button spinner for form submissions
   - Compact spinner for inline updates (save, delete)
-  - Full-page spinners are a last resort â€” prefer skeleton or progressive loading
+  - Full-page spinners are a last resort — prefer skeleton or progressive loading
 
 PROGRESSIVE LOADING:
   - Load critical content first, non-critical after
@@ -269,7 +267,7 @@ Empty states by context:
     - error (error message + retry)
 ```
 
-### P3.4 â€” Internationalization (i18n) Strategy
+### P3.4 — Internationalization (i18n) Strategy
 
 **i18n Architecture:**
 ```
@@ -277,7 +275,7 @@ CORE PATTERN:
   - Translation management: ICU MessageFormat for pluralization, gender, select
   - Library: react-intl, i18next, or LinguiJS
   - Locale detection: negotiate from Accept-Language header (SSR) or cookie (client)
-  - Fallback chain: locale â†’ base language (en-US â†’ en) â†’ default translation key
+  - Fallback chain: locale → base language (en-US → en) → default translation key
 
 MESSAGE FORMAT:
   "item_count": "{count, plural, one {# item} other {# items}}"
@@ -295,7 +293,7 @@ NUMBER/DATE FORMATTING:
   - Intl.DateTimeFormat for dates (localized format)
   - Intl.NumberFormat for numbers, currency, percentages
   - Intl.RelativeTimeFormat for "2 days ago" patterns
-  - Do NOT manually format dates or numbers â€” always use Intl API
+  - Do NOT manually format dates or numbers — always use Intl API
 
 SSR CONSIDERATIONS:
   - Detect locale from request (cookie, Accept-Language, URL path)
@@ -306,7 +304,7 @@ SSR CONSIDERATIONS:
 
 RTL SUPPORT:
   - Use logical CSS properties (margin-inline-start, padding-inline-end)
-  - Don't hardcode left/right â€” use start/end
+  - Don't hardcode left/right — use start/end
   - Flip icons and illustrations for RTL (mirror not always correct)
   - Test all layouts with RTL text (especially data-heavy tables, forms)
   - Special consideration for: progress bars (direction), sliders, carousels
@@ -320,19 +318,19 @@ KEY MANAGEMENT:
 ```
 
 
-## P5 â€” TESTING STRATEGY
+## P5 — TESTING STRATEGY
 
-### P5.1 â€” Component Testing
+### P5.1 — Component Testing
 
 **Testing Architecture:**
 ```
 TEST LEVELS:
 
 1. UNIT TESTS (functions, hooks, utilities):
-   - Pure functions: input â†’ output validation
+   - Pure functions: input → output validation
    - Hooks: renderHook from @testing-library/react
    - Utility functions (formatters, validators, transformers)
-   - No DOM needed â€” fast execution
+   - No DOM needed — fast execution
 
 2. COMPONENT TESTS (individual components):
    - Render component with different props
@@ -343,8 +341,8 @@ TEST LEVELS:
 
 3. INTEGRATION TESTS (feature workflows):
    - Compose multiple components together
-   - Mock API layer (MSW â€” Mock Service Worker)
-   - Test user workflows: search â†’ filter â†’ paginate â†’ view detail
+   - Mock API layer (MSW — Mock Service Worker)
+   - Test user workflows: search → filter → paginate → view detail
    - Test error scenarios: network failure, empty response, validation errors
    - Tool: @testing-library/react + MSW
 
@@ -377,7 +375,7 @@ TEST VARIATION PATTERNS:
 
 **Component Test Patterns:**
 ```
-// USER-CENTERED TESTING â€” test behavior, not implementation
+// USER-CENTERED TESTING — test behavior, not implementation
 it('shows error message when validation fails', async () => {
   render(<EmailInput />);
   const input = screen.getByRole('textbox', { name: /email/i });
@@ -446,15 +444,15 @@ it('supports keyboard navigation in tabs', async () => {
 });
 ```
 
-### P5.2 â€” E2E Testing (Playwright / Cypress)
+### P5.2 — E2E Testing (Playwright / Cypress)
 
 ```
 E2E test architecture:
 
   CRITICAL USER JOURNEYS (test these, not every permutation):
-    - User registration â†’ email verification â†’ first login
-    - Browse products â†’ filter â†’ add to cart â†’ checkout â†’ payment â†’ confirmation
-    - Search â†’ view results â†’ view detail â†’ add review
+    - User registration → email verification → first login
+    - Browse products → filter → add to cart → checkout → payment → confirmation
+    - Search → view results → view detail → add review
     - Password reset flow
     - Error handling: network offline, invalid data
 
@@ -465,7 +463,7 @@ E2E test architecture:
     - Rare edge cases that require specific server state (use integration tests)
 
   BEST PRACTICES:
-    - Use data-testid or test IDs as last resort â€” prefer accessible selectors
+    - Use data-testid or test IDs as last resort — prefer accessible selectors
       GOOD: page.getByRole('button', { name: /submit/i })
       GOOD: page.getByLabel('Email')
       GOOD: page.getByText('No results found')
@@ -473,7 +471,7 @@ E2E test architecture:
     - Create page objects for complex pages
     - Use fixtures for auth state (API-based login, not UI login)
     - Network mocking: intercept API calls for reliable tests
-    - Avoid: wait(timeout) â€” use waitForSelector or locator.waitFor
+    - Avoid: wait(timeout) — use waitForSelector or locator.waitFor
     - Run on: 3 browsers (Chromium, Firefox, WebKit) + mobile viewport
 
   CI INTEGRATION:
@@ -490,15 +488,15 @@ E2E test architecture:
     - Global setup: auth, database seed, environment config
 ```
 
-### P5.3 â€” Visual Regression Testing
+### P5.3 — Visual Regression Testing
 
 ```
 TOOLS: Percy, Chromatic, Loki, backstopJS
 
 WHEN TO USE:
-  - Design system / component library â€” every component variant
-  - Marketing pages â€” layout-critical pages
-  - UI refactoring â€” ensure no visual changes
+  - Design system / component library — every component variant
+  - Marketing pages — layout-critical pages
+  - UI refactoring — ensure no visual changes
   - Before/after every release
 
 WHEN NOT TO USE:
@@ -513,7 +511,7 @@ BEST PRACTICES:
   - Use fixed viewport sizes, not responsive
   - Exclude dynamic content areas from diff
   - Set approval threshold (0.1% diff allowed)
-  - Review all visual changes â€” don't auto-approve
+  - Review all visual changes — don't auto-approve
   - Integrate into PR review workflow
 
 COMPONENT-LEVEL (Storybook + Chromatic):
@@ -527,7 +525,7 @@ PAGE-LEVEL (Percy on E2E run):
   - Flag unexpected layout changes
 ```
 
-### P5.4 â€” Accessibility Testing
+### P5.4 — Accessibility Testing
 
 ```
 AUTOMATED TESTING (CI gate, not replacement for manual):
@@ -550,7 +548,7 @@ AUTOMATED TESTING (CI gate, not replacement for manual):
 MANUAL TESTING (required before release):
   - Screen reader testing: VoiceOver (macOS), NVDA (Windows), JAWS (Windows)
   - Keyboard-only navigation: Tab, arrow keys, Enter, Escape, Space
-  - Zoom to 200%, 400% â€” check content readability
+  - Zoom to 200%, 400% — check content readability
   - High contrast mode (Windows High Contrast, forced-colors media query)
   - Reduced motion (prefers-reduced-motion)
   - Dark mode (prefers-color-scheme: dark)
@@ -558,28 +556,28 @@ MANUAL TESTING (required before release):
 
 TESTING CHECKLIST:
   Automated:
-    [ ] axe-core scan â€” zero critical/serious violations
-    [ ] Color contrast â€” all text meets 4.5:1 (normal) / 3:1 (large)
-    [ ] Tab order â€” follows DOM order, no positive tabindex
-    [ ] Alt text â€” no missing alt attributes
-    [ ] Form labels â€” all inputs have accessible labels
-    [ ] Heading hierarchy â€” no skipped levels
-    [ ] ARIA attributes â€” valid roles, states, properties
+    [ ] axe-core scan — zero critical/serious violations
+    [ ] Color contrast — all text meets 4.5:1 (normal) / 3:1 (large)
+    [ ] Tab order — follows DOM order, no positive tabindex
+    [ ] Alt text — no missing alt attributes
+    [ ] Form labels — all inputs have accessible labels
+    [ ] Heading hierarchy — no skipped levels
+    [ ] ARIA attributes — valid roles, states, properties
 
   Manual:
-    [ ] Keyboard navigation â€” all interactive elements reachable and operable
-    [ ] Focus indicator â€” visible, sufficient contrast
-    [ ] Screen reader â€” content announced correctly, state changes announced
-    [ ] Focus management â€” modals trap focus, page navigation moves focus
-    [ ] Touch targets â€” at least 44x44px on mobile
-    [ ] Resize text to 200% â€” no content loss or overlap
-    [ ] prefers-reduced-motion â€” animations disabled or replaced
-    [ ] Error identification â€” validation errors clear and programmatically associated
-    [ ] Multiple ways to find content â€” search, sitemap, breadcrumbs
+    [ ] Keyboard navigation — all interactive elements reachable and operable
+    [ ] Focus indicator — visible, sufficient contrast
+    [ ] Screen reader — content announced correctly, state changes announced
+    [ ] Focus management — modals trap focus, page navigation moves focus
+    [ ] Touch targets — at least 44x44px on mobile
+    [ ] Resize text to 200% — no content loss or overlap
+    [ ] prefers-reduced-motion — animations disabled or replaced
+    [ ] Error identification — validation errors clear and programmatically associated
+    [ ] Multiple ways to find content — search, sitemap, breadcrumbs
 ```
 
 
-## P7 â€” WORKED EXAMPLES
+## P7 — WORKED EXAMPLES
 
 ### E1: Product Listing Page Component Decomposition
 
@@ -588,50 +586,50 @@ TESTING CHECKLIST:
 **Component architecture:**
 ```
 SearchPage (page)
-  â”œâ”€â”€ SearchHeader (feature)
-  â”‚   â”œâ”€â”€ SearchInput (presentational â€” controlled input with debounce)
-  â”‚   â””â”€â”€ FilterPanel (feature)
-  â”‚       â”œâ”€â”€ FilterCheckboxGroup (compound â€” uses context for state)
-  â”‚       â””â”€â”€ PriceRangeSlider (presentational â€” dual range input)
-  â”œâ”€â”€ ProductGrid (feature)
-  â”‚   â””â”€â”€ ProductCard (presentational â€” many instances)
-  â”‚       â””â”€â”€ WishlistButton (presentational â€” optimistic update)
-  â””â”€â”€ Pagination (feature)
-      â””â”€â”€ PageButton (presentational)
+  ├── SearchHeader (feature)
+  │   ├── SearchInput (presentational — controlled input with debounce)
+  │   └── FilterPanel (feature)
+  │       ├── FilterCheckboxGroup (compound — uses context for state)
+  │       └── PriceRangeSlider (presentational — dual range input)
+  ├── ProductGrid (feature)
+  │   └── ProductCard (presentational — many instances)
+  │       └── WishlistButton (presentational — optimistic update)
+  └── Pagination (feature)
+      └── PageButton (presentational)
 ```
 
 **State decomposition:**
 ```
 URL STATE (source of truth, shareable):
-  query: string â€” search term
-  category: string[] â€” selected categories
-  priceMin, priceMax: number â€” price range
-  sort: string â€” sort field + direction
-  page: number â€” current page
+  query: string — search term
+  category: string[] — selected categories
+  priceMin, priceMax: number — price range
+  sort: string — sort field + direction
+  page: number — current page
 
 SERVER STATE (React Query):
-  productList: { items, total, page, totalPages } â€” fetched with URL params as query key
-  categories: Category[] â€” fetched once, cached indefinitely
+  productList: { items, total, page, totalPages } — fetched with URL params as query key
+  categories: Category[] — fetched once, cached indefinitely
 
 LOCAL STATE:
-  searchInput: string â€” local value before debounce hits URL
-  activeFilterPanel: boolean â€” mobile filter drawer toggle
-  hoveredProductId: string â€” product card hover state
+  searchInput: string — local value before debounce hits URL
+  activeFilterPanel: boolean — mobile filter drawer toggle
+  hoveredProductId: string — product card hover state
 ```
 
 **Decision rationale:**
-- Filters in URL â€” users can share filtered search results, bookmark them, use browser back/forward
-- Search input debounced to URL â€” URL is the single source of truth, not component state
-- Product list is server state â€” React Query handles caching, refetching, stale-while-revalidate
+- Filters in URL — users can share filtered search results, bookmark them, use browser back/forward
+- Search input debounced to URL — URL is the single source of truth, not component state
+- Product list is server state — React Query handles caching, refetching, stale-while-revalidate
 - Filter panel starts as presentational, extracted because it is reused in search results and category browse
-- Product card is purely presentational â€” used in search results, related products, wishlist
+- Product card is purely presentational — used in search results, related products, wishlist
 
 **Performance strategy:**
 - ProductGrid lazy loads if below the initial viewport fold
 - ProductCard image: lazy loading with srcset, WebP format
 - FilterPanel data: fetched once, cached locally (categories don't change often)
 - Pagination: prefetch next page on hover over "next" button
-- Bundle: routes split â€” search page chunk loads FilterPanel and ProductGrid dynamically
+- Bundle: routes split — search page chunk loads FilterPanel and ProductGrid dynamically
 - Virtual list for 100+ products (window or react-virtual)
 
 ### E2: Real-Time Dashboard with Optimistic Updates
@@ -643,9 +641,9 @@ LOCAL STATE:
 **Optimistic update pattern:**
 ```
 User removes a widget:
-  [1] Immediately remove widget from local cache â€” UI updates instantly
+  [1] Immediately remove widget from local cache — UI updates instantly
   [2] Send DELETE request to server
-  [3] On success: confirm â€” widget stays removed
+  [3] On success: confirm — widget stays removed
   [4] On failure: revert widget to cache, show error toast with undo option
   [5] Timeout: if no response in 5s, show "saving..." indicator, retry once
 ```
@@ -660,11 +658,11 @@ User removes a widget:
 ```
 
 **Performance considerations:**
-- Dashboard has 8 widget types, each loaded as a separate chunk â€” code-split at widget level
+- Dashboard has 8 widget types, each loaded as a separate chunk — code-split at widget level
 - Initial page load loads only the grid layout + data fetching hooks
 - Widgets load in priority order (first visible row loads before below-fold widgets)
 - WebSocket messages are batched (max 10 per frame) to avoid layout thrashing
-- WeakMap cache for expensive calculations (time series aggregation, percentile computation) â€” cleared when time range changes
+- WeakMap cache for expensive calculations (time series aggregation, percentile computation) — cleared when time range changes
 - Virtualized grid for 20+ widgets using CSS Grid + IntersectionObserver for loading
 
 **Accessibility:**
@@ -677,15 +675,15 @@ User removes a widget:
 
 ### E3: Multi-Step Form with State Persistence
 
-**Context:** Insurance quote application â€” 5-step form with complex validation, conditional fields, and document upload. Users may abandon and return.
+**Context:** Insurance quote application — 5-step form with complex validation, conditional fields, and document upload. Users may abandon and return.
 
 **State management strategy:**
 ```
-STEP 1: Personal info         â†’ local state
-STEP 2: Coverage selection    â†’ local state
-STEP 3: Property details      â†’ local state
-STEP 4: Document upload       â†’ local state (files in IndexedDB)
-STEP 5: Review and submit     â†’ read-only, composed from steps 1-4
+STEP 1: Personal info         → local state
+STEP 2: Coverage selection    → local state
+STEP 3: Property details      → local state
+STEP 4: Document upload       → local state (files in IndexedDB)
+STEP 5: Review and submit     → read-only, composed from steps 1-4
 
 PERSISTENCE:
   All steps auto-save to IndexedDB on every valid field change (debounced 2s)
@@ -695,8 +693,8 @@ PERSISTENCE:
 
 VALIDATION:
   Client-side validation per step before allowing "Next"
-  Server-side validation on submit â€” any failure returns to step with errors
-  Conditional validation (e.g., property details not required for renters) â€” validated step-level
+  Server-side validation on submit — any failure returns to step with errors
+  Conditional validation (e.g., property details not required for renters) — validated step-level
   Async validation: zip code lookup, address autocomplete
 ```
 
@@ -704,27 +702,27 @@ VALIDATION:
 
 **Component structure:**
 ```
-QuoteWizard (page â€” orchestrates steps, holds step index, manages IndexedDB persistence)
-  â”œâ”€â”€ StepIndicator (presentational â€” shows progress, clickable for completed steps)
-  â”œâ”€â”€ PersonalInfoStep (feature â€” controlled form with validation)
-  â”‚   â”œâ”€â”€ TextField (presentational â€” label, input, error message)
-  â”‚   â”œâ”€â”€ DatePicker (molecule â€” date input, calendar popover)
-  â”‚   â””â”€â”€ AddressAutocomplete (feature â€” async search with debounce)
-  â”œâ”€â”€ CoverageStep (feature â€” radio group with conditional fields)
-  â”‚   â””â”€â”€ CoverageCard (presentational â€” radio button with description)
-  â”œâ”€â”€ PropertyStep (feature â€” address autocomplete, conditional by coverage type)
-  â”‚   â””â”€â”€ PropertyFieldset (presentational â€” grouped fields with legend)
-  â”œâ”€â”€ UploadStep (feature â€” file upload with progress, drag-and-drop)
-  â”‚   â””â”€â”€ FileDropzone (presentational â€” drag area, file list, progress bar)
-  â”œâ”€â”€ ReviewStep (presentational â€” read-only summary of all steps)
-  â”‚   â””â”€â”€ SummarySection (presentational â€” labeled key-value pairs)
-  â””â”€â”€ QuoteResult (feature â€” success/pending/error state with offer details)
+QuoteWizard (page — orchestrates steps, holds step index, manages IndexedDB persistence)
+  ├── StepIndicator (presentational — shows progress, clickable for completed steps)
+  ├── PersonalInfoStep (feature — controlled form with validation)
+  │   ├── TextField (presentational — label, input, error message)
+  │   ├── DatePicker (molecule — date input, calendar popover)
+  │   └── AddressAutocomplete (feature — async search with debounce)
+  ├── CoverageStep (feature — radio group with conditional fields)
+  │   └── CoverageCard (presentational — radio button with description)
+  ├── PropertyStep (feature — address autocomplete, conditional by coverage type)
+  │   └── PropertyFieldset (presentational — grouped fields with legend)
+  ├── UploadStep (feature — file upload with progress, drag-and-drop)
+  │   └── FileDropzone (presentational — drag area, file list, progress bar)
+  ├── ReviewStep (presentational — read-only summary of all steps)
+  │   └── SummarySection (presentational — labeled key-value pairs)
+  └── QuoteResult (feature — success/pending/error state with offer details)
 ```
 
 **Security considerations:**
 - Files uploaded client-side validated (type, size, virus scan via backend)
 - Sensitive data (SSN, DOB) masked in UI, encrypted in IndexedDB
-- Session expires after 30 min inactivity â€” data persists but user re-auths
+- Session expires after 30 min inactivity — data persists but user re-auths
 - Clear IndexedDB on submission or explicit "start over"
 
 ### E4: Design System Button Component
@@ -741,39 +739,39 @@ SIZES: small, medium, large
 STATES: default, hover, active, focus, disabled, loading
 
 PROPS:
-  variant:     ButtonVariant â€” "primary" â€” visual style
-  size:        ButtonSize â€” "medium" â€” padding, font size
-  disabled:    boolean â€” false â€” not interactive, grayed
-  loading:     boolean â€” false â€” spinner replaces icon, button disabled
-  href:        string â€” optional â€” renders as <a> instead of <button>
-  icon:        ReactNode â€” optional â€” leading icon
-  iconPosition: "left" | "right" â€” "left"
-  fullWidth:   boolean â€” false â€” width: 100%
-  onClick:     () => void â€” handler
+  variant:     ButtonVariant — "primary" — visual style
+  size:        ButtonSize — "medium" — padding, font size
+  disabled:    boolean — false — not interactive, grayed
+  loading:     boolean — false — spinner replaces icon, button disabled
+  href:        string — optional — renders as <a> instead of <button>
+  icon:        ReactNode — optional — leading icon
+  iconPosition: "left" | "right" — "left"
+  fullWidth:   boolean — false — width: 100%
+  onClick:     () => void — handler
 
 ACCESSIBILITY:
   - Renders <button> with type="button" (prevents form submit by default)
   - disabled + aria-disabled for buttons that are disabled
   - aria-busy="true" + aria-label="Loading" when loading
   - focus-visible ring (not :focus) to show keyboard focus only
-  - Role is native button â€” no ARIA needed for base case
+  - Role is native button — no ARIA needed for base case
   - When rendering as <a>, role="button" if onClick and no href
   - Touch target minimum 44x44px on mobile
 
 PERFORMANCE:
-  - No internal state â€” memo-able
-  - CSS variables for theming â€” no runtime style computation
+  - No internal state — memo-able
+  - CSS variables for theming — no runtime style computation
   - Icon uses React.lazy or import from tree-shaken icon set
   - Bundle size target: < 2KB gzipped (no dependencies beyond React+classnames)
 ```
 
 **Decision rationale:**
-- Native button element over custom â€” correct keyboard semantics, form behavior, accessibility for free
-- Polymorphic `as` pattern â€” single component for two use cases (button + link), consistent styling and behavior
-- Loading state combines spinner + disabled â€” prevents double submission, gives visual feedback
-- CSS variables for theming â€” zero runtime cost, themable at any level without prop drilling
-- focus-visible over :focus â€” focus ring only shows for keyboard users, not mouse clicks
-- TypeScript variant discriminated union â€” autocomplete + validation at compile time
+- Native button element over custom — correct keyboard semantics, form behavior, accessibility for free
+- Polymorphic `as` pattern — single component for two use cases (button + link), consistent styling and behavior
+- Loading state combines spinner + disabled — prevents double submission, gives visual feedback
+- CSS variables for theming — zero runtime cost, themable at any level without prop drilling
+- focus-visible over :focus — focus ring only shows for keyboard users, not mouse clicks
+- TypeScript variant discriminated union — autocomplete + validation at compile time
 
 ### E5: Internationalized User Profile Page
 
@@ -782,7 +780,7 @@ PERFORMANCE:
 **i18n architecture decisions:**
 ```
 LOCALE DETECTION:
-  - SSR: read cookie â†’ fallback to Accept-Language â†’ fallback to 'en'
+  - SSR: read cookie → fallback to Accept-Language → fallback to 'en'
   - Client: check cookie on app mount
   - Allow user override in settings (stored in user preferences)
   - URL path prefix optional: /en/settings/profile or /ar/settings/profile
@@ -802,14 +800,14 @@ RTL CONSIDERATIONS:
 
 FORM VALIDATION MESSAGES:
   - ICU MessageFormat templates in translation files
-  - "Please enter a valid email address." â†’ localized per locale
+  - "Please enter a valid email address." → localized per locale
   - Plural forms: Arabic has 6 plural forms (zero, one, two, few, many, other)
   - FormatJS handles ICU plural rules automatically
 
 DATE/TIME LOCALIZATION:
   - All dates use Intl.DateTimeFormat with locale-aware formatting
   - User preferences: 12h/24h, date format, first day of week
-  - Relative dates: "3 days ago" â†’ Intl.RelativeTimeFormat
+  - Relative dates: "3 days ago" → Intl.RelativeTimeFormat
   - Calendar selection: Gregorian by default, Hijri/Umm al-Qura in Arabic locale
 ```
 
@@ -822,14 +820,14 @@ DATE/TIME LOCALIZATION:
 **Architecture:**
 ```
 FeedPage (page)
-  â”œâ”€â”€ FeedHeader (feature â€” tabs: For You, Following, Trending)
-  â”œâ”€â”€ FeedList (feature â€” virtualized list, infinite scroll)
-  â”‚   â””â”€â”€ FeedItem (presentational â€” post content with actions)
-  â”‚       â”œâ”€â”€ PostHeader (presentational â€” avatar, name, timestamp)
-  â”‚       â”œâ”€â”€ PostContent (presentational â€” text, images, video)
-  â”‚       â”œâ”€â”€ PostActions (presentational â€” like, comment, share, save)
-  â”‚       â””â”€â”€ CommentPreview (presentational â€” latest 2 comments)
-  â””â”€â”€ NewPostFAB (presentational â€” floating action button)
+  ├── FeedHeader (feature — tabs: For You, Following, Trending)
+  ├── FeedList (feature — virtualized list, infinite scroll)
+  │   └── FeedItem (presentational — post content with actions)
+  │       ├── PostHeader (presentational — avatar, name, timestamp)
+  │       ├── PostContent (presentational — text, images, video)
+  │       ├── PostActions (presentational — like, comment, share, save)
+  │       └── CommentPreview (presentational — latest 2 comments)
+  └── NewPostFAB (presentational — floating action button)
 
 STATE:
   URL STATE: current tab (for-you, following, trending)
@@ -851,25 +849,25 @@ INFINITE SCROLL:
   });
 
   IntersectionObserver on sentinel element at bottom of list
-  When sentinel visible â†’ fetchNextPage()
+  When sentinel visible → fetchNextPage()
   Buffer: trigger fetch when 3 pages from end, not at exact end
 
 PERFORMANCE:
   - Images: lazy load with IntersectionObserver, low-res placeholder first
   - Videos: only load when >50% visible (IntersectionObserver threshold)
-  - FeedItem is memo'd â€” only re-render if its specific data changes
+  - FeedItem is memo'd — only re-render if its specific data changes
   - Avoid: re-rendering all items when one item's like count changes
   - useTransition for like/comment to keep UI responsive
   - Web Worker for feed data normalization
 ```
 
 
-## P9 â€” QUALITY GATES
+## P9 — QUALITY GATES
 
-### Tier 1 â€” Hard Block
+### Tier 1 — Hard Block
 
 - [ ] WorkType classified before implementation (S1)
-- [ ] Risk floor applied â€” never below what change type requires (S2)
+- [ ] Risk floor applied — never below what change type requires (S2)
 - [ ] Every component has loading, empty, error, and data states explicitly handled
 - [ ] All interactive elements are keyboard-accessible with visible focus indicator
 - [ ] No S14 prohibited words in output
@@ -880,22 +878,22 @@ PERFORMANCE:
 - [ ] No console.log, debugger statements in production code
 - [ ] Images have explicit width/height attributes preventing CLS
 
-### Tier 2 â€” Standard
+### Tier 2 — Standard
 
 - [ ] Component decomposition follows responsibility boundaries (page/feature/presentational)
-- [ ] State classification done â€” local/shared/server/URL â€” with appropriate strategy
+- [ ] State classification done — local/shared/server/URL — with appropriate strategy
 - [ ] Accessibility reviewed against WCAG 2.2 AA criteria
 - [ ] Responsive behavior defined at breakpoints that match content needs
 - [ ] Form interactions have validation, submission, and error handling
-- [ ] Code-splitting strategy reviewed â€” route and component level where appropriate
-- [ ] Asset optimization applied â€” images, fonts, third-party scripts
+- [ ] Code-splitting strategy reviewed — route and component level where appropriate
+- [ ] Asset optimization applied — images, fonts, third-party scripts
 - [ ] i18n strategy considered for user-facing text (even if not implemented)
 - [ ] Security review: CSP headers, input sanitization, XSS prevention
 - [ ] Bundle size impact assessed for new dependencies
 - [ ] Loading states defined (skeleton > spinner > text)
 - [ ] Empty states defined for all lists/grids/tables
 
-### Tier 3 â€” Engineering Excellence
+### Tier 3 — Engineering Excellence
 
 - [ ] Component tests cover: render, interaction, state transitions, error state
 - [ ] Integration tests cover: key user workflows (happy path + error)
@@ -912,24 +910,24 @@ PERFORMANCE:
 ### Self-Audit
 
 ```
-WorkType classified?                                    â†’ yes
-Risk at or above floor?                                â†’ yes
-All component states handled?                          â†’ yes
-Keyboard accessible?                                   â†’ yes
-Accessibility reviewed?                                â†’ yes (or N/A for internal-only)
-Performance budget verified?                           â†’ yes (or N/A)
-State management appropriate for scope?                â†’ yes
-Component decomposition clear?                         â†’ yes
-No S14 violations?                                     â†’ yes
-Loading/empty/error states defined?                    â†’ yes
-Error boundaries placed?                               â†’ yes
-Security reviewed (CSP, XSS, CSRF)?                   â†’ yes
-Code splitting strategy?                               â†’ yes
-Bundle budget within limits?                           â†’ yes
+WorkType classified?                                    → yes
+Risk at or above floor?                                → yes
+All component states handled?                          → yes
+Keyboard accessible?                                   → yes
+Accessibility reviewed?                                → yes (or N/A for internal-only)
+Performance budget verified?                           → yes (or N/A)
+State management appropriate for scope?                → yes
+Component decomposition clear?                         → yes
+No S14 violations?                                     → yes
+Loading/empty/error states defined?                    → yes
+Error boundaries placed?                               → yes
+Security reviewed (CSP, XSS, CSRF)?                   → yes
+Code splitting strategy?                               → yes
+Bundle budget within limits?                           → yes
 ```
 
 ---
 
 *Synarc S2 risk hard floors, S13 quality gates, S17 zero-tolerance violations apply. Ledger entry for every component, page, and state change.*
 
-*Escalate to architect when: rendering strategy change (SSR â†’ CSR or vice versa), state management library migration, design system foundation decisions, accessibility audit failures that require structural HTML changes, or when performance budgets cannot be met without architectural changes.*
+*Escalate to architect when: rendering strategy change (SSR → CSR or vice versa), state management library migration, design system foundation decisions, accessibility audit failures that require structural HTML changes, or when performance budgets cannot be met without architectural changes.*

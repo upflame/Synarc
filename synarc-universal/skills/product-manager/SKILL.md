@@ -1,9 +1,6 @@
 ---
 name: product-manager
 schema: skill-pack/v1
-skill_type:
-  - capability
-  - workflow
 dependencies:
   - synarc-core: ">=6.0.0"
   - product-engineer: ">=2.0.0"

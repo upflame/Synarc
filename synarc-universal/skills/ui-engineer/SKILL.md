@@ -1,15 +1,13 @@
-﻿---
+---
 name: ui-engineer
-description: UI Engineer â€” Pixel-Perfect Implementation & Design Systems
+description: UI Engineer — Pixel-Perfect Implementation & Design Systems
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# UI Engineer â€” Pixel-Perfect Implementation & Design Systems
+# UI Engineer — Pixel-Perfect Implementation & Design Systems
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -17,7 +15,7 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 UI engineering is the discipline of translating design intent into precise, performant, accessible code. Every pixel has a reason. Every interaction has a purpose. This skill provides the structured reasoning framework for achieving pixel-perfect implementation at scale.
 
 
-## P1 â€” PERSONA: UI Engineer
+## P1 — PERSONA: UI Engineer
 
 You reason about systems in terms of visual hierarchy, spatial relationships, temporal behavior, and user perception. You translate design intent into precise code. You understand the gap between what a designer specifies and what the browser renders. You account for font rendering differences across operating systems, subpixel antialiasing, DPI scaling, and color profile mismatches. You know that a 4px adjustment in a design tool can become a 3.75px on a Retina display. You catch these discrepancies before the user does.
 
@@ -28,18 +26,18 @@ You think in layers: the structural layer (HTML semantics), the stylistic layer 
 You know the difference between what looks good on a MacBook Pro with True Tone and what your users actually see on a cheap Android phone with aggressive battery optimization. You test at the edges.
 
 
-## P3 â€” CSS ARCHITECTURE
+## P3 — CSS ARCHITECTURE
 
-### P3.1 â€” CSS Architecture Methodologies
+### P3.1 — CSS Architecture Methodologies
 
 **BEM (Block Element Modifier):**
 
 BEM creates predictable class names that communicate structure without requiring selectors to cascade.
 
 ```
-Block:   .card        â€” standalone component
-Element: .card__header â€” part of the block, no meaning outside
-Modifier: .card--featured â€” variant of the block
+Block:   .card        — standalone component
+Element: .card__header — part of the block, no meaning outside
+Modifier: .card--featured — variant of the block
 
 .card { }
 .card__header { }
@@ -60,19 +58,19 @@ BEM rules:
 SMACSS categorizes CSS into five types:
 
 ```
-1. Base â€” reset, typography, links, defaults
+1. Base — reset, typography, links, defaults
    html, body, a { }
 
-2. Layout â€” page structure, grid systems
+2. Layout — page structure, grid systems
    .l-header, .l-container, .l-sidebar
 
-3. Module â€” reusable components
+3. Module — reusable components
    .button, .card, .modal
 
-4. State â€” variants that change module appearance
+4. State — variants that change module appearance
    .is-active, .is-collapsed, .has-error
 
-5. Theme â€” visual themes (often separate file)
+5. Theme — visual themes (often separate file)
    [data-theme="dark"] .button { }
 ```
 
@@ -81,12 +79,12 @@ SMACSS categorizes CSS into five types:
 OOCSS separates structure from skin:
 
 ```css
-/* Structure â€” reusable */
+/* Structure — reusable */
 .o-media { display: flex; }
 .o-media__image { flex-shrink: 0; }
 .o-media__body { flex: 1; }
 
-/* Skin â€” applied via modifier */
+/* Skin — applied via modifier */
 .o-media--reversed { flex-direction: row-reverse; }
 .o-media--compact .o-media__image { margin-right: 0; }
 ```
@@ -96,23 +94,23 @@ OOCSS separates structure from skin:
 ITCSS organizes CSS by specificity from low to high:
 
 ```
-1. Settings â€” variables, config
-2. Tools â€” mixins, functions
-3. Generic â€” reset, normalize
-4. Elements â€” H1-H6, p, a
-5. Objects â€” layout, grid
-6. Components â€” styled components
-7. Utilities â€” single-purpose overrides
+1. Settings — variables, config
+2. Tools — mixins, functions
+3. Generic — reset, normalize
+4. Elements — H1-H6, p, a
+5. Objects — layout, grid
+6. Components — styled components
+7. Utilities — single-purpose overrides
 ```
 
 Use ITCSS as the organizing principle. Use BEM within components. Use OOCSS principles for reusable structure.
 
-### P3.2 â€” CSS Grid Mastery
+### P3.2 — CSS Grid Mastery
 
 **Explicit vs Implicit Grid:**
 
 ```css
-/* Explicit grid â€” you define the tracks */
+/* Explicit grid — you define the tracks */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -120,7 +118,7 @@ Use ITCSS as the organizing principle. Use BEM within components. Use OOCSS prin
   gap: 16px;
 }
 
-/* Implicit grid â€” browser creates tracks for excess items */
+/* Implicit grid — browser creates tracks for excess items */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -190,31 +188,31 @@ grid-template-columns: minmax(150px, max(1fr, 300px));
 }
 ```
 
-### P3.3 â€” Flexbox Patterns
+### P3.3 — Flexbox Patterns
 
 **flex shorthand breakdown:**
 
 ```css
 /* flex: <flex-grow> <flex-shrink> <flex-basis> */
 
-/* flex: 1 â€” grow equally, shrink equally, basis 0 */
+/* flex: 1 — grow equally, shrink equally, basis 0 */
 flex: 1;
 
-/* flex: 0 0 200px â€” don't grow, don't shrink, fixed 200px */
+/* flex: 0 0 200px — don't grow, don't shrink, fixed 200px */
 flex: 0 0 200px;
 
-/* flex: auto â€” grow and shrink, basis auto (content size) */
+/* flex: auto — grow and shrink, basis auto (content size) */
 flex: auto;
 
-/* flex: 1 1 0 â€” grow from 0, shrink from 0, flexible */
+/* flex: 1 1 0 — grow from 0, shrink from 0, flexible */
 flex: 1 1 0; /* equivalent to flex: 1 in many contexts */
 ```
 
 **Main axis vs cross axis:**
 
 ```css
-flex-direction: row;       /* main: leftâ†’right, cross: topâ†’bottom */
-flex-direction: column;   /* main: topâ†’bottom, cross: leftâ†’right */
+flex-direction: row;       /* main: left→right, cross: top→bottom */
+flex-direction: column;   /* main: top→bottom, cross: left→right */
 
 justify-content: main axis  /* flex-start | flex-end | center | space-between | space-around | space-evenly */
 align-items: cross axis     /* stretch | flex-start | flex-end | center | baseline */
@@ -243,7 +241,7 @@ flex-wrap: wrap-reverse;
 .item { flex: 1 1 0; } /* or flex: 1 with explicit basis=0 */
 ```
 
-### P3.4 â€” CSS Custom Properties and Design Tokens
+### P3.4 — CSS Custom Properties and Design Tokens
 
 **Cascade and Inheritance in Custom Properties:**
 
@@ -257,12 +255,12 @@ flex-wrap: wrap-reverse;
 }
 
 .card .button {
-  /* Uses red â€” inherited from .card */
+  /* Uses red — inherited from .card */
   background: var(--color-primary);
 }
 
 .featured .button {
-  /* Uses blue â€” inherits from :root, not .card */
+  /* Uses blue — inherits from :root, not .card */
   background: var(--color-primary);
 }
 ```
@@ -298,7 +296,7 @@ flex-wrap: wrap-reverse;
 body { background: var(--bg); color: var(--text); }
 ```
 
-### P3.5 â€” CSS-in-JS Patterns
+### P3.5 — CSS-in-JS Patterns
 
 **styled-components / Emotion:**
 
@@ -370,7 +368,7 @@ export const Button = styled('button')`
 `;
 ```
 
-### P3.6 â€” Utility-First CSS (Tailwind)
+### P3.6 — Utility-First CSS (Tailwind)
 
 **Tailwind Configuration:**
 
@@ -442,9 +440,9 @@ JIT generates only used CSS. This means arbitrary values work:
 ```
 
 
-## P5 â€” ANIMATION & MOTION DESIGN
+## P5 — ANIMATION & MOTION DESIGN
 
-### P5.1 â€” Animation Performance
+### P5.1 — Animation Performance
 
 **The Compositing Model:**
 
@@ -457,14 +455,14 @@ Browser rendering pipeline:
 **Only animate transform and opacity:**
 
 ```css
-/* âœ“ GOOD: only transform and opacity (compositor thread) */
+/* ✓ GOOD: only transform and opacity (compositor thread) */
 .box { transition: transform 200ms, opacity 200ms; }
 .box:hover { transform: translateY(-4px); opacity: 0.8; }
 
-/* âœ— BAD: animating layout properties (triggers layout, paint) */
+/* ✗ BAD: animating layout properties (triggers layout, paint) */
 .box { transition: width 200ms, height 200ms, background-color 200ms; }
 
-/* âœ— BAD: animating box-shadow triggers paint */
+/* ✗ BAD: animating box-shadow triggers paint */
 .box { transition: box-shadow 200ms; }
 ```
 
@@ -489,7 +487,7 @@ Browser rendering pipeline:
 .lazy-section { content-visibility: auto; contain-intrinsic-size: 0 500px; }
 ```
 
-### P5.2 â€” CSS Animation
+### P5.2 — CSS Animation
 
 **Easing Functions:**
 
@@ -546,7 +544,7 @@ transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1); /* overshoot */
 .list-item:nth-child(2) { --delay: 50ms; animation-delay: var(--delay); }
 ```
 
-### P5.3 â€” JavaScript Animation (GSAP, Framer Motion)
+### P5.3 — JavaScript Animation (GSAP, Framer Motion)
 
 **GSAP Timeline:**
 
@@ -635,7 +633,7 @@ const springs = {
 />
 ```
 
-### P5.4 â€” Micro-interactions
+### P5.4 — Micro-interactions
 
 **Button Feedback:**
 
@@ -694,9 +692,9 @@ const Button = ({ children, onClick }) => {
 ```
 
 
-## P7 â€” CROSS-BROWSER COMPATIBILITY
+## P7 — CROSS-BROWSER COMPATIBILITY
 
-### P7.1 â€” Browser Support Strategy
+### P7.1 — Browser Support Strategy
 
 **Can I Use:**
 
@@ -719,7 +717,7 @@ Before using any CSS property, check support at caniuse.com:
 
 This targets browsers with > 0.5% global usage that are not dead (no security updates).
 
-### P7.2 â€” Progressive Enhancement
+### P7.2 — Progressive Enhancement
 
 ```css
 /* Base works everywhere */
@@ -741,9 +739,9 @@ This targets browsers with > 0.5% global usage that are not dead (no security up
 }
 ```
 
-### P7.3 â€” Vendor Prefixes
+### P7.3 — Vendor Prefixes
 
-Use Autoprefixer to handle vendor prefixes automatically â€” never write them manually:
+Use Autoprefixer to handle vendor prefixes automatically — never write them manually:
 
 ```javascript
 // postcss.config.js
@@ -755,9 +753,9 @@ module.exports = {
 ```
 
 
-## P9 â€” ACCESSIBILITY
+## P9 — ACCESSIBILITY
 
-### P9.1 â€” Semantic HTML
+### P9.1 — Semantic HTML
 
 ```html
 <!-- Navigation landmark -->
@@ -780,7 +778,7 @@ module.exports = {
 </aside>
 ```
 
-### P9.2 â€” ARIA Patterns
+### P9.2 — ARIA Patterns
 
 ```html
 <!-- Button (not link) -->
@@ -799,10 +797,10 @@ module.exports = {
 </div>
 ```
 
-### P9.3 â€” Keyboard Navigation
+### P9.3 — Keyboard Navigation
 
 ```css
-/* Focus visible â€” not outline: none */
+/* Focus visible — not outline: none */
 /* Remove only on mouse interaction */
 :focus:not(:focus-visible) { outline: none; }
 :focus-visible { outline: 2px solid blue; outline-offset: 2px; }
@@ -819,7 +817,7 @@ module.exports = {
 .skip-link:focus { top: 0; }
 ```
 
-### P9.4 â€” Color Contrast
+### P9.4 — Color Contrast
 
 ```css
 /* Minimum contrast ratios (WCAG 2.1 AA) */
@@ -834,9 +832,9 @@ module.exports = {
 ```
 
 
-## P11 â€” UI COMPONENT TESTING
+## P11 — UI COMPONENT TESTING
 
-### P11.1 â€” Visual Regression Testing
+### P11.1 — Visual Regression Testing
 
 ```javascript
 // Storybook + Chromatic
@@ -856,7 +854,7 @@ export const Sizes = () => (
 );
 ```
 
-### P11.2 â€” Interaction Testing
+### P11.2 — Interaction Testing
 
 ```javascript
 // Testing Library
@@ -873,7 +871,7 @@ test('button increments counter', async () => {
 });
 ```
 
-### P11.3 â€” Accessibility Testing
+### P11.3 — Accessibility Testing
 
 ```javascript
 // axe-core in tests

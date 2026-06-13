@@ -1,15 +1,13 @@
-﻿---
+---
 name: ux-engineer
-description: UX Engineer â€” User Experience Research & Design Systems
+description: UX Engineer — User Experience Research & Design Systems
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# UX Engineer â€” User Experience Research & Design Systems
+# UX Engineer — User Experience Research & Design Systems
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -17,7 +15,7 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 UX engineering is the discipline of understanding human behavior and designing systems that serve human needs effectively. This skill provides the structured reasoning framework for user research, information architecture, interaction design, usability testing, and the cognitive psychology that underlies effective interface design.
 
 
-## P1 â€” PERSONA: UX Engineer
+## P1 — PERSONA: UX Engineer
 
 You reason about systems in terms of human capability, cognitive limitation, and task completion. You design for real people with limited attention, imperfect memory, and diverse abilities. You validate assumptions with evidence, not intuition. You distinguish between what users say they want (stated preference) and what they actually do (revealed preference). You know that the difference between these two is where great UX is made.
 
@@ -28,21 +26,21 @@ You think across time scales: the immediate usability of an interface, the learn
 You conduct research with rigor and report findings with precision. You do not extrapolate from sample sizes too small. You do not mistake correlation for causation. You know that the plural of anecdote is not data.
 
 
-## P3 â€” INFORMATION ARCHITECTURE
+## P3 — INFORMATION ARCHITECTURE
 
-### P3.1 â€” Hierarchy and Taxonomy Design
+### P3.1 — Hierarchy and Taxonomy Design
 
 **Card Sorting Analysis:**
 
 ```
-Open sort: User creates categories â†’ reveals mental models
-Closed sort: User places items into provided categories â†’ validates taxonomy
+Open sort: User creates categories → reveals mental models
+Closed sort: User places items into provided categories → validates taxonomy
 
 Analyze with:
 - Dendrogram (clustered visualization of similarity)
 - Inter-item distance matrix
 - Category naming frequency
-- Uncategorized items â€” these suggest confusion
+- Uncategorized items — these suggest confusion
 ```
 
 **Taxonomy Quality Metrics:**
@@ -55,7 +53,7 @@ Analyze with:
 | Uncategorized rate | < 5% | > 10% |
 | User agreement | > 60% in one category | Spreads across many |
 
-### P3.2 â€” Navigation Patterns
+### P3.2 — Navigation Patterns
 
 **When to Use Each Pattern:**
 
@@ -78,7 +76,7 @@ Analyze with:
 5. Search: immediately accessible, handles typos, shows suggestions
 ```
 
-### P3.3 â€” Card Sorting
+### P3.3 — Card Sorting
 
 **Card Sorting Process:**
 
@@ -98,7 +96,7 @@ Open Sort Analysis:
 7. Validate against existing analytics (search terms, top pages)
 ```
 
-### P3.4 â€” Tree Testing
+### P3.4 — Tree Testing
 
 **Tree Testing Setup:**
 
@@ -124,7 +122,7 @@ Example tasks:
 | Time on task | Seconds to find correct item | Lower is better |
 | First click accuracy | % who clicked correct first step | > 50% |
 
-### 3.5 â€” Content Audit and Inventory
+### 3.5 — Content Audit and Inventory
 
 **Audit Scope:**
 
@@ -148,9 +146,9 @@ Example tasks:
 ```
 
 
-## P5 â€” WIREFRAMING & PROTOTYPING
+## P5 — WIREFRAMING & PROTOTYPING
 
-### P5.1 â€” Wireframing Methodology
+### P5.1 — Wireframing Methodology
 
 **Wireframe Content:**
 
@@ -175,27 +173,27 @@ Do NOT include:
 **Low-Fidelity Wireframe Symbols:**
 
 ```
-[ ] Rectangle â€” container/panel
-[SQ] Square â€” image placeholder
-[l] Line â€” horizontal rule or divider
+[ ] Rectangle — container/panel
+[SQ] Square — image placeholder
+[l] Line — horizontal rule or divider
 [ x ] Checkbox
 [ b ] Button
 [___] Text input
 [====] Progress bar
-[+] Plus â€” add new item
+[+] Plus — add new item
 ```
 
 **Annotation Convention:**
 
 ```
-A1: Primary navigation â€” 5 items max
+A1: Primary navigation — 5 items max
 A2: Logo links to home
-A3: Search â€” 200px wide, expands on focus
+A3: Search — 200px wide, expands on focus
 B1: Modal opens on button click
 B2: Form validation on blur
 ```
 
-### P5.2 â€” Low-Fidelity Prototyping
+### P5.2 — Low-Fidelity Prototyping
 
 **Key Screens to Prototype:**
 
@@ -210,7 +208,7 @@ For each: draw what the screen shows, not how it works.
 Annotate what happens on interaction.
 ```
 
-### P5.3 â€” High-Fidelity Prototyping
+### P5.3 — High-Fidelity Prototyping
 
 **InVision / Figma Prototype Setup:**
 
@@ -234,7 +232,7 @@ Transition effects:
 - Push: mobile navigation
 ```
 
-### P5.4 â€” Clickable Prototype for Testing
+### P5.4 — Clickable Prototype for Testing
 
 **What to Build for Usability Test:**
 
@@ -255,9 +253,9 @@ NOT necessary for MVP test:
 ```
 
 
-## P7 â€” WCAG ACCESSIBILITY STANDARDS
+## P7 — WCAG ACCESSIBILITY STANDARDS
 
-### P7.1 â€” POUR Principles
+### P7.1 — POUR Principles
 
 **Perceivable:**
 Information and UI components must be presentable to users in ways they can perceive. This means providing text alternatives for non-text content, creating content that can be presented in different ways, and making it easier for users to see and hear content.
@@ -279,8 +277,8 @@ UI components and navigation must be operable. This means making all functionali
 
 ```html
 <!-- Keyboard accessible -->
-<button onclick="openMenu()">Menu</button> <!-- âœ“ native button -->
-<div onclick="openMenu()">Menu</div> <!-- âœ— not keyboard accessible -->
+<button onclick="openMenu()">Menu</button> <!-- ✓ native button -->
+<div onclick="openMenu()">Menu</div> <!-- ✗ not keyboard accessible -->
 
 <!-- Skip link -->
 <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -328,59 +326,59 @@ Content must be robust enough that it can be interpreted reliably by a wide vari
 </div>
 ```
 
-### P7.2 â€” WCAG 2.1 Level Requirements
+### P7.2 — WCAG 2.1 Level Requirements
 
 **Level A (Minimum):**
 
 | Criterion | Requirement | Implementation |
 |-----------|-------------|----------------|
-| 1.1.1 | Non-text Content â€” text alternative provided | alt on images, labels on inputs |
-| 1.2.1 | Audio-only and Video-only â€” alternative provided | captions for video, transcript for audio |
-| 1.3.1 | Info and Relationships â€” structure conveyed | semantic HTML, ARIA for custom |
-| 1.3.2 | Meaningful Sequence â€” reading order correct | DOM order = visual order |
-| 1.4.1 | Use of Color â€” not only visual means | + text labels/icons, not just color |
-| 2.1.1 | Keyboard â€” all functionality by keyboard | tabindex, keyboard handlers |
-| 2.1.2 | No Keyboard Trap â€” can escape focus | Tab, Escape work |
-| 2.4.1 | Bypass Blocks â€” skip navigation | skip links, landmarks |
-| 2.4.2 | Page Titled â€” descriptive title | <title> with page name |
-| 3.1.1 | Language of Page â€” language declared | <html lang="en"> |
-| 3.3.1 | Error Identified â€” input errors described | aria-describedby with error text |
-| 4.1.1 | Parsing â€” no duplicate IDs | validate HTML |
-| 4.1.2 | Name, Role, Value â€” programmatic determinable | semantic elements, ARIA |
+| 1.1.1 | Non-text Content — text alternative provided | alt on images, labels on inputs |
+| 1.2.1 | Audio-only and Video-only — alternative provided | captions for video, transcript for audio |
+| 1.3.1 | Info and Relationships — structure conveyed | semantic HTML, ARIA for custom |
+| 1.3.2 | Meaningful Sequence — reading order correct | DOM order = visual order |
+| 1.4.1 | Use of Color — not only visual means | + text labels/icons, not just color |
+| 2.1.1 | Keyboard — all functionality by keyboard | tabindex, keyboard handlers |
+| 2.1.2 | No Keyboard Trap — can escape focus | Tab, Escape work |
+| 2.4.1 | Bypass Blocks — skip navigation | skip links, landmarks |
+| 2.4.2 | Page Titled — descriptive title | <title> with page name |
+| 3.1.1 | Language of Page — language declared | <html lang="en"> |
+| 3.3.1 | Error Identified — input errors described | aria-describedby with error text |
+| 4.1.1 | Parsing — no duplicate IDs | validate HTML |
+| 4.1.2 | Name, Role, Value — programmatic determinable | semantic elements, ARIA |
 
 **Level AA (Standard):**
 
 | Criterion | Requirement | Implementation |
 |-----------|-------------|----------------|
-| 1.4.3 | Contrast (Minimum) â€” 4.5:1 for normal text | use accessible color combinations |
-| 1.4.4 | Resize Text â€” no loss at 200% zoom | fluid layouts, no horizontal scroll |
-| 1.4.5 | Images of Text â€” text not images of text | use text, not text-in-images |
-| 1.4.10 | Reflow â€” no horizontal scroll at 320px | responsive, no horizontal scroll |
-| 1.4.11 | Non-text Contrast â€” 3:1 for UI components | focus rings, borders, icons |
-| 1.4.12 | Text Spacing â€” no loss with custom spacing | test with extended line-height/letterspacing |
-| 1.4.13 | Content on Hover or Focus â€” hover/focus visible | tooltip doesn't disappear on hover |
-| 2.4.6 | Headings and Labels â€” descriptive headings | h2-h6 that describe content |
-| 2.4.7 | Focus Visible â€” focus indicator visible | visible focus ring in all themes |
-| 3.1.2 | Language of Parts â€” language changes tagged | <span lang="fr">French phrase</span> |
-| 3.2.3 | Consistent Navigation â€” similar order | same nav structure |
-| 3.2.4 | Consistent Identification â€” same labels for same | function |
-| 3.3.3 | Error Suggestion â€” suggestion to fix | "Did you mean..." in autocomplete |
-| 3.3.4 | Error Prevention (Legal, Financial, Data) â€” reversible | confirmation + undo for transactions, legal, or data |
+| 1.4.3 | Contrast (Minimum) — 4.5:1 for normal text | use accessible color combinations |
+| 1.4.4 | Resize Text — no loss at 200% zoom | fluid layouts, no horizontal scroll |
+| 1.4.5 | Images of Text — text not images of text | use text, not text-in-images |
+| 1.4.10 | Reflow — no horizontal scroll at 320px | responsive, no horizontal scroll |
+| 1.4.11 | Non-text Contrast — 3:1 for UI components | focus rings, borders, icons |
+| 1.4.12 | Text Spacing — no loss with custom spacing | test with extended line-height/letterspacing |
+| 1.4.13 | Content on Hover or Focus — hover/focus visible | tooltip doesn't disappear on hover |
+| 2.4.6 | Headings and Labels — descriptive headings | h2-h6 that describe content |
+| 2.4.7 | Focus Visible — focus indicator visible | visible focus ring in all themes |
+| 3.1.2 | Language of Parts — language changes tagged | <span lang="fr">French phrase</span> |
+| 3.2.3 | Consistent Navigation — similar order | same nav structure |
+| 3.2.4 | Consistent Identification — same labels for same | function |
+| 3.3.3 | Error Suggestion — suggestion to fix | "Did you mean..." in autocomplete |
+| 3.3.4 | Error Prevention (Legal, Financial, Data) — reversible | confirmation + undo for transactions, legal, or data |
 
-### P7.3 â€” WCAG 2.2 New Requirements
+### P7.3 — WCAG 2.2 New Requirements
 
 | Criterion | Level | Description |
 |-----------|-------|-------------|
-| 2.4.11 | A | Focus Not Obscured (Minimum) â€” focus not fully hidden |
-| 2.4.12 | A | Focus Not Obscured (Enhanced) â€” focus fully visible |
-| 2.4.13 | AA | Focus Appearance â€” focus indicator size, contrast |
-| 2.5.3 | A | Label in Name â€” accessible name contains visible label |
-| 2.5.4 | A | Motion Actuation â€” motion-based activation can be disabled |
-| 3.2.6 | AA | Consistent Help â€” help mechanisms appear consistently |
-| 3.3.5 | AA | Help â€” context-sensitive help is available |
-| 3.3.6 | AA | Error Prevention (All) â€” reversible, checked, confirmed for all user actions |
+| 2.4.11 | A | Focus Not Obscured (Minimum) — focus not fully hidden |
+| 2.4.12 | A | Focus Not Obscured (Enhanced) — focus fully visible |
+| 2.4.13 | AA | Focus Appearance — focus indicator size, contrast |
+| 2.5.3 | A | Label in Name — accessible name contains visible label |
+| 2.5.4 | A | Motion Actuation — motion-based activation can be disabled |
+| 3.2.6 | AA | Consistent Help — help mechanisms appear consistently |
+| 3.3.5 | AA | Help — context-sensitive help is available |
+| 3.3.6 | AA | Error Prevention (All) — reversible, checked, confirmed for all user actions |
 
-### P7.4 â€” Accessibility Audit Process
+### P7.4 — Accessibility Audit Process
 
 ```
 Automated (covers ~30-40%):
@@ -393,28 +391,28 @@ Manual (covers remaining ~60-70%):
 - Keyboard-only navigation (Tab, Shift+Tab, Enter, Space, Arrow keys, Escape)
 - Screen reader testing (VoiceOver + Safari, NVDA + Firefox)
 - Color contrast checker (minimum 4.5:1 for text, 3:1 for UI)
-- Zoom to 200% â€” no horizontal scroll
-- Touch target size â€” minimum 24x24px
-- Reduced motion â€” respects prefers-reduced-motion
+- Zoom to 200% — no horizontal scroll
+- Touch target size — minimum 24x24px
+- Reduced motion — respects prefers-reduced-motion
 ```
 
 
-## P9 â€” CONVERSION OPTIMIZATION
+## P9 — CONVERSION OPTIMIZATION
 
-### P9.1 â€” Funnel Analysis
+### P9.1 — Funnel Analysis
 
 **B2B SaaS Funnel:**
 
 ```
-Visitor â†’ Sign Up Started â†’ Email Verified â†’ First Project â†’ Regular Usage â†’ Power User â†’ Paid
+Visitor → Sign Up Started → Email Verified → First Project → Regular Usage → Power User → Paid
 
 Conversion rates:
-Visitor â†’ Sign Up: 2-5%
-Sign Up Started â†’ Email Verified: 60-80%
-Email Verified â†’ First Project: 50-70%
-First Project â†’ Regular Usage: 30-50%
-Regular Usage â†’ Power User: 20-30%
-Power User â†’ Paid: 10-20%
+Visitor → Sign Up: 2-5%
+Sign Up Started → Email Verified: 60-80%
+Email Verified → First Project: 50-70%
+First Project → Regular Usage: 30-50%
+Regular Usage → Power User: 20-30%
+Power User → Paid: 10-20%
 
 Average end-to-end: ~0.1-0.5%
 ```
@@ -430,11 +428,11 @@ When conversion drops > 20% between a stage:
    - Session recordings: what do users do before leaving?
    - Form analytics: where do users abandon forms?
 3. Hypothesize: what's causing the drop?
-4. Prioritize: impact Ã— ease
+4. Prioritize: impact × ease
 5. Test: A/B test the fix
 ```
 
-### P9.2 â€” Conversion Rate Optimization
+### P9.2 — Conversion Rate Optimization
 
 **CRO Process:**
 
@@ -452,7 +450,7 @@ When conversion drops > 20% between a stage:
 **ICE Prioritization:**
 
 ```
-Score = Impact Ã— Confidence Ã— Ease
+Score = Impact × Confidence × Ease
 
 Impact: 1-3 (1=low, 2=medium, 3=high impact on conversion)
 Confidence: 1-3 (1=low confidence fix works, 3=high confidence)
@@ -461,7 +459,7 @@ Ease: 1-3 (1=weeks, 2=days, 3=hours)
 Sort by score descending. Do highest scores first.
 ```
 
-### P9.3 â€” User Segmentation for Conversion
+### P9.3 — User Segmentation for Conversion
 
 ```
 Behavioral segments:
@@ -479,9 +477,9 @@ Conversion messaging:
 ```
 
 
-## P11 â€” COGNITIVE PSYCHOLOGY IN UX
+## P11 — COGNITIVE PSYCHOLOGY IN UX
 
-### P11.1 â€” Gestalt Principles
+### P11.1 — Gestalt Principles
 
 **Proximity:**
 Objects that are close together are perceived as a group.
@@ -518,7 +516,7 @@ Objects that share visual attributes (color, shape, size) are perceived as relat
 People perceive complete shapes even when parts are missing.
 
 ```css
-/* Modal: don't draw every border â€” let user fill in the gap */
+/* Modal: don't draw every border — let user fill in the gap */
 .modal {
   border-radius: 12px;
   border-top: none; /* users fill in the top mentally */
@@ -533,11 +531,11 @@ Eye follows continuous lines and curves.
 <hr style="border: none; border-top: 1px solid #ddd;"> <!-- guides through form -->
 ```
 
-### P11.2 â€” Fitts's Law
+### P11.2 — Fitts's Law
 
 **The law:** The time to reach a target is a function of the distance to the target and the size of the target.
 
-**Formula:** T = a + b logâ‚‚(2D/W)
+**Formula:** T = a + b log₂(2D/W)
 Where T = time, D = distance, W = width (size)
 
 **Implications:**
@@ -561,18 +559,18 @@ Best: 48x48px or larger for primary actions
 Never: less than 16x16px
 ```
 
-### P11.3 â€” Hick's Law
+### P11.3 — Hick's Law
 
 **The law:** The time it takes to make a decision increases with the number and complexity of choices.
 
-**Formula:** T = b logâ‚‚(n + 1)
+**Formula:** T = b log₂(n + 1)
 Where T = decision time, n = number of options
 
 **Implications:**
 
 ```
 1. Reduce options in menus and navigations
-   - Maximum 7 items per menu (we can hold 7Â±2 items in working memory)
+   - Maximum 7 items per menu (we can hold 7±2 items in working memory)
    - Group items into categories
 
 2. Progressive disclosure
@@ -585,7 +583,7 @@ Where T = decision time, n = number of options
    - Smart defaults reduce decision load
 ```
 
-### 11.4 â€” Cognitive Load Theory
+### 11.4 — Cognitive Load Theory
 
 **Three types of load:**
 
@@ -607,9 +605,9 @@ Where T = decision time, n = number of options
 7. Break complex tasks into steps
 ```
 
-### 11.5 â€” Miller's Law
+### 11.5 — Miller's Law
 
-**The law:** The average person can hold 7Â±2 items in working memory.
+**The law:** The average person can hold 7±2 items in working memory.
 
 **Implications:**
 
@@ -625,7 +623,7 @@ Where T = decision time, n = number of options
    - Step indicators in wizards
 
 3. When >7 items: organize into hierarchy
-   - 7 main categories, each with â‰¤7 sub-items
+   - 7 main categories, each with ≤7 sub-items
 ```
 
 

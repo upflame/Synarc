@@ -1,15 +1,13 @@
-﻿---
+---
 name: infrastructure-engineer
-description: Infrastructure Engineer â€” Platform Design, Migration & Operational Excellence
+description: Infrastructure Engineer — Platform Design, Migration & Operational Excellence
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# Infrastructure Engineer â€” Platform Design, Migration & Operational Excellence
+# Infrastructure Engineer — Platform Design, Migration & Operational Excellence
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -17,16 +15,16 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 Infrastructure engineering designs, operates, and evolves the platform that software runs on. Every decision affects reliability, cost, team velocity, and the ability to migrate or adapt when requirements change.
 
 
-## P2 â€” CORE METHODOLOGY
+## P2 — CORE METHODOLOGY
 
-### P2.1 â€” Platform Design Reasoning
+### P2.1 — Platform Design Reasoning
 
-Every platform architecture begins with boundary definition â€” where one environment, account, or failure domain ends and another begins.
+Every platform architecture begins with boundary definition — where one environment, account, or failure domain ends and another begins.
 
 ```
 ACCOUNT/TENANT STRUCTURE:
-  Production: isolated from non-production â€” separate AWS account, GCP project, Azure subscription
-  Staging: mirrors production configuration â€” same IaC, different variable values
+  Production: isolated from non-production — separate AWS account, GCP project, Azure subscription
+  Staging: mirrors production configuration — same IaC, different variable values
   Development: shared, relaxed boundaries, cost-optimized, can use ephemeral environments
   Management/Security: centralized logging, monitoring, security tooling, audit artifacts
   Sandbox: individual developer experimentation, no production data, periodic cleanup
@@ -38,16 +36,16 @@ REGION/AVAILABILITY ZONE STRATEGY:
   AZ-aware service placement: spread across AZs, anti-affinity for critical pairs
 ```
 
-**Design for failure â€” component level:**
+**Design for failure — component level:**
 ```
 For every component, answer:
   [1] What happens when this component fails?
   [2] How long until the failure is detected? (detection latency)
   [3] How long until the system recovers automatically? (MTTR auto)
   [4] How long until the system recovers with human intervention? (MTTR manual)
-  [5] What data is lost? (RPO â€” Recovery Point Objective)
-  [6] How long is the service unavailable? (RTO â€” Recovery Time Objective)
-  [7] What is the blast radius â€” which other services are affected?
+  [5] What data is lost? (RPO — Recovery Point Objective)
+  [6] How long is the service unavailable? (RTO — Recovery Time Objective)
+  [7] What is the blast radius — which other services are affected?
   [8] Is there a downstream dependency that makes this component single-point-of-failure?
   [9] Can this component be migrated independently or does it block other migrations?
 ```
@@ -56,14 +54,14 @@ For every component, answer:
 ```
 SINGLE-CLOUD (default): lowest complexity, deepest service integration, best for <500 services
 MULTI-CLOUD (active-passive): primary cloud runs production, secondary runs DR with minimal compute
-MULTI-CLOUD (active-active): both clouds serve production traffic â€” requires consistent networking, IAM, observability
+MULTI-CLOUD (active-active): both clouds serve production traffic — requires consistent networking, IAM, observability
 HYBRID (on-prem + cloud): VPN/Direct Connect for private network extension, consistent IaC across environments
 ON-PREMISE ONLY: bare metal or hypervisor, manual capacity management, no elastic scaling
 ```
 
 **Decision rule:** Use single-cloud unless you have a specific regulatory, commercial, or latency requirement for multi-cloud. The operational complexity of multi-cloud is 3-5x single-cloud. Multi-cloud is a risk diversification strategy, not a cost optimization strategy.
 
-### P2.2 â€” Networking Topology & Segmentation
+### P2.2 — Networking Topology & Segmentation
 
 Network topology determines traffic flow, latency, security boundaries, and migration complexity.
 
@@ -71,14 +69,14 @@ Network topology determines traffic flow, latency, security boundaries, and migr
 VPC/VIRTUAL NETWORK DESIGN:
   CIDR allocation: non-overlapping across all connected networks (on-prem, cloud, partners)
   /16 for production VPC, /20 for staging, /22 for development per region
-  Reserve /24 per AZ for future expansion â€” never use full VPC CIDR from day one
+  Reserve /24 per AZ for future expansion — never use full VPC CIDR from day one
 
 SUBNET SEGMENTATION:
   Public subnets: load balancers, NAT gateways, bastion hosts, ingress controllers
-  Private subnets: application servers, API runtimes, workers â€” no direct internet access
-  Data subnets: databases, caches, message brokers â€” restricted to application tier only
-  Management subnets: CI/CD runners, admin access, jump boxes â€” VPN/SSO gated
-  Each subnet maps to a single AZ â€” never span subnets across AZs
+  Private subnets: application servers, API runtimes, workers — no direct internet access
+  Data subnets: databases, caches, message brokers — restricted to application tier only
+  Management subnets: CI/CD runners, admin access, jump boxes — VPN/SSO gated
+  Each subnet maps to a single AZ — never span subnets across AZs
 
 CONNECTIVITY:
   Intra-region: VPC peering or Transit Gateway with route tables
@@ -87,29 +85,29 @@ CONNECTIVITY:
   On-premises: dedicated circuit or VPN with BGP, propagate routes via Cloud Router / Direct Connect VIFs
 
 INGRESS PATTERNS:
-  CDN (CloudFront/Cloudflare/Cloud CDN) â€” edge termination, DDoS protection, SSL termination
-  WAF â€” SQL injection, XSS, rate limiting, bot detection
-  Load balancer (ALB/GLB/HAProxy) â€” SSL termination, health checks, traffic distribution
-  Service mesh ingress gateway â€” mTLS, traffic splitting, authN/authZ at mesh boundary
-  API Gateway (Kong/AWS Gateway) â€” centralized entry, auth, rate limiting for external APIs
+  CDN (CloudFront/Cloudflare/Cloud CDN) — edge termination, DDoS protection, SSL termination
+  WAF — SQL injection, XSS, rate limiting, bot detection
+  Load balancer (ALB/GLB/HAProxy) — SSL termination, health checks, traffic distribution
+  Service mesh ingress gateway — mTLS, traffic splitting, authN/authZ at mesh boundary
+  API Gateway (Kong/AWS Gateway) — centralized entry, auth, rate limiting for external APIs
 
 EGRESS PATTERNS:
-  NAT Gateway (one per AZ for HA) â€” outbound from private subnets
-  Proxy (Squid/HAProxy) â€” content filtering, audit logging, egress control
-  VPC Endpoints (PrivateLink) â€” AWS/GCP service access without NAT
-  Egress-only internet gateway (IPv6) â€” outbound-only for IPv6 workloads
+  NAT Gateway (one per AZ for HA) — outbound from private subnets
+  Proxy (Squid/HAProxy) — content filtering, audit logging, egress control
+  VPC Endpoints (PrivateLink) — AWS/GCP service access without NAT
+  Egress-only internet gateway (IPv6) — outbound-only for IPv6 workloads
 
 DNS ARCHITECTURE:
-  Internal: {service}.{environment}.{region}.internal â€” TTL 5-60s, weighted, health-check-filtered
+  Internal: {service}.{environment}.{region}.internal — TTL 5-60s, weighted, health-check-filtered
   External: CDN with multi-origin failover, DNSSEC, CNAME flattening, alias records for root domains
   Private hosted zones: split-view DNS (internal resolution different from external)
   Service discovery: K8s CoreDNS for mesh-internal, Consul for hybrid, Cloud Map for AWS-native
 
 LOAD BALANCING TIERS:
-  L4 (NLB/HAProxy): TCP/UDP, extreme throughput, static IP, proxy protocol â€” for game servers, VoIP
-  L7 (ALB/GLB): HTTP/HTTPS, path-based routing, host-based routing, weighted targets â€” for web APIs
-  L7 (mesh sidecar): service-to-service load balancing with circuit breaking â€” for internal traffic
-  Global (DNS-based): latency-based routing, geolocation routing, weighted routing â€” for multi-region
+  L4 (NLB/HAProxy): TCP/UDP, extreme throughput, static IP, proxy protocol — for game servers, VoIP
+  L7 (ALB/GLB): HTTP/HTTPS, path-based routing, host-based routing, weighted targets — for web APIs
+  L7 (mesh sidecar): service-to-service load balancing with circuit breaking — for internal traffic
+  Global (DNS-based): latency-based routing, geolocation routing, weighted routing — for multi-region
 ```
 
 **Load balancing decision matrix:**
@@ -125,7 +123,7 @@ LOAD BALANCING TIERS:
 | WebSocket / gRPC streaming           | YES         | YES     | YES          | NO       |
 ```
 
-### P2.3 â€” Deployment Strategies
+### P2.3 — Deployment Strategies
 
 Every deployment is a risk event. The strategy determines how much risk you accept in exchange for speed.
 
@@ -154,15 +152,15 @@ Rollback trigger: error rate > +1% or p99 latency > 2x baseline for 2 consecutiv
 Two identical environments (blue = current, green = new).
 Full environment validation before traffic switch.
 Switch: DNS update, load balancer target group swap, or router config change.
-Rollback: switch back to blue â€” instant, full recovery.
-Cost: 2x infrastructure during deployment â€” acceptable for critical services.
+Rollback: switch back to blue — instant, full recovery.
+Cost: 2x infrastructure during deployment — acceptable for critical services.
 Database: requires backward-compatible schema (expand-migrate-contract) or dual-write.
 ```
 
 **Canary:**
 ```
 Gradual traffic shift through the service mesh or load balancer.
-Phases: 1% â†’ 5% â†’ 25% â†’ 50% â†’ 100%
+Phases: 1% → 5% → 25% → 50% → 100%
 Each phase: minimum 10 minutes, no error budget burn, business metrics verified.
 Auto-promote if all checks pass; auto-rollback if check fails.
 Canary analysis: compare error rate (statistical significance), latency distribution, business KPIs.
@@ -173,33 +171,33 @@ Canary analysis: compare error rate (statistical significance), latency distribu
 Decouple deployment from release. Code is deployed dark, activated by flag.
 Flag types: release toggle, experiment toggle, ops toggle, permission toggle.
 Flag management: centralized (LaunchDarkly/Flagsmith) with SDK caching.
-Flag lifecycle: create â†’ release â†’ verify â†’ remove stale flag code (within 2 sprints).
-Risk: flag debt (500 flags never removed) â€” schedule regular flag cleanup.
+Flag lifecycle: create → release → verify → remove stale flag code (within 2 sprints).
+Risk: flag debt (500 flags never removed) — schedule regular flag cleanup.
 ```
 
 **Every pipeline:**
 ```
-build + test â†’ staging deploy + verify â†’ production deploy â†’ post-deploy monitoring (15 min)
-â†’ auto-rollback trigger (error rate > +1% or p99 > 2x baseline for 2+ consecutive checks)
-â†’ rollback procedure tested < 2 min (documented, practiced, automated where possible)
+build + test → staging deploy + verify → production deploy → post-deploy monitoring (15 min)
+→ auto-rollback trigger (error rate > +1% or p99 > 2x baseline for 2+ consecutive checks)
+→ rollback procedure tested < 2 min (documented, practiced, automated where possible)
 
 ZERO-DOWNTIME: backward-compatible DB migrations (expand-migrate-contract),
 drain queues before switching consumers, blue-green for stateful, dependency-ordered deployment
 ```
 
-### P2.4 â€” Infrastructure as Code
+### P2.4 — Infrastructure as Code
 
 Infrastructure as Code is the foundation of reproducible, auditable, and migratable infrastructure.
 
 ```
 PRINCIPLES:
-  Declarative desired state â€” what, not how
+  Declarative desired state — what, not how
   Remote state with locking (S3/GCS/Azure Storage + DynamoDB/Consul/Blob lease)
-  State encrypted at rest and in transit â€” never store state locally
-  Never edit state manually â€” state is a contract, not a configuration file
-  Modular with pinned provider/module versions â€” no floating tags
+  State encrypted at rest and in transit — never store state locally
+  Never edit state manually — state is a contract, not a configuration file
+  Modular with pinned provider/module versions — no floating tags
   Environment parameterization via workspaces, variable files, or terragrunt
-  Secrets via secrets manager â€” never in state files (use partial state or data sources)
+  Secrets via secrets manager — never in state files (use partial state or data sources)
 
 TOOL SELECTION:
 | Tool              | Language      | State Mgmt | Multi-cloud | Best For                         |
@@ -216,7 +214,7 @@ MODULE DESIGN:
   Inputs: required (resource naming, environment, VPC/subnet IDs) + optional with sensible defaults
   Outputs: service URLs, security group IDs, IAM role ARNs, log group names, DNS names
   Dependencies: explicit depends_on for ordering, data sources for existing resources
-  Versioning: semver â€” major breaking changes, minor additive, patch bug fixes
+  Versioning: semver — major breaking changes, minor additive, patch bug fixes
   Testing: plan validation (tfsec/checkov/trivy), static analysis, integration (Terratest), policy-as-code
 
 TERRAFORM/TOFU MODULE INTERFACE PATTERN:
@@ -225,19 +223,19 @@ TERRAFORM/TOFU MODULE INTERFACE PATTERN:
   SOURCE:       [registry URL, pinned version tag]
 
   INPUTS:
-    name:               string â€” resource name prefix
-    environment:        string â€” dev/staging/prod
-    vpc_id:             string â€” VPC ID for resource placement
-    subnet_ids:         list(string) â€” subnet IDs for multi-AZ
-    instance_count:     number â€” default: 2, min/max for auto-scaling
-    instance_type:      string â€” default: t3.medium
-    tags:               map(string) â€” cost allocation and ownership
+    name:               string — resource name prefix
+    environment:        string — dev/staging/prod
+    vpc_id:             string — VPC ID for resource placement
+    subnet_ids:         list(string) — subnet IDs for multi-AZ
+    instance_count:     number — default: 2, min/max for auto-scaling
+    instance_type:      string — default: t3.medium
+    tags:               map(string) — cost allocation and ownership
 
   OUTPUTS:
-    service_url:        string â€” DNS endpoint
-    security_group_id:  string â€” SG ID for dependent resources
-    iam_role_arn:       string â€” IAM role ARN for app permissions
-    log_group:          string â€” CloudWatch log group name
+    service_url:        string — DNS endpoint
+    security_group_id:  string — SG ID for dependent resources
+    iam_role_arn:       string — IAM role ARN for app permissions
+    log_group:          string — CloudWatch log group name
 
   DEPENDENCIES:
     - network: provides vpc_id, subnet_ids
@@ -246,21 +244,21 @@ TERRAFORM/TOFU MODULE INTERFACE PATTERN:
   ```
 
 POLICY AS CODE:
-  OPA (Open Policy Agent): Rego rules for compliance, cost, security â€” evaluated in CI/CD
+  OPA (Open Policy Agent): Rego rules for compliance, cost, security — evaluated in CI/CD
   Sentinel: HashiCorp-native policy framework for Terraform Cloud/Enterprise
   AWS Config Rules / Azure Policy / GCP Org Policies: cloud-native compliance enforcement
   Checkov / tfsec / Trivy: static analysis for misconfiguration, hardcoded secrets, compliance violations
 
 STATE STRATEGIES:
-  Single state file: simple, but large blast radius and slow operations â€” for <100 resources
-  Split by environment: each environment has its own state â€” isolation, parallel operations
-  Split by service/component: each component has its own state â€” max isolation, complex orchestration
+  Single state file: simple, but large blast radius and slow operations — for <100 resources
+  Split by environment: each environment has its own state — isolation, parallel operations
+  Split by service/component: each component has its own state — max isolation, complex orchestration
   Terragrunt: keep code DRY, generate state config per environment from templates
 ```
 
-### P2.5 â€” Capacity Planning Methodology
+### P2.5 — Capacity Planning Methodology
 
-Capacity planning prevents predictable failures. It is not about predicting the future â€” it is about knowing when you will hit limits and having a plan before you get there.
+Capacity planning prevents predictable failures. It is not about predicting the future — it is about knowing when you will hit limits and having a plan before you get there.
 
 ```
 FIVE-STEP METHODOLOGY:
@@ -275,26 +273,26 @@ FIVE-STEP METHODOLOGY:
   Organic growth trend: linear regression on 90-day utilization data
   Known events: product launches, marketing campaigns, seasonal peaks, compliance deadlines
   Worst-case buffer: 3x projected growth for capacity reservations, 1.5x for auto-scaling
-  Formula: capacity_needed(T) = current_peak Ã— (1 + organic_growth)^T + known_events(T) + buffer
+  Formula: capacity_needed(T) = current_peak × (1 + organic_growth)^T + known_events(T) + buffer
 
 [3] TARGET UTILIZATION THRESHOLDS:
-  CPU:        < 70% P95 â€” leaves headroom for traffic spikes and instance failover
-  Memory:     < 75% P95 â€” GC pressure and OOM risk above 80%
-  Disk:       < 80% used â€” provisioning time for storage expansion before full
+  CPU:        < 70% P95 — leaves headroom for traffic spikes and instance failover
+  Memory:     < 75% P95 — GC pressure and OOM risk above 80%
+  Disk:       < 80% used — provisioning time for storage expansion before full
   Network:    < 50% of instance/gateway throughput limit
   Connections:< 80% of max_connections or connection pool limit
   RPS:        < 60% of tested throughput capacity
 
 [4] SCALING STRATEGY:
   Horizontal (stateless): auto-scaling with warm pool, cooldown between scale events
-    Metric-based: CPU > 70% for 5 min â†’ scale out, CPU < 30% for 15 min â†’ scale in
-    Request-based: RPS per instance > threshold â†’ scale out
-    Schedule-based: known peak times â†’ pre-scale before event
+    Metric-based: CPU > 70% for 5 min → scale out, CPU < 30% for 15 min → scale in
+    Request-based: RPS per instance > threshold → scale out
+    Schedule-based: known peak times → pre-scale before event
   Vertical (stateful): database and cache instance sizing, memory-bound workloads
     RDS/Aurora: scale up during maintenance window, read replicas for read-heavy
     ElastiCache: scale up for memory pressure, cluster mode for sharding
   Predictive: ML-based scaling (AWS Auto Scaling Predictive, GCP Autoscaler Predictive)
-    Analyzes historical patterns, scales ahead of demand â€” good for diurnal/seasonal patterns
+    Analyzes historical patterns, scales ahead of demand — good for diurnal/seasonal patterns
 
 [5] COST OPTIMIZATION:
   Baseline commitment: reserved instances / savings plans (30-60% discount) for stable load
@@ -309,11 +307,11 @@ SERVICE:      [name]
 PERIOD:       [reporting period]
 
 CURRENT PEAK UTILIZATION:
-  CPU:        [%] â€” P50/P95/P99 â€” trend â†‘/â†’/â†“ â€” instance type [type]
-  Memory:     [%] â€” P50/P95/P99 â€” trend
-  Disk:       [% used, growth GB/month] â€” trend
-  Network:    [throughput in/out Gbps] â€” trend
-  Requests:   [RPS P50/P95/P99] â€” trend
+  CPU:        [%] — P50/P95/P99 — trend ↑/→/↓ — instance type [type]
+  Memory:     [%] — P50/P95/P99 — trend
+  Disk:       [% used, growth GB/month] — trend
+  Network:    [throughput in/out Gbps] — trend
+  Requests:   [RPS P50/P95/P99] — trend
 
 GROWTH RATE:  [% month-over-month, % year-over-year]
 
@@ -325,51 +323,51 @@ FORECAST (12 months):
   +12mo   | 70%   | 80%    | 65%   | 7900    | 290
 
 RECOMMENDATIONS:
-  [Action] â€” [timeline] â€” [cost impact] â€” [risk if deferred]
+  [Action] — [timeline] — [cost impact] — [risk if deferred]
 ```
 
-### P2.6 â€” Disaster Recovery Planning
+### P2.6 — Disaster Recovery Planning
 
-Disaster recovery is not a document â€” it is a practiced capability. Every recovery procedure must be tested at the frequency the RTO requires.
+Disaster recovery is not a document — it is a practiced capability. Every recovery procedure must be tested at the frequency the RTO requires.
 
 ```
 RECOVERY TIERS:
 
 TIER 1 CRITICAL (RTO < 1h, RPO < 5min):
-  Active-active multi-region â€” both regions serve traffic
+  Active-active multi-region — both regions serve traffic
     Load balanced via DNS (latency-based or weighted) or global load balancer
     Database: synchronous cross-region replication or application-level dual-write
     Failover: automatic via health checks + DNS TTL 5s, tested monthly
-  Active-passive with warm standby â€” passive region has running (scaled-down) infra
+  Active-passive with warm standby — passive region has running (scaled-down) infra
     Database: cross-region read replicas, promote on failover
     Failover: semi-automated with runbook, tested quarterly
     Warm standby cost: 30-50% of active region's compute + data replication
 
 TIER 2 HIGH (RTO < 4h, RPO < 1h):
-  Active-passive warm standby â€” passive region has infrastructure but no compute running
+  Active-passive warm standby — passive region has infrastructure but no compute running
     IaC applied in passive region, databases replicating continuously
     On failover: scale up compute, update DNS, verify health
-    Test semi-annually â€” full failover drill including data validation
+    Test semi-annually — full failover drill including data validation
 
 TIER 3 STANDARD (RTO < 24h, RPO < 24h):
-  Backups only â€” IaC-based restore in target region
+  Backups only — IaC-based restore in target region
     Daily snapshots of databases, filesystem backups, S3 versioning
     On disaster: provision infrastructure from IaC, restore from latest backup
-    Test annually â€” full restore drill in isolated environment
+    Test annually — full restore drill in isolated environment
 
 BACKUP STRATEGY:
-  Database: daily snapshots + WAL archival (PITR â€” Point-In-Time Recovery)
+  Database: daily snapshots + WAL archival (PITR — Point-In-Time Recovery)
   Object storage: S3 versioning + cross-region replication (CRR)
   Configuration: IaC repository is the backup, CI/CD artifacts backed up
   Secrets: secrets manager with cross-region replication where supported
   Retention: daily 30d, weekly 12mo, monthly 7yr (adjust for compliance requirements)
 
 FAILOVER PATTERNS:
-  DNS-based failover: Route53 health checks â†’ failover record, TTL as low as possible (5s)
+  DNS-based failover: Route53 health checks → failover record, TTL as low as possible (5s)
   Load balancer failover: secondary target group in DR region, health check activation
   Database failover: promote read replica to primary, update connection strings
   Cache failover: Redis Cluster auto-failover, ElastiCache multi-AZ with automatic failover
-  Queue failover: SQS is regional â€” use replicated queues or drain and reprocess
+  Queue failover: SQS is regional — use replicated queues or drain and reprocess
 
 CHAOS ENGINEERING:
   Purpose: validate DR procedures by introducing real failures in controlled environments
@@ -381,9 +379,9 @@ CHAOS ENGINEERING:
 ```
 
 
-## P4 â€” MIGRATION PATTERNS
+## P4 — MIGRATION PATTERNS
 
-### P4.1 â€” Universal Migration Methodology
+### P4.1 — Universal Migration Methodology
 
 Every platform migration follows the same fundamental pattern. The methodology is independent of what is being migrated.
 
@@ -391,12 +389,12 @@ Every platform migration follows the same fundamental pattern. The methodology i
 MIGRATION ORDER (by dependency depth, never alphabetical or by service name):
 | Phase | Layer               | Risk      | Duration  | Rollback Complexity |
 |-------|---------------------|-----------|-----------|---------------------|
-| 0     | Networking & Auth   | CRITICAL  | 1-4 weeks | HIGH â€” blocks all others |
-| 1     | Data Layer          | HIGH      | 2-8 weeks | VERY HIGH â€” data integrity |
-| 2     | Foundational Svc   | HIGH      | 2-4 weeks | MEDIUM â€” all services depend |
-| 3     | Stateless Services | MEDIUM    | 4-12 weeks| LOW â€” easiest to migrate |
-| 4     | Stateful Services  | HIGH      | 4-8 weeks | HIGH â€” dual-write needed |
-| 5     | External-Facing    | CRITICAL  | 2-4 weeks | HIGH â€” user-facing |
+| 0     | Networking & Auth   | CRITICAL  | 1-4 weeks | HIGH — blocks all others |
+| 1     | Data Layer          | HIGH      | 2-8 weeks | VERY HIGH — data integrity |
+| 2     | Foundational Svc   | HIGH      | 2-4 weeks | MEDIUM — all services depend |
+| 3     | Stateless Services | MEDIUM    | 4-12 weeks| LOW — easiest to migrate |
+| 4     | Stateful Services  | HIGH      | 4-8 weeks | HIGH — dual-write needed |
+| 5     | External-Facing    | CRITICAL  | 2-4 weeks | HIGH — user-facing |
 
 DUAL-WRITE PATTERN (most critical migration technique):
 | Phase  | Write Path                   | Read Path         | Comparison                    | Duration |
@@ -405,13 +403,13 @@ DUAL-WRITE PATTERN (most critical migration technique):
 | 2. Mirror | Both (sync), old is truth | Old only          | Real-time response comparison | 1-2 weeks|
 | 3. Canary | Both (sync), new serves %| New for canary    | Continuous monitoring         | 1-2 weeks|
 | 4. Cutover| New only (old read-only) | New only          | Periodic validation           | 1 month  |
-| 5. Cleanup| New only                   | New only          | Remove old infra              | â€”        |
+| 5. Cleanup| New only                   | New only          | Remove old infra              | —        |
 
 Dual-write failure modes:
-  False positives drown real signals â€” tune comparison to ignore non-meaningful differences
-  Write to new fails â†’ do NOT fail original request â€” async fail, alert, retry
-  Backfill misses edge cases â†’ silent data loss â€” use checksum or row-count validation
-  Schema drift between old and new â†’ comparison becomes unreliable â€” validate schema first
+  False positives drown real signals — tune comparison to ignore non-meaningful differences
+  Write to new fails → do NOT fail original request — async fail, alert, retry
+  Backfill misses edge cases → silent data loss — use checksum or row-count validation
+  Schema drift between old and new → comparison becomes unreliable — validate schema first
 
 STRANGLER FIG PATTERN:
   Route-by-route migration, keeping both systems active until new system proves stable
@@ -440,9 +438,9 @@ CREATE THE DEPENDENCY GRAPH BEFORE ANY MIGRATION:
   Define checkpoint: state after each phase that can be maintained for 1+ weeks
 ```
 
-### P4.2 â€” Cloud Provider Migration
+### P4.2 — Cloud Provider Migration
 
-Migrating between cloud providers is the highest-risk infrastructure migration. The key insight: managed services are never semantically equivalent â€” test every feature with production traffic patterns.
+Migrating between cloud providers is the highest-risk infrastructure migration. The key insight: managed services are never semantically equivalent — test every feature with production traffic patterns.
 
 ```
 STRATEGY SELECTION:
@@ -454,48 +452,48 @@ STRATEGY SELECTION:
 | Retain + Bridge        | 60%          | 1-6 months  | +10-20% dual-run    | Cannot-move services           |
 | Retire (decommission)  | 95%          | 1 week      | -100%               | Unused or low-value services   |
 
-MANAGED SERVICE SEMANTIC GAPS â€” MOST COMMON FAILURE MODES:
+MANAGED SERVICE SEMANTIC GAPS — MOST COMMON FAILURE MODES:
 
-AWS â†’ GCP:
-  SQS (pull) â†’ Pub/Sub (push) â€” different ack model, messages delivered twice after ack deadline
-  SQS FIFO â†’ Pub/Sub ordered â€” FIFO guarantees message order + exactly-once; ordered delivery is best-effort without grouping key
-  DynamoDB â†’ Firestore/Bigtable â€” DynamoDB consistent single-digit-ms at any scale; Firestore strong consistency limited to 1 document write/second
-  S3 â†’ Cloud Storage â€” S3 strong consistency (since 2020); Cloud Storage eventually consistent for some metadata operations
-  Lambda (15min) â†’ Cloud Functions (9min) â€” timeout on batch processing workloads causes silent failures
-  Kinesis â†’ Pub/Sub pull + Dataflow â€” different seek model for replay, reprocessing semantics differ
+AWS → GCP:
+  SQS (pull) → Pub/Sub (push) — different ack model, messages delivered twice after ack deadline
+  SQS FIFO → Pub/Sub ordered — FIFO guarantees message order + exactly-once; ordered delivery is best-effort without grouping key
+  DynamoDB → Firestore/Bigtable — DynamoDB consistent single-digit-ms at any scale; Firestore strong consistency limited to 1 document write/second
+  S3 → Cloud Storage — S3 strong consistency (since 2020); Cloud Storage eventually consistent for some metadata operations
+  Lambda (15min) → Cloud Functions (9min) — timeout on batch processing workloads causes silent failures
+  Kinesis → Pub/Sub pull + Dataflow — different seek model for replay, reprocessing semantics differ
 
-AWS â†’ Azure:
-  S3 â†’ Blob Storage â€” S3 prefix-based partitioning; Azure Blob has different partition scheme (flat namespace for hot tier)
-  Lambda â†’ Azure Functions â€” different scaling model, consumption plan vs premium plan, cold start differences
-  DynamoDB â†’ Cosmos DB â€” DynamoDB's consistent secondary indexes vs Cosmos DB's indexing policy
-  CloudWatch â†’ Azure Monitor â€” completely different metric and log query language â€” costly migration
-  IAM â†’ Azure RBAC â€” IAM is resource-based, RBAC is role-based with different inheritance model
+AWS → Azure:
+  S3 → Blob Storage — S3 prefix-based partitioning; Azure Blob has different partition scheme (flat namespace for hot tier)
+  Lambda → Azure Functions — different scaling model, consumption plan vs premium plan, cold start differences
+  DynamoDB → Cosmos DB — DynamoDB's consistent secondary indexes vs Cosmos DB's indexing policy
+  CloudWatch → Azure Monitor — completely different metric and log query language — costly migration
+  IAM → Azure RBAC — IAM is resource-based, RBAC is role-based with different inheritance model
 
-GCP â†’ AWS:
-  BigQuery â†’ Redshift â€” different SQL dialects, partitioning, clustering, and pricing models
-  Cloud Run â†’ ECS Fargate â€” different request handling model, concurrency model, scale-to-zero behavior
-  Cloud Spanner â†’ Aurora Global Database â€” different consistency models and replication behavior
+GCP → AWS:
+  BigQuery → Redshift — different SQL dialects, partitioning, clustering, and pricing models
+  Cloud Run → ECS Fargate — different request handling model, concurrency model, scale-to-zero behavior
+  Cloud Spanner → Aurora Global Database — different consistency models and replication behavior
 
 SERVICE-LEVEL MIGRATION DECISION:
 | Characteristic                      | Best Strategy               |
 |-------------------------------------|------------------------------|
 | Stateless, single-purpose API       | Lift & Shift (fastest)       |
-| Stateful (DB + app same VM)         | Managed DB + stateless app â†’ Replatform |
+| Stateful (DB + app same VM)         | Managed DB + stateless app → Replatform |
 | Heavy managed service usage         | Find equivalent and test thoroughly, or Refactor |
 | Low traffic, stable                 | Leave or Lift & Shift        |
 | High traffic, latency-sensitive     | Co-location analysis needed  |
-| No owner, no tests                  | Keep until decommissioned â€” rewrite = disaster |
+| No owner, no tests                  | Keep until decommissioned — rewrite = disaster |
 
 MIGRATION PHASES:
   Phase 1: Set up networking, VPN/DirectConnect between clouds, dual observability
-  Phase 2: Replicate data â€” cross-cloud DB replicas, S3 replication, queue mirroring
-  Phase 3: Migrate stateless services â€” one service at a time, traffic splitting via DNS or mesh
-  Phase 4: Migrate stateful services â€” dual-write for event-driven, blue-green for DB
-  Phase 5: Cutover external traffic â€” DNS TTL reduction 48h before, monitor, rollback window of 24h
-  Phase 6: Decommission old cloud â€” keep read-only access for 30 days for data validation
+  Phase 2: Replicate data — cross-cloud DB replicas, S3 replication, queue mirroring
+  Phase 3: Migrate stateless services — one service at a time, traffic splitting via DNS or mesh
+  Phase 4: Migrate stateful services — dual-write for event-driven, blue-green for DB
+  Phase 5: Cutover external traffic — DNS TTL reduction 48h before, monitor, rollback window of 24h
+  Phase 6: Decommission old cloud — keep read-only access for 30 days for data validation
 ```
 
-### P4.3 â€” CI/CD Platform Migration
+### P4.3 — CI/CD Platform Migration
 
 CI/CD migration is deceptively difficult because pipelines contain implicit knowledge. The pipeline that "just works" has accumulated months of edge case handling.
 
@@ -506,14 +504,14 @@ PIPELINE CLASSIFICATION:
 | SIMPLE (linear, <50 lines)| Rewrite from scratch                            | 1-2 hours|
 | COMPLEX (conditional, parallel, gates) | Rewrite with same logic, optimize structure | 1-2 days |
 | MONOLITHIC (multi-job DAG, shared artifacts) | Break into separate workflows + shared actions | 2-5 days |
-| UNUSED (no runs in 6+ months) | Archive â€” do not migrate                  | 1 hour   |
+| UNUSED (no runs in 6+ months) | Archive — do not migrate                  | 1 hour   |
 
 THE CACHE PROBLEM:
   Jenkins with shared slaves: npm install runs once, cache persists across builds
-  GitHub Actions / GitLab CI: fresh VM every run â€” without caching, 10-min install becomes 10-min every build
+  GitHub Actions / GitLab CI: fresh VM every run — without caching, 10-min install becomes 10-min every build
   Fix: always cache on lockfile hash (package-lock.json, go.sum, requirements.txt), never on package.json
   Docker layer caching: cache registry or inline cache for multi-stage builds
-  Gradle/Maven cache: ~/.gradle or ~/.m2 on ephemeral runners â€” cache per branch
+  Gradle/Maven cache: ~/.gradle or ~/.m2 on ephemeral runners — cache per branch
 
 PLATFORM-SPECIFIC GAPS:
 | Gap                    | Jenkins (old)            | GitHub Actions (new)   | Mitigation                        |
@@ -526,22 +524,22 @@ PLATFORM-SPECIFIC GAPS:
 
 MIGRATION CHECKLIST:
   PRE:
-    Inventory all pipelines â€” include inactive, untriggered, and scheduled pipelines
-    Document actual usage (last 6 months of runs) â€” what triggers actually fire
+    Inventory all pipelines — include inactive, untriggered, and scheduled pipelines
+    Document actual usage (last 6 months of runs) — what triggers actually fire
     Record baseline build times per pipeline for comparison
     Map all secrets used by each pipeline
-    Identify manual gates and approval steps â€” cannot be automated, must be configured in new platform
-    List all plugins/actions with versions â€” find equivalents or plan replacements
+    Identify manual gates and approval steps — cannot be automated, must be configured in new platform
+    List all plugins/actions with versions — find equivalents or plan replacements
   MIGRATION (per pipeline, in dependency order):
-    Create shared actions/modules first â€” matrix builds, deployment, notifications, rollback
-    Migrate one pipeline at a time â€” start with simplest, least critical
+    Create shared actions/modules first — matrix builds, deployment, notifications, rollback
+    Migrate one pipeline at a time — start with simplest, least critical
     Parallel-run old + new for 1 week (manual trigger comparison)
     Compare build times: new should not be >20% slower than old
     Test all failure paths: what happens when a step fails? Are notifications sent?
-    Verify all triggers: push, PR, schedule, webhook, manual â€” each in isolation
-    Verify secret decryption in each pipeline â€” common failure point
+    Verify all triggers: push, PR, schedule, webhook, manual — each in isolation
+    Verify secret decryption in each pipeline — common failure point
   POST:
-    Monitor build failure rate for 2 weeks â€” compare to pre-migration baseline
+    Monitor build failure rate for 2 weeks — compare to pre-migration baseline
     Verify all notifications are reaching correct channels
     Archive old CI configuration (do not delete for 6 months)
     Update deployment and incident runbooks
@@ -556,7 +554,7 @@ GITOPS MIGRATION PATTERN:
   [5] Cutover: disable old CI direct deployment, GitOps manages all environments
 ```
 
-### P4.4 â€” Container Platform Migration (Compose â†’ K8s)
+### P4.4 — Container Platform Migration (Compose → K8s)
 
 Migrating from Docker Compose to Kubernetes is one of the most common container platform migrations. The key insight: Compose features do not map one-to-one to K8s.
 
@@ -564,20 +562,20 @@ Migrating from Docker Compose to Kubernetes is one of the most common container 
 CRITICAL GAPS:
 | Compose Feature     | K8s Equivalent           | Gap                                                       |
 |---------------------|--------------------------|-----------------------------------------------------------|
-| depends_on          | Init containers          | Init containers do not wait for service readiness â€” write init container that polls /health |
+| depends_on          | Init containers          | Init containers do not wait for service readiness — write init container that polls /health |
 | links               | Service DNS              | Different hostname patterns (service.namespace.svc.cluster.local) |
-| volumes (bind mount)| hostPath + PVC           | hostPath only works on same node â€” use PVC for multi-node |
+| volumes (bind mount)| hostPath + PVC           | hostPath only works on same node — use PVC for multi-node |
 | networks (default)  | kube-dns / CoreDNS       | Different DNS resolution behavior, search domain differences |
-| restart: always     | restartPolicy: Always    | Pod restart count resets on node reboot â€” use StatefulSet for persistent identity |
-| healthcheck         | liveness + readiness     | No healthcheck distinction in Compose â€” readiness = ready for traffic, liveness = restart |
+| restart: always     | restartPolicy: Always    | Pod restart count resets on node reboot — use StatefulSet for persistent identity |
+| healthcheck         | liveness + readiness     | No healthcheck distinction in Compose — readiness = ready for traffic, liveness = restart |
 | env_file            | envFrom + ConfigMap      | Env files support comments (#), ConfigMap values cannot contain # |
-| container_name      | Pod name (via metadata)  | Pod names include random suffix â€” use metadata.name + statefulset.tv|
+| container_name      | Pod name (via metadata)  | Pod names include random suffix — use metadata.name + statefulset.tv|
 | ports               | Service (ClusterIP + LB) | Compose exposes directly; K8s requires Service resource    |
 | deploy.resources    | resource requests/limits | Different format, QoS classes                               |
 | deploy.replicas     | replicas in Deployment   | Compose replicas on single host; K8s distributes across nodes |
 
 STARTUP ORDER PATTERN:
-  K8s has no built-in depends_on â€” implement via init containers + readiness probes:
+  K8s has no built-in depends_on — implement via init containers + readiness probes:
   Init container: poll dependency health endpoint with retry and timeout
     ```
     spec:
@@ -593,33 +591,33 @@ VOLUME MIGRATION TRAPS:
 | Type        | Persistence      | Gotcha                                                   |
 |-------------|------------------|----------------------------------------------------------|
 | emptyDir    | Lost on pod restart | Files disappear when pod moves to another node         |
-| hostPath    | Persistent on node  | Pod must run on specific node â€” use nodeSelector       |
-| PVC         | Persistent       | Must be created before pods â€” reclaim policy matters    |
+| hostPath    | Persistent on node  | Pod must run on specific node — use nodeSelector       |
+| PVC         | Persistent       | Must be created before pods — reclaim policy matters    |
 | ConfigMap   | Updated eventually | SubPath mounts do not auto-update on ConfigMap change |
 | CSI (EBS)   | Persistent       | Provisioning and snapshots are CSI driver specific      |
 
 MIGRATION PHASES:
-  [1] Containerize (if not already) â€” all services must have Dockerfiles
+  [1] Containerize (if not already) — all services must have Dockerfiles
   [2] Extract configuration from Compose files to structured format (Helm/Kustomize manifests)
-  [3] Run parallel: Compose + K8s for 2-4 weeks â€” compare behavior, logs, metrics
+  [3] Run parallel: Compose + K8s for 2-4 weeks — compare behavior, logs, metrics
   [4] Migrate service-by-service: stateless first, stateful last
-  [5] Decommission Compose â€” keep configuration files for 3 months reference
+  [5] Decommission Compose — keep configuration files for 3 months reference
 
 NETWORKING GOTCHAS:
   Compose containers communicate over bridge network with service name DNS resolution
   K8s pods communicate over cluster network with service DNS resolution
   Differences: search domains, DNS policy (ClusterFirst vs Default), pod-network vs service-network
   Headless services: use when application needs direct pod IPs (for clustering protocols)
-  External access: Ingress or LoadBalancer Service â€” not direct port exposure
+  External access: Ingress or LoadBalancer Service — not direct port exposure
 
 CONFIGURATION MIGRATION:
-  Compose env_file â†’ ConfigMap (non-sensitive) + Secret (sensitive)
-  Compose environment section â†’ ConfigMap/Secret with envFrom
-  Compose context/build â†’ container registry + imagePullSecrets
-  Compose secrets â†’ K8s Secrets (sops-encrypted in Git or external secrets operator)
+  Compose env_file → ConfigMap (non-sensitive) + Secret (sensitive)
+  Compose environment section → ConfigMap/Secret with envFrom
+  Compose context/build → container registry + imagePullSecrets
+  Compose secrets → K8s Secrets (sops-encrypted in Git or external secrets operator)
 ```
 
-### P4.5 â€” Database Migration
+### P4.5 — Database Migration
 
 Database migrations carry the highest data integrity risk. The zero-downtime pattern requires dual-write capability in the application.
 
@@ -631,26 +629,26 @@ STRATEGY SELECTION:
 | Logical replication     | Minutes    | Medium    | Zero-downtime required, same engine    |
 | ETL tool                | Min-hours  | Med-High  | Migration with schema changes          |
 | Dual-write application  | Zero       | High      | Mission-critical, cannot afford downtime|
-| Blue-green DB promote   | Minutes    | Medium    | Same engine upgrade (e.g., PG 14â†’15)   |
+| Blue-green DB promote   | Minutes    | Medium    | Same engine upgrade (e.g., PG 14→15)   |
 
 ZERO-DOWNTIME MIGRATION PHASES:
-  [1] Schema creation on new DB â€” no data yet, fast and reversible
-  [2] Historical data migration â€” export, transform, import; validate with row count + column checksum
-  [3] Dual-write â€” application writes to both; old DB is source of truth; comparison worker validates
-  [4] Enable constraints on new DB â€” foreign keys, unique constraints; fix violations (there will be some)
-  [5] Catch-up replication â€” run both in parallel; profile query performance on new system
-  [6] Read traffic cutover â€” 10% â†’ 50% â†’ 100% of read queries; monitor latency and error rate
-  [7] Write traffic cutover â€” switch writes to new DB; keep old in read-only for 2 weeks
-  [8] Decommission â€” archive old DB connection string for 30 days, keep snapshot for compliance
+  [1] Schema creation on new DB — no data yet, fast and reversible
+  [2] Historical data migration — export, transform, import; validate with row count + column checksum
+  [3] Dual-write — application writes to both; old DB is source of truth; comparison worker validates
+  [4] Enable constraints on new DB — foreign keys, unique constraints; fix violations (there will be some)
+  [5] Catch-up replication — run both in parallel; profile query performance on new system
+  [6] Read traffic cutover — 10% → 50% → 100% of read queries; monitor latency and error rate
+  [7] Write traffic cutover — switch writes to new DB; keep old in read-only for 2 weeks
+  [8] Decommission — archive old DB connection string for 30 days, keep snapshot for compliance
 
-MONGO â†’ POSTGRESQL DECISION TREE:
-  Fixed schema â†’ PostgreSQL table with typed columns
-  Variable schema (<20% rows differ) â†’ PostgreSQL table + JSONB column
-  Variable schema (>20% differ) â†’ Keep in MongoDB, replicate subset for relational queries
-  Array fields â†’ JSONB (if always read together) or join table (if individual access needed)
-  Sub-documents â†’ JSONB (if always read together) or separate table (if relational queries)
-  References â†’ Foreign keys with indexes on FK columns
-  Embedded documents â†’ JOIN or related table depending on query patterns
+MONGO → POSTGRESQL DECISION TREE:
+  Fixed schema → PostgreSQL table with typed columns
+  Variable schema (<20% rows differ) → PostgreSQL table + JSONB column
+  Variable schema (>20% differ) → Keep in MongoDB, replicate subset for relational queries
+  Array fields → JSONB (if always read together) or join table (if individual access needed)
+  Sub-documents → JSONB (if always read together) or separate table (if relational queries)
+  References → Foreign keys with indexes on FK columns
+  Embedded documents → JOIN or related table depending on query patterns
 
 DATABASE ENGINE UPGRADE (same provider):
   Blue-green: promote read replica from old engine version to new
@@ -665,12 +663,12 @@ DATABASE ENGINE UPGRADE (same provider):
 
 DATABASE MIGRATION ROLLBACK:
   Pre-migration: full backup of old DB (pg_dump, mysqldump, or snapshot)
-  During cutover: keep old DB in read-only â€” application can read from old if new has issues
-  Rollback decision: < 1 hour after write cutover â†’ switch writes back to old, re-point reads
-  Rollback decision: > 1 hour â†’ too much data divergence â€” treat as failed migration, reconcile data
+  During cutover: keep old DB in read-only — application can read from old if new has issues
+  Rollback decision: < 1 hour after write cutover → switch writes back to old, re-point reads
+  Rollback decision: > 1 hour → too much data divergence — treat as failed migration, reconcile data
 ```
 
-### P4.6 â€” Secrets & Configuration Migration
+### P4.6 — Secrets & Configuration Migration
 
 Secrets migration follows a "one secret at a time" pattern with fallback to the old source. This minimizes blast radius if the new secrets platform has issues.
 
@@ -686,12 +684,12 @@ AUDIT PHASE:
     Secrets managers (Vault, Secrets Manager, K8s Secrets, SOPS)
 
 CLASSIFICATION:
-  PUBLIC: no sensitivity, safe in repository â€” version, public hostname, feature flag names
-  CONFIG-ENV-SPECIFIC: per-environment but not sensitive â€” DB hostname, queue names, service endpoints
-    Store: cloud Parameter Store, ConfigMap, Consul KV â€” environment-specific hierarchy
-  SECRET-STATIC: sensitive, rarely changes â€” API keys, TLS certs, shared secrets
-    Store: Secrets Manager, Vault (KV), SOPS in Git with KMS â€” encrypted, access-controlled
-  SECRET-ROTATED: sensitive, changes periodically â€” database passwords, service account keys
+  PUBLIC: no sensitivity, safe in repository — version, public hostname, feature flag names
+  CONFIG-ENV-SPECIFIC: per-environment but not sensitive — DB hostname, queue names, service endpoints
+    Store: cloud Parameter Store, ConfigMap, Consul KV — environment-specific hierarchy
+  SECRET-STATIC: sensitive, rarely changes — API keys, TLS certs, shared secrets
+    Store: Secrets Manager, Vault (KV), SOPS in Git with KMS — encrypted, access-controlled
+  SECRET-ROTATED: sensitive, changes periodically — database passwords, service account keys
     Store: Vault (dynamic secrets), Secrets Manager (scheduled rotation), K8s External Secrets Operator
 
 CONFIGURATION HIERARCHY:
@@ -701,36 +699,36 @@ CONFIGURATION HIERARCHY:
     Secrets in Secrets Manager (never in code repository, never in config files)
   K8s pattern:
     ConfigMap for non-sensitive per-environment config
-    Secret for sensitive values (sops-encrypted in Git, or External Secrets Operator â†’ Vault/Secrets Manager)
+    Secret for sensitive values (sops-encrypted in Git, or External Secrets Operator → Vault/Secrets Manager)
     Helm values per environment in separate file, sealed with sops if they contain secrets
 
 MIGRATION PATTERN (one secret at a time):
   [1] Create new secret in target platform (Secrets Manager, Vault, K8s Secret)
   [2] Deploy application update: read from new source first, fall back to old source
-  [3] Instrument: log which source was used (new or fallback) â€” metric with source tag
+  [3] Instrument: log which source was used (new or fallback) — metric with source tag
   [4] Alert on fallback: any fallback usage means migration is not complete or secret is wrong
   [5] After 1 week with zero fallback accesses: remove fallback code and old secret entry
   [6] Enable rotation: configure automatic or lease-based rotation
   [7] Verify: service handles rotation without restart (polling or watch mechanism)
 
 ROTATION VERIFICATION:
-  Test old secret expiry â†’ service degrades gracefully, does not crash or leak stack traces
-  Test secret revocation â†’ service detects revocation and refreshes
-  Test rotation during peak traffic â†’ no errors, no latency spikes
+  Test old secret expiry → service degrades gracefully, does not crash or leak stack traces
+  Test secret revocation → service detects revocation and refreshes
+  Test rotation during peak traffic → no errors, no latency spikes
   Monitor: credential age metrics, rotation events, access denied errors
 ```
 
-### P4.7 â€” Observability Platform Migration
+### P4.7 — Observability Platform Migration
 
 Observability migration is as much a people problem as a technical one. Invest in knowledge transfer before touching production.
 
 ```
 CRITICAL: KNOWLEDGE TRANSFER FIRST
-  Identify all active alerts â€” what triggers them, what the correct response is
-  Document what each alert signified â€” many alerts have become cargo-cult thresholds
-  Create query language translation guide â€” PromQL â†’ Datadog â†’ Honeycomb â†’ CloudWatch Logs Insights
-  Train engineers with real incident data â€” replay past incidents on new platform
-  Run parallel observability for 2-4 weeks â€” compare metric values and alert triggers
+  Identify all active alerts — what triggers them, what the correct response is
+  Document what each alert signified — many alerts have become cargo-cult thresholds
+  Create query language translation guide — PromQL → Datadog → Honeycomb → CloudWatch Logs Insights
+  Train engineers with real incident data — replay past incidents on new platform
+  Run parallel observability for 2-4 weeks — compare metric values and alert triggers
 
 PLATFORM COMPARISON:
 | Feature       | Datadog         | Grafana Cloud       | Honeycomb           | Self-Hosted OTel    |
@@ -739,7 +737,7 @@ PLATFORM COMPARISON:
 | Learning curve| Low             | Medium (PromQL)     | Low-Medium          | High                |
 | Cost          | $$$$            | $$                  | $$$                 | $ (compute+storage) |
 | Metrics       | Datadog Agent   | Prometheus + Mimir  | Honeycomb Metrics   | Prometheus + Mimir  |
-| Logging       | Datadog Logs    | Loki                | â€”                   | Loki + fluentbit    |
+| Logging       | Datadog Logs    | Loki                | —                   | Loki + fluentbit    |
 | Tracing       | APM agent       | Tempo               | Native (OTel)       | Jaeger/Tempo        |
 | Alerting      | Monitors        | Ruler + Grafana     | Boomerang           | Alertmanager        |
 | Dashboards    | Datadog UI      | Grafana             | Query-based         | Grafana             |
@@ -747,15 +745,15 @@ PLATFORM COMPARISON:
 MIGRATION PHASES:
   [1] Dual ingestion: send ALL telemetry to both platforms for 2-4 weeks
     Deploy agent/collector that forwards to both old and new backends
-    Compare metric values: same interval, same aggregation â€” identify differences
+    Compare metric values: same interval, same aggregation — identify differences
     Compare alert triggers: does the same condition fire in both? Are thresholds equivalent?
   [2] Dashboard migration: rebuild each dashboard on new platform
-    Improve while migrating â€” do not copy bad dashboards; redesign for clarity
-    Validate: for same time range, do key panels show the same values (Â±5%)?
-    Tag: original dashboard name, migrated date, owner â€” track migration progress
-  [3] Alert migration: one severity tier at a time â€” lowest first (P3/P4 â†’ P2 â†’ P1/P0)
+    Improve while migrating — do not copy bad dashboards; redesign for clarity
+    Validate: for same time range, do key panels show the same values (±5%)?
+    Tag: original dashboard name, migrated date, owner — track migration progress
+  [3] Alert migration: one severity tier at a time — lowest first (P3/P4 → P2 → P1/P0)
     Create alert in new platform, verify trigger, disable old alert, monitor 7 days
-    Keep P1/P2 alerts on old platform the longest â€” last to migrate, first to preserve
+    Keep P1/P2 alerts on old platform the longest — last to migrate, first to preserve
   [4] Alert cleanup: 30% of alerts will not need migration (no one looks at them)
   [5] Decommission: after 4+ weeks of parallel run with zero issues
 
@@ -766,14 +764,14 @@ SELF-HOSTED OBSERVABILITY (Prometheus + Grafana + Loki + Tempo):
     <1M series: single Prometheus + Grafana + Loki single binary
     1M-10M series: Thanos or Mimir for metrics, Loki microservices, Tempo for traces
     >10M series: dedicated team managing observability infrastructure
-  Retention: Prometheus TSDB limits â€” use Thanos/Mimir for long-term storage (S3/GCS)
+  Retention: Prometheus TSDB limits — use Thanos/Mimir for long-term storage (S3/GCS)
   Cost comparison (1M series, 100GB logs/day, 500 spans/sec):
     Self-hosted: ~$500-1500/month compute + storage
     Datadog: ~$15,000-25,000/month (Pro plan, 1 year commitment)
     Grafana Cloud: ~$3,000-8,000/month (depending on usage tiers)
 ```
 
-### P4.8 â€” API Gateway Migration
+### P4.8 — API Gateway Migration
 
 API gateway migration is about behavioral equivalence, not feature parity. Rate limiting, caching, and authentication behaviors differ in subtle ways between gateways.
 
@@ -787,7 +785,7 @@ KEY DIFFERENCES BY PLATFORM:
 | Canary routing  | Plugin (weighted)    | Canary release     | Weighted routing   | split_clients       |
 | Custom plugins  | Lua/Go/Python        | Lambda             | WASM/Lua           | Lua                 |
 
-RATE LIMITING â€” MOST COMMON MIGRATION FAILURE:
+RATE LIMITING — MOST COMMON MIGRATION FAILURE:
 | Platform       | Scope                    | Default Window | Distributed? |
 |----------------|--------------------------|----------------|--------------|
 | Kong           | Per-instance (or Redis)  | Configurable   | Yes with Redis |
@@ -805,41 +803,41 @@ HEADER AND PROTOCOL BEHAVIOR:
   Request/response transformation: body size limits, encoding conversion, header injection
 
 MIGRATION PATTERN:
-  [1] Deploy new gateway in parallel with old â€” both receive traffic
-  [2] Route subset of traffic (5% â†’ 25% â†’ 50% â†’ 100%) through new gateway
+  [1] Deploy new gateway in parallel with old — both receive traffic
+  [2] Route subset of traffic (5% → 25% → 50% → 100%) through new gateway
   [3] Compare: response status codes, latency, error rates between old and new
-  [4] Enable same plugins/middleware on new gateway â€” verify behavior parity
+  [4] Enable same plugins/middleware on new gateway — verify behavior parity
   [5] Cutover: switch all traffic to new gateway, keep old as fallback with DNS change
-  [6] Rollback window: 48 hours â€” DNS TTL pre-reduced to 60s before cutover
+  [6] Rollback window: 48 hours — DNS TTL pre-reduced to 60s before cutover
 ```
 
 
-## P6 â€” ANTI-PATTERNS
+## P6 — ANTI-PATTERNS
 
 | Anti-Pattern | Problem | Correct |
 |---|---|---|
-| Pets vs cattle but with pets | Manually patching, naming, and SSHing into individual instances â€” configuration drifts, state is fragile | Immutable infrastructure â€” replace, never repair. Every instance is disposable |
-| Config drift | Manual SSH changes that are not in IaC â€” state diverges until the infrastructure architecture document is fiction | All changes through IaC â€” CI/CD for infrastructure, no console access for production |
-| Single points of failure | One NAT gateway, one load balancer, one database in one AZ â€” a single failure takes down the service | Multi-AZ for all critical components, at least 2 of everything, anti-affinity placement |
-| Snowflake environments | Staging and production differ â€” "works on staging but not in prod" because configuration values differ | IaC with parametrized modules â€” same configuration template, environment-specific values |
-| No runbooks | Alerts fire but no one knows what to do â€” incident response is ad-hoc, MTTR is measured in hours not minutes | Every alert has a runbook, runbooks are tested quarterly, runbooks are part of deployment review |
-| Over-provisioning | 8xlarge instances for a service that uses 5% CPU â€” paying 10x for idle capacity | Right-size based on 95th percentile metrics, auto-scaling for variable load, regular right-sizing reviews |
-| Under-provisioning | Optimizing cost below reliability requirements â€” constant CPU pressure, OOM kills during traffic spikes | Cost-efficiency within reliability SLOs, not cost at any cost. Budget for reliability headroom |
-| Manual failover testing | DR plan exists but has never been tested â€” will fail when needed because of undocumented assumptions | Automated failover testing quarterly, full DR drill annually, chaos experiments for critical failure modes |
-| Secret sprawl | Same database password in 15 different config files, 3 CI/CD systems, and a wiki page â€” cannot rotate without missing one | Secrets manager with rotation and audit, applications fetch secrets at runtime from a single source |
-| Infrastructure spreadsheet | Resource inventory in a shared spreadsheet â€” always out of date, never accurate | IaC state is the source of truth, tagging for inventory, automated resource discovery |
-| Assume semantic equivalence | Migrating between platforms assuming identical behavior â€” production incidents from subtle differences | Test every feature with production traffic patterns, dual-write validation, behavioral comparison |
-| Big-bang cutover | Everything moves at once â€” no fallback if new platform fails, rollback means full revert of entire migration | Strangler fig, route-by-route, one service at a time. Every phase must be individually reversible |
-| Alphabetical migration | Migrating services in alphabetical order â€” ignores dependency graph, breaks things downstream | Migrate by dependency depth: data first, then services that depend on it, then external-facing |
-| Skip dual-write | Migrating stateful services without dual-write â€” miss semantic gaps until users report data corruption | Always dual-write on stateful migrations, compare writes, validate consistency before cutover |
-| Ignore cache in CI migration | Moving CI platforms without equivalent caching â€” builds 2-10x slower on ephemeral runners | Cache on lockfile hash (not branch name), warm runner pools, Docker layer caching |
-| No knowledge transfer | Migrating observability platforms without training â€” team cannot read dashboards or investigate incidents | Train before migration, create query language translation guides, run parallel systems, replay incidents |
+| Pets vs cattle but with pets | Manually patching, naming, and SSHing into individual instances — configuration drifts, state is fragile | Immutable infrastructure — replace, never repair. Every instance is disposable |
+| Config drift | Manual SSH changes that are not in IaC — state diverges until the infrastructure architecture document is fiction | All changes through IaC — CI/CD for infrastructure, no console access for production |
+| Single points of failure | One NAT gateway, one load balancer, one database in one AZ — a single failure takes down the service | Multi-AZ for all critical components, at least 2 of everything, anti-affinity placement |
+| Snowflake environments | Staging and production differ — "works on staging but not in prod" because configuration values differ | IaC with parametrized modules — same configuration template, environment-specific values |
+| No runbooks | Alerts fire but no one knows what to do — incident response is ad-hoc, MTTR is measured in hours not minutes | Every alert has a runbook, runbooks are tested quarterly, runbooks are part of deployment review |
+| Over-provisioning | 8xlarge instances for a service that uses 5% CPU — paying 10x for idle capacity | Right-size based on 95th percentile metrics, auto-scaling for variable load, regular right-sizing reviews |
+| Under-provisioning | Optimizing cost below reliability requirements — constant CPU pressure, OOM kills during traffic spikes | Cost-efficiency within reliability SLOs, not cost at any cost. Budget for reliability headroom |
+| Manual failover testing | DR plan exists but has never been tested — will fail when needed because of undocumented assumptions | Automated failover testing quarterly, full DR drill annually, chaos experiments for critical failure modes |
+| Secret sprawl | Same database password in 15 different config files, 3 CI/CD systems, and a wiki page — cannot rotate without missing one | Secrets manager with rotation and audit, applications fetch secrets at runtime from a single source |
+| Infrastructure spreadsheet | Resource inventory in a shared spreadsheet — always out of date, never accurate | IaC state is the source of truth, tagging for inventory, automated resource discovery |
+| Assume semantic equivalence | Migrating between platforms assuming identical behavior — production incidents from subtle differences | Test every feature with production traffic patterns, dual-write validation, behavioral comparison |
+| Big-bang cutover | Everything moves at once — no fallback if new platform fails, rollback means full revert of entire migration | Strangler fig, route-by-route, one service at a time. Every phase must be individually reversible |
+| Alphabetical migration | Migrating services in alphabetical order — ignores dependency graph, breaks things downstream | Migrate by dependency depth: data first, then services that depend on it, then external-facing |
+| Skip dual-write | Migrating stateful services without dual-write — miss semantic gaps until users report data corruption | Always dual-write on stateful migrations, compare writes, validate consistency before cutover |
+| Ignore cache in CI migration | Moving CI platforms without equivalent caching — builds 2-10x slower on ephemeral runners | Cache on lockfile hash (not branch name), warm runner pools, Docker layer caching |
+| No knowledge transfer | Migrating observability platforms without training — team cannot read dashboards or investigate incidents | Train before migration, create query language translation guides, run parallel systems, replay incidents |
 | Migrate unused services | Spending time and effort migrating services that nobody uses and nobody maintains | Audit actual usage first, archive unused, decommission before you migrate |
-| Trust vendor docs | Migrating based on vendor documentation â€” docs describe ideal scenarios, not behavioral edge cases | Test with production traffic patterns, run parallel validation, probe edge cases |
-| No rollback plan | Every migration phase must have a documented rollback â€” if you cannot rollback, you cannot execute | Document rollback per phase, test rollback procedures, define abort criteria before starting |
-| Flag debt | 500 feature flags accumulated over 2 years â€” no one knows which flags are active, dead code everywhere | Schedule regular flag cleanup (every 2 sprints), remove stale flags, flag retirement is part of definition of done |
-| Mesh for 5 services | Installing a full service mesh for 5 microservices â€” massive complexity for minimal benefit | Use cert-manager + language-native mTLS for <20 services. Mesh adds value at scale (20+) |
-| Dashboard museum | 200 dashboards, 80% never viewed. Every dashboard created is a maintenance burden | Dashboard lifecycle: create â†’ validate â†’ promote â†’ archive. Archive any unviewed dashboard after 90 days |
+| Trust vendor docs | Migrating based on vendor documentation — docs describe ideal scenarios, not behavioral edge cases | Test with production traffic patterns, run parallel validation, probe edge cases |
+| No rollback plan | Every migration phase must have a documented rollback — if you cannot rollback, you cannot execute | Document rollback per phase, test rollback procedures, define abort criteria before starting |
+| Flag debt | 500 feature flags accumulated over 2 years — no one knows which flags are active, dead code everywhere | Schedule regular flag cleanup (every 2 sprints), remove stale flags, flag retirement is part of definition of done |
+| Mesh for 5 services | Installing a full service mesh for 5 microservices — massive complexity for minimal benefit | Use cert-manager + language-native mTLS for <20 services. Mesh adds value at scale (20+) |
+| Dashboard museum | 200 dashboards, 80% never viewed. Every dashboard created is a maintenance burden | Dashboard lifecycle: create → validate → promote → archive. Archive any unviewed dashboard after 90 days |
 | Gold-plated DR | Tier 1 DR (active-active, RTO<1h) for a service that can tolerate 24 hours of downtime | Match DR tier to business requirements. Not every service needs active-active multi-region |
 
 

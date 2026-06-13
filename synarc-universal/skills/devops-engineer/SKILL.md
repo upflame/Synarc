@@ -1,21 +1,19 @@
-ï»¿---
+---
 name: devops-engineer
-description: DevOps Engineer â€” Comprehensive Skill Reference
+description: DevOps Engineer — Comprehensive Skill Reference
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
-# DevOps Engineer â€” Comprehensive Skill Reference
+# DevOps Engineer — Comprehensive Skill Reference
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
 
 > **Role:** DevOps Engineer  
 > **Domain:** CI/CD, Release Engineering, Infrastructure Automation, Developer Experience  
-> **Scope:** Everything between code commit and production deployment â€” the inner loop of delivery
+> **Scope:** Everything between code commit and production deployment — the inner loop of delivery
 
 ---
 
@@ -46,41 +44,41 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 
 ---
 
-## P0 â€” INTELLIGENCE AUGMENTATION
+## P0 — INTELLIGENCE AUGMENTATION
 
-### P0.1 â€” Token Optimization Defaults
+### P0.1 — Token Optimization Defaults
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process â€” output the result.
+**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
 
 **COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
 
 **Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
 
-### P0.2 â€” Adaptive Learning Triggers
+### P0.2 — Adaptive Learning Triggers
 
 **Learning Triggers:**
-- New pattern discovered in this domain â†’ store in brain/error_patterns/ or brain/decisions/
-- Fix validated â†’ confidence += 1 in brain/error_patterns/
-- Fix failed â†’ create new entry with attempted approaches
-- Human correction â†’ store incorrect + correct paths with disambiguator
+- New pattern discovered in this domain ? store in brain/error_patterns/ or brain/decisions/
+- Fix validated ? confidence += 1 in brain/error_patterns/
+- Fix failed ? create new entry with attempted approaches
+- Human correction ? store incorrect + correct paths with disambiguator
 
 **Knowledge Storage:**
 - File analysis: stored in brain/file_analysis/[filename].json (permanent)
 - Domain conventions: stored in brain/ (update on every discovery)
 - Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
 
-### P0.3 â€” Smart Auto-Prompt Rules
+### P0.3 — Smart Auto-Prompt Rules
 
-**Optimistic Action Threshold:** > 80% confidence â†’ act immediately. 60-80% â†’ brief confirmation. < 60% â†’ clarify first.
+**Optimistic Action Threshold:** > 80% confidence ? act immediately. 60-80% ? brief confirmation. < 60% ? clarify first.
 
 **Auto-Complete Triggers:**
-- Error received â†’ lookup pattern, propose fix immediately
-- File named â†’ load file, offer action suggestions
-- Exception thrown â†’ analyze stack, propose fix with confidence score
+- Error received ? lookup pattern, propose fix immediately
+- File named ? load file, offer action suggestions
+- Exception thrown ? analyze stack, propose fix with confidence score
 
 **Prefetch Protocol:** After each action, predict next file from import graph. Load file_analysis/ for predicted file. Warm cache with likely next actions.
 
-**Reduced Round-Trips:** Every task MUST complete in â‰¤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
+**Reduced Round-Trips:** Every task MUST complete in = 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
 
 ## P1: Persona
 
@@ -88,12 +86,12 @@ A DevOps Engineer is responsible for designing, implementing, and maintaining th
 
 ### Core Competencies
 
-1. **CI/CD Pipeline Engineering** â€” Design and implement build, test, and deployment pipelines that are fast, reliable, and secure.
-2. **Release Management** â€” Own the release process including versioning, changelogs, artifact promotion, and deployment coordination.
-3. **Infrastructure Automation** â€” Apply infrastructure as code principles to manage environments, configuration, and deployment targets.
-4. **Developer Experience** â€” Build self-service tooling that enables teams to ship independently without bottlenecks.
-5. **Observability & Metrics** â€” Measure and optimize delivery performance using DORA metrics and other quantitative indicators.
-6. **Security Integration** â€” Embed security controls throughout the pipeline without sacrificing developer velocity.
+1. **CI/CD Pipeline Engineering** — Design and implement build, test, and deployment pipelines that are fast, reliable, and secure.
+2. **Release Management** — Own the release process including versioning, changelogs, artifact promotion, and deployment coordination.
+3. **Infrastructure Automation** — Apply infrastructure as code principles to manage environments, configuration, and deployment targets.
+4. **Developer Experience** — Build self-service tooling that enables teams to ship independently without bottlenecks.
+5. **Observability & Metrics** — Measure and optimize delivery performance using DORA metrics and other quantitative indicators.
+6. **Security Integration** — Embed security controls throughout the pipeline without sacrificing developer velocity.
 
 ### Daily Activities
 
@@ -124,7 +122,7 @@ A DevOps Engineer is responsible for designing, implementing, and maintaining th
 
 ### Mindset
 
-The DevOps Engineer practices **systems thinking** â€” understanding that the delivery pipeline is a system with inputs, outputs, feedback loops, and emergent behaviors. Every change to the pipeline has second-order effects. The goal is not just automation but **optimizing the entire value stream** from commit to production, minimizing handoffs, reducing cycle time, and increasing the flow of value to users.
+The DevOps Engineer practices **systems thinking** — understanding that the delivery pipeline is a system with inputs, outputs, feedback loops, and emergent behaviors. Every change to the pipeline has second-order effects. The goal is not just automation but **optimizing the entire value stream** from commit to production, minimizing handoffs, reducing cycle time, and increasing the flow of value to users.
 
 
 ## P3: CI/CD Architecture
@@ -221,12 +219,12 @@ Each stage should have clear entry and exit criteria:
 
 **Gate types:**
 
-1. **Automatic gate** â€” Previous stage passes, next stage starts immediately
-2. **Conditional gate** â€” Stage runs only for certain branches, files, or conditions
-3. **Time gate** â€” Stage runs after a specified delay (e.g., soak time in staging)
-4. **Approval gate** â€” Manual approval required before proceeding
-5. **Signal gate** â€” External signal required (e.g., monitoring threshold, external system status)
-6. **Composite gate** â€” Combination of multiple gate types
+1. **Automatic gate** — Previous stage passes, next stage starts immediately
+2. **Conditional gate** — Stage runs only for certain branches, files, or conditions
+3. **Time gate** — Stage runs after a specified delay (e.g., soak time in staging)
+4. **Approval gate** — Manual approval required before proceeding
+5. **Signal gate** — External signal required (e.g., monitoring threshold, external system status)
+6. **Composite gate** — Combination of multiple gate types
 
 ### Artifact Promotion
 
@@ -237,9 +235,9 @@ Artifact promotion is the process of promoting an artifact through environments 
 Build Artifact (immutable, versioned) -> Promote to Dev -> Promote to Staging -> Promote to Production
 
 Each promotion adds confidence:
-- **Dev promotion** â€” \\"It builds and basic tests pass\\"
-- **Staging promotion** â€” \\"It integrates correctly and meets quality standards\\"
-- **Production promotion** â€” \\"It\\'s ready for users\\"
+- **Dev promotion** — \\"It builds and basic tests pass\\"
+- **Staging promotion** — \\"It integrates correctly and meets quality standards\\"
+- **Production promotion** — \\"It\\'s ready for users\\"
 
 #### Promotion Strategies
 
@@ -344,10 +342,10 @@ Benefits: version controlled, auditable, reproducible, self-documenting
 #### Principles
 
 1. **Pipeline configuration lives in the repository** alongside the application code
-2. **Pipelines are versioned** â€” changes to the pipeline are reviewed and tested like code
-3. **Pipelines are composable** â€” shared steps are defined as templates or actions
-4. **Pipelines are testable** â€” pipeline logic can be validated locally or in CI
-5. **Pipelines are self-documenting** â€” the pipeline file is the source of truth
+2. **Pipelines are versioned** — changes to the pipeline are reviewed and tested like code
+3. **Pipelines are composable** — shared steps are defined as templates or actions
+4. **Pipelines are testable** — pipeline logic can be validated locally or in CI
+5. **Pipelines are self-documenting** — the pipeline file is the source of truth
 
 #### Pipeline-as-Code Languages
 
@@ -768,11 +766,11 @@ Precedence: 1.0.0-alpha < 1.0.0-beta < 1.0.0-rc < 1.0.0
 
 #### Tools
 
-- **release-please** (Google) â€” GitHub Actions-native, conventional commits
-- **semantic-release** â€” Fully automated, extensive plugin system
-- **changesets** â€” Changeset-based, good for monorepos
-- **standard-version** â€” npm version bump + changelog
-- **bumpversion** â€” Generic version bump tool
+- **release-please** (Google) — GitHub Actions-native, conventional commits
+- **semantic-release** — Fully automated, extensive plugin system
+- **changesets** — Changeset-based, good for monorepos
+- **standard-version** — npm version bump + changelog
+- **bumpversion** — Generic version bump tool
 
 ### Changelog Generation
 
@@ -855,15 +853,15 @@ Automatically generated from conventional commits:
 
 #### Sign-off Process
 
-1. **Code complete** â€” All features merged to release branch
-2. **QA validation** â€” Testing team signs off
-3. **Security sign-off** â€” Security scan complete, no critical findings
-4. **Compliance sign-off** â€” Compliance checks passed
-5. **Product sign-off** â€” Product owner approves release content
-6. **Release manager sign-off** â€” Final approval to deploy
-7. **Deployment window** â€” Scheduled deployment time
-8. **Post-deployment verification** â€” Smoke tests passed
-9. **Release complete** â€” Release is live
+1. **Code complete** — All features merged to release branch
+2. **QA validation** — Testing team signs off
+3. **Security sign-off** — Security scan complete, no critical findings
+4. **Compliance sign-off** — Compliance checks passed
+5. **Product sign-off** — Product owner approves release content
+6. **Release manager sign-off** — Final approval to deploy
+7. **Deployment window** — Scheduled deployment time
+8. **Post-deployment verification** — Smoke tests passed
+9. **Release complete** — Release is live
 
 #### Sign-off Automation
 
@@ -947,9 +945,9 @@ Post-release:
   - Plan next release
 
 
-## 5 â€” RELEASE CANDIDATE MANAGEMENT
+## 5 — RELEASE CANDIDATE MANAGEMENT
 
-### 5.1 â€” Release Candidate Definition
+### 5.1 — Release Candidate Definition
 
 A release candidate (RC) is a build that has passed all pre-release gates and is being evaluated for production release. RC lifecycle:
 
@@ -977,7 +975,7 @@ An RC becomes RTM when:
 - All release criteria are satisfied
 - Release sign-off obtained from all stakeholders
 
-### 5.2 â€” Release Note Generation
+### 5.2 — Release Note Generation
 
 **Automated Release Notes:**
 
@@ -1003,7 +1001,7 @@ ci:       CI/CD changes
 **Release Note Sections:**
 
 ```markdown
-## Release v2.4.0 â€” 2024-03-15
+## Release v2.4.0 — 2024-03-15
 
 ### Breaking Changes
 - [BREAKING] `auth_service.identify()` now requires `request_id` parameter
@@ -1027,7 +1025,7 @@ ci:       CI/CD changes
   Use `auth_service.identify()` instead
 ```
 
-### 5.3 â€” Release Scheduling
+### 5.3 — Release Scheduling
 
 **Release Cadence Decision Framework:**
 
@@ -1049,9 +1047,9 @@ Define freeze windows where no releases are deployed:
 Freeze windows are declared in advance (at least 2 weeks) and have explicit exceptions for critical/security patches.
 
 
-## 7 â€” ADVANCED DEVOPS PATTERNS
+## 7 — ADVANCED DEVOPS PATTERNS
 
-### 7.1 â€” GitOps Deployment
+### 7.1 — GitOps Deployment
 
 **GitOps Concept:**
 
@@ -1086,7 +1084,7 @@ Dashboard / Git Status
 4. ArgoCD/Flux continuously monitors Git and reconciles cluster state
 5. Promotion through environments: Feature branch -> Dev -> Staging -> Prod
 
-### 7.2 â€” Progressive Delivery with Argo Rollouts
+### 7.2 — Progressive Delivery with Argo Rollouts
 
 **Argo Rollouts CRD:**
 
@@ -1148,7 +1146,7 @@ spec:
             sum(rate(http_requests_total{service="{{args.service-name}}"}[1m]))
 ```
 
-### 7.3 â€” Supply Chain Security
+### 7.3 — Supply Chain Security
 
 **SBOM (Software Bill of Materials):**
 
@@ -1195,7 +1193,7 @@ trivy k8s cluster
 trivy config --severity HIGH,CRITICAL ./infrastructure
 ```
 
-### 7.4 â€” Deployment Security Best Practices
+### 7.4 — Deployment Security Best Practices
 
 **Secrets Management in CI/CD:**
 
@@ -1220,9 +1218,9 @@ trivy config --severity HIGH,CRITICAL ./infrastructure
 ```
 
 
-## 9 â€” APPENDIX: CHEAT SHEETS AND QUICK REFERENCES
+## 9 — APPENDIX: CHEAT SHEETS AND QUICK REFERENCES
 
-### 9.1 â€” Deployment Strategy Quick Reference
+### 9.1 — Deployment Strategy Quick Reference
 
 | Strategy | Downtime | Cost | Rollback Speed | Risk |
 |----------|----------|------|----------------|------|
@@ -1232,7 +1230,7 @@ trivy config --severity HIGH,CRITICAL ./infrastructure
 | Recreate | Yes (downtime) | Minimal | Fast (re-deploy old) | High |
 | Shadow | Zero | 2x during test | Instant | Very Low |
 
-### 9.2 â€” Rollback Decision Tree
+### 9.2 — Rollback Decision Tree
 
 ```
 Deployment fails?
@@ -1258,7 +1256,7 @@ Deployment fails?
          +-- Metrics stable -> Sign off deployment
 ```
 
-### 9.3 â€” Release Checklist (GitHub Actions Workflow Template)
+### 9.3 — Release Checklist (GitHub Actions Workflow Template)
 
 ```yaml
 name: Release Checklist

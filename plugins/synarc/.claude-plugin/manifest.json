@@ -22,7 +22,7 @@
   "summary": "Cross-platform engineering cognition with multi-role team collaboration for AI coding environments.",
 
   "entrypoints": {
-    "skill": "skills/synarc/SKILL.md",
+    "skill": "skills/SKILL.md",
     "plugin": ".claude-plugin/plugin.json",
     "mcp-servers": [
       "synarc-brain-mcp",

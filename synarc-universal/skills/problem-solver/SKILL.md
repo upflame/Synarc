@@ -1,81 +1,79 @@
-﻿---
+---
 name: problem-solver
-description: Problem Solver + Design Thinker â€” Integrated Engineering Problem-Solving & Human-Centered Design
+description: Problem Solver + Design Thinker — Integrated Engineering Problem-Solving & Human-Centered Design
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# Problem Solver + Design Thinker â€” Integrated Engineering Problem-Solving & Human-Centered Design
+# Problem Solver + Design Thinker — Integrated Engineering Problem-Solving & Human-Centered Design
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
 
 All synarc prohibitions and tracking protocols apply.
 
-This integrated methodology merges structured engineering problem-solving with human-centered design thinking. Every engineering task â€” adding a feature, fixing a bug, optimizing a query, designing a schema, building a user experience â€” is a problem to be solved for people. The technical half ensures rigor, completeness, and verifiability. The design half ensures the solution addresses real human needs, not assumed requirements.
+This integrated methodology merges structured engineering problem-solving with human-centered design thinking. Every engineering task — adding a feature, fixing a bug, optimizing a query, designing a schema, building a user experience — is a problem to be solved for people. The technical half ensures rigor, completeness, and verifiability. The design half ensures the solution addresses real human needs, not assumed requirements.
 
 
 
-## P0 â€” INTELLIGENCE AUGMENTATION
+## P0 — INTELLIGENCE AUGMENTATION
 
-### P0.1 â€” Token Optimization Defaults
+### P0.1 — Token Optimization Defaults
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process â€” output the result.
+**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
 
 **COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
 
 **Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
 
-### P0.2 â€” Adaptive Learning Triggers
+### P0.2 — Adaptive Learning Triggers
 
 **Learning Triggers:**
-- New pattern discovered in this domain â†’ store in brain/error_patterns/ or brain/decisions/
-- Fix validated â†’ confidence += 1 in brain/error_patterns/
-- Fix failed â†’ create new entry with attempted approaches
-- Human correction â†’ store incorrect + correct paths with disambiguator
+- New pattern discovered in this domain → store in brain/error_patterns/ or brain/decisions/
+- Fix validated → confidence += 1 in brain/error_patterns/
+- Fix failed → create new entry with attempted approaches
+- Human correction → store incorrect + correct paths with disambiguator
 
 **Knowledge Storage:**
 - File analysis: stored in brain/file_analysis/[filename].json (permanent)
 - Domain conventions: stored in brain/ (update on every discovery)
 - Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
 
-### P0.3 â€” Smart Auto-Prompt Rules
+### P0.3 — Smart Auto-Prompt Rules
 
-**Optimistic Action Threshold:** > 80% confidence â†’ act immediately. 60-80% â†’ brief confirmation. < 60% â†’ clarify first.
+**Optimistic Action Threshold:** > 80% confidence → act immediately. 60-80% → brief confirmation. < 60% → clarify first.
 
 **Auto-Complete Triggers:**
-- Error received â†’ lookup pattern, propose fix immediately
-- File named â†’ load file, offer action suggestions
-- Exception thrown â†’ analyze stack, propose fix with confidence score
+- Error received → lookup pattern, propose fix immediately
+- File named → load file, offer action suggestions
+- Exception thrown → analyze stack, propose fix with confidence score
 
 **Prefetch Protocol:** After each action, predict next file from import graph. Load file_analysis/ for predicted file. Warm cache with likely next actions.
 
-**Reduced Round-Trips:** Every task MUST complete in â‰¤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
+**Reduced Round-Trips:** Every task MUST complete in ≤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
 
 
-## P2 â€” CORE METHODOLOGY
+## P2 — CORE METHODOLOGY
 
-### P2.1 â€” The Integrated Problem-Solving Cycle
+### P2.1 — The Integrated Problem-Solving Cycle
 
 The complete cycle merges the engineering problem-solving loop with the design thinking dual diamond:
 
 ```
-                  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-                  â”‚              INTEGRATED PROBLEM-SOLVING CYCLE         â”‚
-                  â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-                  â”‚  1. EMPATHIZE  â†’ Understand users and context        â”‚
-                  â”‚  2. DEFINE     â†’ Frame the problem precisely         â”‚
-                  â”‚  3. ANALYZE    â†’ Find root causes and constraints    â”‚
-                  â”‚  4. IDEATE     â†’ Generate diverse solutions          â”‚
-                  â”‚  5. PROTOTYPE  â†’ Make solutions tangible             â”‚
-                  â”‚  6. EVALUATE   â†’ Select the best solution            â”‚
-                  â”‚  7. IMPLEMENT  â†’ Execute the selected solution       â”‚
-                  â”‚  8. TEST       â†’ Verify with real users and data     â”‚
-                  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                  ┌──────────────────────────────────────────────────────┐
+                  │              INTEGRATED PROBLEM-SOLVING CYCLE         │
+                  ├──────────────────────────────────────────────────────┤
+                  │  1. EMPATHIZE  → Understand users and context        │
+                  │  2. DEFINE     → Frame the problem precisely         │
+                  │  3. ANALYZE    → Find root causes and constraints    │
+                  │  4. IDEATE     → Generate diverse solutions          │
+                  │  5. PROTOTYPE  → Make solutions tangible             │
+                  │  6. EVALUATE   → Select the best solution            │
+                  │  7. IMPLEMENT  → Execute the selected solution       │
+                  │  8. TEST       → Verify with real users and data     │
+                  └──────────────────────────────────────────────────────┘
 ```
 
 **Phase mapping between the two traditions:**
@@ -102,36 +100,36 @@ The complete cycle merges the engineering problem-solving loop with the design t
 | Infrastructure change | Engineering cycle with systemic analysis | Empathize with operator/dev experience |
 | Strategic / ambiguous | Design thinking first, then engineering cycle | Full integration |
 
-### P2.2 â€” The Dual Diamond Structure
+### P2.2 — The Dual Diamond Structure
 
-Every problem-solving engagement flows through two diamonds â€” problem space and solution space â€” each with a diverge and converge phase:
+Every problem-solving engagement flows through two diamonds — problem space and solution space — each with a diverge and converge phase:
 
 ```
 PROBLEM SPACE                         SOLUTION SPACE
   DIVERGE              CONVERGE         DIVERGE              CONVERGE
 (DISCOVER)            (DEFINE)         (DEVELOP)            (DELIVER)
-    â”‚                    â”‚               â”‚                    â”‚
-    â–¼                    â–¼               â–¼                    â–¼
+    │                    │               │                    │
+    ▼                    ▼               ▼                    ▼
  Gather              Frame           Generate             Select &
- data,        â†’      problem    â†’    many         â†’       ship
+ data,        →      problem    →    many         →       ship
  observe,             sharply         ideas               solution
  empathize
-    â”‚                    â”‚               â”‚                    â”‚
-    â–¼                    â–¼               â–¼                    â–¼
+    │                    │               │                    │
+    ▼                    ▼               ▼                    ▼
   What is?           What matters?    What if?           What works?
 ```
 
-**Diamond 1 â€” Problem Space:**
-- DIVERGE (Discover): Gather maximum input â€” user interviews, system metrics, stakeholder concerns, historical data, competitive analysis
-- CONVERGE (Define): Synthesize into a precise problem definition â€” POV statement, problem statement, bounded scope, success criteria
+**Diamond 1 — Problem Space:**
+- DIVERGE (Discover): Gather maximum input — user interviews, system metrics, stakeholder concerns, historical data, competitive analysis
+- CONVERGE (Define): Synthesize into a precise problem definition — POV statement, problem statement, bounded scope, success criteria
 
-**Diamond 2 â€” Solution Space:**
-- DIVERGE (Develop): Generate maximum options â€” brainstorming, SCAMPER, Triz, analogical thinking, inversion
-- CONVERGE (Deliver): Select and refine â€” multi-criteria evaluation, prototyping, testing, implementation
+**Diamond 2 — Solution Space:**
+- DIVERGE (Develop): Generate maximum options — brainstorming, SCAMPER, Triz, analogical thinking, inversion
+- CONVERGE (Deliver): Select and refine — multi-criteria evaluation, prototyping, testing, implementation
 
 **Critical rule:** Never skip a phase. Diverging when you should converge leads to analysis paralysis. Converging when you should diverge leads to premature commitment to weak solutions.
 
-### P2.3 â€” Problem Framing Grammar
+### P2.3 — Problem Framing Grammar
 
 Before any analysis or solution generation, frame every problem using this structure:
 
@@ -140,20 +138,20 @@ USER / STAKEHOLDER:  [who experiences this? whose problem is it?]
 CURRENT STATE:       [what is happening now? what data supports this?]
 DESIRED STATE:       [what should be happening? how will we recognize it?]
 GAP:                 [what separates current from desired state?]
-CONSTRAINTS:         [what limits the solution space â€” time, budget, tech, policy?]
+CONSTRAINTS:         [what limits the solution space — time, budget, tech, policy?]
 SUCCESS CRITERIA:    [how will we measure that the problem is solved?]
 ```
 
 **If the framing does not change when you add new observations, the frame is too broad. Narrow until it becomes actionable and falsifiable.**
 
-**Example â€” bad framing:**
+**Example — bad framing:**
 ```
 USER: Users
 CURRENT: The app is slow
 DESIRED: The app should be fast
 ```
 
-**Example â€” good framing:**
+**Example — good framing:**
 ```
 USER: API consumers (mobile app, web frontend)
 CURRENT: GET /users endpoint returns in 3.0s P95 at 100 concurrent requests
@@ -163,7 +161,7 @@ CONSTRAINTS: Client timeout is 2s, zero-downtime deploy required, must not chang
 SUCCESS: P95 latency <500ms sustained for 24 hours post-deploy, no increase in error rate
 ```
 
-### P2.4 â€” Point of View (POV) Statement
+### P2.4 — Point of View (POV) Statement
 
 A POV statement anchors the problem in human terms. It ensures the problem is framed around needs, not solutions.
 
@@ -179,7 +177,7 @@ which surprises us because [OBSERVATION CONTRADICTING ASSUMPTION].
 |-----------|-------------|---------|
 | USER | Who, role, context | "Junior frontend engineers working on a large TypeScript monorepo" |
 | NEED | Action or outcome desired | "need faster feedback on component changes" |
-| INSIGHT | Why they need it â€” from observation | "because the current 90-second rebuild cycle breaks flow state" |
+| INSIGHT | Why they need it — from observation | "because the current 90-second rebuild cycle breaks flow state" |
 | CONTRADICTION | What we assumed vs what we observed | "which surprises us because most build time is in dependencies that don't change between edits" |
 
 **Complete POV example:**
@@ -187,12 +185,12 @@ which surprises us because [OBSERVATION CONTRADICTING ASSUMPTION].
 
 **POV quality checklist:**
 - [ ] Specific user (not "users" or "everyone")
-- [ ] Real need (not a feature disguised as a need â€” "needs a button" is wrong)
+- [ ] Real need (not a feature disguised as a need — "needs a button" is wrong)
 - [ ] Insight grounded in observation (not assumption)
 - [ ] Contradiction reveals a blind spot or assumption
 - [ ] The POV would change if you observed different behavior
 
-### P2.5 â€” How Might We (HMW) Questions
+### P2.5 — How Might We (HMW) Questions
 
 Transform insights into generative questions using HMW framing. Strong HMWs open the solution space without prescribing implementation.
 
@@ -228,15 +226,15 @@ Maintenance (wt: [n])          | [0-10] -> [w] | [0-10] -> [w] | [0-10] -> [w]
 TOTAL (weighted)               | [sum/w_sum]  | [sum/w_sum]  | [sum/w_sum]
 
 Score justification:
-  Solution A â€” Effectiveness [score]: [why this score]
-  Solution A â€” Effort [score]: [estimation basis, assumptions, dependencies]
+  Solution A — Effectiveness [score]: [why this score]
+  Solution A — Effort [score]: [estimation basis, assumptions, dependencies]
 
 SELECTION: [chosen solution]
 RATIONALE: [why this solution despite the scores?]
 SENSITIVITY: [if we changed weights, would the selection change?]
 ```
 
-#### P3.4.4 â€” Qualitative Factors Not Captured by Scores
+#### P3.4.4 — Qualitative Factors Not Captured by Scores
 
 | Factor | Questions to Ask |
 |--------|-----------------|
@@ -250,7 +248,7 @@ SENSITIVITY: [if we changed weights, would the selection change?]
 
 If a lower-scored solution is selected due to qualitative factors, document the reasoning explicitly.
 
-#### P3.4.5 â€” Decision Matrix for Design
+#### P3.4.5 — Decision Matrix for Design
 
 For design-oriented problems, use the desirability-feasibility-viability Venn framework:
 
@@ -282,9 +280,9 @@ For design-oriented problems, use the desirability-feasibility-viability Venn fr
 - **Feasible + Viable** -> A technical solution looking for a problem -> validate demand
 - **All three** -> The sweet spot -> build it
 
-### P3.5 â€” Implementation Planning
+### P3.5 — Implementation Planning
 
-#### P3.5.1 â€” Implementation Phasing Strategy
+#### P3.5.1 — Implementation Phasing Strategy
 
 **When to use multiple phases vs single deployment:**
 
@@ -300,13 +298,13 @@ For design-oriented problems, use the desirability-feasibility-viability Venn fr
 
 | Phase | Purpose | Duration | Success Criteria |
 |-------|---------|----------|------------------|
-| P0 â€” Preparation | Setup dependencies, prerequisites | Hours-days | Prerequisites green |
-| P1 â€” Core | Implement the essential change | Days-weeks | Core functionality works |
-| P2 â€” Polish | Edge cases, error handling, monitoring | Days | All edge cases handled |
-| P3 â€” Release | Deploy to production | Hours | All success criteria met |
-| P4 â€” Observe | Monitor for regressions | Days-weeks | No regression in 7 days |
+| P0 — Preparation | Setup dependencies, prerequisites | Hours-days | Prerequisites green |
+| P1 — Core | Implement the essential change | Days-weeks | Core functionality works |
+| P2 — Polish | Edge cases, error handling, monitoring | Days | All edge cases handled |
+| P3 — Release | Deploy to production | Hours | All success criteria met |
+| P4 — Observe | Monitor for regressions | Days-weeks | No regression in 7 days |
 
-#### P3.5.2 â€” Dependency Mapping
+#### P3.5.2 — Dependency Mapping
 
 Map the dependency chain before implementing:
 
@@ -339,7 +337,7 @@ Implementation Task
 | Skip | The dependency is optional, proceed without it |
 | Escalate | Dependency is blocked by external factor, escalate for unblock |
 
-#### P3.5.3 â€” Rollout Strategy
+#### P3.5.3 — Rollout Strategy
 
 **Progressive rollout framework:**
 
@@ -366,7 +364,7 @@ Implementation Task
 | Ops toggle | Permanent | Operational control (kill switch) | Canary/deploy-based |
 | Permission toggle | Permanent | Control feature access by user segment | User attribute-based |
 
-#### P3.5.4 â€” Rollback Plan
+#### P3.5.4 — Rollback Plan
 
 **Every implementation must have a documented rollback plan:**
 
@@ -400,7 +398,7 @@ COMMUNICATION: [who needs to be notified during rollback?]
 - [ ] Someone on call who can execute the rollback
 - [ ] Rollback does not cause data loss (or data loss is accepted and documented)
 
-#### P3.5.5 â€” Implementation Documentation Template
+#### P3.5.5 — Implementation Documentation Template
 
 ```
 IMPLEMENTATION PLAN
@@ -411,13 +409,13 @@ REVIEWER(S): [who must review]
 DEPLOY DATE: [planned date]
 
 PREREQUISITES:
-  - [dependency 1 â€” status: DONE/IN PROGRESS/BLOCKED]
-  - [dependency 2 â€” status: DONE/IN PROGRESS/BLOCKED]
+  - [dependency 1 — status: DONE/IN PROGRESS/BLOCKED]
+  - [dependency 2 — status: DONE/IN PROGRESS/BLOCKED]
 
 IMPLEMENTATION STEPS:
-  1. [step 1 â€” specific, actionable]
-  2. [step 2 â€” specific, actionable]
-  3. [step 3 â€” specific, actionable]
+  1. [step 1 — specific, actionable]
+  2. [step 2 — specific, actionable]
+  3. [step 3 — specific, actionable]
 
 VERIFICATION AT EACH STEP:
   Step 1 verification: [how to confirm step 1 was successful]
@@ -432,8 +430,8 @@ ROLLBACK PLAN:
   Duration: [estimated time]
 
 SUCCESS CRITERIA:
-  - [criterion 1 â€” specific and measurable]
-  - [criterion 2 â€” specific and measurable]
+  - [criterion 1 — specific and measurable]
+  - [criterion 2 — specific and measurable]
 
 MONITORING:
   - [metric 1 to watch post-deploy]
@@ -446,9 +444,9 @@ COMMUNICATION:
   - Channels: [Slack channel, email, etc.]
 ```
 
-### P3.6 â€” Verification & Measurement
+### P3.6 — Verification & Measurement
 
-#### P3.6.1 â€” Hypothesis Testing Framework
+#### P3.6.1 — Hypothesis Testing Framework
 
 Every solution is a hypothesis. State it explicitly before implementing.
 
@@ -478,7 +476,7 @@ engineers, because currently they spend most of that time figuring out
 where to look."
 ```
 
-#### P3.6.2 â€” A/B Testing Framework
+#### P3.6.2 — A/B Testing Framework
 
 **When to use A/B testing:**
 - You have sufficient traffic (1000+ users per variant for meaningful results)
@@ -494,7 +492,7 @@ Sample size needed: [formula-based calculation]
 Duration: [minimum time to reach statistical significance]
 
 METRICS:
-  Primary: [one metric â€” what matters most]
+  Primary: [one metric — what matters most]
   Secondary: [supporting metrics]
   Guardrail: [metrics that must not degrade]
 
@@ -502,8 +500,8 @@ STATISTICAL SIGNIFICANCE: p < 0.05
 MINIMUM DETECTABLE EFFECT: [what change is worth shipping?]
 
 VARIANTS:
-  Control (A): [current behavior â€” no change]
-  Treatment (B): [new behavior â€” single variable change]
+  Control (A): [current behavior — no change]
+  Treatment (B): [new behavior — single variable change]
 
 TESTING PROTOCOL:
   1. Random assignment of users to A/B
@@ -526,7 +524,7 @@ TESTING PROTOCOL:
 | Carryover effect | Previous treatment affects current behavior | Use between-subjects design, washout periods |
 | Simpson's paradox | Overall result reverses in subgroups | Pre-register subgroups, check consistency |
 
-#### P3.6.3 â€” Metrics Design
+#### P3.6.3 — Metrics Design
 
 **Every verification needs metrics. Design them before implementing:**
 
@@ -549,7 +547,7 @@ TESTING PROTOCOL:
 | Cost | Cost per request/transaction | Total cost, cost trend | Monthly |
 | Quality | Bug escape rate | Test coverage, MTTR for production bugs | Per release |
 
-#### P3.6.4 â€” Success Criteria Design
+#### P3.6.4 — Success Criteria Design
 
 **Rules for success criteria:**
 1. **Specific:** Exact measurement, not vague direction ("faster" -> "P95 < 500ms")
@@ -580,7 +578,7 @@ COUNTER-EVIDENCE: Any 5-minute window where P95 > 500ms in the first 24 hours
 | Cost reduction | "Monthly infra cost drops >25% without SLA degradation" | "Lower costs" |
 | Developer experience | "Mean time to deploy from 45min to <15min" | "Easier deploy process" |
 
-#### P3.6.5 â€” Verification Protocol
+#### P3.6.5 — Verification Protocol
 
 **Before implementation:**
 - [ ] Pre-deploy metrics collected (baseline)
@@ -613,11 +611,11 @@ BASELINE: [pre-change metric values]
 POST-DEPLOY: [post-change metric values]
 
 SUCCESS CRITERIA:
-  [criterion 1]: [met/not met] â€” [evidence]
-  [criterion 2]: [met/not met] â€” [evidence]
+  [criterion 1]: [met/not met] — [evidence]
+  [criterion 2]: [met/not met] — [evidence]
 
 COUNTER-EVIDENCE CHECK:
-  [condition 1]: [did not occur / occurred â€” explanation]
+  [condition 1]: [did not occur / occurred — explanation]
 
 UNEXPECTED EFFECTS:
   [any positive or negative effects not in criteria]
@@ -627,7 +625,7 @@ LEARNINGS: [what to do differently next time]
 ```
 
 
-## P5 â€” WORKED EXAMPLES
+## P5 — WORKED EXAMPLES
 
 ### E1: Memory Leak in Node.js Service
 
@@ -745,7 +743,7 @@ Symptom: CI pipeline takes 35 minutes (was 8 minutes)
 - C: Document the discrepancy as expected behavior (30 min)
 - D: Reconcile both sources with matching logic (1 week)
 
-**Select:** A (use payment capture timestamp â€” aligns with finance's source of truth)
+**Select:** A (use payment capture timestamp — aligns with finance's source of truth)
 
 **Verify:**
 - With payment capture timestamp, next weekly report matches within 0.02% (rounding)
@@ -761,7 +759,7 @@ Symptom: CI pipeline takes 35 minutes (was 8 minutes)
 - Deployment diff: added autocomplete API call on homepage load
 - API call: GET /autocomplete?q= (no query, returns trending searches)
 - Query: SELECT * FROM searches GROUP BY query ORDER BY count DESC LIMIT 10
-- EXPLAIN ANALYZE: sequential scan + sort on 2M rows â€” 2.1s
+- EXPLAIN ANALYZE: sequential scan + sort on 2M rows — 2.1s
 - Root cause: Autocomplete endpoint not designed for homepage load. Trending query is expensive. API called on every homepage visit.
 
 **Empathy (for the developer consuming this API):**
@@ -776,7 +774,7 @@ Symptom: CI pipeline takes 35 minutes (was 8 minutes)
 - C: Materialize trending searches view, refresh hourly (3 hours)
 - D: Optimize query with partial index on last_24h only (1 hour)
 
-**Select:** A (cache) â€” keeps feature, reduces load, low effort. Combined with D if needed.
+**Select:** A (cache) — keeps feature, reduces load, low effort. Combined with D if needed.
 
 **Verify:**
 - Homepage P75 restored to 1.3s
@@ -837,7 +835,7 @@ User persona: Online shopper, age 30-45, has bought online before, mobile device
 1. Reduce to 3 fields (card number, expiry, CVV) instead of 12
 2. Auto-populate saved card info
 3. Visual security cues (lock icon, known badge, minimal form)
-4. Progress indicator showing "3 of 3 â€” Payment"
+4. Progress indicator showing "3 of 3 — Payment"
 5. Money-back guarantee badge
 
 **Prototype:**
@@ -850,7 +848,7 @@ Production implementation saw 15% increase in completed purchases.
 
 ### E7: Build Tool Error Output Redesign
 
-**Situation:** Developers using a CLI build tool say "errors are confusing." Empathy mapping reveals they actually think "I don't know what to do next" â€” the gap between SAYS and THINKS.
+**Situation:** Developers using a CLI build tool say "errors are confusing." Empathy mapping reveals they actually think "I don't know what to do next" — the gap between SAYS and THINKS.
 
 **Empathize:**
 - SAYS: "The errors are confusing"
@@ -866,8 +864,8 @@ Production implementation saw 15% increase in completed purchases.
 
 **Ideate:**
 12 ideas generated. Selected:
-1. Error-first output â€” print the fix suggestion before the trace
-2. Ranked errors â€” only show top 3
+1. Error-first output — print the fix suggestion before the trace
+2. Ranked errors — only show top 3
 3. Searchable error codes with docs links
 4. Color-coded severity indicator
 
@@ -884,9 +882,9 @@ Paper mockups of error output before and after. Tested with 5 junior engineers.
 - Counter-evidence: if error resolution time increases for senior engineers, reconsider approach
 
 
-## P7 â€” QUALITY GATES
+## P7 — QUALITY GATES
 
-### P7.1 â€” Tier 1 â€” Hard Block (Fail = Reject Output)
+### P7.1 — Tier 1 — Hard Block (Fail = Reject Output)
 
 These gates must pass before any solution can be considered complete. If any fails, the output is rejected.
 
@@ -920,7 +918,7 @@ These gates must pass before any solution can be considered complete. If any fai
 - [ ] Post-implementation verification data collected and stated
 - [ ] Counter-evidence check performed (what would prove the solution didn't work)
 
-### P7.2 â€” Tier 2 â€” Standard Gates
+### P7.2 — Tier 2 — Standard Gates
 
 These gates represent best practices. Passing them increases confidence in the solution.
 
@@ -962,7 +960,7 @@ These gates represent best practices. Passing them increases confidence in the s
 - [ ] Testing includes real users (not just team review)
 - [ ] Feedback integrated before next iteration
 
-### P7.3 â€” Self-Audit Checklist
+### P7.3 — Self-Audit Checklist
 
 Run this checklist before declaring any work complete:
 
@@ -1005,7 +1003,7 @@ INTEGRATION AUDIT:
   Can someone else understand AND reproduce our logic?  [yes/no]
 ```
 
-### P7.4 â€” Quality Gate Application Guide
+### P7.4 — Quality Gate Application Guide
 
 **When to apply quality gates:**
 - Before starting: review problem framing (Tier 1)
@@ -1037,7 +1035,7 @@ GATE BYPASS (emergency only):
   - Only applicable for Tier 2 gates, NEVER Tier 1
 ```
 
-### P7.5 â€” Decision Documentation
+### P7.5 — Decision Documentation
 
 Every significant decision should be documented for future reference. Use this template:
 
@@ -1049,8 +1047,8 @@ DECISION: [what was decided]
 CONTEXT: [what prompted this decision]
 
 OPTIONS CONSIDERED:
-  1. [Option A] â€” Pro: [pro] â€” Con: [con]
-  2. [Option B] â€” Pro: [pro] â€” Con: [con]
+  1. [Option A] — Pro: [pro] — Con: [con]
+  2. [Option B] — Pro: [pro] — Con: [con]
 
 RATIONALE: [why this option was chosen]
 TRADE-OFFS: [what was given up by this choice]
@@ -1060,8 +1058,8 @@ EXPECTED OUTCOME: [what we expect to happen]
 MEASUREMENT: [how we will know if this was right]
 
 CONSIDERED BUT REJECTED:
-  [option] â€” Rejected because: [reason]
-  [option] â€” Rejected because: [reason]
+  [option] — Rejected because: [reason]
+  [option] — Rejected because: [reason]
 
 FOLLOW-UP: [who will verify the outcome by when]
 ```

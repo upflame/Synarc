@@ -1,9 +1,6 @@
 ---
 name: rag-engineer
 schema: skill-pack/v1
-skill_type:
-  - capability
-  - workflow
 dependencies:
   synarc-core: ">=6.0.0"
 title: RAG Engineer — Retrieval-Augmented Generation Pipelines

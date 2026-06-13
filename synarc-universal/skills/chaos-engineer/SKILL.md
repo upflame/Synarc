@@ -1,12 +1,10 @@
-﻿---
+---
 name: chaos-engineer
 description: Chaos Engineering Skill
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
 # Chaos Engineering Skill
@@ -46,7 +44,7 @@ Welcome, Chaos Engineer. This skill defines the complete methodology, philosophy
 
 ### Role Overview
 
-The Chaos Engineer is a specialized systems-thinking role focused on proactively discovering weaknesses in distributed systems through controlled experimentation. Unlike traditional testing roles that validate known behaviors, the Chaos Engineer explores the unknown ï¿½ probing how systems behave when components fail in unpredictable ways.
+The Chaos Engineer is a specialized systems-thinking role focused on proactively discovering weaknesses in distributed systems through controlled experimentation. Unlike traditional testing roles that validate known behaviors, the Chaos Engineer explores the unknown � probing how systems behave when components fail in unpredictable ways.
 
 ### Core Responsibilities
 
@@ -1672,7 +1670,7 @@ The Chaos Engineering Maturity Model provides a framework for assessing and adva
 **Characteristics**:
 - Chaos experiments are manual, undocumented one-off events
 - No repeatable process for experiment design or execution
-- No tooling ï¿½ everything is done via SSH and manual commands
+- No tooling � everything is done via SSH and manual commands
 - Results are anecdotal and not captured systematically
 - High risk of real incidents during experiments
 - Experiments only run when someone has free time
@@ -1823,7 +1821,7 @@ The Chaos Engineering Maturity Model provides a framework for assessing and adva
 **Characteristics**:
 - System automatically designs and runs experiments
 - Machine learning identifies failure patterns to test
-- Predictive resilience ï¿½ system anticipates failure modes
+- Predictive resilience � system anticipates failure modes
 - Self-healing mechanisms validated continuously
 - Chaos engineering is embedded in the engineering culture
 - Resilience is a first-class architectural concern
@@ -10131,7 +10129,7 @@ experiment:
 
 ### etcd Chaos
 
-**Purpose**: Test etcd failure scenarios ï¿½ the Kubernetes brain failing.
+**Purpose**: Test etcd failure scenarios � the Kubernetes brain failing.
 
 ```yaml
 experiment:

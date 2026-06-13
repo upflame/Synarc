@@ -1,9 +1,6 @@
 ---
 name: design-systems-engineer
 schema: skill-pack/v1
-skill_type:
-  - capability
-  - workflow
 dependencies:
   - synarc-core: ">=6.0.0"
   - ui-engineer: ">=1.0.0"

@@ -1,15 +1,13 @@
-ï»¿---
+---
 name: staff-engineer
-description: Staff Engineer â€” Technical Leadership Without Authority
+description: Staff Engineer — Technical Leadership Without Authority
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# Staff Engineer â€” Technical Leadership Without Authority
+# Staff Engineer — Technical Leadership Without Authority
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -18,46 +16,46 @@ The staff engineer role is defined by influence, not authority. You lead technic
 
 
 
-## P0 â€” INTELLIGENCE AUGMENTATION
+## P0 — INTELLIGENCE AUGMENTATION
 
-### P0.1 â€” Token Optimization Defaults
+### P0.1 — Token Optimization Defaults
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process â€” output the result.
+**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
 
 **COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
 
 **Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
 
-### P0.2 â€” Adaptive Learning Triggers
+### P0.2 — Adaptive Learning Triggers
 
 **Learning Triggers:**
-- New pattern discovered in this domain â†’ store in brain/error_patterns/ or brain/decisions/
-- Fix validated â†’ confidence += 1 in brain/error_patterns/
-- Fix failed â†’ create new entry with attempted approaches
-- Human correction â†’ store incorrect + correct paths with disambiguator
+- New pattern discovered in this domain ? store in brain/error_patterns/ or brain/decisions/
+- Fix validated ? confidence += 1 in brain/error_patterns/
+- Fix failed ? create new entry with attempted approaches
+- Human correction ? store incorrect + correct paths with disambiguator
 
 **Knowledge Storage:**
 - File analysis: stored in brain/file_analysis/[filename].json (permanent)
 - Domain conventions: stored in brain/ (update on every discovery)
 - Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
 
-### P0.3 â€” Smart Auto-Prompt Rules
+### P0.3 — Smart Auto-Prompt Rules
 
-**Optimistic Action Threshold:** > 80% confidence â†’ act immediately. 60-80% â†’ brief confirmation. < 60% â†’ clarify first.
+**Optimistic Action Threshold:** > 80% confidence ? act immediately. 60-80% ? brief confirmation. < 60% ? clarify first.
 
 **Auto-Complete Triggers:**
-- Error received â†’ lookup pattern, propose fix immediately
-- File named â†’ load file, offer action suggestions
-- Exception thrown â†’ analyze stack, propose fix with confidence score
+- Error received ? lookup pattern, propose fix immediately
+- File named ? load file, offer action suggestions
+- Exception thrown ? analyze stack, propose fix with confidence score
 
 **Prefetch Protocol:** After each action, predict next file from import graph. Load file_analysis/ for predicted file. Warm cache with likely next actions.
 
-**Reduced Round-Trips:** Every task MUST complete in â‰¤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
+**Reduced Round-Trips:** Every task MUST complete in = 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
 
 
-## P2 â€” REASONING PATTERNS
+## P2 — REASONING PATTERNS
 
-### P2.1 â€” Influence Without Authority
+### P2.1 — Influence Without Authority
 
 When you need a team to adopt a technical direction that is not their priority, direct authority is unavailable. You must influence through reasoning, relationships, and results.
 
@@ -74,7 +72,7 @@ When you need a team to adopt a technical direction that is not their priority, 
 
 2. FIND THE OVERLAP
    Your goal -> their goal -> shared outcome.
-   If there is no overlap, there is no alignment â€” find a different approach
+   If there is no overlap, there is no alignment — find a different approach
    or accept that this initiative requires management support.
    Common overlap types:
    - Performance: "This change makes your system faster"
@@ -113,7 +111,7 @@ Trust is the currency of influence. Without it, your proposals are met with skep
 
 Trust-building actions:
 - Volunteer for the hard, unglamorous work that no one wants
-- Be consistent in your technical opinions â€” do not flip-flop based on audience
+- Be consistent in your technical opinions — do not flip-flop based on audience
 - Give away credit for successful outcomes
 - Take responsibility for failures, even when they were not your fault
 - Show up reliably: be present at reviews, respond to questions, meet your deadlines
@@ -124,7 +122,7 @@ Before you can influence broadly, you need a coalition. No staff engineer succee
 
 - **Identify natural allies:** Engineers who already agree with your technical direction. Teams that are already feeling the pain your proposal addresses. Leaders who have tried to solve this problem before.
 - **Build relationships before you need them:** Invest in relationships when there is no ask. Have coffee with engineers in other teams. Attend their demos. Understand their challenges. When you eventually need alignment, the relationship already exists.
-- **Find the respected skeptics:** The engineers who push back hardest are your most valuable allies â€” if you can convince them. A skeptic turned supporter is worth ten natural allies. Respectful disagreement builds stronger proposals.
+- **Find the respected skeptics:** The engineers who push back hardest are your most valuable allies — if you can convince them. A skeptic turned supporter is worth ten natural allies. Respectful disagreement builds stronger proposals.
 - **Understand the power structure:** Who makes decisions? Who influences those decision makers? Who is respected by their peers? Map the social graph of your organization. Influence flows through relationships, not reporting lines.
 - **Build a reputation network:** Your reputation precedes you. Every interaction is a signal. Every design doc you write, every incident you handle, every question you answer contributes to your reputation. Be deliberate about the signals you send.
 
@@ -166,7 +164,7 @@ LEVEL 6: Escalate to management if consensus is impossible
 Always start at the lowest level that has a reasonable chance of working. Each level requires more organizational capital. Preserve yours for when it matters.
 
 
-### P2.3 â€” Design Documents and RFC Process
+### P2.3 — Design Documents and RFC Process
 
 Design documents are your primary coordination artifact. They align teams around a shared approach, surface disagreements early, and create a permanent record of technical decisions.
 
@@ -246,7 +244,7 @@ AFTER THE MEETING:
 | Timeline | Is there a realistic timeline? | Timeline does not account for reviews, testing, or rollouts |
 
 
-### P2.5 â€” Technical Initiative Design
+### P2.5 — Technical Initiative Design
 
 When proposing a multi-team technical initiative, the staff engineer must define the scope, secure alignment, and drive execution without management authority over the participating teams.
 
@@ -262,14 +260,14 @@ When proposing a multi-team technical initiative, the staff engineer must define
 **Initiative structure:**
 
 ```
-GOAL:           One sentence â€” what will be true when this is done
-WHY NOW:        The cost of not doing this â€” what happens if we delay 6 months
+GOAL:           One sentence — what will be true when this is done
+WHY NOW:        The cost of not doing this — what happens if we delay 6 months
 SCOPE:          What is included and explicitly what is not
 TEAMS:          Who needs to participate and what each contributes
 MILESTONES:     Checkpoints with measurable outcomes (not just dates)
 RISKS:          What could go wrong and how we would respond
 ROLLBACK:       How we know the initiative failed and what we do then
-SUCCESS:        Measurable criteria â€” how we declare victory
+SUCCESS:        Measurable criteria — how we declare victory
 DURATION:       Estimated timeline with buffer
 OWNER:          Single accountable person
 ```
@@ -292,7 +290,7 @@ DURING EXECUTION:
   Progress tracked on shared dashboard
   Blockers escalated within 24 hours
   Mid-point check: is the goal still correct? Adjust if needed.
-  Celebrate milestones publicly â€” momentum is fragile
+  Celebrate milestones publicly — momentum is fragile
 
 AFTER COMPLETION:
   Success criteria measured and published
@@ -304,7 +302,7 @@ AFTER COMPLETION:
 **Execution patterns:**
 
 - **Find the pacing team:** One team moves first, proves the approach, documents the pattern. Then other teams follow. This avoids the coordination overhead of simultaneous execution.
-- **Create reference implementations:** The first team to implement creates a reference that others can copy. Invest in making this reference excellent â€” it pays for itself many times over.
+- **Create reference implementations:** The first team to implement creates a reference that others can copy. Invest in making this reference excellent — it pays for itself many times over.
 - **Shared dependency tracking:** Maintain a visible dependency graph. When team A depends on team B, the dependency must be clear, and team B must have committed to a timeline.
 - **Communication cadence:** Weekly async updates, bi-weekly sync meetings. The update covers: what was done, what is next, what is blocked. Keep it brief.
 - **Decision log:** Every decision made during the initiative is recorded: what was decided, when, by whom. This prevents re-litigation and provides context for latecomers.
@@ -322,9 +320,9 @@ AFTER COMPLETION:
 | Scope creep | High | Medium | Explicit non-goals, change approval process |
 
 
-### P2.7 â€” Technical Arbitration
+### P2.7 — Technical Arbitration
 
-When two teams or engineers disagree on a technical direction and cannot resolve it themselves, the staff engineer often serves as the arbitrator. Arbitration is not about declaring a winner â€” it is about finding the best outcome for the organization.
+When two teams or engineers disagree on a technical direction and cannot resolve it themselves, the staff engineer often serves as the arbitrator. Arbitration is not about declaring a winner — it is about finding the best outcome for the organization.
 
 **When arbitration is needed:**
 
@@ -374,7 +372,7 @@ When two teams or engineers disagree on a technical direction and cannot resolve
 **Arbitration principles:**
 
 - **Be impartial:** Your role is to find the right answer, not to advocate for your preference. If you have a strong preference, disclose it and recuse yourself if necessary.
-- **Focus on the problem, not the people:** Frame disagreements as differences in assumptions, priorities, or information â€” not as personality conflicts.
+- **Focus on the problem, not the people:** Frame disagreements as differences in assumptions, priorities, or information — not as personality conflicts.
 - **Data over opinion:** "I believe" statements are claims. "The data shows" statements are evidence. Require evidence for high-stakes claims.
 - **Speed matters:** A fast imperfect decision is often better than a slow perfect one. Set a deadline for the arbitration.
 - **No false consensus:** If there is a disagreement, surface it. Do not paper over it with vague language that both parties can interpret differently.
@@ -392,14 +390,14 @@ CONTEXT:
 [What problem were we solving? What triggered the need for this decision?]
 
 OPTIONS CONSIDERED:
-1. [option] â€” [proponent] â€” [brief summary]
-2. [option] â€” [proponent] â€” [brief summary]
+1. [option] — [proponent] — [brief summary]
+2. [option] — [proponent] — [brief summary]
 
 DECISION:
 [What was chosen]
 
 RATIONALE:
-[Why this option won â€” 2-3 sentences]
+[Why this option won — 2-3 sentences]
 
 WHAT THIS DECISION DOES NOT OPTIMIZE FOR:
 [Trade-offs accepted]
@@ -426,7 +424,7 @@ and what information the next level needs to decide.
 ```
 
 
-### P2.9 â€” Being a Force Multiplier
+### P2.9 — Being a Force Multiplier
 
 A staff engineer's impact is measured not by what they build, but by what they enable others to build. Every hour you spend helping ten engineers be 10% more productive is worth more than an hour of your own output.
 
@@ -443,7 +441,7 @@ DOCUMENTATION:
   - Write the docs that everyone needs but no one has time to write
   - Create decision records for every significant technical choice
   - Document system architecture, runbooks, onboarding guides
-  - Maintain a "why" repository â€” document the reasoning behind decisions
+  - Maintain a "why" repository — document the reasoning behind decisions
 
 KNOWLEDGE SHARING:
   - Run tech talks, lunch-and-learns, internal workshops
@@ -476,7 +474,7 @@ TEACHING:
 Your impact = (Your direct output) + Sum of (Team member impact x Improvement factor)
 
 If you improve ten engineers' effectiveness by 20%, that is equivalent to doing
-the work of two additional engineers yourself â€” permanently.
+the work of two additional engineers yourself — permanently.
 
 To maximize amplification:
   - Invest in things that compound: documentation, education, patterns
@@ -494,7 +492,7 @@ Signs you are a bottleneck:
 - Teams cannot make decisions without you
 - You are the only person who understands certain systems
 - Your calendar is full of meetings where you are the designated decider
-- You feel indispensable (this is a trap â€” you should aim to be unnecessary)
+- You feel indispensable (this is a trap — you should aim to be unnecessary)
 
 Breaking the bottleneck:
 - Delegate decisions that others can make
@@ -514,9 +512,9 @@ A leverage point is a change that produces outsized impact across the organizati
 - **Measure and visualize:** "We saved each engineer 30 minutes per week on deployments." That is 26 hours per year per engineer. For a 100-engineer org, that is 650 engineering days regained.
 
 
-## P3 â€” CROSS-TEAM TECHNICAL DIRECTION
+## P3 — CROSS-TEAM TECHNICAL DIRECTION
 
-### P3.1 â€” Technical Standard Setting
+### P3.1 — Technical Standard Setting
 
 When establishing a technical standard that multiple teams must follow, the staff engineer balances consistency with autonomy. Too much standardization stifles innovation; too little creates chaos.
 
@@ -558,20 +556,20 @@ ENFORCE   -> Add linting, CI gates, or review checklists (optional, gradual)
 **Exception process:**
 
 - Teams can opt out with written justification (cost, timeline, technical constraint)
-- Exceptions expire after 6 months â€” re-evaluate with evidence
+- Exceptions expire after 6 months — re-evaluate with evidence
 - The standard should be good enough that most teams prefer to adopt it
-- Exceptions are visible to leadership â€” they should be the exception, not the norm
+- Exceptions are visible to leadership — they should be the exception, not the norm
 - If many teams request the same exception, the standard needs revision
 
 **Writing effective standards:**
 
 ```
 GOOD STANDARD STRUCTURE:
-  - Title and purpose (one paragraph â€” what problem does this solve?)
+  - Title and purpose (one paragraph — what problem does this solve?)
   - Scope (what teams/systems does this apply to?)
   - Requirements (numbered, specific, testable)
   - Guidance (recommendations that are not requirements)
-  - Rationale (why each requirement exists â€” context for future readers)
+  - Rationale (why each requirement exists — context for future readers)
   - Migration guide (step-by-step, with automation where possible)
   - FAQ (anticipated questions and their answers)
   - References (related standards, design docs, external resources)
@@ -579,7 +577,7 @@ GOOD STANDARD STRUCTURE:
 BAD STANDARD WARNING SIGNS:
   - "Should" and "may" without clarifying when they apply
   - Requirements that cannot be automatically checked
-  - No rationale â€” just "do this because"
+  - No rationale — just "do this because"
   - Over-specifying implementation details that do not matter
   - 50+ pages that no one will read
   - No migration guidance or timeline for enforcement
@@ -588,18 +586,18 @@ BAD STANDARD WARNING SIGNS:
 **Standard enforcement maturity model:**
 
 ```
-LEVEL 0: No standard â€” everyone does their own thing
-LEVEL 1: Documented recommendation â€” teams are encouraged but not required
-LEVEL 2: Guided adoption â€” templates, generators, and office hours available
-LEVEL 3: CI enforcement â€” violations are caught in CI but can be waived
-LEVEL 4: Hard enforcement â€” violations block CI, exceptions require written approval
-LEVEL 5: Platform enforcement â€” the infrastructure enforces the standard by design
+LEVEL 0: No standard — everyone does their own thing
+LEVEL 1: Documented recommendation — teams are encouraged but not required
+LEVEL 2: Guided adoption — templates, generators, and office hours available
+LEVEL 3: CI enforcement — violations are caught in CI but can be waived
+LEVEL 4: Hard enforcement — violations block CI, exceptions require written approval
+LEVEL 5: Platform enforcement — the infrastructure enforces the standard by design
 
 Progress through levels gradually. Jumping from 0 to 4 creates backlash.
 ```
 
 
-### P3.3 â€” Creating Technical Strategy for Multiple Teams
+### P3.3 — Creating Technical Strategy for Multiple Teams
 
 Technical strategy connects product goals to engineering execution. It answers: "What are we building, why, and in what order?" For a staff engineer, strategy is the bridge between organizational priorities and technical decisions.
 
@@ -669,9 +667,9 @@ STRATEGY DOCUMENT STRUCTURE:
    - Identify conflicts (two themes that pull in different directions)
 
 3. DRAFT THE STRATEGY
-   - Write the target state first â€” where do we want to be?
+   - Write the target state first — where do we want to be?
    - Work backward to identify what needs to change
-   - Define threads â€” major areas of work
+   - Define threads — major areas of work
    - Sequence the threads: what depends on what?
 
 4. SOCIALIZE
@@ -704,7 +702,7 @@ STRATEGY DOCUMENT STRUCTURE:
 | Peer staff engineers | Technical reasoning, trade-offs | Deep dive, whiteboarding session |
 
 
-### P3.5 â€” Building Engineering Tools and Frameworks Used by Others
+### P3.5 — Building Engineering Tools and Frameworks Used by Others
 
 Building tools for other engineers is one of the highest-leverage activities a staff engineer can undertake. However, it is also one of the easiest to get wrong.
 
@@ -828,11 +826,11 @@ BAD FRAMEWORKS:
 ```
 
 
-## P4 â€” MENTORING AND GROWTH
+## P4 — MENTORING AND GROWTH
 
-### P4.1 â€” Mentoring Senior Engineers
+### P4.1 — Mentoring Senior Engineers
 
-Senior engineers are the most leveraged mentees for a staff engineer. Helping a senior engineer grow into a staff engineer multiplies your impact â€” they will influence teams you cannot reach.
+Senior engineers are the most leveraged mentees for a staff engineer. Helping a senior engineer grow into a staff engineer multiplies your impact — they will influence teams you cannot reach.
 
 **The difference between mentoring senior and junior engineers:**
 
@@ -930,13 +928,13 @@ CHALLENGE-ENABLE FEEDBACK:
 
 **When mentoring is not working:**
 
-- The senior engineer is not acting on feedback â€” discuss it directly
-- The senior engineer does not want mentorship â€” respect their autonomy
-- The chemistry is not right â€” suggest another mentor
+- The senior engineer is not acting on feedback — discuss it directly
+- The senior engineer does not want mentorship — respect their autonomy
+- The chemistry is not right — suggest another mentor
 - The senior engineer needs a different kind of support (management, counseling)
 
 
-### P4.3 â€” Challenging Assignments
+### P4.3 — Challenging Assignments
 
 Growth happens at the edge of competence. A staff engineer identifies assignments that stretch senior engineers beyond their current scope and supports them through the discomfort.
 
@@ -984,7 +982,7 @@ DURING:
 AFTER:
   - Debrief: "What did you learn? What would you do differently?"
   - Celebrate the growth, not just the outcome
-  - Discuss what is next â€” keep the momentum
+  - Discuss what is next — keep the momentum
   - Advocate for them based on their new capabilities
 ```
 
@@ -1010,9 +1008,9 @@ READINESS CHECK:
 ```
 
 
-## P5 â€” STAFF+ ENGINEERING SCOPE
+## P5 — STAFF+ ENGINEERING SCOPE
 
-### P5.1 â€” Year-Long Horizons
+### P5.1 — Year-Long Horizons
 
 Staff engineers operate on longer time horizons than individual contributors or tech leads. Where a team plans in sprints, the staff engineer plans in quarters and years.
 
@@ -1061,7 +1059,7 @@ Identify the technological shifts that will matter in 2+ years.
 Ask: "What is changing in our industry, our business, or our technology stack
 that we need to start preparing for now?"
 
-For horizon 3, you are not making commitments â€” you are building awareness:
+For horizon 3, you are not making commitments — you are building awareness:
   - Read widely (industry blogs, papers, conference talks)
   - Run small experiments or prototypes
   - Build relationships with experts inside and outside the company
@@ -1096,15 +1094,15 @@ SENIOR STAFF ENGINEER (18+ months):
 ```
 YEARLY GOAL FRAMEWORK:
 
-GOAL 1 â€” TECHNICAL IMPACT:
+GOAL 1 — TECHNICAL IMPACT:
   "By end of year, the platform migration will be complete, reducing deployment
   time from 45 minutes to 10 minutes for all 12 teams."
 
-GOAL 2 â€” ORGANIZATIONAL IMPACT:
+GOAL 2 — ORGANIZATIONAL IMPACT:
   "By end of year, 3 senior engineers will be ready for staff engineer roles,
   demonstrated by leading cross-team initiatives independently."
 
-GOAL 3 â€” PERSONAL GROWTH:
+GOAL 3 — PERSONAL GROWTH:
   "By end of year, I will have developed deeper expertise in distributed systems,
   demonstrated by leading the design of our event-sourcing architecture."
 
@@ -1122,7 +1120,7 @@ REVIEW EACH QUARTER:
 - **Technical investment:** Large technical changes take months to design, socialize, and execute. Starting early gives you time to do it right.
 
 
-### P6.2 â€” Post-Incident Learning
+### P6.2 — Post-Incident Learning
 
 Every incident is an opportunity to improve the system. A staff engineer ensures that incidents produce lasting improvements, not just temporary fixes.
 
@@ -1153,14 +1151,14 @@ DURATION: [how long it lasted]
 IMPACT:   [users affected, revenue impact, SLA breach]
 
 TIMELINE:
-  [time] â€” [event]
-  [time] â€” [detection]
-  [time] â€” [mitigation started]
-  [time] â€” [resolution]
+  [time] — [event]
+  [time] — [detection]
+  [time] — [mitigation started]
+  [time] — [resolution]
 
 ROOT CAUSE:
-  [technical cause â€” what broke]
-  [process cause â€” why the break was possible]
+  [technical cause — what broke]
+  [process cause — why the break was possible]
 
 CONTRIBUTING FACTORS:
   - [factor that made it worse]
@@ -1178,7 +1176,7 @@ WHAT COULD BE BETTER:
   - [knowledge gap]
 
 ACTION ITEMS:
-  - [ ] [action] â€” OWNER: [person] DEADLINE: [date]
+  - [ ] [action] — OWNER: [person] DEADLINE: [date]
 
 LESSONS FOR THE ORGANIZATION:
   - [lesson that applies beyond this team]
@@ -1225,9 +1223,9 @@ QUARTERLY DEEP DIVE:
 ```
 
 
-## P7 â€” WRITING AND SPEAKING
+## P7 — WRITING AND SPEAKING
 
-### P7.1 â€” Technical Writing
+### P7.1 — Technical Writing
 
 Writing is the primary medium of staff engineer influence. A well-written document reaches more people, lasts longer, and carries more weight than any meeting or conversation.
 
@@ -1323,7 +1321,7 @@ REVISE FOR CLARITY:
   - Remove jargon and acronyms (or explain them)
   - Use active voice ("the system does X" not "X is done by the system")
   - Replace passive constructions: "it is recommended" -> "I recommend"
-  - Read it aloud â€” awkward phrasing is easier to hear
+  - Read it aloud — awkward phrasing is easier to hear
 ```
 
 **Writing as influence:**
@@ -1341,7 +1339,7 @@ DOCUMENTING AGREEMENTS:
      Please reply with corrections within 48 hours."
 
   This single document prevents future "I thought we decided X" disagreements.
-  It is the most effective form of influence â€” making the decision stick.
+  It is the most effective form of influence — making the decision stick.
 
 LEVERAGING ASYNC COMMUNICATION:
   A well-written document reaches 10x more people than a meeting.
@@ -1355,7 +1353,7 @@ Use the meeting to resolve disagreements that surfaced in writing.
 ```
 
 
-### P7.3 â€” Internal Knowledge Base
+### P7.3 — Internal Knowledge Base
 
 A strong internal knowledge base amplifies the entire engineering organization. Good documentation answers questions before they are asked, reduces onboarding time, and preserves institutional knowledge.
 
@@ -1446,11 +1444,11 @@ MEASURE AND CELEBRATE:
 ```
 
 
-## P8 â€” HIRING AND INTERVIEWING
+## P8 — HIRING AND INTERVIEWING
 
-### P8.1 â€” Technical Interviewing
+### P8.1 — Technical Interviewing
 
-Staff engineers play a key role in hiring. You set the technical bar, design interview processes, and evaluate candidates. Getting hiring right is one of the highest-leverage things you can do â€” every hire you make will affect the organization for years.
+Staff engineers play a key role in hiring. You set the technical bar, design interview processes, and evaluate candidates. Getting hiring right is one of the highest-leverage things you can do — every hire you make will affect the organization for years.
 
 **Interview responsibilities:**
 
@@ -1526,7 +1524,7 @@ TECHNICAL:
   - Deep expertise in at least one area, broad knowledge across many
 
 LEADERSHIP:
-  - Influences without authority â€” gets teams to adopt better approaches
+  - Influences without authority — gets teams to adopt better approaches
   - Resolves technical disagreements constructively
   - Takes ownership of ambiguous problems and drives to clarity
   - Raises the bar for everyone around them
@@ -1603,9 +1601,9 @@ MITIGATION:
 
 
 
-## P9 â€” OUTPUT FORMATS
+## P9 — OUTPUT FORMATS
 
-### P9.1 â€” Technical Design Document (Full Template)
+### P9.1 — Technical Design Document (Full Template)
 
 ```
 TITLE:         [one-line description]
@@ -1614,25 +1612,25 @@ STATUS:        DRAFT | REVIEW | APPROVED | SUPERSEDED
 LAST UPDATED:  [date]
 
 CONTEXT
-[2-3 paragraphs â€” what problem exists, why it matters now]
+[2-3 paragraphs — what problem exists, why it matters now]
 
 GOAL
-[one sentence â€” what will be true when this is done]
+[one sentence — what will be true when this is done]
 
 NON-GOALS
-[bullets â€” what this explicitly does not address]
+[bullets — what this explicitly does not address]
 
 OPTIONS
-OPTION A: [name] â€” [summary]
+OPTION A: [name] — [summary]
   Pros: [bullet], Cons: [bullet], Cost: [estimate]
 
-OPTION B: [name] â€” [summary]
+OPTION B: [name] — [summary]
   Pros: [bullet], Cons: [bullet], Cost: [estimate]
 
-OPTION C: [name] â€” [summary]
+OPTION C: [name] — [summary]
   Pros: [bullet], Cons: [bullet], Cost: [estimate]
 
-RECOMMENDATION: [option] â€” [2-3 sentence rationale]
+RECOMMENDATION: [option] — [2-3 sentence rationale]
 
 OPEN QUESTIONS
 - [question] -> OWNER: [name] DEADLINE: [date]
@@ -1655,12 +1653,12 @@ MONITORING AND ALERTING
 [what to watch in production, what thresholds trigger alerts]
 ```
 
-### P9.2 â€” Technical Initiative Brief (Compact)
+### P9.2 — Technical Initiative Brief (Compact)
 
 ```
 INITIATIVE: [name]
 GOAL:       [one sentence]
-WHY NOW:    [one sentence â€” cost of delay]
+WHY NOW:    [one sentence — cost of delay]
 TEAMS:      [team1: contribution, team2: contribution]
 SIZE:       [S|M|L|XL]
 MILESTONES:
@@ -1673,21 +1671,21 @@ REVIEW:     [next review date]
 OWNER:      [accountable person]
 ```
 
-### P9.3 â€” Team Unblocking Summary
+### P9.3 — Team Unblocking Summary
 
 ```
 BLOCKER:    [one line]
 TYPE:       AMBIGUITY | DISAGREEMENT | DEPENDENCY | COMPLEXITY | ANALYSIS_PARALYSIS
 STATUS:     UNBLOCKED | IN_PROGRESS | ESCALATED
 
-DIAGNOSIS:  [2-3 sentences â€” what is really going on?]
+DIAGNOSIS:  [2-3 sentences — what is really going on?]
 RESOLUTION: [decision or next step]
 OWNER:      [who is responsible]
 DEADLINE:   [date]
 FOLLOW-UP:  [date to check if the block is resolved]
 ```
 
-### P9.4 â€” Technical Decision Record
+### P9.4 — Technical Decision Record
 
 ```
 DATE:        [date]
@@ -1698,8 +1696,8 @@ CONTEXT:
 [what problem, why it needed a decision]
 
 OPTIONS CONSIDERED:
-1. [option] â€” [pros, cons]
-2. [option] â€” [pros, cons]
+1. [option] — [pros, cons]
+2. [option] — [pros, cons]
 
 RATIONALE:
 [why this decision, what trade-offs were made]
@@ -1714,7 +1712,7 @@ PARTICIPANTS:
 [who was involved in the decision]
 ```
 
-### P9.5 â€” Incident Summary Template
+### P9.5 — Incident Summary Template
 
 ```
 INCIDENT:   [title]
@@ -1723,10 +1721,10 @@ DURATION:   [duration]
 SEVERITY:   [SEV1|SEV2|SEV3]
 
 TIMELINE:
-[time] â€” [event]
-[time] â€” [detected]
-[time] â€” [mitigated]
-[time] â€” [resolved]
+[time] — [event]
+[time] — [detected]
+[time] — [mitigated]
+[time] — [resolved]
 
 ROOT CAUSE:
 [what broke and why]
@@ -1735,14 +1733,14 @@ IMPACT:
 [users affected, revenue, SLA]
 
 ACTION ITEMS:
-- [ ] [action] â€” OWNER: [person] DEADLINE: [date]
+- [ ] [action] — OWNER: [person] DEADLINE: [date]
 
 LESSONS:
 [what the org should learn from this]
 ```
 
 
-## P10 â€” WORKED EXAMPLES
+## P10 — WORKED EXAMPLES
 
 ### E1: Reducing Complexity in the Checkout Pipeline
 
@@ -1761,11 +1759,11 @@ LESSONS:
 **Context:** Team B needs to migrate from MySQL to PostgreSQL to support a new feature. They have been "in design review" for 6 weeks. The team is frustrated. The migration tech lead says "we need to decide on the migration strategy before we can proceed."
 
 **Staff engineer unblocking:**
-- Diagnosis: AMBIGUITY â€” there are 3 migration strategies (blue-green with replication, dual-writes with backfill, big-bang maintenance window). No one has enough data to choose.
+- Diagnosis: AMBIGUITY — there are 3 migration strategies (blue-green with replication, dual-writes with backfill, big-bang maintenance window). No one has enough data to choose.
 - Decomposition: Split the problem. First, can we get a week of replicated traffic to measure which strategy has acceptable risk? Second, do we need all tables in the first migration, or can we start with a single table?
 - Timebox: "Let us spend one day this week building a replication pipeline for one table. We will learn more from that than from another design review meeting."
 - Resolution: The replication test reveals a schema incompatibility that would have been discovered in production. Team chooses blue-green replication strategy. Migration proceeds.
-- Follow-up: 1 week later â€” replication is working for all tables. 4 weeks later â€” migration is complete with zero downtime.
+- Follow-up: 1 week later — replication is working for all tables. 4 weeks later — migration is complete with zero downtime.
 
 
 
@@ -1783,7 +1781,7 @@ LESSONS:
 
 
 
-### E7: Technical Arbitration â€” Monorepo vs. Multirepo
+### E7: Technical Arbitration — Monorepo vs. Multirepo
 
 **Context:** Two teams disagree on repository strategy. Team Frontend wants a monorepo for shared components and consistent tooling. Team Backend wants multirepo for independent deployment and ownership. The disagreement has been going on for 3 weeks.
 
@@ -1793,17 +1791,17 @@ LESSONS:
    - Backend: wants independent deploy, team ownership, no cross-team CI coordination
 2. Common ground: Both teams want fast builds, clear ownership, and easy dependency management.
 3. Frame options: Present 4 options with trade-offs:
-   - A: Full monorepo â€” simple sharing, complex CI, ownership challenges
-   - B: Full multirepo â€” independent ownership, complex sharing, dependency hell
-   - C: Hybrid monorepo â€” one repo, per-team directories, shared tooling, independent CI
-   - D: Hybrid multirepo â€” separate repos, shared package registry, published components
+   - A: Full monorepo — simple sharing, complex CI, ownership challenges
+   - B: Full multirepo — independent ownership, complex sharing, dependency hell
+   - C: Hybrid monorepo — one repo, per-team directories, shared tooling, independent CI
+   - D: Hybrid multirepo — separate repos, shared package registry, published components
 4. Decision: Hybrid monorepo (Option C). Teams share the repo and tooling config but own their directories independently.
 5. Documentation: Write the decision with rationale. 3-month review scheduled.
 6. Outcome: Both teams get what they need. The arbitration document prevents re-litigation.
 
 
 
-### E9: Building a Force Multiplier Tool â€” Service Scaffolder
+### E9: Building a Force Multiplier Tool — Service Scaffolder
 
 **Context:** Every new microservice requires creating the same boilerplate: project structure, CI config, Dockerfile, health check endpoint, logging setup, deployment config. This takes 2-3 days per service and is error-prone.
 
@@ -1816,9 +1814,9 @@ LESSONS:
 
 
 
-## P12 â€” QUALITY GATES
+## P12 — QUALITY GATES
 
-### Tier 1 â€” Hard Block
+### Tier 1 — Hard Block
 
 - [ ] Design doc includes problem statement, options, and explicit decision
 - [ ] Cross-team initiative has buy-in from each affected team lead
@@ -1832,7 +1830,7 @@ LESSONS:
 - [ ] Mentoring relationship has defined goals and check-in cadence
 - [ ] Technical arbitration decision is documented with rationale
 
-### Tier 2 â€” Standard
+### Tier 2 — Standard
 
 - [ ] Influence approach is appropriate for the situation (not mandate)
 - [ ] Design doc is appropriately scoped (S/M sized docs for S/M decisions)
@@ -1861,58 +1859,58 @@ No prohibited words in output?       -> yes
 ```
 
 
-## P13 â€” REFERENCE MAP
+## P13 — REFERENCE MAP
 
 | Situation | Pattern |
 |---|---|
-| Need a team to adopt a technical pattern | P2.1 â€” Influence Without Authority |
-| System is getting harder to change over time | P2.2 â€” Complexity Reduction |
-| Writing a technical proposal | P2.3 â€” Design Documents and RFC Process |
-| Team is stuck on a decision | P2.4 â€” Unblocking Teams |
-| Proposing a multi-team initiative | P2.5 â€” Technical Initiative Design |
-| Making a decision with uncertain outcome | P2.6 â€” Pragmatic Decision-Making and Risk Calibration |
-| Resolving a technical disagreement | P2.7 â€” Technical Arbitration |
-| Multiple teams have interdependent work | P2.8 â€” Cross-Project Coordination |
-| Need to amplify impact across the org | P2.9 â€” Being a Force Multiplier |
-| Setting a cross-team standard | P3.1 â€” Technical Standard Setting |
-| Reviewing another team's design | P3.2 â€” Design Review Patterns |
-| Defining direction for multiple teams | P3.3 â€” Creating Technical Strategy |
-| Code quality is inconsistent | P3.4 â€” Code Quality Standards |
-| Building a shared tool or framework | P3.5 â€” Building Engineering Tools |
-| Growing senior engineers | P4.1 â€” Mentoring Senior Engineers |
-| Creating opportunities for others | P4.2 â€” Sponsorship Patterns |
-| Designing a stretch assignment | P4.3 â€” Challenging Assignments |
-| Planning beyond the current quarter | P5.1 â€” Year-Long Horizons |
-| Facing an unclear problem | P5.2 â€” Ambiguous Problems |
-| Responding to a major incident | P6.1 â€” Incident Response as Technical Leader |
-| Learning from incidents | P6.2 â€” Post-Incident Learning |
-| Writing a technical document | P7.1 â€” Technical Writing |
-| Preparing a presentation | P7.2 â€” Tech Talks and Presentations |
-| Building organizational knowledge | P7.3 â€” Internal Knowledge Base |
-| Interviewing candidates | P8.1 â€” Technical Interviewing |
-| Maintaining the hiring bar | P8.2 â€” Hiring Bar Calibration |
-| Writing a design doc | P9.1 â€” Technical Design Document Template |
-| Briefing an initiative | P9.2 â€” Technical Initiative Brief |
-| Recording a team unblock | P9.3 â€” Team Unblocking Summary |
-| Capturing a decision | P9.4 â€” Technical Decision Record |
-| Summarizing an incident | P9.5 â€” Incident Summary Template |
-| Saying no to a bad approach | E4 â€” Saying No to a Bad Abstraction |
-| Mentoring a senior to staff readiness | E6 â€” Mentoring to Staff Readiness |
-| Arbitrating a cross-team disagreement | E7 â€” Technical Arbitration Example |
-| Leading during an incident | E8 â€” Incident Response Leadership |
-| Building a force multiplier tool | E9 â€” Building a Service Scaffolder |
-| Influencing through writing and speaking | E10 â€” Writing and Speaking as Influence |
+| Need a team to adopt a technical pattern | P2.1 — Influence Without Authority |
+| System is getting harder to change over time | P2.2 — Complexity Reduction |
+| Writing a technical proposal | P2.3 — Design Documents and RFC Process |
+| Team is stuck on a decision | P2.4 — Unblocking Teams |
+| Proposing a multi-team initiative | P2.5 — Technical Initiative Design |
+| Making a decision with uncertain outcome | P2.6 — Pragmatic Decision-Making and Risk Calibration |
+| Resolving a technical disagreement | P2.7 — Technical Arbitration |
+| Multiple teams have interdependent work | P2.8 — Cross-Project Coordination |
+| Need to amplify impact across the org | P2.9 — Being a Force Multiplier |
+| Setting a cross-team standard | P3.1 — Technical Standard Setting |
+| Reviewing another team's design | P3.2 — Design Review Patterns |
+| Defining direction for multiple teams | P3.3 — Creating Technical Strategy |
+| Code quality is inconsistent | P3.4 — Code Quality Standards |
+| Building a shared tool or framework | P3.5 — Building Engineering Tools |
+| Growing senior engineers | P4.1 — Mentoring Senior Engineers |
+| Creating opportunities for others | P4.2 — Sponsorship Patterns |
+| Designing a stretch assignment | P4.3 — Challenging Assignments |
+| Planning beyond the current quarter | P5.1 — Year-Long Horizons |
+| Facing an unclear problem | P5.2 — Ambiguous Problems |
+| Responding to a major incident | P6.1 — Incident Response as Technical Leader |
+| Learning from incidents | P6.2 — Post-Incident Learning |
+| Writing a technical document | P7.1 — Technical Writing |
+| Preparing a presentation | P7.2 — Tech Talks and Presentations |
+| Building organizational knowledge | P7.3 — Internal Knowledge Base |
+| Interviewing candidates | P8.1 — Technical Interviewing |
+| Maintaining the hiring bar | P8.2 — Hiring Bar Calibration |
+| Writing a design doc | P9.1 — Technical Design Document Template |
+| Briefing an initiative | P9.2 — Technical Initiative Brief |
+| Recording a team unblock | P9.3 — Team Unblocking Summary |
+| Capturing a decision | P9.4 — Technical Decision Record |
+| Summarizing an incident | P9.5 — Incident Summary Template |
+| Saying no to a bad approach | E4 — Saying No to a Bad Abstraction |
+| Mentoring a senior to staff readiness | E6 — Mentoring to Staff Readiness |
+| Arbitrating a cross-team disagreement | E7 — Technical Arbitration Example |
+| Leading during an incident | E8 — Incident Response Leadership |
+| Building a force multiplier tool | E9 — Building a Service Scaffolder |
+| Influencing through writing and speaking | E10 — Writing and Speaking as Influence |
 
 
 **Related skills and boundaries:**
 
 | This Skill Covers | Not Covered By (see other skills) |
 |---|---|
-| Technical leadership without authority | People management â€” see engineering-manager plugin |
-| Cross-team technical direction | CTO-level strategy â€” see cto plugin |
-| Design documents and RFCs | Architecture governance â€” see architect plugin |
-| Mentoring senior engineers | Principal engineer scope â€” see architect plugin |
-| Technical decision-making | Organizational design â€” see engineering-manager plugin |
+| Technical leadership without authority | People management — see engineering-manager plugin |
+| Cross-team technical direction | CTO-level strategy — see cto plugin |
+| Design documents and RFCs | Architecture governance — see architect plugin |
+| Mentoring senior engineers | Principal engineer scope — see architect plugin |
+| Technical decision-making | Organizational design — see engineering-manager plugin |
 | Incident response leadership | |
 | Technical writing and speaking | |
 | Technical interviewing and bar calibration | |

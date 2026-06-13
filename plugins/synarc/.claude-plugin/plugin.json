@@ -12,7 +12,7 @@
   "category": "engineering-intelligence",
   "tier": "enterprise",
   "description": "Always-on engineering cognition for architecture awareness, risk analysis, impact tracing, and cross-platform code intelligence.",
-  "entrypoint": "skills/synarc/SKILL.md",
+  "entrypoint": "skills/SKILL.md",
   "autoInject": true,
   "activation": "contextual",
   "priority": "critical",

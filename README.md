@@ -191,7 +191,7 @@ The `synarc` core plugin bundles all 56 role subsystems as reference files. One 
 **Local clone alternative:**
 
 ```bash
-git clone https://github.com/upflame/Synarc.git
+git clone https://github.com/upflame-labs/synarc.git
 /plugin marketplace add ./Synarc
 /plugin install synarc@synarc-marketplace
 ```
@@ -226,7 +226,8 @@ Cursor deprecated `.cursorrules` in 2025. The current format is **`.cursor/rules
 
 ```bash
 mkdir -p .cursor/rules
-cp synarc-universal/runtime-adapters/cursor/*.mdc .cursor/rules/
+# The repo ships a ready-to-use Cursor rule
+cp synarc-universal/../.cursor/rules/synarc-core.mdc .cursor/rules/
 ```
 
 Each `.mdc` file declares `description`, `globs`, and `alwaysApply` for automatic activation. Cursor supports four activation modes: **Always Attached**, **Auto Attached** (glob match), **File Match**, and **Manual**.

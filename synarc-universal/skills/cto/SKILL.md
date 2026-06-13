@@ -1,63 +1,61 @@
-﻿---
+---
 name: cto
-description: CTO â€” Technical Vision & Organizational Strategy
+description: CTO — Technical Vision & Organizational Strategy
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# CTO â€” Technical Vision & Organizational Strategy
+# CTO — Technical Vision & Organizational Strategy
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
 
-The CTO operates at the intersection of technical possibility and business outcomes. Decisions carry organizational weight â€” technology choices that last 3-5 years, team structures that shape culture, platform investments that define engineering capacity.
+The CTO operates at the intersection of technical possibility and business outcomes. Decisions carry organizational weight — technology choices that last 3-5 years, team structures that shape culture, platform investments that define engineering capacity.
 
 
 
-## P0 â€” INTELLIGENCE AUGMENTATION
+## P0 — INTELLIGENCE AUGMENTATION
 
-### P0.1 â€” Token Optimization Defaults
+### P0.1 — Token Optimization Defaults
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process â€” output the result.
+**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
 
 **COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
 
 **Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
 
-### P0.2 â€” Adaptive Learning Triggers
+### P0.2 — Adaptive Learning Triggers
 
 **Learning Triggers:**
-- New pattern discovered in this domain â†’ store in brain/error_patterns/ or brain/decisions/
-- Fix validated â†’ confidence += 1 in brain/error_patterns/
-- Fix failed â†’ create new entry with attempted approaches
-- Human correction â†’ store incorrect + correct paths with disambiguator
+- New pattern discovered in this domain → store in brain/error_patterns/ or brain/decisions/
+- Fix validated → confidence += 1 in brain/error_patterns/
+- Fix failed → create new entry with attempted approaches
+- Human correction → store incorrect + correct paths with disambiguator
 
 **Knowledge Storage:**
 - File analysis: stored in brain/file_analysis/[filename].json (permanent)
 - Domain conventions: stored in brain/ (update on every discovery)
 - Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
 
-### P0.3 â€” Smart Auto-Prompt Rules
+### P0.3 — Smart Auto-Prompt Rules
 
-**Optimistic Action Threshold:** > 80% confidence â†’ act immediately. 60-80% â†’ brief confirmation. < 60% â†’ clarify first.
+**Optimistic Action Threshold:** > 80% confidence → act immediately. 60-80% → brief confirmation. < 60% → clarify first.
 
 **Auto-Complete Triggers:**
-- Error received â†’ lookup pattern, propose fix immediately
-- File named â†’ load file, offer action suggestions
-- Exception thrown â†’ analyze stack, propose fix with confidence score
+- Error received → lookup pattern, propose fix immediately
+- File named → load file, offer action suggestions
+- Exception thrown → analyze stack, propose fix with confidence score
 
 **Prefetch Protocol:** After each action, predict next file from import graph. Load file_analysis/ for predicted file. Warm cache with likely next actions.
 
-**Reduced Round-Trips:** Every task MUST complete in â‰¤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
+**Reduced Round-Trips:** Every task MUST complete in ≤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
 
 
-## P2 â€” TECHNOLOGY STRATEGY FORMULATION
+## P2 — TECHNOLOGY STRATEGY FORMULATION
 
-### P2.0 â€” Vision, Mission, and Principles
+### P2.0 — Vision, Mission, and Principles
 
 Technology strategy must start from first principles before any specific decision is made.
 
@@ -106,7 +104,7 @@ PRINCIPLE: Build for replaceability.
   If replacing a component would take longer, the architecture is wrong.
 
 PRINCIPLE: Data over opinions.
-  Application: Technology decisions require evidence â€” benchmarks, team
+  Application: Technology decisions require evidence — benchmarks, team
   experience, reference architectures. "I think" is not sufficient.
 
 PRINCIPLE: Optimize for the whole system.
@@ -123,38 +121,38 @@ PRINCIPLE: Security is everyone's responsibility.
   engineer is responsible for the security of what they ship.
 ```
 
-### P2.1 â€” Technology Selection Framework
+### P2.1 — Technology Selection Framework
 
 When evaluating a technology for organizational adoption:
 
 ```
-DIMENSION 1 â€” PROBLEM FIT
+DIMENSION 1 — PROBLEM FIT
   Does this technology solve a problem we actually have?
-  "We need Kubernetes" â†’ what problem does it solve?
-  "Our deploy time is 45 minutes" â†’ Kubernetes is not the only path to faster deploys.
+  "We need Kubernetes" → what problem does it solve?
+  "Our deploy time is 45 minutes" → Kubernetes is not the only path to faster deploys.
   DISTINCTION: solving a real problem vs adopting a technology because it is popular.
 
-DIMENSION 2 â€” ECOSYSTEM MATURITY
+DIMENSION 2 — ECOSYSTEM MATURITY
   Stage: EMERGING / GROWING / MAINSTREAM / DECLINING / LEGACY
-  Emerging: high risk, high upside â€” limit to experiments
+  Emerging: high risk, high upside — limit to experiments
   Growing: acceptable risk for non-critical systems
-  Mainstream: standard choice â€” low risk
+  Mainstream: standard choice — low risk
   Declining: plan migration, do not start new projects
   Legacy: actively migrate off
 
-DIMENSION 3 â€” ORGANIZATIONAL READINESS
+DIMENSION 3 — ORGANIZATIONAL READINESS
   Do we have the skills to adopt this technology?
   Can we hire for it?
   What is the learning curve cost?
-  Estimate: adoption cost = (learning curve weeks Ã— engineer count Ã— weekly cost) + migration cost
+  Estimate: adoption cost = (learning curve weeks × engineer count × weekly cost) + migration cost
 
-DIMENSION 4 â€” PORTFOLIO IMPACT
+DIMENSION 4 — PORTFOLIO IMPACT
   Does this add or reduce diversity in our technology portfolio?
   Adding a new database technology: adds operational burden, increases cognitive load.
   Standardizing on one technology: reduces flexibility, increases bus-factor risk.
   Target: 2-3 technologies per category (one primary, one secondary, one experimental).
 
-DIMENSION 5 â€” EXIT COST
+DIMENSION 5 — EXIT COST
   If we need to replace this technology in 3 years, what does that cost?
   Data migration, retraining, system rewrites, operational migration.
   High exit cost technologies require stronger justification.
@@ -173,22 +171,22 @@ DIMENSION 5 â€” EXIT COST
 | Exit Cost | 15% | | |
 | **Total** | **100%** | | |
 
-### P2.2 â€” Build vs Buy Decision
+### P2.2 — Build vs Buy Decision
 
 | Factor | Build | Buy | Hybrid |
 |---|---|---|---|
-| Core differentiator | Build â€” this is your competitive advantage | Buy â€” non-differentiating commodity | Build core, buy edge |
-| Maturity of market | Immature â€” building is cheaper than integrating | Mature â€” buy, do not rebuild commodity | Buy base, customize |
+| Core differentiator | Build — this is your competitive advantage | Buy — non-differentiating commodity | Build core, buy edge |
+| Maturity of market | Immature — building is cheaper than integrating | Mature — buy, do not rebuild commodity | Buy base, customize |
 | Team availability | Team available and has domain expertise | No team or lacks expertise | Staff experienced team for core, buy rest |
 | Time to market | Can wait 6-12 months | Need solution in <3 months | Buy for now, build later if needed |
-| Integration complexity | High â€” existing systems are custom | Low â€” standard interfaces exist | Build integration layer, buy components |
-| Maintenance burden | Long-term cost of ownership | Vendor lock-in and upgrade risk | Split â€” minimize both |
+| Integration complexity | High — existing systems are custom | Low — standard interfaces exist | Build integration layer, buy components |
+| Maintenance burden | Long-term cost of ownership | Vendor lock-in and upgrade risk | Split — minimize both |
 
 **Build-vs-Buy decision matrix:**
 
 ```
                      | CORE DIFFERENTIATOR | COMMODITY
-                     |â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”|â€”â€”â€”â€”â€”â€”â€”â€”â€”â€”
+                     |—————————————————————|——————————
 TIME-SENSITIVE       | BUILD (fast track)  | BUY
                      |                     |
 TIME-INSENSITIVE     | BUILD (well)        | BUILD (only if buy is worse)
@@ -207,7 +205,7 @@ TIME-INSENSITIVE     | BUILD (well)        | BUILD (only if buy is worse)
 
 **Build-vs-Buy-vs-Partner framework:**
 
-A third option â€” partnership â€” sits between build and buy. A partner is a vendor with whom you have a strategic relationship beyond transactional purchase.
+A third option — partnership — sits between build and buy. A partner is a vendor with whom you have a strategic relationship beyond transactional purchase.
 
 | Factor | Build | Buy | Partner |
 |---|---|---|---|
@@ -235,23 +233,23 @@ When to choose PARTNER over BUILD:
 
 ```
 TCO(BUILD) = 
-  Development cost (engineers Ã— months)
+  Development cost (engineers × months)
   + Infrastructure cost (compute, storage, networking over 3 years)
-  + Maintenance cost (years Ã— monthly engineering effort)
+  + Maintenance cost (years × monthly engineering effort)
   + Operational cost (on-call, monitoring, support over 3 years)
   + Opportunity cost (engineering time not spent on differentiator)
 
 TCO(BUY) = 
-  Licensing cost (annual Ã— 3 years)
-  + Integration cost (engineers Ã— months)
+  Licensing cost (annual × 3 years)
+  + Integration cost (engineers × months)
   + Migration cost (data, process changes)
   + Vendor management overhead (annual)
-  + Exit cost contingency (expected probability Ã— estimated exit cost)
+  + Exit cost contingency (expected probability × estimated exit cost)
 ```
 
-**Decision rule:** Calculate TCO over 3 years. If TCO(BUY) < 0.7 Ã— TCO(BUILD), buy is the default. If TCO(BUILD) < TCO(BUY) within 20%, the non-financial factors (control, IP, differentiation) become decisive.
+**Decision rule:** Calculate TCO over 3 years. If TCO(BUY) < 0.7 × TCO(BUILD), buy is the default. If TCO(BUILD) < TCO(BUY) within 20%, the non-financial factors (control, IP, differentiation) become decisive.
 
-### P2.3 â€” Platform Investment Reasoning
+### P2.3 — Platform Investment Reasoning
 
 When evaluating a platform investment (internal tools, infrastructure, shared services):
 
@@ -284,38 +282,38 @@ Signal to defer:
 **Platform maturity model:**
 
 ```
-Phase 1 â€” PAIN RECOGNITION
+Phase 1 — PAIN RECOGNITION
   Pattern: Teams independently identify the same friction point
   Response: Validate that the problem is widespread, not isolated
   Artifact: Problem statement with evidence from 3+ teams
 
-Phase 2 â€” EXPLORE
+Phase 2 — EXPLORE
   Pattern: One team builds a prototype solving their specific pain
-  Response: Assess genericity â€” can this be adapted for other teams?
+  Response: Assess genericity — can this be adapted for other teams?
   Artifact: Working prototype, 1-2 other teams expressing interest
   Gate: At least 2 other teams commit to trying it
 
-Phase 3 â€” PLATFORMIZE
+Phase 3 — PLATFORMIZE
   Pattern: Extract the shared capability from the team-specific solution
   Response: Build abstractions, APIs, documentation, self-service
   Artifact: Platform with documented API, onboarding guide, SLIs
   Gate: 3+ teams actively using in production for 1+ quarter
 
-Phase 4 â€” SCALE
+Phase 4 — SCALE
   Pattern: Platform is the default choice for new teams
   Response: Invest in reliability, performance, governance
   Artifact: Platform team, SLOs, deprecation policy for alternatives
   Gate: 80%+ adoption across eligible teams
 
-Phase 5 â€” SUNSET
+Phase 5 — SUNSET
   Pattern: Platform adoption is declining or has reached end of useful life
   Response: Plan migration, reduce investment, eventually retire
   Artifact: Migration plan, data migration, final sunset date
 ```
 
-### P2.4 â€” Engineering Culture Reasoning
+### P2.4 — Engineering Culture Reasoning
 
-Cultural decisions are the most consequential decisions a CTO makes â€” they affect every engineer, every day.
+Cultural decisions are the most consequential decisions a CTO makes — they affect every engineer, every day.
 
 **Cultural signals that require intervention:**
 
@@ -344,46 +342,46 @@ Cultural decisions are the most consequential decisions a CTO makes â€” the
 | Pair programming rotation | Cross-trains, reduces bus factor | Weekly pair sessions, rotate pairs, different teams |
 | Engineering ladder | Defines growth expectations | Published competency matrix, regular promotions process, calibration |
 
-### P2.5 â€” Resource Allocation Reasoning
+### P2.5 — Resource Allocation Reasoning
 
 Given a fixed engineering budget, allocate resources across four horizons:
 
 | Horizon | Focus | Allocation (typical) | Decision Rule |
 |---|---|---|---|
-| H1 â€” CORE BUSINESS | Maintain and improve existing revenue-generating systems | 50-60% | Must not degrade â€” these fund everything else |
-| H2 â€” GROWTH | Build new capabilities for existing markets | 20-30% | Bet on what you know â€” adjacent expansion |
-| H3 â€” EXPLORATION | Experiment with new markets, technologies, or business models | 10-15% | Kill quickly if signals are negative â€” fail fast, learn cheap |
-| H4 â€” FOUNDATION | Platform, infrastructure, developer experience, technical debt reduction | 10-20% | Cannot defer indefinitely â€” compound interest applies to tech debt |
+| H1 — CORE BUSINESS | Maintain and improve existing revenue-generating systems | 50-60% | Must not degrade — these fund everything else |
+| H2 — GROWTH | Build new capabilities for existing markets | 20-30% | Bet on what you know — adjacent expansion |
+| H3 — EXPLORATION | Experiment with new markets, technologies, or business models | 10-15% | Kill quickly if signals are negative — fail fast, learn cheap |
+| H4 — FOUNDATION | Platform, infrastructure, developer experience, technical debt reduction | 10-20% | Cannot defer indefinitely — compound interest applies to tech debt |
 
 **Rebalancing triggers:**
-- Production incidents from infrastructure debt â†’ increase H4
-- Competitor ships a capability we lack â†’ increase H2
-- Revenue growth stalls â†’ evaluate H2 portfolio, kill low-performing bets
-- Team morale is low â†’ investigate H1 â€” toil and maintenance burden may be too high
-- New market opportunity emerges â†’ shift from H1 or H4 to H3 temporarily
+- Production incidents from infrastructure debt → increase H4
+- Competitor ships a capability we lack → increase H2
+- Revenue growth stalls → evaluate H2 portfolio, kill low-performing bets
+- Team morale is low → investigate H1 — toil and maintenance burden may be too high
+- New market opportunity emerges → shift from H1 or H4 to H3 temporarily
 
 **Resource allocation scenarios:**
 
 ```
-Scenario A â€” Startup (10-30 engineers):
+Scenario A — Startup (10-30 engineers):
   H1: 60% (product must work)
   H2: 25% (need growth to survive)
   H3: 10% (optional, only if runway allows)
-  H4: 5% (minimal â€” borrow against future)
+  H4: 5% (minimal — borrow against future)
 
-Scenario B â€” Growth stage (30-100 engineers):
+Scenario B — Growth stage (30-100 engineers):
   H1: 50% (defend revenue)
   H2: 25% (expand)
   H3: 10% (experiment)
   H4: 15% (pay down tech debt before it compounds)
 
-Scenario C â€” Scale stage (100-500 engineers):
+Scenario C — Scale stage (100-500 engineers):
   H1: 45% (efficiency focus)
   H2: 20% (targeted expansion)
   H3: 10% (innovation reserve)
   H4: 25% (platform, infrastructure, debt management)
 
-Scenario D â€” Enterprise (500+ engineers):
+Scenario D — Enterprise (500+ engineers):
   H1: 50% (stability, compliance, efficiency)
   H2: 15% (measured growth)
   H3: 15% (innovation pipeline)
@@ -391,11 +389,11 @@ Scenario D â€” Enterprise (500+ engineers):
 ```
 
 
-## P4 â€” TECHNICAL DEBT GOVERNANCE
+## P4 — TECHNICAL DEBT GOVERNANCE
 
-### P4.1 â€” Organizational Debt Management
+### P4.1 — Organizational Debt Management
 
-Technical debt at the organizational level is not about individual code quality issues â€” it is about systemic debt that affects the organization's ability to deliver.
+Technical debt at the organizational level is not about individual code quality issues — it is about systemic debt that affects the organization's ability to deliver.
 
 **Types of organizational technical debt:**
 
@@ -416,9 +414,9 @@ DEBT ITEM:
   TYPE:         [architecture / infrastructure / test / knowledge / dependency / data / process]
   SEVERITY:     LOW / MEDIUM / HIGH / CRITICAL
   AFFECTED:     [teams or systems affected]
-  INTEREST:     [cost of not fixing â€” time wasted, incidents, velocity lost]
+  INTEREST:     [cost of not fixing — time wasted, incidents, velocity lost]
   PRINCIPAL:    [estimated effort to fix]
-  ROOT CAUSE:   [why this debt exists â€” pressure, skill gap, oversight]
+  ROOT CAUSE:   [why this debt exists — pressure, skill gap, oversight]
 
 DEBT DECISION RULE:
   If interest / quarter > principal, fix the debt.
@@ -431,22 +429,22 @@ DEBT DECISION RULE:
 Classify each debt item into one of four quadrants:
 
                     HIGH FREQUENCY (affects every sprint)
-                    â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-                    â”‚                       â”‚
-                    â”‚   PRIORITY FIX        â”‚  PAY DOWN
-                    â”‚   (blocking velocity) â”‚  (strategic)
-                    â”‚                       â”‚
-                    â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-                    â”‚                       â”‚
-                    â”‚   MONITOR             â”‚  DEFER
-                    â”‚   (minor annoyance)   â”‚  (consider replacement)
-                    â”‚                       â”‚
-                    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                    ┌───────────────────────┐
+                    │                       │
+                    │   PRIORITY FIX        │  PAY DOWN
+                    │   (blocking velocity) │  (strategic)
+                    │                       │
+                    ├───────────────────────┤
+                    │                       │
+                    │   MONITOR             │  DEFER
+                    │   (minor annoyance)   │  (consider replacement)
+                    │                       │
+                    └───────────────────────┘
                     LOW FREQUENCY    
               LOW IMPACT              HIGH IMPACT
 ```
 
-### P4.2 â€” Investment Strategy
+### P4.2 — Investment Strategy
 
 **Debt repayment allocation:**
 
@@ -466,41 +464,41 @@ OWNER:         [senior engineer or architect]
 BUDGET:        [engineer allocation]
 
 PHASES:
-  Phase 1 â€” ASSESS (1-2 months)
+  Phase 1 — ASSESS (1-2 months)
     - Inventory all known debt items
     - Classify by type, severity, interest
     - Engage teams to surface hidden debt
     - Publish debt portfolio
 
-  Phase 2 â€” PRIORITIZE (1 month)
+  Phase 2 — PRIORITIZE (1 month)
     - Rank by interest/principal ratio
     - Identify quick wins (high interest, low principal)
     - Identify strategic investments (high principal, high interest, long payoff)
     - Get leadership buy-in on top 10 items
 
-  Phase 3 â€” EXECUTE (6-9 months)
+  Phase 3 — EXECUTE (6-9 months)
     - Assign owners to each debt item
     - Timebox each fix (no infinite refactoring)
     - Track progress in visible dashboard
     - Celebrate completion of each item
 
-  Phase 4 â€” PREVENT (ongoing)
+  Phase 4 — PREVENT (ongoing)
     - Add debt checks to code review checklist
     - Include debt in architecture review criteria
     - Automate debt detection where possible
     - Debt is part of quarterly planning, not an afterthought
 ```
 
-### P4.3 â€” Making the Business Case for Debt Reduction
+### P4.3 — Making the Business Case for Debt Reduction
 
 Technical debt is an engineering concept. To get business buy-in, translate it into business terms.
 
 ```
 BUSINESS TRANSLATION:
-  Technical debt â†’ "Slows down our ability to ship new features"
-  Interest payment  â†’ "Engineers spend 30% of their time working around old systems"
-  Principal        â†’ "It would take 3 months to rewrite this module"
-  Default risk     â†’ "If we don't fix this, we will miss the Q3 product deadline"
+  Technical debt → "Slows down our ability to ship new features"
+  Interest payment  → "Engineers spend 30% of their time working around old systems"
+  Principal        → "It would take 3 months to rewrite this module"
+  Default risk     → "If we don't fix this, we will miss the Q3 product deadline"
 
 PRESENTATION TO BUSINESS LEADERS:
   "We are spending $X/year on technical interest payments. We can invest
@@ -513,13 +511,13 @@ PRESENTATION TO BUSINESS LEADERS:
 ```
 
 
-## P6 â€” ENGINEERING ROI AND BUSINESS OUTCOMES
+## P6 — ENGINEERING ROI AND BUSINESS OUTCOMES
 
-### P6.1 â€” Connecting Technical Investment to Business Outcomes
+### P6.1 — Connecting Technical Investment to Business Outcomes
 
 Every technical investment must be justified in terms of business impact. The CTO translates between technical spending and business value.
 
-**ROI tiers:** Tier 1 â€” Enabled Revenue (new feature revenue - cost). Tier 2 â€” Cost Avoidance (previous cost - new cost - investment). Tier 3 â€” Risk Reduction (expected loss probability Ã— impact - investment). Tier 4 â€” Capability Option Value (optionality; not directly quantifiable â€” hardest to justify, most important for long-term).
+**ROI tiers:** Tier 1 — Enabled Revenue (new feature revenue - cost). Tier 2 — Cost Avoidance (previous cost - new cost - investment). Tier 3 — Risk Reduction (expected loss probability × impact - investment). Tier 4 — Capability Option Value (optionality; not directly quantifiable — hardest to justify, most important for long-term).
 
 **Engineering investment proposal template:**
 
@@ -548,28 +546,28 @@ CONTINUATION CRITERIA:
 NEXT REVIEW:               [date]
 ```
 
-### P6.2 â€” Engineering Efficiency Metrics
+### P6.2 — Engineering Efficiency Metrics
 
 Measure engineering output in terms of business value, not velocity.
 
-**Metrics hierarchy:** Level 1 (quarterly, business outcomes â€” revenue per engineer, feature adoption, NPS, time-to-market, eng cost % of revenue). Level 2 (monthly, enablement â€” deploy frequency, lead time, change failure rate, MTTR, availability). Level 3 (weekly, process â€” cycle time, code review turnaround, build time, incident volume, WIP). Level 4 (quarterly, health â€” satisfaction/retention, debt interest ratio, test coverage, bus factor, documentation freshness).
+**Metrics hierarchy:** Level 1 (quarterly, business outcomes — revenue per engineer, feature adoption, NPS, time-to-market, eng cost % of revenue). Level 2 (monthly, enablement — deploy frequency, lead time, change failure rate, MTTR, availability). Level 3 (weekly, process — cycle time, code review turnaround, build time, incident volume, WIP). Level 4 (quarterly, health — satisfaction/retention, debt interest ratio, test coverage, bus factor, documentation freshness).
 
 **Metrics principles:** Measure outcomes not output. Measure trends not absolutes. Measure what you can improve. Fewer is better (3-5 per team, 5-8 at org level). Metrics are for learning, not evaluation.
 
-### P6.3 â€” Investment Portfolio Review
+### P6.3 — Investment Portfolio Review
 
 Quarterly review of the engineering investment portfolio:
 
 ```
 PORTFOLIO REVIEW AGENDA:
-1. H1 (Core Business) â€” Revenue trending? Stability? Incidents?
-2. H2 (Growth) â€” On track? Continue/kill decisions?
-3. H3 (Exploration) â€” Learning outcomes? Kill signals?
-4. H4 (Foundation) â€” Velocity impact? Debt trends?
+1. H1 (Core Business) — Revenue trending? Stability? Incidents?
+2. H2 (Growth) — On track? Continue/kill decisions?
+3. H3 (Exploration) — Learning outcomes? Kill signals?
+4. H4 (Foundation) — Velocity impact? Debt trends?
 
 PORTFOLIO HEALTH CHECK:
   Allocation balance:   H1: 50-60% / H2: 20-30% / H3: 10-15% / H4: 10-20%
-                              âœ“ / âœ— (if out of range, rebalance)
+                              ✓ / ✗ (if out of range, rebalance)
   Kill rate:            What % of H3 experiments were killed?
                         Target: 50-70% (if lower, not enough risk-taking)
   Debt ratio:           What % of engineering time goes to debt?
@@ -579,9 +577,9 @@ PORTFOLIO HEALTH CHECK:
 ```
 
 
-## P8 â€” BOARD-LEVEL TECHNICAL COMMUNICATION
+## P8 — BOARD-LEVEL TECHNICAL COMMUNICATION
 
-### P8.1 â€” Principles of Board Communication
+### P8.1 — Principles of Board Communication
 
 The board speaks in business terms: revenue, risk, competitive advantage, and capital allocation. The CTO must translate technical reality into these terms.
 
@@ -600,7 +598,7 @@ The board speaks in business terms: revenue, risk, competitive advantage, and ca
 
 3. Use references, not explanations
   Do not explain fundamental concepts. Use analogies:
-  "Technical debt is like financial debt â€” if we don't pay it down,
+  "Technical debt is like financial debt — if we don't pay it down,
   the interest payments compound and slow us down."
 
 4. Present options, not open questions
@@ -619,7 +617,7 @@ The board speaks in business terms: revenue, risk, competitive advantage, and ca
 **One-page board update template:**
 
 ```
-TECHNOLOGY UPDATE â€” Q[X] [YEAR]
+TECHNOLOGY UPDATE — Q[X] [YEAR]
 
 1. ENGINEERING VELOCITY
   Deployment frequency:  [trend up/down/flat]
@@ -632,8 +630,8 @@ TECHNOLOGY UPDATE â€” Q[X] [YEAR]
   Initiative C: [NEW] [description, budget, expected impact]
 
 3. RISK AND ISSUES
-  Risk 1: [description] â€” [mitigation] â€” [status]
-  Risk 2: [description] â€” [mitigation] â€” [status]
+  Risk 1: [description] — [mitigation] — [status]
+  Risk 2: [description] — [mitigation] — [status]
 
 4. INVESTMENT SUMMARY
   Total engineering spend:    $[amount] ([% of revenue])
@@ -642,12 +640,12 @@ TECHNOLOGY UPDATE â€” Q[X] [YEAR]
   Allocated to growth:        [%]
   Allocated to foundation:    [%]
 
-5. LOOKING AHEAD â€” NEXT QUARTER
+5. LOOKING AHEAD — NEXT QUARTER
   Focus: [top priority]
-  Decision needed from board: [yes/no â€” what]
+  Decision needed from board: [yes/no — what]
 ```
 
-### P8.2 â€” Board Presentation Scenarios
+### P8.2 — Board Presentation Scenarios
 
 **Competitive advantage:** "Our technology is a competitive advantage because [X]. We invest in [Y] to maintain that. If we stop, our advantage erodes in [timeframe]." Support with velocity trends, platform capability comparison, efficiency trends, and satisfaction correlation.
 
@@ -657,14 +655,14 @@ TECHNOLOGY UPDATE â€” Q[X] [YEAR]
 
 **Incident report:** "On [date], [incident] occurred. Root cause: [X]. Impact: [Y]. Actions taken: [Z]. Lessons: [system failure, detection failure, response failure, prevention]."
 
-### P8.3 â€” Technical Narrative for the Board
+### P8.3 — Technical Narrative for the Board
 
 The CTO maintains a consistent narrative connecting engineering to business outcomes. **Platform story:** platform enables [capability], reduces [cost/time], every dollar invested saves $[X]/year. **Velocity story:** we ship [metric] faster than [period] due to [investments]; target is [milestone]. **Talent story:** retention is [X%] vs industry [Y%]; pipeline produces [N] qualified candidates per role. **Innovation story:** [X%] of budget to innovation; [Y] experiments produced [Z] insights. **Risk story:** top risks are [list]; incident rate [X], MTTR [Y]; security posture [assessment].
 
 
-## P10 â€” TECHNICAL RISK MANAGEMENT
+## P10 — TECHNICAL RISK MANAGEMENT
 
-### P10.1 â€” Organizational Risk Register
+### P10.1 — Organizational Risk Register
 
 Maintain a living risk register that captures technical risks at the organizational level.
 
@@ -677,7 +675,7 @@ DESCRIPTION:   [one-line description of the risk]
 IMPACT:        [what happens if the risk materializes]
 PROBABILITY:   LOW / MEDIUM / HIGH / VERY HIGH
 SEVERITY:      LOW / MEDIUM / HIGH / CRITICAL
-RISK LEVEL:    PROBABILITY Ã— SEVERITY
+RISK LEVEL:    PROBABILITY × SEVERITY
 OWNER:         [person accountable]
 MITIGATION:    [planned or active mitigation actions]
 STATUS:        IDENTIFIED / ACTIVE / MITIGATED / ACCEPTED / CLOSED
@@ -694,7 +692,7 @@ NEXT REVIEW:   [next scheduled review]
 | MEDIUM | Moderate operational impact, team-level disruption | Address in quarterly planning | Engineering leadership |
 | LOW | Minor impact, no business effect | Track, address when convenient | Team-level |
 
-### P10.2 â€” Risk Response Planning
+### P10.2 — Risk Response Planning
 
 **Risk response strategies:**
 
@@ -745,36 +743,36 @@ Risk: Platform migration fails mid-project
     - Go/no-go decision gates at each phase
 ```
 
-### P10.3 â€” Business Continuity and Disaster Recovery
+### P10.3 — Business Continuity and Disaster Recovery
 
 **BC/DR maturity:** Level 1 (backups exist, manual restore, no RTO/RPO). Level 2 (defined RTO/RPO, automated backups, runbooks, escalation paths). Level 3 (annual DR tests, measured recovery, automated failover, tabletop exercises). Level 4 (multi-region active-active, chaos engineering, auto-remediation, continuous improvement). Level 5 (zero-downtime deploys, self-healing systems, reliability as competitive advantage).
 
 
-## P12 â€” TECHNOLOGY STANDARDS AND GOVERNANCE
+## P12 — TECHNOLOGY STANDARDS AND GOVERNANCE
 
-### P12.1 â€” Standards at Scale
+### P12.1 — Standards at Scale
 
 Technology standards reduce decision fatigue, ensure interoperability, and enable engineer mobility.
 
 **Standard levels:**
 
 ```
-Level 0 â€” NO STANDARD
+Level 0 — NO STANDARD
   Every team chooses independently
   Cost: Fragmentation, integration issues, mobility friction
   Appropriate for: Exploring new problem spaces, very small orgs
 
-Level 1 â€” RECOMMENDED
+Level 1 — RECOMMENDED
   Preferred option documented, but deviation allowed with justification
   Cost: Low compliance, some fragmentation remains
   Appropriate for: Growing orgs (30-100 engineers)
 
-Level 2 â€” STANDARD
+Level 2 — STANDARD
   Mandatory for new projects; existing projects have migration timeline
   Cost: Enforcement overhead, migration cost for existing systems
   Appropriate for: Scale orgs (100-500 engineers)
 
-Level 3 â€” MANDATED
+Level 3 — MANDATED
   All projects must comply; automated enforcement
   Cost: High enforcement overhead, flexibility loss
   Appropriate for: Enterprise with compliance requirements
@@ -795,7 +793,7 @@ Level 3 â€” MANDATED
 
 **Standards adoption process:** Propose (identify need, draft with rationale, get sponsor). Review (architecture board, feedback, iterate). Approve (CTO sign-off, effective date, transition timeline, exception process). Communicate (publish, training, migration guides, support). Enforce (automated CI checks, manual review for exceptions, escalation for non-compliance). Review (annual relevance check, collect feedback, update or retire).
 
-### P12.2 â€” Governance Bodies
+### P12.2 — Governance Bodies
 
 **Architecture Review Board:** Bi-weekly, CTO-chaired, reviews decisions affecting 3+ teams, new technology categories, stack changes, cross-cutting concerns. Approves standardizations and exceptions. Escalates budget-dependent and strategic items. Criteria: real problem? consistent with north star? trade-offs understood? migration cost known? org support available?
 
@@ -803,74 +801,74 @@ Level 3 â€” MANDATED
 
 **Technology Review Board:** Monthly, VP Platform + Principals + Security. Evaluates all proposed technology additions against P2.1 (5 dimensions) plus security. Outcomes: approved (enters EVALUATE), conditionally approved, not approved (with rationale), or already covered. Decision log published quarterly.
 
-### P12.3 â€” Exception Management
+### P12.3 — Exception Management
 
 Standards have exceptions. The exception process must be clear, lightweight, and transparent.
 
-**Exception process:** Request (which standard, why deviation, duration, impact). Standards committee reviews within 1 week. Decision: GRANTED (with duration), GRANTED WITH CONDITIONS (compensating measures), DENIED (with rationale). All exceptions logged centrally. Exception count tracked as metric â€” rising trends may indicate standards are wrong. Quarterly review of active exceptions; expired ones close or renew. Pattern of exceptions may trigger standard revision.
+**Exception process:** Request (which standard, why deviation, duration, impact). Standards committee reviews within 1 week. Decision: GRANTED (with duration), GRANTED WITH CONDITIONS (compensating measures), DENIED (with rationale). All exceptions logged centrally. Exception count tracked as metric — rising trends may indicate standards are wrong. Quarterly review of active exceptions; expired ones close or renew. Pattern of exceptions may trigger standard revision.
 
 **Exception categories:**
 
 | Category | Duration | Renewal | Impact |
 |---|---|---|---|
-| Time-limited project | < 6 months | Not renewable | Low â€” temporary |
-| Technology migration | < 12 months | Once renewable | Medium â€” migration path needed |
-| Legacy system compatibility | Indefinite | Annual review | High â€” mitigation needed |
-| Special performance requirement | As needed | Perf review | Medium â€” monitored |
+| Time-limited project | < 6 months | Not renewable | Low — temporary |
+| Technology migration | < 12 months | Once renewable | Medium — migration path needed |
+| Legacy system compatibility | Indefinite | Annual review | High — mitigation needed |
+| Special performance requirement | As needed | Perf review | Medium — monitored |
 
 
-## P14 â€” STRATEGIC DECISION REASONING (EXTENDED)
+## P14 — STRATEGIC DECISION REASONING (EXTENDED)
 
-### P14.1 â€” Decision-Making Under Uncertainty
+### P14.1 — Decision-Making Under Uncertainty
 
 CTO-level decisions are often made with incomplete information. The decision framework must account for uncertainty.
 
-**Decision types:** Certainty (known outcomes/probabilities â€” calculate and decide). Risk (known outcomes, unknown probabilities â€” scenario analysis, hedge). Ambiguity (unknown outcomes/probabilities â€” experiment, iterate, do not commit large). Chaos (unknowable â€” small bets, fast feedback, option value).
+**Decision types:** Certainty (known outcomes/probabilities — calculate and decide). Risk (known outcomes, unknown probabilities — scenario analysis, hedge). Ambiguity (unknown outcomes/probabilities — experiment, iterate, do not commit large). Chaos (unknowable — small bets, fast feedback, option value).
 
 **Decision-making heuristics for the CTO:**
 
 ```
-HEURISTIC 1 â€” REVERSIBLE / IRREVERSIBLE
+HEURISTIC 1 — REVERSIBLE / IRREVERSIBLE
   Reversible decisions: Make quickly, delegate, iterate
   Irreversible decisions: Take time, gather data, seek input
   "If a decision is reversible, the cost of delay exceeds the cost
   of being wrong. Decide fast and correct later."
 
-HEURISTIC 2 â€” CONSEQUENCE / FREQUENCY
+HEURISTIC 2 — CONSEQUENCE / FREQUENCY
   High consequence, low frequency: Invest in getting it right
   Low consequence, high frequency: Automate or standardize
   "The decisions that matter most happen rarely. Prepare for them
   by building decision frameworks, not by making every decision yourself."
 
-HEURISTIC 3 â€” OPTION VALUE
+HEURISTIC 3 — OPTION VALUE
   When the future is uncertain, prefer decisions that preserve options
   "Platform investments have high option value because they enable
   future capabilities. Vendor lock-in destroys option value."
 
-HEURISTIC 4 â€” ASYMMETRIC UPSIDE
+HEURISTIC 4 — ASYMMETRIC UPSIDE
   Prefer bets where the upside significantly exceeds the downside
   "Investments where you can lose 1x but gain 10x are better than
   investments where you can lose 10x to gain 1x."
 ```
 
-### P14.2 â€” Decision Journal
+### P14.2 — Decision Journal
 
 Maintain a decision journal capturing why decisions were made, expected outcomes, and actual results. Each entry: date, decision, decision maker (CTO or delegated), context (problem, options, constraints), rationale (evidence, trade-offs), expected outcome + metrics, review date, actual outcome, and learnings. Review quarterly to calibrate decision-making quality.
 
 
-## P16 â€” WORKED EXAMPLES
+## P16 — WORKED EXAMPLES
 
-### E1: Build vs Buy â€” Authentication Service
+### E1: Build vs Buy — Authentication Service
 
 **Context:** Startup with 40 engineers, growing fast. Currently using a hand-rolled auth system built 3 years ago. It works but has known gaps: no MFA, no social login, no SCIM provisioning, and a security audit flagged session management. Team estimates 6 months to rebuild with these features.
 
 **CTO reasoning:**
-- Core differentiator? No â€” auth is a commodity capability. The company differentiates on data analytics, not login flows.
-- Market maturity: Highly mature â€” Auth0, Clerk, WorkOS, Okta all serve this market with rich features.
+- Core differentiator? No — auth is a commodity capability. The company differentiates on data analytics, not login flows.
+- Market maturity: Highly mature — Auth0, Clerk, WorkOS, Okta all serve this market with rich features.
 - Team availability: The auth team is the same team that needs to build the core analytics platform.
-- **Decision: BUY** â€” Auth0 with SSO integration.
+- **Decision: BUY** — Auth0 with SSO integration.
 
-Rationale: 6 months of engineering time on auth is 6 months not spent on the core differentiator. Buy cost ($50k/yr) is 1/10th of engineering cost ($600k+ for 6 months of 4 engineers). Integration is 3 weeks, not 6 months. Vendor risk is acceptable â€” Auth0 is mature, and SSO is a standard protocol; migration to another provider would be weeks, not months. Condition: implement an abstraction layer so the auth provider can be swapped without rewriting application code.
+Rationale: 6 months of engineering time on auth is 6 months not spent on the core differentiator. Buy cost ($50k/yr) is 1/10th of engineering cost ($600k+ for 6 months of 4 engineers). Integration is 3 weeks, not 6 months. Vendor risk is acceptable — Auth0 is mature, and SSO is a standard protocol; migration to another provider would be weeks, not months. Condition: implement an abstraction layer so the auth provider can be swapped without rewriting application code.
 
 ### E2: React Version Standardization
 
@@ -878,7 +876,7 @@ Rationale: 6 months of engineering time on auth is 6 months not spent on the cor
 
 **CTO reasoning:**
 - Technology lifecycle: React 16 is DECLINING (end-of-life), React 17 is MAINTAIN, React 18 is STANDARD.
-- Problem: Not technical â€” React 18 works. The problem is organizational fragmentation.
+- Problem: Not technical — React 18 works. The problem is organizational fragmentation.
 - Decision: STANDARDIZE on React 18 with a 6-month migration deadline.
 
 Rationale: The cost of fragmentation (reduced mobility, shared component duplication, cognitive overhead of running 3 versions) exceeds the migration cost. Migration per team is 1-2 sprints. Total org cost: ~24 engineer-weeks. Benefit: single standard, component reuse, engineer mobility across teams. Approach: central platform team provides migration guide, codemods, and one-week embedded support per team. Each team owns its migration. Teams that miss the deadline are escalated to their director.
@@ -893,9 +891,9 @@ Rationale: The cost of fragmentation (reduced mobility, shared component duplica
 - Continuation criteria check: At 12 months, the criterion was "4 teams adopted." At 18 months: 2 teams. Criterion not met.
 - **Decision: SUNSET the platform over 3 months.**
 
-Actions: (1) Migrate the 2 adopting teams to a vendor solution (Fivetran) â€” 4 weeks. (2) Platform team members move to data-producing teams to solve real-time problems directly. (3) The remaining platform budget is redirected to a real-time streaming proof of concept with one team that has the highest streaming need. (4) Document lessons learned: platform investments must start with a specific team's problem, not a general assumption.
+Actions: (1) Migrate the 2 adopting teams to a vendor solution (Fivetran) — 4 weeks. (2) Platform team members move to data-producing teams to solve real-time problems directly. (3) The remaining platform budget is redirected to a real-time streaming proof of concept with one team that has the highest streaming need. (4) Document lessons learned: platform investments must start with a specific team's problem, not a general assumption.
 
-### E4: Engineering Culture â€” Incident Postmortems
+### E4: Engineering Culture — Incident Postmortems
 
 **Context:** Reviewing the last 8 incident postmortems. Pattern: 7 of 8 list "human error" as root cause. 6 of 8 recommend "be more careful" as action item. The on-call team reports high stress and fear of deployment.
 
@@ -905,68 +903,68 @@ Actions: (1) Migrate the 2 adopting teams to a vendor solution (Fivetran) â€�
 - Mechanism fix: Redesign the postmortem template. Add required fields: "What system conditions made this error possible?", "What would prevent this class of error?", "What automated guardrails were missing?"
 - Action: Mandate the new template for all future postmortems. The principal engineer reviews the first 5 postmortems under the new template. On-call stress is surveyed quarterly.
 
-Rationale: Changing the template changes the investigation path â€” it shifts from "who made a mistake" to "what allowed the mistake to reach production." This is a high-impact cultural intervention because it produces better outcomes (fewer recurrences) while reducing fear.
+Rationale: Changing the template changes the investigation path — it shifts from "who made a mistake" to "what allowed the mistake to reach production." This is a high-impact cultural intervention because it produces better outcomes (fewer recurrences) while reducing fear.
 
-### E5: Technology Radar â€” Database Standardization
+### E5: Technology Radar — Database Standardization
 
 **Context:** 200 engineers. Database portfolio: PostgreSQL (8 teams), MySQL (3), MongoDB (3), DynamoDB (2), Cassandra (1), Redis (5). Operations cost growing faster than team count.
 
-**CTO reasoning:** Too many databases for this org size. Target is 2-3 per category. Decision: Standardize PostgreSQL (primary relational), DynamoDB (high-throughput), Redis (cache). MySQL â†’ HOLD, MongoDB â†’ HOLD, Cassandra â†’ RETIRE. Migration: no new projects on HOLD/RETIRE databases, each team creates migration plan within 1 quarter, platform team provides tooling and support.
+**CTO reasoning:** Too many databases for this org size. Target is 2-3 per category. Decision: Standardize PostgreSQL (primary relational), DynamoDB (high-throughput), Redis (cache). MySQL → HOLD, MongoDB → HOLD, Cassandra → RETIRE. Migration: no new projects on HOLD/RETIRE databases, each team creates migration plan within 1 quarter, platform team provides tooling and support.
 
-### E6: M&A Due Diligence â€” Data Platform Acquisition
+### E6: M&A Due Diligence — Data Platform Acquisition
 
-**Context:** $80M acquisition of 30-person data platform startup. Stack: Python/Spark/Airflow/PostgreSQL/S3 â€” well-aligned. Codebase strong (85% coverage). Operations weak (manual deploy, no CI/CD, informal on-call). Security gaps (no SOC2, basic auth, no encryption at rest).
+**Context:** $80M acquisition of 30-person data platform startup. Stack: Python/Spark/Airflow/PostgreSQL/S3 — well-aligned. Codebase strong (85% coverage). Operations weak (manual deploy, no CI/CD, informal on-call). Security gaps (no SOC2, basic auth, no encryption at rest).
 
-**Assessment:** MODERATE overall. Risks: operational maturity gap, security compliance gap, key person dependency (2 principals). Integration complexity: MEDIUM. **Recommendation: PROCEED WITH CONDITIONS** â€” 3 months ops uplift, 30-day security remediation, retention packages for 2 principals. Integration cost: $1M.
+**Assessment:** MODERATE overall. Risks: operational maturity gap, security compliance gap, key person dependency (2 principals). Integration complexity: MEDIUM. **Recommendation: PROCEED WITH CONDITIONS** — 3 months ops uplift, 30-day security remediation, retention packages for 2 principals. Integration cost: $1M.
 
-### E7: Organizational Structure Change â€” Platform Team
+### E7: Organizational Structure Change — Platform Team
 
 **Context:** 80 engineers, 8 feature teams. Each has its own CI/CD, monitoring, deployment. Engineers spend 25% of time on infrastructure. Onboarding takes 4 weeks.
 
 **CTO reasoning:** 8 teams solving the same problem. 25% time on non-differentiating work. Decision: Create platform team (4 engineers). Transition cost: 6 months with 5-10% feature velocity dip. Payback: 9 months. Implementation: Months 1-3 standardize CI/CD. Months 4-6 standardize monitoring. Ongoing: developer portal, onboarding automation. Metrics: deploy frequency, onboarding time, infra time %.
 
-### E8: Board Communication â€” Outage
+### E8: Board Communication — Outage
 
-**CTO communication script:** "On [date], we had a 4-hour outage affecting all customers. Revenue impact ~$200k. Root cause: database migration performance regression amplified by deploying outside canary process. Fixed in 4 hours (rollback + restore). Prevention: (1) automated perf regression testing in CI, (2) mandatory canary for all DB changes, (3) blameless postmortem. Key learning: emergency deployments could bypass canary â€” gap now closed. Investing $50k in automation to prevent this class of failure."
+**CTO communication script:** "On [date], we had a 4-hour outage affecting all customers. Revenue impact ~$200k. Root cause: database migration performance regression amplified by deploying outside canary process. Fixed in 4 hours (rollback + restore). Prevention: (1) automated perf regression testing in CI, (2) mandatory canary for all DB changes, (3) blameless postmortem. Key learning: emergency deployments could bypass canary — gap now closed. Investing $50k in automation to prevent this class of failure."
 
-### E9: Technology Strategy Formulation â€” Three-Year Vision
+### E9: Technology Strategy Formulation — Three-Year Vision
 
-**Context:** Series B (60 engineers, 20k customers â†’ target 200k customers, 200 engineers).
+**Context:** Series B (60 engineers, 20k customers → target 200k customers, 200 engineers).
 
-**CTO output:** Vision: "Any engineer ships to production in <15 minutes with automated quality gates." Mission (12mo): Reduce time-to-production from 2 weeks to 2 hours. Principles: Proven over novel. Own your dependencies. Build for replaceability. Data over opinions. Optimize for the whole system. Automate everything. Security is everyone's responsibility. North star: Event-driven microservices (AWS EKS, Kafka), PostgreSQL/DynamoDB/Redis, OpenTelemetry, self-service platform with canary deploys. Year 1 initiatives: Platform team + CI/CD (H4, 4 eng), monolithâ†’modular migration (H1/H4, 6 eng), observability standard (H4, 2 eng), data platform (H2, 4 eng), AI/ML personalization (H3, 2 eng). Allocation: H1 55% (33), H2 20% (12), H3 10% (6), H4 15% (9).
+**CTO output:** Vision: "Any engineer ships to production in <15 minutes with automated quality gates." Mission (12mo): Reduce time-to-production from 2 weeks to 2 hours. Principles: Proven over novel. Own your dependencies. Build for replaceability. Data over opinions. Optimize for the whole system. Automate everything. Security is everyone's responsibility. North star: Event-driven microservices (AWS EKS, Kafka), PostgreSQL/DynamoDB/Redis, OpenTelemetry, self-service platform with canary deploys. Year 1 initiatives: Platform team + CI/CD (H4, 4 eng), monolith→modular migration (H1/H4, 6 eng), observability standard (H4, 2 eng), data platform (H2, 4 eng), AI/ML personalization (H3, 2 eng). Allocation: H1 55% (33), H2 20% (12), H3 10% (6), H4 15% (9).
 
 ---
 
-## P17 â€” ANTI-PATTERNS
+## P17 — ANTI-PATTERNS
 
 | Anti-Pattern | Problem | Correct |
 |---|---|---|
-| Technology tourism | Adopting technologies because they are popular, not because they solve a problem | Apply P2.1 â€” all 5 dimensions must pass |
-| Platform field of dreams | "Build it and they will come" â€” platform with no committed first customer | First team must commit before platform investment passes EXPLORE phase |
+| Technology tourism | Adopting technologies because they are popular, not because they solve a problem | Apply P2.1 — all 5 dimensions must pass |
+| Platform field of dreams | "Build it and they will come" — platform with no committed first customer | First team must commit before platform investment passes EXPLORE phase |
 | Budget as primary constraint | Making decisions based on cost alone, ignoring opportunity cost | Compare engineering time cost against business impact |
 | Culture by memo | Writing "we value X" without changing the systems that produce Y | Change mechanisms (process, tools, incentives), not words |
 | Consensus decision-making | Waiting for everyone to agree before deciding | Timebox decisions, make the call, document rationale |
 | Ignoring technical debt | Deferring H4 investment indefinitely until incident forces it | Allocate 10-20% to foundation work continuously |
 | Hero worship | Relying on 1-2 engineers for critical knowledge | Invest in documentation, runbooks, rotation, pair programming |
-| Build everything in-house | Not-invented-here syndrome â€” buying is seen as weakness | Apply build-vs-buy matrix â€” commodity is buy |
+| Build everything in-house | Not-invented-here syndrome — buying is seen as weakness | Apply build-vs-buy matrix — commodity is buy |
 | Avoiding hard decisions | Keeping underperforming initiatives alive past kill criteria | Define continuation criteria at start, enforce them at review |
-| Technology monoculture | Single technology for everything creates single point of failure | Maintain 2-3 per category â€” primary, secondary, experimental |
-| Strategy by slide deck | Beautiful strategy documents that never change behavior | Strategy must produce decisions, budgets, and org changes â€” or it is not strategy |
+| Technology monoculture | Single technology for everything creates single point of failure | Maintain 2-3 per category — primary, secondary, experimental |
+| Strategy by slide deck | Beautiful strategy documents that never change behavior | Strategy must produce decisions, budgets, and org changes — or it is not strategy |
 | Perfection paralysis | Waiting for perfect conditions before making a decision | Reversible decisions can be made fast; irreversible ones need more care |
-| Engineering for engineers | Building over-engineered solutions because they are technically interesting | Apply the problem-fit test â€” does this solve a user or business problem? |
+| Engineering for engineers | Building over-engineered solutions because they are technically interesting | Apply the problem-fit test — does this solve a user or business problem? |
 | RFP as strategy | Outsourcing strategic decisions to vendors | Vendors optimize for their revenue, not your strategy. You must drive. |
 | Innovation theater | Hackathons offsites and innovation labs that produce nothing | Innovation must have a pipeline from idea to production. No pipeline, no innovation. |
 | Ivory tower architecture | Architects who design systems without talking to teams | Architecture must be informed by real problems. Talk to teams first. |
 | Growth at any cost | Hiring without onboarding, standards, or culture | Every hire without infrastructure reduces overall productivity. Hire with care. |
-| Standardization dogma | Mandating one way for everything, removing all flexibility | Standards should be 80% â€” leave 20% for team autonomy and innovation |
+| Standardization dogma | Mandating one way for everything, removing all flexibility | Standards should be 80% — leave 20% for team autonomy and innovation |
 | Copycat strategy | Adopting another company's technology choices because they worked for them | Context matters. Another company's solution to their problem is not your solution |
 | Security as a gate | Security at the end of delivery, blocking releases | Security is embedded in the process, not a separate gate at the end |
 
 ---
 
-## P18 â€” QUALITY GATES
+## P18 — QUALITY GATES
 
-### Tier 1 â€” Hard Block
+### Tier 1 — Hard Block
 
 - [ ] Technology decisions evaluated across all 5 dimensions (P2.1)
 - [ ] Build-vs-buy decisions have explicit core differentiator assessment
@@ -978,7 +976,7 @@ Rationale: Changing the template changes the investigation path â€” it shif
 - [ ] M&A due diligence covers all 6 domains (P7.1)
 - [ ] Budget allocation across H1-H4 is explicit and documented
 
-### Tier 2 â€” Standard
+### Tier 2 — Standard
 
 - [ ] Technology lifecycle phase identified (EVALUATE/ADOPT/STANDARDIZE/MAINTAIN/DEPRECATE/RETIRE)
 - [ ] Vendor evaluation completed for Buy decisions
@@ -991,7 +989,7 @@ Rationale: Changing the template changes the investigation path â€” it shif
 - [ ] Innovation pipeline has active experiments at different stages
 - [ ] Technology radar is updated at least quarterly
 
-### Tier 3 â€” Leading Practice
+### Tier 3 — Leading Practice
 
 - [ ] Technology vision is revisited annually and adjusted for market changes
 - [ ] Engineering ROI metrics are tracked quarterly and reported to leadership
@@ -1007,52 +1005,52 @@ Rationale: Changing the template changes the investigation path â€” it shif
 ### Self-Audit
 
 ```
-5 dimensions evaluated?              â†’ yes (or N/A)
-Core differentiator assessed?        â†’ yes (or N/A for buy)
-Strategic risk GREEN/YELLOW/RED?     â†’ yes
-Continuation criteria defined?       â†’ yes (or N/A)
-Cultural fix changes mechanism?      â†’ yes (or N/A)
-Resource allocation explicit?        â†’ yes (or N/A)
-Technology lifecycle phase stated?   â†’ yes (or N/A)
-Budget allocated by horizon?         â†’ yes (or N/A)
-Risk register reviewed this quarter? â†’ yes (or N/A)
-Innovation pipeline active?          â†’ yes (or N/A)
-No prohibited words in output?       â†’ yes
+5 dimensions evaluated?              → yes (or N/A)
+Core differentiator assessed?        → yes (or N/A for buy)
+Strategic risk GREEN/YELLOW/RED?     → yes
+Continuation criteria defined?       → yes (or N/A)
+Cultural fix changes mechanism?      → yes (or N/A)
+Resource allocation explicit?        → yes (or N/A)
+Technology lifecycle phase stated?   → yes (or N/A)
+Budget allocated by horizon?         → yes (or N/A)
+Risk register reviewed this quarter? → yes (or N/A)
+Innovation pipeline active?          → yes (or N/A)
+No prohibited words in output?       → yes
 ```
 
 ---
 
-## P19 â€” REFERENCE MAP
+## P19 — REFERENCE MAP
 
 | Situation | Pattern |
 |---|---|
-| Evaluating a new technology for adoption | P2.1 â€” Technology Selection |
-| Deciding to build or buy a capability | P2.2 â€” Build vs Buy |
-| Considering a platform investment | P2.3 â€” Platform Investment |
-| Addressing a cultural problem | P2.4 â€” Engineering Culture |
-| Allocating engineering budget | P2.5 â€” Resource Allocation |
-| Evaluating strategic risk | P3.1 â€” Strategic Risk |
-| Managing technology lifecycle | P3.2 â€” Technology Lifecycle |
-| Changing team structure | P3.3 â€” Organizational Structure |
-| Defining architecture direction | P3.4 â€” Architecture North Star |
-| Adopting API-first approach | P3.5 â€” API-First Strategy |
-| Managing technical debt | P4 â€” Technical Debt Governance |
-| Running an innovation program | P5 â€” Innovation Management |
-| Conducting M&A due diligence | P7 â€” M&A Technical Due Diligence |
-| Preparing for board communication | P8 â€” Board-Level Communication |
-| Designing engineering organization | P9 â€” Reporting Structures |
-| Managing technical risk | P10 â€” Risk Management |
-| Planning engineering budget | P11 â€” Budget Planning |
-| Creating technology standards | P12 â€” Standards and Governance |
-| Building engineering brand | P13 â€” Engineering Brand |
-| Making decisions under uncertainty | P14.1 â€” Decision-Making Heuristics |
-| Killing an underperforming initiative | E3 â€” Killing Platform Investment |
-| Communicating a major incident to board | E8 â€” Board Incident Communication |
-| Formulating technology vision | E9 â€” Technology Strategy Formulation |
+| Evaluating a new technology for adoption | P2.1 — Technology Selection |
+| Deciding to build or buy a capability | P2.2 — Build vs Buy |
+| Considering a platform investment | P2.3 — Platform Investment |
+| Addressing a cultural problem | P2.4 — Engineering Culture |
+| Allocating engineering budget | P2.5 — Resource Allocation |
+| Evaluating strategic risk | P3.1 — Strategic Risk |
+| Managing technology lifecycle | P3.2 — Technology Lifecycle |
+| Changing team structure | P3.3 — Organizational Structure |
+| Defining architecture direction | P3.4 — Architecture North Star |
+| Adopting API-first approach | P3.5 — API-First Strategy |
+| Managing technical debt | P4 — Technical Debt Governance |
+| Running an innovation program | P5 — Innovation Management |
+| Conducting M&A due diligence | P7 — M&A Technical Due Diligence |
+| Preparing for board communication | P8 — Board-Level Communication |
+| Designing engineering organization | P9 — Reporting Structures |
+| Managing technical risk | P10 — Risk Management |
+| Planning engineering budget | P11 — Budget Planning |
+| Creating technology standards | P12 — Standards and Governance |
+| Building engineering brand | P13 — Engineering Brand |
+| Making decisions under uncertainty | P14.1 — Decision-Making Heuristics |
+| Killing an underperforming initiative | E3 — Killing Platform Investment |
+| Communicating a major incident to board | E8 — Board Incident Communication |
+| Formulating technology vision | E9 — Technology Strategy Formulation |
 
 ---
 
-## P20 â€” GLOSSARY
+## P20 — GLOSSARY
 
 Architecture north star: forward-looking architectural target state. Bus factor: number of people whose loss would cripple a project. Cognitive load: mental effort to understand/work with a system. Continuation criteria: measurable conditions for investment kill/continue decisions. Core differentiator: capability providing competitive advantage. Ecosystem thinking: strategy considering full technology environment. Exit cost: effort/risk of replacing a technology. Golden path: standardized, supported approach for common tasks. Horizon (H1-H4): time-based engineering investment categories. Innovation pipeline: structured process from idea to production. Interest (debt): ongoing cost of not fixing tech debt. Option value: value of keeping future choices open. Platform: internal product enabling faster delivery. Principal (debt): one-time cost of fixing tech debt. Risk register: living document tracking risks and mitigations. Technology lifecycle: stages from evaluation through retirement. Technology radar: visual portfolio organized by adoption ring. Technology vision: 3-5 year aspirational engineering capability statement. Value stream: end-to-end activities delivering customer value. Vendor lock-in: dependency making vendor switching costly.
 

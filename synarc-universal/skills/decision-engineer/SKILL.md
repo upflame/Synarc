@@ -1,22 +1,20 @@
-﻿---
+---
 name: decision-engineer
-description: Decision Engineer â€” Structured Decision Frameworks & Trade-off Analysis
+description: Decision Engineer — Structured Decision Frameworks & Trade-off Analysis
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# Decision Engineer â€” Structured Decision Frameworks & Trade-off Analysis
+# Decision Engineer — Structured Decision Frameworks & Trade-off Analysis
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
 
 All synarc prohibitions and tracking protocols apply.
 
-Decisions are the atomic unit of engineering progress. Every line of code, every architecture choice, every library dependency, every config change is the residue of a decision. Most engineering debt is not bad code â€” it is the accumulation of implicit, undocumented decisions that nobody remembers making.
+Decisions are the atomic unit of engineering progress. Every line of code, every architecture choice, every library dependency, every config change is the residue of a decision. Most engineering debt is not bad code — it is the accumulation of implicit, undocumented decisions that nobody remembers making.
 
 This framework provides a complete system for making, documenting, and reviewing engineering decisions. It covers the full lifecycle: **framing** the decision correctly, **analyzing** alternatives with the right tools, **deciding** with appropriate rigor, **documenting** for future engineers, and **reviewing** when context changes.
 
@@ -29,58 +27,58 @@ Four principles govern this framework:
 
 
 
-## P0 â€” INTELLIGENCE AUGMENTATION
+## P0 — INTELLIGENCE AUGMENTATION
 
-### P0.1 â€” Token Optimization Defaults
+### P0.1 — Token Optimization Defaults
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process â€” output the result.
+**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
 
 **COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
 
 **Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
 
-### P0.2 â€” Adaptive Learning Triggers
+### P0.2 — Adaptive Learning Triggers
 
 **Learning Triggers:**
-- New pattern discovered in this domain â†’ store in brain/error_patterns/ or brain/decisions/
-- Fix validated â†’ confidence += 1 in brain/error_patterns/
-- Fix failed â†’ create new entry with attempted approaches
-- Human correction â†’ store incorrect + correct paths with disambiguator
+- New pattern discovered in this domain → store in brain/error_patterns/ or brain/decisions/
+- Fix validated → confidence += 1 in brain/error_patterns/
+- Fix failed → create new entry with attempted approaches
+- Human correction → store incorrect + correct paths with disambiguator
 
 **Knowledge Storage:**
 - File analysis: stored in brain/file_analysis/[filename].json (permanent)
 - Domain conventions: stored in brain/ (update on every discovery)
 - Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
 
-### P0.3 â€” Smart Auto-Prompt Rules
+### P0.3 — Smart Auto-Prompt Rules
 
-**Optimistic Action Threshold:** > 80% confidence â†’ act immediately. 60-80% â†’ brief confirmation. < 60% â†’ clarify first.
+**Optimistic Action Threshold:** > 80% confidence → act immediately. 60-80% → brief confirmation. < 60% → clarify first.
 
 **Auto-Complete Triggers:**
-- Error received â†’ lookup pattern, propose fix immediately
-- File named â†’ load file, offer action suggestions
-- Exception thrown â†’ analyze stack, propose fix with confidence score
+- Error received → lookup pattern, propose fix immediately
+- File named → load file, offer action suggestions
+- Exception thrown → analyze stack, propose fix with confidence score
 
 **Prefetch Protocol:** After each action, predict next file from import graph. Load file_analysis/ for predicted file. Warm cache with likely next actions.
 
-**Reduced Round-Trips:** Every task MUST complete in â‰¤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
+**Reduced Round-Trips:** Every task MUST complete in ≤ 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
 
 
-## P2 â€” CORE FRAMEWORKS
+## P2 — CORE FRAMEWORKS
 
-### P2.1 â€” The Decision Triad
+### P2.1 — The Decision Triad
 
 All structured decisions follow a three-phase cycle:
 
 ```
-FRAME   â†’ Structure: alternatives Ã— criteria Ã— weights
-ANALYZE â†’ Score, quantify uncertainty, identify trade-offs, run sensitivity
-DECIDE  â†’ Select, document, plan for reversal if conditions change
+FRAME   → Structure: alternatives × criteria × weights
+ANALYZE → Score, quantify uncertainty, identify trade-offs, run sensitivity
+DECIDE  → Select, document, plan for reversal if conditions change
 ```
 
 The triad is iterative. If analysis reveals the frame is wrong (missing alternatives, wrong criteria), return to FRAME. If new information arrives, return to ANALYZE.
 
-#### P2.1.1 â€” Decision Framing Patterns
+#### P2.1.1 — Decision Framing Patterns
 
 | Pattern | When to Use | Frame Structure |
 |---------|-------------|-----------------|
@@ -91,7 +89,7 @@ The triad is iterative. If analysis reveals the frame is wrong (missing alternat
 | DEFER | Delay decision, keep options open | Decision tree with "wait" as an alternative |
 | CONDITIONAL | Decide now, but with triggers | "If X happens, do Y; otherwise Z" |
 
-#### P2.1.2 â€” Frame Quality Checklist
+#### P2.1.2 — Frame Quality Checklist
 
 Before leaving the FRAME phase, verify:
 
@@ -106,7 +104,7 @@ Before leaving the FRAME phase, verify:
 - [ ] What would count as a "good outcome" is defined
 
 
-### P2.3 â€” Decision Types by Uncertainty
+### P2.3 — Decision Types by Uncertainty
 
 | Type | Uncertainty | Method | Example |
 |------|-------------|--------|---------|
@@ -116,28 +114,28 @@ Before leaving the FRAME phase, verify:
 | Preferential | Outcomes depend on stakeholder values | Weighted scoring, MAUT | Which feature set for Q3? |
 
 
-### P2.5 â€” Reversible vs Irreversible Protocol
+### P2.5 — Reversible vs Irreversible Protocol
 
 ```
 DECISION ENCOUNTERED
-        â”‚
-        â–¼
+        │
+        ▼
 REVERSIBILITY TEST (P2.4)
-        â”‚
-    â”Œâ”€â”€â”€â”´â”€â”€â”€â”
-    â”‚       â”‚
+        │
+    ┌───┴───┐
+    │       │
  REVERSIBLE  IRREVERSIBLE
-    â”‚       â”‚
-    â–¼       â–¼
+    │       │
+    ▼       ▼
 Low rigor,     High rigor,
 fast,          slow,
 delegate,      document,
 default to     multiple
 action         alternatives
-    â”‚       â”‚
-    â””â”€â”€â”€â”¬â”€â”€â”€â”˜
-        â”‚
-        â–¼
+    │       │
+    └───┬───┘
+        │
+        ▼
   DECISION MADE
   AND RECORDED
 ```
@@ -145,7 +143,7 @@ action         alternatives
 Jeff Bezos' rule: "Most decisions should be made with about 70% of the information you wish you had. If you wait for 90%, you'll be slow."
 
 
-### P2.7 â€” Opportunity Cost Analysis
+### P2.7 — Opportunity Cost Analysis
 
 Every decision excludes alternatives. The value of the best foregone alternative is the opportunity cost.
 
@@ -156,18 +154,18 @@ For any decision:
   1. List all options considered
   2. Score each using weighted matrix
   3. Opportunity cost = score of the best option not chosen
-  4. If opportunity cost > 80% of chosen option's score â†’ decision is tight, document why
+  4. If opportunity cost > 80% of chosen option's score → decision is tight, document why
 ```
 
 **What opportunity cost does NOT mean:**
-- "We should do everything" â€” that ignores real constraints
-- "We chose wrong" â€” close trade-offs are normal, not errors
-- "We need more analysis" â€” tight decisions benefit from tiebreaker rules, not more data
+- "We should do everything" — that ignores real constraints
+- "We chose wrong" — close trade-offs are normal, not errors
+- "We need more analysis" — tight decisions benefit from tiebreaker rules, not more data
 
 **When to use:** After every decision, document the opportunity cost. This creates a record for when circumstances change and that alternative becomes viable.
 
 
-### P2.9 â€” Cost-Benefit Reasoning
+### P2.9 — Cost-Benefit Reasoning
 
 Engineering decisions have multi-dimensional costs and benefits. Capture all five dimensions:
 
@@ -181,15 +179,15 @@ Engineering decisions have multi-dimensional costs and benefits. Capture all fiv
 
 **Conversion rule:** Non-monetary costs and benefits must be convertible to a common unit (hours, risk points, utility score) or left as qualitative constraints that can veto a decision.
 
-**Cost-benefit decision rule:** Select the option with the highest net benefit (total benefits âˆ’ total costs) when all dimensions are converted to the same unit. If conversion is not possible, use a weighted matrix with qualitative dimensions clearly marked.
+**Cost-benefit decision rule:** Select the option with the highest net benefit (total benefits − total costs) when all dimensions are converted to the same unit. If conversion is not possible, use a weighted matrix with qualitative dimensions clearly marked.
 
 
-### P2.11 â€” Expected Value Calculation
+### P2.11 — Expected Value Calculation
 
-#### P2.11.1 â€” Expected Monetary Value (EMV)
+#### P2.11.1 — Expected Monetary Value (EMV)
 
 ```
-EMV = Î£(Probability_i Ã— Value_i) for each outcome path
+EMV = Σ(Probability_i × Value_i) for each outcome path
 
 Decision rule: Choose the path with the highest EMV.
 ```
@@ -199,17 +197,17 @@ Decision rule: Choose the path with the highest EMV.
 Build feature in-house:
   - 70% success: value = $200K
   - 30% failure: value = -$50K
-  EMV = (0.7 Ã— 200K) + (0.3 Ã— -50K) = $125K
+  EMV = (0.7 × 200K) + (0.3 × -50K) = $125K
 
 Buy solution:
   - 90% success: value = $150K
   - 10% failure: value = -$20K
-  EMV = (0.9 Ã— 150K) + (0.1 Ã— -20K) = $133K
+  EMV = (0.9 × 150K) + (0.1 × -20K) = $133K
 
 Decision: Buy (higher EMV)
 ```
 
-#### P2.11.2 â€” Decision Trees with Probabilities
+#### P2.11.2 — Decision Trees with Probabilities
 
 ```
 Decision tree structure:
@@ -219,24 +217,24 @@ Decision tree structure:
   Leaf nodes: Final values (rectangle)
 
 Roll-back calculation:
-  For each chance node: EMV = Î£(P Ã— V) for all branches
+  For each chance node: EMV = Σ(P × V) for all branches
   For each decision node: choose max EMV among branches
 ```
 
 **Decision tree rules:**
 - Probabilities at each chance node sum to 1.0
 - All leaf values use the same unit (standardize to time, cost, or utility score)
-- Sensitivity: vary each probability Â±20% â€” if optimal choice changes, the decision is sensitive to that assumption
+- Sensitivity: vary each probability ±20% — if optimal choice changes, the decision is sensitive to that assumption
 
 
-### P3.2 â€” Expected Value with Cost of Delay
+### P3.2 — Expected Value with Cost of Delay
 
 Combine EMV with CoD for prioritization:
 
 ```
-Adjusted EMV = EMV âˆ’ CoD(delay)
+Adjusted EMV = EMV − CoD(delay)
 
-Where CoD(delay) = Value per week Ã— Weeks delayed
+Where CoD(delay) = Value per week × Weeks delayed
 ```
 
 **Example: Two feature candidates**
@@ -249,7 +247,7 @@ Where CoD(delay) = Value per week Ã— Weeks delayed
 Both have same adjusted EMV at 4-week delay. Tiebreaker: search upgrade delivers value faster (2 weeks vs 6 weeks), reducing execution risk.
 
 
-### P3.4 â€” Consequence Scanning
+### P3.4 — Consequence Scanning
 
 For each option, scan three time horizons. This prevents short-term thinking from locking in long-term problems.
 
@@ -274,32 +272,32 @@ Option: [name]
 
 ---
 
-### P3.5 â€” Trade-Off Surface Mapping
+### P3.5 — Trade-Off Surface Mapping
 
 Visualize decisions as trade-off surfaces where you cannot simultaneously optimize for all dimensions.
 
 ```
-High â”¤â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
-     â•‘     OPTION A          â•‘
-     â•‘  (fast, less quality) â•‘
-Spd  â•‘                      â•‘
-     â•‘        OPTION B       â•‘
-     â•‘   (balanced)          â•‘
-Low  â•‘              OPTION C â•‘
-     â•‘     (quality, slow)   â•‘
-     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+High ┤╔══════════════════════╗
+     ║     OPTION A          ║
+     ║  (fast, less quality) ║
+Spd  ║                      ║
+     ║        OPTION B       ║
+     ║   (balanced)          ║
+Low  ║              OPTION C ║
+     ║     (quality, slow)   ║
+     └─────────────────────────
        Low              High
               QUALITY
 ```
 
-#### P3.5.1 â€” Reading the Surface
+#### P3.5.1 — Reading the Surface
 
-- The curve represents the **feasible region** â€” you cannot be above and to the right
-- Options on the curve are **Pareto-optimal** â€” you cannot improve one dimension without worsening another
-- Options inside the curve are sub-optimal â€” a better option exists on the curve
+- The curve represents the **feasible region** — you cannot be above and to the right
+- Options on the curve are **Pareto-optimal** — you cannot improve one dimension without worsening another
+- Options inside the curve are sub-optimal — a better option exists on the curve
 - Anyone claiming no trade-off exists either hasn't understood the problem or is deceiving
 
-#### P3.5.2 â€” Common Engineering Trade-Off Surfaces
+#### P3.5.2 — Common Engineering Trade-Off Surfaces
 
 | Trade-Off | Dimension 1 | Dimension 2 | Typical Shape |
 |-----------|-------------|-------------|---------------|
@@ -311,7 +309,7 @@ Low  â•‘              OPTION C â•‘
 
 ---
 
-### P3.6 â€” Pre-Mortem Technique
+### P3.6 — Pre-Mortem Technique
 
 Before finalizing a decision, assume it failed completely and work backward:
 
@@ -334,7 +332,7 @@ If any failure scenario is both plausible and unmitigated: REVISIT.
 - Red-team the top 3 risks by asking: "What would make this risk materialize?"
 
 
-### P3.7 â€” Post-Mortem Technique
+### P3.7 — Post-Mortem Technique
 
 After a decision has played out (success or failure), conduct a post-mortem to improve future decisions.
 
@@ -371,29 +369,29 @@ Outcome: [success / partial / failure]
 **Calibration rule:** Track your probability estimates over time. If you assign 70% confidence to outcomes that happen only 50% of the time, you are overconfident. Adjust your estimation process.
 
 
-### P3.9 â€” Sensitivity Analysis
+### P3.9 — Sensitivity Analysis
 
 Test how fragile your decision is to changes in assumptions.
 
-#### P3.9.1 â€” Weight Sensitivity
+#### P3.9.1 — Weight Sensitivity
 
-Vary each criterion weight Â±X% and check if the optimal choice changes.
+Vary each criterion weight ±X% and check if the optimal choice changes.
 
 ```
 Original weights:
-  Ecosystem: 20% â†’ React 7.65, Vue 6.75
+  Ecosystem: 20% → React 7.65, Vue 6.75
 
 Test:
   Ecosystem at 10%: React 7.50, Vue 6.65 (React still wins)
   Ecosystem at 30%: React 7.80, Vue 6.85 (React still wins)
   Productivity at 35%: React 7.55, Vue 6.95 (React still wins)
   
-Conclusion: Decision is NOT sensitive to weight assumptions â€” robust.
+Conclusion: Decision is NOT sensitive to weight assumptions — robust.
 ```
 
 **If optimal choice flips:** The decision is fragile. Document the crossover point. "If ecosystem weight exceeds 45%, Vue wins."
 
-#### P3.9.2 â€” Score Sensitivity
+#### P3.9.2 — Score Sensitivity
 
 Vary individual scores and check flip points:
 
@@ -404,9 +402,9 @@ What would Vue need to score on hiring to tie?
   Impossible (max 10). Decision is robust.
 ```
 
-#### P3.9.3 â€” Probability Sensitivity (for decision trees)
+#### P3.9.3 — Probability Sensitivity (for decision trees)
 
-Vary each probability Â±20%:
+Vary each probability ±20%:
 
 ```
 Base case:
@@ -415,13 +413,13 @@ Base case:
   Decision: Extract now
 
 Sensitivity: 
-  Extract success rate 60% â†’ 50%: Extract EMV = $150K, Wait wins
-  Extract success rate 60% â†’ 70%: Extract EMV = $260K
+  Extract success rate 60% → 50%: Extract EMV = $150K, Wait wins
+  Extract success rate 60% → 70%: Extract EMV = $260K
 
 Crossover: When extract success rate drops below 55%, Wait becomes optimal.
 ```
 
-#### P3.9.4 â€” Threshold Analysis
+#### P3.9.4 — Threshold Analysis
 
 For each key variable, find the threshold where the decision flips:
 
@@ -438,43 +436,43 @@ Migration timeline (mo) | 3             | 5.2            | +73%
 **Margin interpretation:**
 - Margin > 50%: decision is very robust to this variable
 - Margin 20-50%: moderately robust
-- Margin < 20%: fragile â€” monitor this variable closely
+- Margin < 20%: fragile — monitor this variable closely
 
 
-### P4.2 â€” Decision Log
+### P4.2 — Decision Log
 
 The decision log captures low-ceremony decisions (HOURS, DAYS class) that don't warrant a full ADR. It serves as a searchable record of why things are the way they are.
 
 For tracking all decisions (especially HOURS and DAYS class):
 
 ```
-# Decision Log â€” [Team/Project Name]
+# Decision Log — [Team/Project Name]
 
 ## [YYYY-MM-DD]
 
 | ID | Decision | Class | Chosen | Reversal Condition | Outcome (update later) |
 |----|----------|-------|--------|--------------------|------------------------|
-| D001 | Use Redis for session cache | HOURS | Redis | Latency > 10ms | âœ… Success (2ms P99) |
-| D002 | Upgrade to Node 20 | DAYS | Yes | CI breaks > 24h | âœ… Success |
+| D001 | Use Redis for session cache | HOURS | Redis | Latency > 10ms | ✅ Success (2ms P99) |
+| D002 | Upgrade to Node 20 | DAYS | Yes | CI breaks > 24h | ✅ Success |
 | D003 | Adopt GraphQL for API | WEEKS | No, stay REST | - | - |
 ```
 
 **Decision log format:**
 ```
-## Decision Log â€” [Team/Project Name]
+## Decision Log — [Team/Project Name]
 
 ### [YYYY-MM-DD]
 
 | ID | Decision | Class | Chosen Option | Reversal Condition | Outcome |
 |----|----------|-------|---------------|--------------------|---------|
-| D042 | Redis for sessions | HOURS | Redis | P99 > 10ms | âœ… 2ms P99 |
-| D043 | Node 20 upgrade | DAYS | Yes | CI broken > 24h | â³ in progress |
-| D044 | GraphQL adoption | WEEKS | No, REST | - | âŒ decision made |
+| D042 | Redis for sessions | HOURS | Redis | P99 > 10ms | ✅ 2ms P99 |
+| D043 | Node 20 upgrade | DAYS | Yes | CI broken > 24h | ⏳ in progress |
+| D044 | GraphQL adoption | WEEKS | No, REST | - | ❌ decision made |
 ```
 
 **Decision log rules:**
 - Append-only. Never delete entries.
-- Update outcomes when the decision plays out (âœ… success, âŒ failure, â³ pending, ðŸ”„ revisited)
+- Update outcomes when the decision plays out (✅ success, ❌ failure, ⏳ pending, 🔄 revisited)
 - Link to ADR number for WEEKS+ decisions (e.g., "See ADR-042")
 - Review quarterly: which decisions were wrong? What patterns emerge?
 - HOURS decisions: one line per decision or per decision cluster
@@ -488,25 +486,25 @@ Period: 2025-Q4
 Total decisions logged: 47 (HOURS: 32, DAYS: 10, WEEKS: 4, IRREVERSIBLE: 1)
 
 Outcomes:
-  âœ… Success: 38 (81%)
-  âŒ Failure: 5 (11%)
-  â³ Pending: 4 (8%)
+  ✅ Success: 38 (81%)
+  ❌ Failure: 5 (11%)
+  ⏳ Pending: 4 (8%)
 
 Failure patterns identified:
-  1. Underestimating migration complexity (3 of 5 failures) â†’ ACTION: add
+  1. Underestimating migration complexity (3 of 5 failures) → ACTION: add
      complexity estimate to DAYS+ decision template
-  2. Decisions made without stakeholder input (2 of 5 failures) â†’ ACTION:
+  2. Decisions made without stakeholder input (2 of 5 failures) → ACTION:
      check stakeholder list for DAYS+ decisions
 
 Highlights:
-  - D029 (GraphQL adoption, rejected): proven correct â€” team velocity
+  - D029 (GraphQL adoption, rejected): proven correct — team velocity
     increased without GraphQL overhead
   - D031 (CI pipeline switch): failure due to unreviewed migration plan.
     Post-mortem conducted, learnings applied.
 ```
 
 
-### P4.4 â€” Decision Review Cadence
+### P4.4 — Decision Review Cadence
 
 Decisions degrade as context changes. Regular review ensures decisions remain valid.
 
@@ -518,7 +516,7 @@ Decisions degrade as context changes. Regular review ensures decisions remain va
 | IRREVERSIBLE | 6 months post-decision | Formal post-mortem (P3.7) | 2 hours |
 | CHAINED IRREVERSIBLE | 3, 6, 12 months | Post-mortem at each milestone | 3 hours each |
 
-#### P4.4.1 â€” Review Triggers
+#### P4.4.1 — Review Triggers
 
 A decision should be revisited if any of these occur:
 
@@ -542,25 +540,25 @@ CALENDAR TRIGGERS:
   - Annual: full decision log audit + ADR health check
 ```
 
-#### P4.4.2 â€” Decision Triage During Review
+#### P4.4.2 — Decision Triage During Review
 
 When reviewing an existing decision:
 
 ```
 1. Is the original context still valid?
-   YES â†’ Decision stands. No action needed.
-   NO â†’ Continue.
+   YES → Decision stands. No action needed.
+   NO → Continue.
 
 2. Is the decision still reversible?
-   YES â†’ Schedule revisit (proportional to reversibility).
-   NO â†’ Decision is now IRREVERSIBLE. Post-mortem mandatory.
+   YES → Schedule revisit (proportional to reversibility).
+   NO → Decision is now IRREVERSIBLE. Post-mortem mandatory.
 
 3. Would the same decision be made today?
-   YES â†’ Document that the review occurred. Update context.
-   NO â†’ Create new ADR superseding the old one. Plan migration.
+   YES → Document that the review occurred. Update context.
+   NO → Create new ADR superseding the old one. Plan migration.
 ```
 
-#### P4.4.3 â€” Decision Expiration
+#### P4.4.3 — Decision Expiration
 
 Some decisions should have explicit expiration dates:
 
@@ -602,20 +600,20 @@ Alternatives:
 | Tooling simplicity | 6 | 7 | 5 | 4 |
 | **Weighted total** | | **198** | **201** | **192** |
 
-**Tiebreaker:** Total within 10%. Polyrepo leads by 3 points â€” equivalent.
+**Tiebreaker:** Total within 10%. Polyrepo leads by 3 points — equivalent.
 
 **Tiebreaker rule:** Reversibility. Hybrid can go either direction (merge into monorepo or split further). Since this is an IRREVERSIBLE class decision, pick the option that preserves future flexibility.
 
-**Decision:** Hybrid â€” shared packages monorepo + independent app repos. This is WEEKS-reversible in practice (can merge or split later).
+**Decision:** Hybrid — shared packages monorepo + independent app repos. This is WEEKS-reversible in practice (can merge or split later).
 
 **Trade-off accepted:** Losing pure polyrepo autonomy (score 201) for reversibility. Acceptable because the 9-point gap is within the tiebreaker threshold.
 
 **Opportunity cost:** Polyrepo's team autonomy score (201). Revisit at 50+ engineers.
 
 **Consequence scan:**
-- Monorepo: short â€” CI refactoring. Medium â€” CI speed degradation (invest in build caching). Long â€” team coordination tax grows with org size.
-- Polyrepo: short â€” code-sharing tools needed. Medium â€” API versioning discipline. Long â€” cross-cutting changes expensive.
-- Hybrid: short â€” shared package boundaries defined (2 weeks). Medium â€” versioning shared packages. Long â€” natural migration path to either pure model.
+- Monorepo: short — CI refactoring. Medium — CI speed degradation (invest in build caching). Long — team coordination tax grows with org size.
+- Polyrepo: short — code-sharing tools needed. Medium — API versioning discipline. Long — cross-cutting changes expensive.
+- Hybrid: short — shared package boundaries defined (2 weeks). Medium — versioning shared packages. Long — natural migration path to either pure model.
 
 **Decision coupling:** This affects CI system, deploy pipeline, code review process, package management, and developer onboarding. All downstream decisions inherit the repo structure constraint.
 --------------------+-------+---------+-----------+-----------+----------+-----
@@ -675,10 +673,10 @@ Alternatives:
 
 **Decision coupling map:**
 ```
-AWS decision â”€â”€constrainsâ”€â”€â–º Data pipeline (S3, Kinesis)
-                  â””â”€â”€constrainsâ”€â”€â–º ML infra (SageMaker)
-                  â””â”€â”€constrainsâ”€â”€â–º Monitoring (CloudWatch)
-                  â””â”€â”€constrainsâ”€â”€â–º Team hiring (AWS experience)
+AWS decision ──constrains──► Data pipeline (S3, Kinesis)
+                  └──constrains──► ML infra (SageMaker)
+                  └──constrains──► Monitoring (CloudWatch)
+                  └──constrains──► Team hiring (AWS experience)
 ```
 
 
@@ -717,29 +715,29 @@ Stakeholders:
 
 **WSJF ranking:** 1. API rate limiting (11.00), 2. Payment integration (6.67), 3. Export to CSV (6.00), 4. Audit logging (4.50), 5. SSO/SAML (4.00), 6. Admin dashboard (3.00)
 
-**Consensus check (consent â€” no objections model):**
+**Consensus check (consent — no objections model):**
 - Engineering Lead presents WSJF ranking
 - Each contributor states concerns:
-  - Sales: "Payment integration is urgent â€” client committed"
+  - Sales: "Payment integration is urgent — client committed"
   - Support: "Audit logging reduces our ticket volume"
-  - Security: "Rate limiting is non-negotiable â€” current limits are unsafe"
+  - Security: "Rate limiting is non-negotiable — current limits are unsafe"
 
 **Devil's advocate (Security Lead):**
-- "WSJF ranking ignores dependencies â€” rate limiting blocks payment integration? No, they are independent."
-- "Export CSV has low value â€” should it be at 6.67? Yes, because it's 1 week for immediate user value."
+- "WSJF ranking ignores dependencies — rate limiting blocks payment integration? No, they are independent."
+- "Export CSV has low value — should it be at 6.67? Yes, because it's 1 week for immediate user value."
 - Counter: rank is correct.
 
 **Decision (Head of Product):**
 ```
 Q3 features (by WSJF):
-  1. API rate limiting â€” highest WSJF, security says non-negotiable
-  2. Payment integration â€” highest business value, sales committed
-  3. Export CSV â€” 1-week delivery, fast value, low risk
+  1. API rate limiting — highest WSJF, security says non-negotiable
+  2. Payment integration — highest business value, sales committed
+  3. Export CSV — 1-week delivery, fast value, low risk
 
 Deferred (with CoD tracking):
-  4. SSO/SAML â€” WSJF 4.00, revisit Q4 when contract renewals depend on it
-  5. Audit logging â€” WSJF 4.50, revisit if compliance audit scheduled
-  6. Admin dashboard â€” WSJF 3.00, lowest priority
+  4. SSO/SAML — WSJF 4.00, revisit Q4 when contract renewals depend on it
+  5. Audit logging — WSJF 4.50, revisit if compliance audit scheduled
+  6. Admin dashboard — WSJF 3.00, lowest priority
 
 Rationale: WSJF maximizes value per unit time. Deferred items logged with CoD for prioritization in Q4 planning.
 ```
@@ -747,11 +745,11 @@ Rationale: WSJF maximizes value per unit time. Deferred items logged with CoD fo
 **Opportunity cost:** Audit logging (score 4.50). Acceptable because no compliance audit is scheduled in Q3.
 
 
-## P7 â€” QUALITY GATES
+## P7 — QUALITY GATES
 
 Quality gates ensure decision quality is consistent regardless of who makes the decision. Apply gates based on decision class. Failure at any Tier 1 gate = reject and redo.
 
-### Tier 1 â€” Hard Block (fail = reject output)
+### Tier 1 — Hard Block (fail = reject output)
 
 | # | Gate | Rationale |
 |---|------|-----------|
@@ -766,7 +764,7 @@ Quality gates ensure decision quality is consistent regardless of who makes the 
 
 **Tier 1 failure response:** Stop. Reframe or reanalyze. Do not proceed until all gates pass.
 
-### Tier 2 â€” Standard
+### Tier 2 — Standard
 
 | # | Gate | Why It Matters |
 |---|------|----------------|
@@ -785,7 +783,7 @@ Quality gates ensure decision quality is consistent regardless of who makes the 
 
 **Tier 2 failure response:** Gap analysis. Fix missing items. If multiple gaps exist, consider returning to Tier 1 review.
 
-### Tier 3 â€” Excellence
+### Tier 3 — Excellence
 
 | # | Gate | Value Add |
 |---|------|-----------|
@@ -798,7 +796,7 @@ Quality gates ensure decision quality is consistent regardless of who makes the 
 | 7 | Decision log entry with reversal conditions and expiry | Makes decisions trackable and reviewable |
 | 8 | Expected value ranges (best/worst/expected) for each alternative | Validates that the decision works across outcomes |
 | 9 | Maximin / maximax / minimax checked for ambiguous decisions | Tests the decision under different risk attitudes |
-| 10 | Risk score (Likelihood Ã— Impact) for top 3 pre-mortem risks | Quantifies residual risk of the chosen option |
+| 10 | Risk score (Likelihood × Impact) for top 3 pre-mortem risks | Quantifies residual risk of the chosen option |
 
 **Tier 3 failure response:** Nice-to-have for lower classes. Mandatory for IRREVERSIBLE. Document why any Tier 3 gate was skipped.
 

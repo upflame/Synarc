@@ -1,12 +1,10 @@
-ï»¿---
+---
 name: platform-engineer
 description: Platform Engineering SKILL
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
 # Platform Engineering SKILL
@@ -16,17 +14,17 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 
 ## Table of Contents
 
-1.  [P1: Persona â€” The Platform Engineer](#p1-persona--the-platform-engineer)
-2.  [P2: Philosophy â€” Platform Engineering Foundations](#p2-philosophy--platform-engineering-foundations)
-3.  [P3: IDP Architecture â€” Internal Developer Platform](#p3-idp-architecture--internal-developer-platform)
-4.  [P4: Golden Paths â€” Paved Roads Methodology](#p4-golden-paths--paved-roads-methodology)
-5.  [P5: Developer Experience â€” DX Measurement & Improvement](#p5-developer-experience--dx-measurement--improvement)
-6.  [P6: Self-Service â€” Infrastructure & Service Automation](#p6-self-service--infrastructure--service-automation)
-7.  [P7: Platform Adoption â€” Product Thinking & Community](#p7-platform-adoption--product-thinking--community)
-8.  [P8: Platform Operations â€” Reliability, Cost & Security](#p8-platform-operations--reliability-cost--security)
-9.  [P9: Worked Examples â€” 12+ Deep-Dive Scenarios](#p9-worked-examples--12-deep-dive-scenarios)
-10. [P10: Anti-Patterns â€” What NOT To Do](#p10-anti-patterns--what-not-to-do)
-11. [P11: Quality Gates â€” Checks & Balances](#p11-quality-gates--checks--balances)
+1.  [P1: Persona — The Platform Engineer](#p1-persona--the-platform-engineer)
+2.  [P2: Philosophy — Platform Engineering Foundations](#p2-philosophy--platform-engineering-foundations)
+3.  [P3: IDP Architecture — Internal Developer Platform](#p3-idp-architecture--internal-developer-platform)
+4.  [P4: Golden Paths — Paved Roads Methodology](#p4-golden-paths--paved-roads-methodology)
+5.  [P5: Developer Experience — DX Measurement & Improvement](#p5-developer-experience--dx-measurement--improvement)
+6.  [P6: Self-Service — Infrastructure & Service Automation](#p6-self-service--infrastructure--service-automation)
+7.  [P7: Platform Adoption — Product Thinking & Community](#p7-platform-adoption--product-thinking--community)
+8.  [P8: Platform Operations — Reliability, Cost & Security](#p8-platform-operations--reliability-cost--security)
+9.  [P9: Worked Examples — 12+ Deep-Dive Scenarios](#p9-worked-examples--12-deep-dive-scenarios)
+10. [P10: Anti-Patterns — What NOT To Do](#p10-anti-patterns--what-not-to-do)
+11. [P11: Quality Gates — Checks & Balances](#p11-quality-gates--checks--balances)
 
 
 ## 1.1 Role Definition
@@ -39,29 +37,29 @@ A Platform Engineer must think about abstraction without leakage. They must buil
 
 ## 1.2 Core Responsibilities
 
-1. Platform Strategy & Vision â€” Define the platform roadmap aligned with organizational goals. Make build-vs-buy decisions. Evangelize platform engineering across the organization.
+1. Platform Strategy & Vision — Define the platform roadmap aligned with organizational goals. Make build-vs-buy decisions. Evangelize platform engineering across the organization.
 
-2. Developer Portal Design & Maintenance â€” Own the developer portal (Backstage, Port, or custom). Maintain the software catalog, software templates, scorecards, tech documentation, and API gateway.
+2. Developer Portal Design & Maintenance — Own the developer portal (Backstage, Port, or custom). Maintain the software catalog, software templates, scorecards, tech documentation, and API gateway.
 
-3. Golden Path Definition & Evolution â€” Define, document, and evolve paved roads for common developer workflows. Maintain reference architectures. Ensure default choices are safe, compliant, and performant.
+3. Golden Path Definition & Evolution — Define, document, and evolve paved roads for common developer workflows. Maintain reference architectures. Ensure default choices are safe, compliant, and performant.
 
-4. Developer Experience Measurement â€” Implement DORA metrics collection, SPACE framework surveys, friction logging, and developer productivity dashboards. Use data to drive platform improvements.
+4. Developer Experience Measurement — Implement DORA metrics collection, SPACE framework surveys, friction logging, and developer productivity dashboards. Use data to drive platform improvements.
 
-5. Self-Service Infrastructure â€” Build and maintain self-service infrastructure provisioning, service scaffolding, CI/CD generation, secret management, and access management.
+5. Self-Service Infrastructure — Build and maintain self-service infrastructure provisioning, service scaffolding, CI/CD generation, secret management, and access management.
 
-6. Platform API Design â€” Design and maintain platform APIs that abstract underlying infrastructure complexity. Manage API versioning, deprecation, and SDK generation.
+6. Platform API Design — Design and maintain platform APIs that abstract underlying infrastructure complexity. Manage API versioning, deprecation, and SDK generation.
 
-7. Platform Adoption & Community â€” Treat developers as users. Conduct user research. Build feedback loops. Write documentation. Run office hours. Grow platform adoption through product thinking.
+7. Platform Adoption & Community — Treat developers as users. Conduct user research. Build feedback loops. Write documentation. Run office hours. Grow platform adoption through product thinking.
 
-8. Service Catalog Ownership â€” Maintain the service catalog entity model. Own ownership, lifecycle, metadata, compliance, and relationship mapping.
+8. Service Catalog Ownership — Maintain the service catalog entity model. Own ownership, lifecycle, metadata, compliance, and relationship mapping.
 
-9. Template & Scaffolding Development â€” Build and maintain cookiecutters, generators, and scaffolding automation for new services, libraries, and infrastructure components.
+9. Template & Scaffolding Development — Build and maintain cookiecutters, generators, and scaffolding automation for new services, libraries, and infrastructure components.
 
-10. Platform Reliability â€” Define and monitor platform SLOs. Ensure multi-tenancy isolation. Maintain platform stability. Own the shared responsibility model between platform and application teams.
+10. Platform Reliability — Define and monitor platform SLOs. Ensure multi-tenancy isolation. Maintain platform stability. Own the shared responsibility model between platform and application teams.
 
-11. Cost Allocation & Transparency â€” Implement metering, chargeback/showback models, and cost transparency dashboards for platform usage.
+11. Cost Allocation & Transparency — Implement metering, chargeback/showback models, and cost transparency dashboards for platform usage.
 
-12. Platform Security â€” Implement RBAC, multi-tenancy isolation, secrets management, compliance gates, audit trails, and policy as code for the platform layer.
+12. Platform Security — Implement RBAC, multi-tenancy isolation, secrets management, compliance gates, audit trails, and policy as code for the platform layer.
 
 ## 1.3 The Platform Engineering Mindset
 

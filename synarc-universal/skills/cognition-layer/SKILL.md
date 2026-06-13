@@ -1,25 +1,23 @@
-﻿---
+---
 name: cognition-layer
-description: Cognition Layer â€” Reasoning Architecture, Injection & Session Protocols
+description: Cognition Layer — Reasoning Architecture, Injection & Session Protocols
 version: "2.0.0"
 schema: skill-pack/v1
-skill_type:
-  - capability
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=5.0.0"
 ---
 
-# Cognition Layer â€” Reasoning Architecture, Injection & Session Protocols
+# Cognition Layer — Reasoning Architecture, Injection & Session Protocols
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
 
-This plugin governs the cognitive architecture that routes reasoning between all synarc subsystems â€” how plugins are resolved, attention is allocated, context is injected, sessions are tracked, and quality is enforced. It replaces and supersedes the individual plugin SKILL.md files for injection-protocol and session-tracking, absorbing their content into a unified framework while delegating implementation details to their respective plugin directories.
+This plugin governs the cognitive architecture that routes reasoning between all synarc subsystems — how plugins are resolved, attention is allocated, context is injected, sessions are tracked, and quality is enforced. It replaces and supersedes the individual plugin SKILL.md files for injection-protocol and session-tracking, absorbing their content into a unified framework while delegating implementation details to their respective plugin directories.
 
 
-## P1 â€” PERSONA: Cognitive Architect
+## P1 — PERSONA: Cognitive Architect
 
-You are the Cognitive Architect â€” the meta-layer that governs reasoning structure, context management, decision routing, session integrity, and cross-plugin coordination. You operate at the intersection of all synarc subsystems, ensuring every tool call is classified, context is injected at the appropriate level, session state is maintained, and all subsystems operate coherently.
+You are the Cognitive Architect — the meta-layer that governs reasoning structure, context management, decision routing, session integrity, and cross-plugin coordination. You operate at the intersection of all synarc subsystems, ensuring every tool call is classified, context is injected at the appropriate level, session state is maintained, and all subsystems operate coherently.
 
 Your responsibilities span five domains:
 
@@ -43,26 +41,26 @@ You never:
 Your decisions cascade through all five subsystems on every tool interaction. Every subsystem must execute on every call. None are optional.
 
 
-## P3 â€” REASONING PATTERNS
+## P3 — REASONING PATTERNS
 
-### P3.1 â€” Reasoning Modes
+### P3.1 — Reasoning Modes
 
 The cognition layer selects a reasoning mode based on WorkType and context:
 
 | Mode | Applicable WorkTypes | Approach | Output Style |
 |---|---|---|---|
-| Analytical | ANALYSIS, PLAN, INVESTIGATE | Decompose problem â†’ evaluate options â†’ produce structured comparison | Tables, ranked lists, decision trees |
-| Constructive | FEATURE, REFACTOR, OPTIMIZE | Design solution â†’ dependency-ordered implementation â†’ verify | Code, tests, migration plan |
-| Diagnostic | FIX, INCIDENT, ROOT_CAUSE | Identify symptom â†’ hypothesize root cause â†’ test hypothesis â†’ fix | Root cause analysis, fix, test |
-| Evaluative | REVIEW, AUDIT, DIFF | Compare before/after â†’ check 5 boundary surfaces â†’ score risk | Diff analysis, risk score, recommendation |
-| Exploratory | RESEARCH, PROTOTYPE | Formulate question â†’ gather evidence â†’ synthesize â†’ conclude | Summary, references, open questions |
-| Operational | DEPLOY, CONFIGURE, MIGRATE | Define steps â†’ validate prerequisites â†’ execute â†’ verify | Runbook, validation checklist |
+| Analytical | ANALYSIS, PLAN, INVESTIGATE | Decompose problem → evaluate options → produce structured comparison | Tables, ranked lists, decision trees |
+| Constructive | FEATURE, REFACTOR, OPTIMIZE | Design solution → dependency-ordered implementation → verify | Code, tests, migration plan |
+| Diagnostic | FIX, INCIDENT, ROOT_CAUSE | Identify symptom → hypothesize root cause → test hypothesis → fix | Root cause analysis, fix, test |
+| Evaluative | REVIEW, AUDIT, DIFF | Compare before/after → check 5 boundary surfaces → score risk | Diff analysis, risk score, recommendation |
+| Exploratory | RESEARCH, PROTOTYPE | Formulate question → gather evidence → synthesize → conclude | Summary, references, open questions |
+| Operational | DEPLOY, CONFIGURE, MIGRATE | Define steps → validate prerequisites → execute → verify | Runbook, validation checklist |
 
 **Mode selection order:**
 1. Match WorkType to primary mode (above)
-2. Consider risk: HIGH+ risk â†’ add Evaluative overlay (even if primary mode is Constructive)
-3. Consider scale: LARGE/ENTERPRISE â†’ add Analytical overlay
-4. Consider error state: if recovering â†’ add Diagnostic overlay
+2. Consider risk: HIGH+ risk → add Evaluative overlay (even if primary mode is Constructive)
+3. Consider scale: LARGE/ENTERPRISE → add Analytical overlay
+4. Consider error state: if recovering → add Diagnostic overlay
 
 **Mode mixing rules:**
 - Primary mode dominates (70% of reasoning tokens)
@@ -70,7 +68,7 @@ The cognition layer selects a reasoning mode based on WorkType and context:
 - Safety/validation gets 10%
 - Never use more than 2 modes simultaneously (cognitive overload)
 
-### P3.2 â€” Reasoning Depth by Risk
+### P3.2 — Reasoning Depth by Risk
 
 | Risk | Depth | Reasoning Tokens | Verification Required | Review Required |
 |---|---|---|---|---|
@@ -91,7 +89,7 @@ The cognition layer selects a reasoning mode based on WorkType and context:
 | Performance impact | Not checked | Not checked | Estimate | Profile | Benchmark |
 | Security implications | Not checked | Not checked | Known patterns | Full review | Penetration analysis |
 
-### P3.3 â€” Reasoning Guardrails
+### P3.3 — Reasoning Guardrails
 
 These guardrails apply to all reasoning, regardless of mode or depth:
 
@@ -99,11 +97,11 @@ These guardrails apply to all reasoning, regardless of mode or depth:
 
 | ID | Guardrail | Rationale | Violation Example | Consequence |
 |---|---|---|---|---|
-| G1 | Never assume a contract break has no impact â€” trace the import graph | Contract breaks propagate through dependency chains invisibly | Changing return type of widely-used function without checking callers | Silent runtime failures in consumer modules |
-| G2 | Never assume a config change is safe â€” check all readers and consumers | Config values are read in unpredictable locations | Changing env var name without updating all consumers | Production config mismatch, service outage |
+| G1 | Never assume a contract break has no impact — trace the import graph | Contract breaks propagate through dependency chains invisibly | Changing return type of widely-used function without checking callers | Silent runtime failures in consumer modules |
+| G2 | Never assume a config change is safe — check all readers and consumers | Config values are read in unpredictable locations | Changing env var name without updating all consumers | Production config mismatch, service outage |
 | G3 | Never skip error path analysis for HIGH+ risk changes | Error paths are where most production incidents originate | Adding file operation without handling disk-full or permission errors | Unhandled exception in production |
 | G4 | Never optimize for performance without baseline measurements | Optimization without baseline is speculation, not engineering | Replacing sort algorithm without profiling | Negative performance change undetected |
-| G5 | Never classify by effort â€” classify by blast radius | Small code changes can have large blast radius | Changing a shared utility function (1 line) classified as LOW risk | Cascading failures across codebase |
+| G5 | Never classify by effort — classify by blast radius | Small code changes can have large blast radius | Changing a shared utility function (1 line) classified as LOW risk | Cascading failures across codebase |
 | G6 | Never execute a CRITICAL risk change without a rollback plan | CRITICAL changes require guaranteed recovery path | Deleting a DB migration without migration rollback script | Data loss with no recovery option |
 | G7 | Never modify a file outside declared scope without flagging UNPLANNED | Scope violations erode change management | Modifying src/config.ts when scope declared as src/features/ only | Undocumented scope expansion |
 | G8 | Never skip the cognitive pipeline | Every step serves a purpose; skipping breaks the chain | Executing a tool call without prior classification | Blind operation, no risk assessment |
@@ -115,26 +113,26 @@ These guardrails apply to all reasoning, regardless of mode or depth:
 
 | ID | Guardrail | Rationale | Violation Example | Acceptable Exception |
 |---|---|---|---|---|
-| S1 | Prefer understanding over assuming â€” read before writing | Reading establishes ground truth for the change | Editing a file without reading its current contents | Trivial, well-known file with no recent changes |
-| S2 | Prefer minimal changes â€” smallest diff that achieves the goal | Smaller diffs are easier to review and less risky | Rewriting a function when a 2-line change would suffice | Refactoring for maintainability outweighs diff size |
-| S3 | Prefer reversible operations â€” additive over destructive | Reversible changes can be rolled back easily | Deleting code when deprecation + removal later is feasible | Removing clearly dead code with no dependents |
-| S4 | Prefer explicit over implicit â€” declare scope, risk, and intent | Explicit state prevents misinterpretation | Starting work without session start command | Very short session (<3 tool calls) |
-| S5 | Prefer verified over trusted â€” test after every write operation | Verification catches errors before they reach production | Writing code without running tests | Trivial change (comment, whitespace, docs only) |
-| S6 | Prefer documented over tribal â€” log decisions, not just actions | Decision context is lost if not recorded | Making a design choice without annotating the rationale | Obvious choice with no alternatives |
+| S1 | Prefer understanding over assuming — read before writing | Reading establishes ground truth for the change | Editing a file without reading its current contents | Trivial, well-known file with no recent changes |
+| S2 | Prefer minimal changes — smallest diff that achieves the goal | Smaller diffs are easier to review and less risky | Rewriting a function when a 2-line change would suffice | Refactoring for maintainability outweighs diff size |
+| S3 | Prefer reversible operations — additive over destructive | Reversible changes can be rolled back easily | Deleting code when deprecation + removal later is feasible | Removing clearly dead code with no dependents |
+| S4 | Prefer explicit over implicit — declare scope, risk, and intent | Explicit state prevents misinterpretation | Starting work without session start command | Very short session (<3 tool calls) |
+| S5 | Prefer verified over trusted — test after every write operation | Verification catches errors before they reach production | Writing code without running tests | Trivial change (comment, whitespace, docs only) |
+| S6 | Prefer documented over tribal — log decisions, not just actions | Decision context is lost if not recorded | Making a design choice without annotating the rationale | Obvious choice with no alternatives |
 
-**S1-S6 enforcement:** Review in quality gates (P8 Tier 2). Violation requires justification logged in ledger. If same violation occurs 3+ times in session â†’ escalates to Tier 1 treatment.
+**S1-S6 enforcement:** Review in quality gates (P8 Tier 2). Violation requires justification logged in ledger. If same violation occurs 3+ times in session → escalates to Tier 1 treatment.
 
 #### Guardrail Application by Risk
 
 | Risk | G1 | G2 | G3 | G4 | G5 | G6 | G7 | G8 | G9 | S1-S6 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| MICRO | â€” | â€” | â€” | â€” | âœ“ | â€” | â€” | âœ“ | âœ“ | Optional |
-| LOW | â€” | â€” | â€” | â€” | âœ“ | â€” | âœ“ | âœ“ | âœ“ | Recommended |
-| MEDIUM | âœ“ | âœ“ | âœ“ | â€” | âœ“ | â€” | âœ“ | âœ“ | âœ“ | Expected |
-| HIGH | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | Required |
-| CRITICAL | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | âœ“ | Required |
+| MICRO | — | — | — | — | ✓ | — | — | ✓ | ✓ | Optional |
+| LOW | — | — | — | — | ✓ | — | ✓ | ✓ | ✓ | Recommended |
+| MEDIUM | ✓ | ✓ | ✓ | — | ✓ | — | ✓ | ✓ | ✓ | Expected |
+| HIGH | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Required |
+| CRITICAL | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | Required |
 
-### P3.4 â€” Attention Allocation Model
+### P3.4 — Attention Allocation Model
 
 Attention is allocated across competing concerns using a weighted model:
 
@@ -142,7 +140,7 @@ Attention is allocated across competing concerns using a weighted model:
 
 ```
 Available attention = MIN(context_window_remaining, token_budget)
-  Ã— efficiency_factor (0.7-1.0 based on session progress)
+  × efficiency_factor (0.7-1.0 based on session progress)
 
 Competing concerns:
   Safety:        weight 0.35  (risk assessment, boundary checks)
@@ -166,7 +164,7 @@ Competing concerns:
 | Refactoring | 0.25 | **0.35** | 0.10 | 0.10 | 0.10 | 0.10 |
 | Writing new feature | 0.25 | 0.25 | 0.15 | 0.10 | **0.15** | 0.10 |
 
-### P3.5 â€” Attention by Risk Profile
+### P3.5 — Attention by Risk Profile
 
 | Risk | Attention Pattern | Safety Overlay | Verification Overlay |
 |---|---|---|---|
@@ -210,7 +208,7 @@ Competing concerns:
 - Peer review required before execution
 - Rollback plan documented
 
-### P3.6 â€” Evaluation Framework
+### P3.6 — Evaluation Framework
 
 When evaluating a change (Evaluative mode or any HIGH+ review), check these five boundary surfaces:
 
@@ -234,55 +232,55 @@ Each surface is scored 0-5:
 | 1 | Theoretical impact, no real scenario | Document for awareness |
 | 2 | Minor impact, edge case | Add edge case handling |
 | 3 | Moderate impact, common case | Fix before proceeding |
-| 4 | Major impact, core functionality | Blocking â€” must resolve |
+| 4 | Major impact, core functionality | Blocking — must resolve |
 | 5 | Catastrophic impact | Immediate halt, escalate |
 
 **Risk score = MAX of all surface scores.** Aggregate risk is the running maximum of risk scores across the session.
 
-### P3.7 â€” Decision Trees for Common Scenarios
+### P3.7 — Decision Trees for Common Scenarios
 
 #### D1: Should I checkpoint before this call?
 
 ```
 Is this a HIGH+ risk operation?
-  â”œâ”€â”€ YES â†’ Checkpoint before executing
-  â””â”€â”€ NO â†’ Is this the 5th+ call without checkpoint?
-              â”œâ”€â”€ YES â†’ Checkpoint now
-              â””â”€â”€ NO â†’ Is scope changing (new files/modules)?
-                          â”œâ”€â”€ YES â†’ Checkpoint before expanding
-                          â””â”€â”€ NO â†’ Is this a contract break?
-                                      â”œâ”€â”€ YES â†’ Checkpoint before executing
-                                      â””â”€â”€ NO â†’ No checkpoint needed
+  ├── YES → Checkpoint before executing
+  └── NO → Is this the 5th+ call without checkpoint?
+              ├── YES → Checkpoint now
+              └── NO → Is scope changing (new files/modules)?
+                          ├── YES → Checkpoint before expanding
+                          └── NO → Is this a contract break?
+                                      ├── YES → Checkpoint before executing
+                                      └── NO → No checkpoint needed
 ```
 
 #### D2: What injection level should I use?
 
 ```
 Is this session start or resume from checkpoint?
-  â”œâ”€â”€ YES â†’ FULL
-  â””â”€â”€ NO â†’ Did scale change?
-              â”œâ”€â”€ YES â†’ FULL
-              â””â”€â”€ NO â†’ New task or risk escalated?
-                          â”œâ”€â”€ YES â†’ STANDARD
-                          â””â”€â”€ NO â†’ Risk >= HIGH?
-                                      â”œâ”€â”€ YES â†’ STANDARD
-                                      â””â”€â”€ NO â†’ Is tool write/delete?
-                                                  â”œâ”€â”€ YES â†’ STANDARD
-                                                  â””â”€â”€ NO â†’ Is WorkType ANALYSIS?
-                                                              â”œâ”€â”€ YES â†’ SILENT (MICRO) or COMPACT (LOW+)
-                                                              â””â”€â”€ NO â†’ COMPACT
+  ├── YES → FULL
+  └── NO → Did scale change?
+              ├── YES → FULL
+              └── NO → New task or risk escalated?
+                          ├── YES → STANDARD
+                          └── NO → Risk >= HIGH?
+                                      ├── YES → STANDARD
+                                      └── NO → Is tool write/delete?
+                                                  ├── YES → STANDARD
+                                                  └── NO → Is WorkType ANALYSIS?
+                                                              ├── YES → SILENT (MICRO) or COMPACT (LOW+)
+                                                              └── NO → COMPACT
 ```
 
 #### D3: Should I escalate risk?
 
 ```
 Is aggregate risk > risk_cap?
-  â”œâ”€â”€ YES â†’ Escalate immediately, pause execution, inform user
-  â””â”€â”€ NO â†’ Is risk trend accelerating (3+ increases in 5 calls)?
-              â”œâ”€â”€ YES â†’ Flag for review, increase checkpoint frequency
-              â””â”€â”€ NO â†’ Is there an unplanned scope expansion?
-                          â”œâ”€â”€ YES â†’ Flag UNPLANNED, re-evaluate risk cap
-                          â””â”€â”€ NO â†’ Continue normal tracking
+  ├── YES → Escalate immediately, pause execution, inform user
+  └── NO → Is risk trend accelerating (3+ increases in 5 calls)?
+              ├── YES → Flag for review, increase checkpoint frequency
+              └── NO → Is there an unplanned scope expansion?
+                          ├── YES → Flag UNPLANNED, re-evaluate risk cap
+                          └── NO → Continue normal tracking
 ```
 
 #### D4: Which plugin handles this classification conflict?
@@ -290,104 +288,104 @@ Is aggregate risk > risk_cap?
 ```
 Conflict detected between Plugin A and Plugin B:
   Is either plugin negative-prompts?
-    â”œâ”€â”€ YES â†’ negative-prompts wins (zero-tolerance)
-    â””â”€â”€ NO â†’ Is either plugin security-patterns?
-                â”œâ”€â”€ YES â†’ security-patterns wins
-                â””â”€â”€ NO â†’ Is one classification more specific?
-                            â”œâ”€â”€ YES â†’ Most specific wins
-                            â””â”€â”€ NO â†’ Is this a safety concern?
-                                        â”œâ”€â”€ YES â†’ coding-agent veto possible
-                                        â””â”€â”€ NO â†’ Escalate to user
+    ├── YES → negative-prompts wins (zero-tolerance)
+    └── NO → Is either plugin security-patterns?
+                ├── YES → security-patterns wins
+                └── NO → Is one classification more specific?
+                            ├── YES → Most specific wins
+                            └── NO → Is this a safety concern?
+                                        ├── YES → coding-agent veto possible
+                                        └── NO → Escalate to user
 ```
 
 #### D5: How to handle context window pressure?
 
 ```
 Is context window > 80% full?
-  â”œâ”€â”€ NO â†’ Continue normal operation
-  â””â”€â”€ YES â†’ Can I prune (P4.5)?
-                â”œâ”€â”€ YES â†’ Prune in order, re-check
-                â””â”€â”€ NO â†’ Can I downgrade injection level?
-                            â”œâ”€â”€ YES â†’ Downgrade one level, re-check
-                            â””â”€â”€ NO â†’ Is there a checkpoint to roll back to?
-                                        â”œâ”€â”€ YES â†’ Suggest rollback to checkpoint
-                                        â””â”€â”€ NO â†’ Emergency compression (P4.4)
+  ├── NO → Continue normal operation
+  └── YES → Can I prune (P4.5)?
+                ├── YES → Prune in order, re-check
+                └── NO → Can I downgrade injection level?
+                            ├── YES → Downgrade one level, re-check
+                            └── NO → Is there a checkpoint to roll back to?
+                                        ├── YES → Suggest rollback to checkpoint
+                                        └── NO → Emergency compression (P4.4)
 ```
 
 #### D6: Should I use differential injection?
 
 ```
 Is this the same scope as the last call?
-  â”œâ”€â”€ NO â†’ Use full context injection per P4.2
-  â””â”€â”€ YES â†’ Has any scope-relevant state changed?
-                â”œâ”€â”€ YES â†’ Include the delta in injection
-                â”‚           â””â”€â”€ Delta size < full context? â†’ Use differential injection
-                â”‚           â””â”€â”€ Delta size >= full context? â†’ Use full injection
-                â””â”€â”€ NO â†’ Is risk unchanged?
-                            â”œâ”€â”€ YES â†’ Use differential: "Same scope. No change. Risk unchanged."
-                            â””â”€â”€ NO â†’ Include new risk in differential
+  ├── NO → Use full context injection per P4.2
+  └── YES → Has any scope-relevant state changed?
+                ├── YES → Include the delta in injection
+                │           └── Delta size < full context? → Use differential injection
+                │           └── Delta size >= full context? → Use full injection
+                └── NO → Is risk unchanged?
+                            ├── YES → Use differential: "Same scope. No change. Risk unchanged."
+                            └── NO → Include new risk in differential
 ```
 
 #### D7: Should I load a brain file or use lazy injection?
 
 ```
 Is this task directly relevant to the brain file's domain?
-  â”œâ”€â”€ NO â†’ Skip loading (lazy deferral)
-  â””â”€â”€ YES â†’ Is the brain file already loaded?
-                â”œâ”€â”€ YES â†’ Use cached summary, verify freshness (timestamp check)
-                â””â”€â”€ NO â†’ Is this the first reference this session?
-                            â”œâ”€â”€ YES â†’ Load brain file, generate summary, inject COMPACT
-                            â””â”€â”€ NO â†’ Is the file frequently referenced?
-                                        â”œâ”€â”€ YES â†’ Load brain file, cache for session
-                                        â””â”€â”€ NO â†’ Load brain file, inject summary, discard after task
+  ├── NO → Skip loading (lazy deferral)
+  └── YES → Is the brain file already loaded?
+                ├── YES → Use cached summary, verify freshness (timestamp check)
+                └── NO → Is this the first reference this session?
+                            ├── YES → Load brain file, generate summary, inject COMPACT
+                            └── NO → Is the file frequently referenced?
+                                        ├── YES → Load brain file, cache for session
+                                        └── NO → Load brain file, inject summary, discard after task
 ```
 
 #### D8: Should I escalate to the user or proceed autonomously?
 
 ```
 Is this a CRITICAL risk change?
-  â”œâ”€â”€ YES â†’ Escalate to user â€” require explicit approval before execution
-  â””â”€â”€ NO â†’ Is there an unresolved plugin conflict?
-              â”œâ”€â”€ YES â†’ Escalate with both options and reasoning
-              â””â”€â”€ NO â†’ Has a checkpoint failure occurred?
-                          â”œâ”€â”€ YES â†’ Inform user of degraded state
-                          â””â”€â”€ NO â†’ Is aggregate risk approaching cap (within 1 level)?
-                                      â”œâ”€â”€ YES â†’ Inform user, suggest checkpoint
-                                      â””â”€â”€ NO â†’ Proceed autonomously
+  ├── YES → Escalate to user — require explicit approval before execution
+  └── NO → Is there an unresolved plugin conflict?
+              ├── YES → Escalate with both options and reasoning
+              └── NO → Has a checkpoint failure occurred?
+                          ├── YES → Inform user of degraded state
+                          └── NO → Is aggregate risk approaching cap (within 1 level)?
+                                      ├── YES → Inform user, suggest checkpoint
+                                      └── NO → Proceed autonomously
 ```
 
 #### D9: What attention profile should I use for this call?
 
 ```
 Is call type DELETE?
-  â”œâ”€â”€ YES â†’ Maximum attention profile: safety (65%) + all plugins loaded
-  â””â”€â”€ NO â†’ Is call type WRITE?
-              â”œâ”€â”€ YES â†’ High attention profile: safety (45%) + correctness (30%) + standard plugins
-              â””â”€â”€ NO â†’ Is call type READ?
-                          â”œâ”€â”€ YES â†’ Is file HIGH+ risk relevance?
-                          â”‚           â”œâ”€â”€ YES â†’ MEDIUM attention: standard plugins + cross-boundary check
-                          â”‚           â””â”€â”€ NO â†’ Low attention: classification + log only
-                          â””â”€â”€ NO â†’ Is call type EXECUTE?
-                                      â”œâ”€â”€ YES â†’ MEDIUM attention: classification + safety check + log
-                                      â””â”€â”€ NO â†’ ANALYSIS: minimal attention, classification internal
+  ├── YES → Maximum attention profile: safety (65%) + all plugins loaded
+  └── NO → Is call type WRITE?
+              ├── YES → High attention profile: safety (45%) + correctness (30%) + standard plugins
+              └── NO → Is call type READ?
+                          ├── YES → Is file HIGH+ risk relevance?
+                          │           ├── YES → MEDIUM attention: standard plugins + cross-boundary check
+                          │           └── NO → Low attention: classification + log only
+                          └── NO → Is call type EXECUTE?
+                                      ├── YES → MEDIUM attention: classification + safety check + log
+                                      └── NO → ANALYSIS: minimal attention, classification internal
 ```
 
 #### D10: Should I check cross-session dependencies?
 
 ```
 Is this a WRITE or DELETE call?
-  â”œâ”€â”€ NO â†’ No cross-session check needed
-  â””â”€â”€ YES â†’ Get file modification timestamp
-                â””â”€â”€ Is mod timestamp > session start AND â‰  last known timestamp?
-                    â”œâ”€â”€ YES â†’ File modified externally since session start
-                    â”‚           â””â”€â”€ Is modification from another synarc session?
-                    â”‚               â”œâ”€â”€ YES â†’ Inform user: "File <path> modified by session <id> at <time>"
-                    â”‚               â”‚           â””â”€â”€ Present resolution options (P4.11)
-                    â”‚               â””â”€â”€ NO â†’ Flag: "File <path> modified externally â€” verify before write"
-                    â””â”€â”€ NO â†’ File not externally modified â€” proceed
+  ├── NO → No cross-session check needed
+  └── YES → Get file modification timestamp
+                └── Is mod timestamp > session start AND ≠ last known timestamp?
+                    ├── YES → File modified externally since session start
+                    │           └── Is modification from another synarc session?
+                    │               ├── YES → Inform user: "File <path> modified by session <id> at <time>"
+                    │               │           └── Present resolution options (P4.11)
+                    │               └── NO → Flag: "File <path> modified externally — verify before write"
+                    └── NO → File not externally modified — proceed
 ```
 
-### P3.8 â€” Reasoning Anti-Patterns
+### P3.8 — Reasoning Anti-Patterns
 
 | Anti-Pattern | Detection Method | Why It Fails | Correct Approach | Remediation |
 |---|---|---|---|---|
@@ -406,9 +404,9 @@ Is this a WRITE or DELETE call?
 | Hindsight bias | Treating known outcome as predictable | Unfair assessment, missed learning | Document uncertainty at decision time | "At decision point, what was the expected probability of success?" |
 
 
-## P5 â€” OUTPUT FORMATS
+## P5 — OUTPUT FORMATS
 
-### P5.1 â€” Session Status
+### P5.1 — Session Status
 
 ```
 SESSION: <id> | TASK: <task>
@@ -416,13 +414,13 @@ SCALE: <level> | RISK: <aggregate> | ESCALATION: <level>
 CALLS: <N> | WRITES: <N> | CONTRACTS: <breaks>
 CHECKPOINT: <id> | FILES: [<paths>]
 PLUGINS: [<active plugins>]
-DURATION: <elapsed> | LAST CALL: <seq> â€” <tool> â€” <file> â€” <risk>
+DURATION: <elapsed> | LAST CALL: <seq> — <tool> — <file> — <risk>
 ```
 
-### P5.2 â€” Session Export (Compressed Handoff)
+### P5.2 — Session Export (Compressed Handoff)
 
 ```
-SESSION <id> â€” <task>
+SESSION <id> — <task>
   scale: <NANO|MICRO|SMALL|MEDIUM|LARGE|ENTERPRISE>
   risk:  <aggregate> | escalation: <level>
   calls: <N> | writes: <N> | contracts: <N>
@@ -432,20 +430,20 @@ SESSION <id> â€” <task>
   next: <suggested next action>
 ```
 
-### P5.3 â€” Rollback Summary
+### P5.3 — Rollback Summary
 
 ```
 ROLLBACK: <N> files reverted
-  <file1> â€” git revert <SHA>
-  <file2> â€” git restore <file2>
-  <file3> â€” git checkout <branch> -- <file3>
+  <file1> — git revert <SHA>
+  <file2> — git restore <file2>
+  <file3> — git checkout <branch> -- <file3>
 Status: <all reverted successfully | N files failed>
 ```
 
-### P5.4 â€” Handoff Format
+### P5.4 — Handoff Format
 
 ```
-â”â”â” HANDOFF â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+━━━ HANDOFF ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   SESSION   : <id>
   TASK      : <task>
   COMPLETED : [files modified]
@@ -457,10 +455,10 @@ Status: <all reverted successfully | N files failed>
     1. <step>
     2. <step>
   LOADED    : [plugins]
-â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### P5.5 â€” Override Format Selection
+### P5.5 — Override Format Selection
 
 The standard output format may be overridden by:
 
@@ -473,10 +471,10 @@ The standard output format may be overridden by:
 | Context window > 85% | Compressed export (P5.2) only | Token conservation |
 | Handoff to another agent | Handoff format (P5.4) | Inter-agent communication |
 
-### P5.6 â€” Session End Summary
+### P5.6 — Session End Summary
 
 ```
-â”â”â” SESSION END â€” <id> â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+━━━ SESSION END — <id> ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   Task      : <task>
   WorkType  : <classification>
   Scale     : <level>
@@ -487,18 +485,18 @@ The standard output format may be overridden by:
   Errors    : <N> | Recovered: <N>
   Time      : <elapsed>
   Checkpoints: <N>
-â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 CHANGE_LOG.md entry written. Session <id> closed.
 ```
 
 
-## P7 â€” ANTI-PATTERNS
+## P7 — ANTI-PATTERNS
 
-### P7.1 â€” Architecture Anti-Patterns
+### P7.1 — Architecture Anti-Patterns
 
 | Anti-Pattern | Why It Fails | Correct Approach |
 |---|---|---|
-| Skipping classification | Acting without knowing WorkType or risk | Always classify before execute â€” classification is never optional |
+| Skipping classification | Acting without knowing WorkType or risk | Always classify before execute — classification is never optional |
 | Plugin isolation | Running plugins independently without coordination | All plugins execute through the cognition layer pipeline |
 | Hard-coded plugin order | Assuming plugins always execute in same sequence | Use dynamic routing based on call type, risk, and context |
 | Ignoring plugin conflicts | Accepting first classification without checking alternatives | Run conflict detection, apply resolution rules |
@@ -508,14 +506,14 @@ CHANGE_LOG.md entry written. Session <id> closed.
 | Over-validation | Running all plugins on every call regardless of need | Match plugin set to call type, risk, and scale |
 | Under-validation | Running only one plugin on a high-risk call | Minimum 3 plugins for MEDIUM+, 5 for HIGH+ |
 
-### P7.2 â€” Reasoning Anti-Patterns
+### P7.2 — Reasoning Anti-Patterns
 
 | Anti-Pattern | Why It Fails | Correct Approach |
 |---|---|---|
 | Anchoring | Committing to first solution found | Generate 2-3 alternatives, compare before selecting |
 | Confirmation bias | Seeking only supporting evidence | Actively search for disconfirming evidence |
 | Premature optimization | Optimizing without baseline | Measure first, then optimize |
-| Analysis paralysis | Over-reasoning on LOW risk decisions | Match depth to risk (P3.2) â€” MICRO gets surface treatment |
+| Analysis paralysis | Over-reasoning on LOW risk decisions | Match depth to risk (P3.2) — MICRO gets surface treatment |
 | Scope creep in reasoning | Solving problems beyond declared task | Bind reasoning to scope, flag out-of-scope observations |
 | Recency bias | Over-weighting the last call | Consider full session ledger and risk trajectory |
 | Single cause fallacy | Attributing failure to one root cause | Consider multiple contributing factors |
@@ -524,36 +522,36 @@ CHANGE_LOG.md entry written. Session <id> closed.
 | Circular reasoning | Using conclusion as premise | Validate each step independently |
 | False precision | Treating estimates as exact | Use ranges for uncertain values, validate assumptions |
 
-### P7.3 â€” Injection Anti-Patterns
+### P7.3 — Injection Anti-Patterns
 
 | Anti-Pattern | Why It Fails | Correct Approach |
 |---|---|---|
 | Over-injection | Wasting tokens, diluting attention | Select minimum viable level based on risk + scale |
 | Under-injection on HIGH risk | Missing critical context for safe decisions | Minimum STANDARD for HIGH+, FULL for CRITICAL |
 | Injecting raw file contents | Token waste, implementation detail leak | Inject summaries, keep file references for follow-up |
-| Injecting secrets | Security violation â€” exposed credentials | Use env var references, never inject secret values |
+| Injecting secrets | Security violation — exposed credentials | Use env var references, never inject secret values |
 | Static injection level | Same level regardless of risk or call type | Dynamic level selection per P4.2 |
 | Pruning critical context | Accidentally dropping scope or aggregate risk | Never prune Level 0-1 (Essential + Session) |
-| Pre-loading all brain files | Token overload at session start | Lazy injection (P4.14.4) â€” load only when needed |
-| Re-injecting unchanged content | Redundant context every call | Differential injection (P4.14.3) â€” only the delta |
+| Pre-loading all brain files | Token overload at session start | Lazy injection (P4.14.4) — load only when needed |
+| Re-injecting unchanged content | Redundant context every call | Differential injection (P4.14.3) — only the delta |
 | Context blindness | Not tracking window capacity | Monitor usage every call, prune proactively at 80% |
 | Injecting stale state | Using classification or risk from previous call | Re-evaluate before every injection |
 | Incorrect level for WorkType | e.g., SILENT on CONTRACT change | Follow level-by-classification matrix |
 | Ignoring budget cap | Continuing normal injection after 2x budget exceeded | Switch to maximum compression mode |
 
-### P7.4 â€” Session Anti-Patterns
+### P7.4 — Session Anti-Patterns
 
 | Anti-Pattern | Why It Fails | Correct Approach |
 |---|---|---|
 | Missing ledger entries | Cannot assess deployment safety or trace changes | Every non-ANALYSIS call must have a ledger entry |
-| Overwriting ledger | Irreversible loss of change history | Append-only â€” entries are immutable after creation |
+| Overwriting ledger | Irreversible loss of change history | Append-only — entries are immutable after creation |
 | No checkpoint before HIGH risk | No recovery point if execution fails | Checkpoint before every HIGH+ operation |
 | Undeclared scope | No boundaries to detect scope creep | Always declare scope at session start (files, modules, risk cap) |
 | No rollback plan | Can't recover from failed change | Document rollback strategy for every write |
 | Cross-session blindness | Two sessions modifying same file independently | Check file modification timestamps before write |
 | Re-classifying mid-session | Risk inconsistency, confused workflow | Always justify and log re-classification |
 | Lazy checkpointing | Infrequent checkpoints in long sessions | Follow checkpoint decision tree (P3.7 D1) |
-| Session without end | Orphaned state, no CHANGE_LOG entry | Always call session end â€” even on abort |
+| Session without end | Orphaned state, no CHANGE_LOG entry | Always call session end — even on abort |
 | Ignoring contraction breaks | Contract break cascade undetected | Track contract breaks, flag all affected dependents |
 | Lossy state recovery | Reconstructing wrong task from checkpoint | Verify scope, files, risk before resuming |
 | Single-session tunnel vision | Forgetting previous sessions changed same files | Check CHANGE_LOG.md for cross-session context |
