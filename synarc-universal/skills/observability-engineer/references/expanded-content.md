@@ -1852,3 +1852,18 @@ Good alerts: keep, document, maintain runbook. Noise alerts: tune threshold, inc
 
 Prevent future alert quality issues: alert review in code review (every new alert must be reviewed by a second engineer), alert testing in staging (trigger the condition and verify the alert fires), and periodic audit (quarterly review of all alerts).
 
+
+---
+# Additional expanded content from P1-P15 expansions
+---
+
+
+---
+
+## EXPANDED OBSERVABILITY CONTENT
+
+This section contains expanded observability content (persona deep dives, detailed patterns, code examples, references).
+
+Reference file: \
+eferences/expanded-content.md\ (157 KB, 1854 lines)
+

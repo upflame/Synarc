@@ -1772,5 +1772,12 @@ This skill document synthesizes thousands of person-years of production observab
 
 This section contains expanded observability content (persona deep dives, detailed patterns, code examples, references).
 
-Reference file: \eferences/expanded-content.md\ (157 KB, 1854 lines)
+Reference file: \
+eferences/expanded-content.md\ (157 KB, 1854 lines)
 
+
+## EXPANDED OBSERVABILITY CONTENT
+
+This section contains expanded observability content (persona deep dives, detailed patterns, code examples, references).
+
+Reference file: eferences/expanded-content.md (157 KB, 1854 lines)
