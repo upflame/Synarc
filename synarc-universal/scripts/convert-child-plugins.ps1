@@ -1,9 +1,11 @@
 # Child Plugin Converter
 # Reads each Claude plugin, converts to universal format
 
-$pluginsPath = "C:\Users\Victo\Downloads\synarc-v4\synarc\plugins"
-$universalPath = "C:\Users\Victo\Downloads\synarc-v4\synarc\synarc-universal\skills"
-$sharedGuardrails = "C:\Users\Victo\Downloads\synarc-v4\synarc\synarc-universal\shared\guardrails\constitutional-rules.yaml"
+$scriptRoot = Split-Path -Parent $PSCommandPath
+$repoRoot = Resolve-Path (Join-Path $scriptRoot '..\..')
+$pluginsPath = Join-Path $repoRoot 'plugins'
+$universalPath = Join-Path $repoRoot 'synarc-universal\skills'
+$sharedGuardrails = Join-Path $repoRoot 'synarc-universal\shared\guardrails\constitutional-rules.yaml'
 
 $pluginDirs = Get-ChildItem -LiteralPath $pluginsPath -Directory | Where-Object {         $_.Name -ne "synarc" }
 $totalPlugins = $pluginDirs.Count

@@ -1,7 +1,7 @@
 ---
 title: Architecture Overview — Synarc Universal Skill Pack
-description: Complete architecture documentation covering the universal agent skill architecture, 7-layer design, compiler pattern, fallback tier system, dependency resolution, security model, and full directory structure reference.
-version: 1.0.0
+description: Complete architecture documentation for Synarc Universal v6.5.0 (56 skills, Cognition Mesh, 8 active runtimes). Covers the universal agent skill architecture, 7-layer design, compiler pattern, fallback tier system, dependency resolution, security model, and full directory structure reference.
+version: 6.5.0
 schema: skill-pack/v1
 ---
 
@@ -9,7 +9,7 @@ schema: skill-pack/v1
 
 ## Universal Agent Skill Architecture
 
-The Synarc Universal Skill Pack defines a **write-once, deploy-anywhere** architecture for AI coding agent skills. A single SKILL.md authored in the universal format can be deployed to any of 9 supported runtimes without modification.
+The Synarc Universal Skill Pack defines a **write-once, deploy-anywhere** architecture for AI coding agent skills. A single SKILL.md authored in the universal format can be deployed to any of 8 active runtimes without modification (Roo Code shut down 2026-05-15; migrate to Cline).
 
 ```
 +-----------------------------------------------------------+
@@ -25,7 +25,7 @@ The Synarc Universal Skill Pack defines a **write-once, deploy-anywhere** archit
     |       |       |       |       |       |       |       |
     v       v       v       v       v       v       v       v
   Codex  OpenCode Cursor  Gemini  Claude  Copilot Windsurf Cline
-  CLI             IDE     CLI     Code            IDE     RooCode
+  CLI             IDE     CLI     Code            IDE     IDE    
 ```
 
 The architecture has three invariants:
@@ -102,7 +102,7 @@ Output: Runtime-native format
         — .mdc rule file (Cursor)
         — .windsurfrules section (Windsurf)
         — .clinerules file (Cline)
-        — .roorules file (RooCode)
+        — .roorules file (RooCode - reference only; Roo Code shut down 2026-05-15)
         — Native SKILL.md (Claude Code)
 
 Steps:
@@ -359,7 +359,7 @@ synarc-universal/
 │       ├── copilot.md                 # GitHub Copilot adapter
 │       ├── windsurf.md                # Windsurf IDE adapter
 │       ├── cline.md                   # Cline adapter
-│       └── roo-code.md               # RooCode adapter
+│       └── roo-code.md               # RooCode adapter (reference only; Roo Code shut down 2026-05-15)
 │
 └── scripts/
     └── convert-child-plugins.ps1      # Legacy plugin conversion utility

@@ -9,7 +9,7 @@
 $SynarcRoot = Split-Path -Parent $PSScriptRoot
 $TargetDir = Get-Location
 
-Write-Host "Synarc Universal v6.0.0 — Installer" -ForegroundColor Cyan
+Write-Host "Synarc Universal v6.5.0 — Installer" -ForegroundColor Cyan
 Write-Host "Target: $TargetDir"
 Write-Host ""
 

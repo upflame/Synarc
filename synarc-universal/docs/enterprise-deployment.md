@@ -1,7 +1,7 @@
 ---
-title: Enterprise Deployment Guide — Synarc Universal Skill Pack
-description: Enterprise-scale deployment guide covering org-wide installation, skill version management, dependency resolution for large skill packs, CI/CD integration, compliance and audit considerations, and multi-team skill distribution.
-version: 1.0.0
+title: Enterprise Deployment Guide — Synarc Universal Skill Pack (v6.5.0)
+description: Enterprise-scale deployment guide for Synarc Universal v6.5.0 covering org-wide installation with the per-editor install.js pipeline and synarc.lock.json, skill version management, dependency resolution, CI/CD integration, compliance and audit, and multi-team skill distribution.
+version: 6.5.0
 schema: skill-pack/v1
 ---
 
@@ -38,42 +38,30 @@ org-internal/
 ### Git Submodule Setup
 
 ```bash
-git submodule add https://github.com/org/synarc-universal.git .synarc/
+git submodule add https://github.com/upflame-labs/synarc.git synarc-universal
 git submodule update --init --recursive
-ln -s .synarc/AGENTS.md AGENTS.md
+
+# Run the installer; it will detect your editor markers and write the
+# right per-editor file at the project root.
+node synarc-universal/scripts/install.js
 ```
 
 ### Automated Deployment Script
 
 ```bash
 #!/bin/bash
-# deploy-synarc.sh — Deploy Synarc to a project repository
+# deploy-synarc.sh — Deploy Synarc to a project repository (v6.5.0)
 
-SKILL_PACK_URL=${1:-"https://github.com/org/synarc-universal.git"}
-TARGET_DIR=${2:-".synarc"}
+SKILL_PACK_URL=${1:-"https://github.com/upflame-labs/synarc.git"}
 
-# Clone or update the skill pack
-if [ -d "$TARGET_DIR" ]; then
-  cd "$TARGET_DIR" && git pull && cd ..
-else
-  git clone "$SKILL_PACK_URL" "$TARGET_DIR"
-fi
+# Run the per-editor installer (auto-detects markers, installs for each)
+node "$TARGET_DIR/synarc-universal/scripts/install.js"
 
-# Symlink AGENTS.md for compatible agents
-ln -sf "$TARGET_DIR/AGENTS.md" AGENTS.md
+# Verify the install
+node "$TARGET_DIR/synarc-universal/scripts/install.js" --verify
 
-# Copy Cursor rules if applicable
-if [ -d ".cursor" ]; then
-  mkdir -p .cursor/rules
-  cp -r "$TARGET_DIR/runtime-adapters/cursor/"* .cursor/rules/ 2>/dev/null || true
-fi
-
-# Copy Windsurf rules if applicable
-if [ ! -f ".windsurfrules" ]; then
-  cp "$TARGET_DIR/runtime-adapters/windsurf/"* .windsurfrules 2>/dev/null || true
-fi
-
-echo "Synarc Universal deployed to $TARGET_DIR"
+echo "Synarc Universal v6.5.0 deployed to $TARGET_DIR"
+echo "Lock file: ./synarc.lock.json"
 ```
 
 ---
@@ -236,7 +224,7 @@ jobs:
     needs: validate
     strategy:
       matrix:
-        agent: [codex, opencode, cursor, gemini-cli, claude-code, copilot, windsurf, cline, roo-code]
+        agent: [codex, opencode, cursor, gemini-cli, claude-code, copilot, windsurf, cline]
     steps:
       - uses: actions/checkout@v4
       - name: Compile for ${{ matrix.agent }}
@@ -247,7 +235,7 @@ jobs:
     needs: compile
     strategy:
       matrix:
-        agent: [codex, opencode, cursor, gemini-cli, claude-code, copilot, windsurf, cline, roo-code]
+        agent: [codex, opencode, cursor, gemini-cli, claude-code, copilot, windsurf, cline]
     steps:
       - name: Test compiled skills for ${{ matrix.agent }}
         run: |
@@ -338,7 +326,7 @@ For organizations with custom skills, use namespaced skill IDs:
 # skills/acme-payments/skill.yaml
 id: acme-payments
 namespace: acme
-version: 1.0.0
+version: 6.5.0
 ```
 
 ### Centralized Manifest for Orgs
@@ -348,7 +336,7 @@ Large organizations should maintain a root manifest that aggregates team-level m
 ```yaml
 # org-manifest.yaml
 organization: acme-corp
-version: 1.0.0
+version: 6.5.0
 team_manifests:
   - team: platform
     manifest: teams/platform/manifest.yaml
@@ -390,3 +378,4 @@ For environments without internet access:
 4. Extract to shared network location
 5. Each project references the shared location via config
 6. CI runs validation against local copy
+

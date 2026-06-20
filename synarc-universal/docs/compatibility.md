@@ -1,7 +1,7 @@
 ---
-title: Compatibility Matrix — Synarc Universal Skill Pack
-description: Full capability × runtime matrix detailing which features are supported across all 9 AI coding agents, including frontmatter, intent activation, fallback tiers, brain persistence, file ops, command execution, guardrails, session tracking, change classification, risk assessment, quality gates, and error intelligence.
-version: 1.0.0
+title: Compatibility Matrix — Synarc Universal Skill Pack (v6.5.0, 8 active runtimes)
+description: Full capability × runtime matrix for Synarc Universal v6.5.0, detailing which features are supported across all 8 active AI coding agents (Roo Code shut down 2026-05-15; migrate to Cline): frontmatter, intent activation, fallback tiers, brain persistence, file ops, command execution, guardrails, session tracking, change classification, risk assessment, quality gates, and error intelligence.
+version: 6.5.0
 schema: skill-pack/v1
 ---
 
@@ -9,23 +9,23 @@ schema: skill-pack/v1
 
 ## Capability × Runtime Matrix
 
-| Capability | Codex | OpenCode | Cursor | Gemini | Claude | Copilot | Windsurf | Cline | RooCode |
-|---|---|---|---|---|---|---|---|---|---|
-| **YAML frontmatter** | Partial | Yes | Yes | Yes | Yes | Partial | Yes | Yes | Yes |
-| **Intent activation** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
-| **Tier 1 — Native** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
-| **Tier 2 — External** | No | No | No | Yes | Yes | No | No | Yes | Yes |
-| **Tier 3 — Manual** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
-| **Tier 4 — Human** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
-| **Brain persistence** | No | Yes | No | No | Yes | No | No | Yes | Yes |
-| **File operations** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes |
-| **Command execution** | Yes | Yes | No | Yes | Yes | No | Yes | Yes | Yes |
-| **Guardrails** | No | Partial | No | Partial | Yes | No | No | Partial | Partial |
-| **Session tracking** | Partial | Yes | Partial | Partial | Yes | Partial | Partial | Yes | Yes |
-| **Change classification** | Via prompt | Via prompt | Via rules | Via prompt | Via prompt | Via rules | Via rules | Via rules | Via rules |
-| **Risk assessment** | Via prompt | Via prompt | Via rules | Via prompt | Via prompt | Via rules | Via rules | Via rules | Via rules |
-| **Quality gates** | Partial | Yes | Partial | Partial | Yes | Partial | Partial | Yes | Yes |
-| **Error intelligence** | Partial | Yes | Partial | Yes | Yes | No | Partial | Yes | Yes |
+|  Capability | Codex | OpenCode | Cursor | Gemini | Claude | Copilot | Windsurf | Cline  |
+|---|---|---|---|---|---|---|---|
+|  **YAML frontmatter** | Partial | Yes | Yes | Yes | Yes | Partial | Yes | Yes  |
+|  **Intent activation** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes  |
+|  **Tier 1 — Native** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes  |
+|  **Tier 2 — External** | No | No | No | Yes | Yes | No | No | Yes  |
+|  **Tier 3 — Manual** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes  |
+|  **Tier 4 — Human** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes  |
+|  **Brain persistence** | No | Yes | No | No | Yes | No | No | Yes  |
+|  **File operations** | Yes | Yes | Yes | Yes | Yes | Yes | Yes | Yes  |
+|  **Command execution** | Yes | Yes | No | Yes | Yes | No | Yes | Yes  |
+|  **Guardrails** | No | Partial | No | Partial | Yes | No | No | Partial  |
+|  **Session tracking** | Partial | Yes | Partial | Partial | Yes | Partial | Partial | Yes  |
+|  **Change classification** | Via prompt | Via prompt | Via rules | Via prompt | Via prompt | Via rules | Via rules | Via rules  |
+|  **Risk assessment** | Via prompt | Via prompt | Via rules | Via prompt | Via prompt | Via rules | Via rules | Via rules  |
+|  **Quality gates** | Partial | Yes | Partial | Partial | Yes | Partial | Partial | Yes  |
+|  **Error intelligence** | Partial | Yes | Partial | Yes | Yes | No | Partial | Yes  |
 
 ## Legend
 
@@ -44,22 +44,22 @@ Powers skill metadata parsing — name, description, version, activation trigger
 
 ### Intent Activation
 
-Skills activate when user intent matches patterns defined in AGENTS.md or the agent's rules system. All 9 agents support this — no agent requires explicit slash commands or manual skill selection.
+Skills activate when user intent matches patterns defined in AGENTS.md or the agent's rules system. All 8 active agents support this — no agent requires explicit slash commands or manual skill selection.
 
 ### Fallback Tiers (1–4)
 
 | Tier | Description | Available On |
 |------|-------------|-------------|
 | 1 — Native Execution | Agent performs capability built-in | All agents |
-| 2 — External Integration | External tools, APIs, MCP servers | Gemini CLI, Claude Code, Cline, RooCode |
+| 2 — External Integration | External tools, APIs, MCP servers | Gemini CLI, Claude Code, Cline |
 | 3 — Manual Workflow | Step-by-step instructions | All agents |
 | 4 — Human-Assisted | Structured output for human review | All agents |
 
-Tier 2 is the most limited capability — only Claude Code, Gemini CLI, Cline, and RooCode support external tool/API integration. All other agents fall through to Tier 3 or 4.
+Tier 2 is the most limited capability — only Claude Code, Gemini CLI, Cline, and Cline support external tool/API integration. All other agents fall through to Tier 3 or 4.
 
 ### Brain Persistence
 
-Persistent memory across sessions via a `brain/` directory. OpenCode, Claude Code, Cline, and RooCode support full brain persistence with file-based session state, ledger, and checkpoints. Codex uses AGENTS.md itself as a persistence mechanism. Cursor, Gemini CLI, Copilot, and Windsurf keep state in conversation only.
+Persistent memory across sessions via a `brain/` directory. OpenCode, Claude Code, Cline, and Cline support full brain persistence with file-based session state, ledger, and checkpoints. Codex uses AGENTS.md itself as a persistence mechanism. Cursor, Gemini CLI, Copilot, and Windsurf keep state in conversation only.
 
 ### File Operations
 
@@ -67,19 +67,19 @@ All agents can read and write files, though the mechanism differs — CLI agents
 
 ### Command Execution
 
-Codex, OpenCode, Gemini CLI, Claude Code, Windsurf, Cline, and RooCode support running shell commands. Cursor and Copilot do not expose a command execution interface.
+Codex, OpenCode, Gemini CLI, Claude Code, Windsurf, Cline, and Cline support running shell commands. Cursor and Copilot do not expose a command execution interface.
 
 ### Guardrails
 
-Constitutional safety rules that block or warn on prohibited patterns. Only Claude Code has native guardrail support. OpenCode, Gemini CLI, Cline, and RooCode support partial guardrails via prompt constraints. Codex, Cursor, Copilot, and Windsurf do not natively support refusal-based guardrails.
+Constitutional safety rules that block or warn on prohibited patterns. Only Claude Code has native guardrail support. OpenCode, Gemini CLI, Cline, and Cline support partial guardrails via prompt constraints. Codex, Cursor, Copilot, and Windsurf do not natively support refusal-based guardrails.
 
 ### Session Tracking
 
-OpenCode, Claude Code, Cline, and RooCode support persistent session tracking with immutable ledgers. Codex, Cursor, Gemini CLI, Copilot, and Windsurf support session-scoped tracking only (lost when session ends).
+OpenCode, Claude Code, Cline, and Cline support persistent session tracking with immutable ledgers. Codex, Cursor, Gemini CLI, Copilot, and Windsurf support session-scoped tracking only (lost when session ends).
 
 ### Change Classification
 
-All agents support change classification, but the delivery mechanism differs. CLI agents (Codex, OpenCode, Gemini CLI, Claude Code) use prompt-injected instructions. IDE agents (Cursor, Copilot, Windsurf, Cline, RooCode) embed classification rules in their rules files.
+All agents support change classification, but the delivery mechanism differs. CLI agents (Codex, OpenCode, Gemini CLI, Claude Code) use prompt-injected instructions. IDE agents (Cursor, Copilot, Windsurf, Cline) embed classification rules in their rules files.
 
 ### Risk Assessment
 
@@ -87,11 +87,11 @@ Same pattern as change classification — universal capability delivered through
 
 ### Quality Gates
 
-OpenCode, Claude Code, Cline, and RooCode support full quality gate enforcement with pre-write and post-write verification. Other agents support partial gates limited to what the agent's architecture permits.
+OpenCode, Claude Code, Cline, and Cline support full quality gate enforcement with pre-write and post-write verification. Other agents support partial gates limited to what the agent's architecture permits.
 
 ### Error Intelligence
 
-Claude Code, Gemini CLI, OpenCode, Cline, and RooCode support the full 6-step error intelligence protocol (classify, locate, assess, apply, verify, track). Other agents have limited or no error intelligence support.
+Claude Code, Gemini CLI, OpenCode, Cline, and Cline support the full 6-step error intelligence protocol (classify, locate, assess, apply, verify, track). Other agents have limited or no error intelligence support.
 
 ## Graceful Degradation
 
@@ -105,22 +105,21 @@ If no fallback exists, a capability notification is emitted: "Capability X is no
 
 ## Dependency Resolution Support
 
-| Feature | Codex | OpenCode | Cursor | Gemini | Claude | Copilot | Windsurf | Cline | RooCode |
-|---------|-------|----------|--------|--------|--------|---------|----------|-------|---------|
-| Version constraints | No | No | No | No | No | No | No | No | No |
-| Dependency graph | No | No | No | No | No | No | No | No | No |
-| Skill manifest | Yes | Yes | No | Yes | Yes | No | No | No | No |
+|  Feature | Codex | OpenCode | Cursor | Gemini | Claude | Copilot | Windsurf | Cline  |
+| --------- | ------- | ---------- | -------- | -------- | -------- | --------- | ---------- | ------- |
+|  Version constraints | No | No | No | No | No | No | No | No  |
+|  Dependency graph | No | No | No | No | No | No | No | No  |
+|  Skill manifest | Yes | Yes | No | Yes | Yes | No | No | No  |
 
 Dependency resolution is primarily a pack-level concern — the `manifest.yaml` file defines all dependencies and version constraints. Individual agents do not enforce these constraints; they are validated during pack compilation and CI.
 
 ## Transport Layer Support
 
-| Transport | Codex | OpenCode | Cursor | Gemini | Claude | Copilot | Windsurf | Cline | RooCode |
-|-----------|-------|----------|--------|--------|--------|---------|----------|-------|---------|
-| AGENTS.md | Yes | Yes | No | Yes | Yes | Yes | No | No | No |
-| SKILL.md | No | Yes | No | No | Yes | No | No | No | No |
-| .mdc rules | No | No | Yes | No | No | No | No | No | No |
-| .windsurfrules | No | No | No | No | No | No | Yes | No | No |
-| .clinerules | No | No | No | No | No | No | No | Yes | Yes |
-| .roorules | No | No | No | No | No | No | No | Yes | Yes |
-| copilot-instructions.md | No | No | No | No | No | Yes | No | No | No |
+|  Transport | Codex | OpenCode | Cursor | Gemini | Claude | Copilot | Windsurf | Cline  |
+| ----------- | ------- | ---------- | -------- | -------- | -------- | --------- | ---------- | ------- |
+|  AGENTS.md | Yes | Yes | No | Yes | Yes | Yes | No | No  |
+|  SKILL.md | No | Yes | No | No | Yes | No | No | No  |
+|  .mdc rules | No | No | Yes | No | No | No | No | No  |
+|  .windsurfrules | No | No | No | No | No | No | Yes | No  |
+|  .clinerules | No | No | No | No | No | No | No | Yes  |
+|  copilot-instructions.md | No | No | No | No | No | Yes | No | No  |

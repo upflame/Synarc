@@ -89,22 +89,71 @@ Auto-detected. Zero configuration.
 
 Any AI coding runtime: Claude Code, Codex CLI, Cursor, Windsurf, OpenCode, Gemini CLI, Copilot, or Cline.
 
-### Installation by Runtime
+### One command (recommended)
 
-| Runtime | Method |
-|---------|--------|
-| **Claude Code** | `claude plugin marketplace add upflame/Synarc` then `claude plugin install synarc` |
-| **Codex CLI** | Copy `synarc-universal/AGENTS.md` to repo root |
-| **OpenCode** | Copy `synarc-universal/AGENTS.md` to repo root or `~/.config/opencode/AGENTS.md` |
-| **Cursor** | Copy `.cursor/rules/synarc-core.mdc` to `.cursor/rules/` |
-| **Windsurf** | Copy `shared/runtime-adapters/windsurf.md` to `.windsurfrules` |
-| **Gemini CLI** | Copy `synarc-universal/AGENTS.md` to `GEMINI.md` in repo root |
-| **Copilot** | Append `shared/runtime-adapters/copilot.md` to `.github/copilot-instructions.md` |
-| **Cline** | Copy `synarc-universal/skills/*` to `.cline/skills/` |
+From inside the project you want to add Synarc to:
+
+```bash
+git clone https://github.com/upflame-labs/synarc.git
+cd synarc
+node synarc-universal/scripts/install.js
+```
+
+The installer auto-detects your editor markers (`.cursor/`, `.claude/`, `.github/`, etc.) and installs the right file for each one. If nothing is detected, it installs the AGENTS.md fallback for Codex / OpenCode.
+
+To install for every supported editor in one shot:
+
+```bash
+node synarc-universal/scripts/install.js --target all
+```
+
+### Per-editor commands
+
+```bash
+# Install for a specific editor (repeatable)
+node synarc-universal/scripts/install.js --target claude-code
+node synarc-universal/scripts/install.js --target codex
+node synarc-universal/scripts/install.js --target opencode
+node synarc-universal/scripts/install.js --target cursor
+node synarc-universal/scripts/install.js --target windsurf
+node synarc-universal/scripts/install.js --target copilot
+node synarc-universal/scripts/install.js --target gemini-cli
+node synarc-universal/scripts/install.js --target cline
+
+# Combine: install for several at once
+node synarc-universal/scripts/install.js --target cursor --target windsurf --target copilot
+
+# Install globally (per-user, every project on this machine)
+node synarc-universal/scripts/install.js --target cline --global
+```
 
 ### Verify Installation
 
+Run the per-editor check to confirm every file landed where the editor expects it:
+
+```bash
+node synarc-universal/scripts/install.js --verify
 ```
+
+Expected output:
+
+```
+  [+] PASS  Claude Code          .claude-plugin/plugin.json (1317 bytes)
+  [+] PASS  Codex CLI            AGENTS.md (10174 bytes)
+  [+] PASS  OpenCode             AGENTS.md (project) or ~/.config/opencode/AGENTS.md (global) (10174 bytes)
+  [+] PASS  Cursor               .cursor/rules/synarc-core.mdc (1429 bytes)
+  [+] PASS  Windsurf             .windsurfrules (1784 bytes)
+  [+] PASS  GitHub Copilot       .github/copilot-instructions.md (1823 bytes)
+  [+] PASS  Gemini CLI           GEMINI.md (12170 bytes)
+  [+] PASS  Cline                .cline/skills/<skill>/SKILL.md (56 skills)
+
+Verification: 8 pass, 0 fail of 8 editors.
+```
+
+After install, start a new session in any editor and ask an engineering question. The Synarc classification headers (`WorkType`, `Risk`, `Scale`) should appear in the response.
+
+See [Installation Guide](synarc-universal/docs/installation.md) for the full per-editor deep dive.
+
 > what did we change?
 ── Session Ledger ──
 [14:00] FEATURE | auth/router.ts (+12, -3) | MEDIUM | IN_SCOPE

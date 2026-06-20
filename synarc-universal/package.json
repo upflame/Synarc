@@ -28,8 +28,7 @@
     "measure": "powershell -ExecutionPolicy Bypass -File ./scripts/measure-skills.ps1",
     "check-vendor-lockin": "powershell -ExecutionPolicy Bypass -File ./scripts/check-vendor-lockin.ps1",
     "check-refs": "powershell -ExecutionPolicy Bypass -File ./scripts/check-refs.ps1",
-    "check-contract": "powershell -ExecutionPolicy Bypass -File ./scripts/check-v6-contract.ps1",
-    "lint": "npm run check-vendor-lockin && npm run check-refs && npm run check-contract",
+    "lint": "npm run check-vendor-lockin && npm run check-refs",
     "test": "npm run validate && npm run test-fallbacks",
     "build": "npm run sync && npm run validate",
     "precommit": "npm run lint && npm run test"

@@ -1,11 +1,33 @@
 ---
-title: Usage Guide — Synarc Universal Skill Pack
-description: Comprehensive usage guide covering skill activation, writing new skills, referencing shared workflows, fallback tier usage, runtime compilation, and common workflow examples for change classification, risk assessment, and session tracking.
-version: 1.0.0
+title: Usage Guide — Synarc Universal Skill Pack (v6.5.0)
+description: Comprehensive usage guide for Synarc Universal v6.5.0 (56 skills, 8 active runtimes). Covers skill activation, writing new skills, referencing shared workflows, fallback tier usage, runtime compilation, and common workflow examples for change classification, risk assessment, and session tracking.
+version: 6.5.0
 schema: skill-pack/v1
 ---
 
-# Usage Guide — Synarc Universal Skill Pack
+# Usage Guide — Synarc Universal Skill Pack (v6.5.0)
+
+## Installation
+
+Install Synarc into your project with one command:
+
+```bash
+node synarc-universal/scripts/install.js
+```
+
+The installer auto-detects your editor markers (`.cursor/`, `.claude/`, `.github/`, etc.) and writes the right per-editor file. To install for every supported editor in one shot:
+
+```bash
+node synarc-universal/scripts/install.js --target all
+```
+
+Verify the install:
+
+```bash
+node synarc-universal/scripts/install.js --verify
+```
+
+See [Installation Guide](installation.md) for the full per-editor deep dive, and the [Migration Guide](migration-guide.md) if you're upgrading from v5.
 
 ---
 
@@ -64,7 +86,7 @@ mkdir -p skills/my-domain-skill/
 name: my-domain-skill
 title: My Domain Skill
 description: Handles intent-matching for my specific domain
-version: 1.0.0
+version: 6.5.0
 schema: skill-pack/v1
 category:
   - development
@@ -150,7 +172,7 @@ Edge cases and recovery procedures.
 
 ```yaml
 id: my-domain-skill
-version: 1.0.0
+version: 6.5.0
 schema: skill-pack/v1
 description: Handles intent-matching for my specific domain
 compatible_agents:
@@ -182,7 +204,7 @@ Shared workflows live in `shared/workflows/`. Skills reference them by relative 
 ### From a SKILL.md
 
 ```markdown
-See [change-classification workflow](../../shared/workflows/change-classification.md) for the full WorkType taxonomy.
+See [change-classification workflow](../shared/workflows/change-classification.md) for the full WorkType taxonomy.
 ```
 
 ### Reference Resolution
@@ -225,7 +247,7 @@ Tier 4 — Human-Assisted (structured output for review)
 | Tier | Behavior | Available On |
 |------|----------|-------------|
 | 1 | Agent uses built-in Read/Write tools | All agents |
-| 2 | Agent uses external file service API | Claude Code, Gemini CLI, Cline, RooCode |
+| 2 | Agent uses external file service API | Claude Code, Gemini CLI, Cline |
 | 3 | Agent outputs file contents for manual copy | All agents |
 | 4 | Agent describes changes for human implementation | All agents |
 
@@ -234,7 +256,7 @@ Tier 4 — Human-Assisted (structured output for review)
 | Tier | Behavior | Available On |
 |------|----------|-------------|
 | 1 | Agent computes risk natively via prompt rules | All agents |
-| 2 | Agent calls external risk scoring API | Claude Code, Gemini CLI, Cline, RooCode |
+| 2 | Agent calls external risk scoring API | Claude Code, Gemini CLI, Cline |
 | 3 | Agent follows manual risk matrix from SKILL.md | All agents |
 | 4 | Agent formats risk data for human evaluation | All agents |
 
@@ -263,7 +285,6 @@ Compilation transforms universal SKILL.md into the format each agent expects.
 | Copilot | `.github/copilot-instructions.md` | Compact markdown sections |
 | Windsurf | `.windsurfrules` | Compact markdown |
 | Cline | `.clinerules/` | Full skill markdown |
-| RooCode | `.roorules/` | Full skill markdown |
 
 ### Running the Compiler
 
@@ -448,3 +469,4 @@ Scale: SMALL — solo project, ~5k LOC
 3. No hard floors (documentation is not a protected domain)
 4. No ledger tracking needed (ANALYSIS and DOCS have light tracking)
 5. Session overhead: ~45ms + ~130 tokens
+

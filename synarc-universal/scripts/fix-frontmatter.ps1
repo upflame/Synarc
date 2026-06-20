@@ -1,5 +1,6 @@
 # Fix script: patch known issues in converted SKILL.md files
-$universalPath = "C:\Users\Victo\Downloads\synarc-v4\synarc\synarc-universal\skills"
+$scriptRoot = Split-Path -Parent $PSCommandPath
+$universalPath = Resolve-Path (Join-Path $scriptRoot '..\skills')
 
 $fixes = 0
 $files = Get-ChildItem -LiteralPath $universalPath -Recurse -Filter "SKILL.md"
