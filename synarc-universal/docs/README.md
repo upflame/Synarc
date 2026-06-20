@@ -10,16 +10,23 @@ This is the index of the Synarc Universal v6.5.0 documentation. The pack ships 5
 
 ## Quick start
 
-`ash
-# One command — auto-detects your editor markers
+The installer is **scenario-based** - it auto-detects your project state and offers the right action (fresh, add, remove, migrate-v5, verify, status, doctor). See the [Scenarios section in installation.md](installation.md#scenarios) for the full per-scenario walkthrough.
+
+```bash
+# Interactive picker (auto-detects scenario)
 node synarc-universal/scripts/install.js
 
-# Or install for every supported editor in one shot
+# Or run a specific scenario
+node synarc-universal/scripts/install.js fresh --target cursor
+node synarc-universal/scripts/install.js add windsurf
+node synarc-universal/scripts/install.js remove cursor
+
+# Install for every supported editor in one shot
 node synarc-universal/scripts/install.js --target all
 
 # Verify the install
 node synarc-universal/scripts/install.js --verify
-`
+```
 
 ## Documentation map
 

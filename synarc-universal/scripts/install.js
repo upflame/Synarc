@@ -1,380 +1,680 @@
 #!/usr/bin/env node
-// Synarc Universal Installer — per-editor install + verify
-// Each editor has its own install + check function for clean separation.
+// Synarc Universal Installer - scenario-based, interactive picker + per-editor install/verify.
+const fs = require("fs");
+const path = require("path");
+const readline = require("node:readline");
 
-const fs = require('fs');
-const path = require('path');
-
-const SYNARC_ROOT = path.resolve(__dirname, '..');
-const PACK_VERSION = '6.5.0';
-
-// ---------- Path helpers ----------
+const SYNARC_ROOT = path.resolve(__dirname, "..");
+const PACK_VERSION = "6.5.0";
 
 function findSource(...relPaths) {
   for (const rel of relPaths) {
     const inside = path.join(SYNARC_ROOT, rel);
     if (fs.existsSync(inside)) return inside;
-    const outside = path.join(SYNARC_ROOT, '..', rel);
+    const outside = path.join(SYNARC_ROOT, "..", rel);
     if (fs.existsSync(outside)) return outside;
   }
   return null;
 }
 
-function logInstall(label) { console.log(`  [+] ${label}`); }
-function logSkip(label)   { console.log(`  [~] ${label}`); }
-function logFail(label)   { console.log(`  [!] ${label}`); }
-
-// ---------- Per-editor install implementations ----------
-// Each takes a targetDir (the user's project root) and returns a status.
+function logInstall(label) { console.log("  [+] " + label); }
+function logSkip(label)   { console.log("  [~] " + label); }
+function logFail(label)   { console.log("  [!] " + label); }
 
 function installClaudeCode(targetDir) {
-  const src = findSource('.claude-plugin/plugin.json');
-  if (!src) return { ok: false, reason: 'source .claude-plugin/plugin.json not found' };
-  const target = path.join(targetDir, '.claude-plugin', 'plugin.json');
+  const src = findSource(".claude-plugin/plugin.json");
+  if (!src) return { ok: false, reason: "source .claude-plugin/plugin.json not found" };
+  const target = path.join(targetDir, ".claude-plugin", "plugin.json");
   fs.mkdirSync(path.dirname(target), { recursive: true });
-  if (fs.existsSync(target)) return { ok: true, action: 'skipped', path: target };
+  if (fs.existsSync(target)) return { ok: true, action: "skipped", path: target };
   fs.cpSync(src, target);
-  return { ok: true, action: 'installed', path: target };
+  return { ok: true, action: "installed", path: target };
 }
 
 function installCodex(targetDir) {
-  // Codex reads AGENTS.md from project root
-  const src = path.join(SYNARC_ROOT, 'AGENTS.md');
-  if (!fs.existsSync(src)) return { ok: false, reason: 'source AGENTS.md not found' };
-  const target = path.join(targetDir, 'AGENTS.md');
-  if (fs.existsSync(target)) return { ok: true, action: 'skipped', path: target };
+  const src = path.join(SYNARC_ROOT, "AGENTS.md");
+  if (!fs.existsSync(src)) return { ok: false, reason: "source AGENTS.md not found" };
+  const target = path.join(targetDir, "AGENTS.md");
+  if (fs.existsSync(target)) return { ok: true, action: "skipped", path: target };
   fs.cpSync(src, target);
-  return { ok: true, action: 'installed', path: target };
+  return { ok: true, action: "installed", path: target };
 }
 
-function installOpenCode(targetDir) {
-  // OpenCode reads AGENTS.md from project root or ~/.config/opencode/AGENTS.md
-  return installCodex(targetDir);
-}
+function installOpenCode(targetDir) { return installCodex(targetDir); }
 
 function installCursor(targetDir) {
-  // Cursor reads .cursor/rules/*.mdc
-  const src = findSource('.cursor/rules/synarc-core.mdc');
-  if (!src) return { ok: false, reason: 'source .cursor/rules/synarc-core.mdc not found' };
-  const targetDir2 = path.join(targetDir, '.cursor', 'rules');
+  const src = findSource(".cursor/rules/synarc-core.mdc");
+  if (!src) return { ok: false, reason: "source .cursor/rules/synarc-core.mdc not found" };
+  const targetDir2 = path.join(targetDir, ".cursor", "rules");
   fs.mkdirSync(targetDir2, { recursive: true });
-  const target = path.join(targetDir2, 'synarc-core.mdc');
-  if (fs.existsSync(target)) return { ok: true, action: 'skipped', path: target };
+  const target = path.join(targetDir2, "synarc-core.mdc");
+  if (fs.existsSync(target)) return { ok: true, action: "skipped", path: target };
   fs.cpSync(src, target);
-  return { ok: true, action: 'installed', path: target };
+  return { ok: true, action: "installed", path: target };
 }
 
 function installWindsurf(targetDir) {
-  // Windsurf reads .windsurfrules (compiled from windsurf.md adapter)
-  const src = path.join(SYNARC_ROOT, 'shared', 'runtime-adapters', 'windsurf.md');
-  if (!fs.existsSync(src)) return { ok: false, reason: 'source synarc-universal/shared/runtime-adapters/windsurf.md not found' };
-  const target = path.join(targetDir, '.windsurfrules');
-  if (fs.existsSync(target)) return { ok: true, action: 'skipped', path: target };
+  const src = path.join(SYNARC_ROOT, "shared", "runtime-adapters", "windsurf.md");
+  if (!fs.existsSync(src)) return { ok: false, reason: "source synarc-universal/shared/runtime-adapters/windsurf.md not found" };
+  const target = path.join(targetDir, ".windsurfrules");
+  if (fs.existsSync(target)) return { ok: true, action: "skipped", path: target };
   fs.cpSync(src, target);
-  return { ok: true, action: 'installed', path: target };
+  return { ok: true, action: "installed", path: target };
 }
 
 function installCopilot(targetDir) {
-  // Copilot reads .github/copilot-instructions.md (appended)
-  const src = path.join(SYNARC_ROOT, 'shared', 'runtime-adapters', 'copilot.md');
-  if (!fs.existsSync(src)) return { ok: false, reason: 'source synarc-universal/shared/runtime-adapters/copilot.md not found' };
-  const target = path.join(targetDir, '.github', 'copilot-instructions.md');
+  const src = path.join(SYNARC_ROOT, "shared", "runtime-adapters", "copilot.md");
+  if (!fs.existsSync(src)) return { ok: false, reason: "source synarc-universal/shared/runtime-adapters/copilot.md not found" };
+  const target = path.join(targetDir, ".github", "copilot-instructions.md");
   fs.mkdirSync(path.dirname(target), { recursive: true });
-  const content = fs.readFileSync(src, 'utf-8');
-  fs.appendFileSync(target, '\n' + content);
-  return { ok: true, action: 'appended', path: target };
+  const content = fs.readFileSync(src, "utf-8");
+  fs.appendFileSync(target, "\n" + content);
+  return { ok: true, action: "appended", path: target };
 }
 
 function installGeminiCli(targetDir) {
-  // Gemini CLI reads GEMINI.md from project root
-  // Generated from AGENTS.md + gemini-cli.md adapter
-  const target = path.join(targetDir, 'GEMINI.md');
-  if (fs.existsSync(target)) return { ok: true, action: 'skipped', path: target };
-  const agentsSrc = path.join(SYNARC_ROOT, 'AGENTS.md');
-  if (!fs.existsSync(agentsSrc)) return { ok: false, reason: 'source AGENTS.md not found' };
-  const adapterSrc = path.join(SYNARC_ROOT, 'shared', 'runtime-adapters', 'gemini-cli.md');
-  const agents = fs.readFileSync(agentsSrc, 'utf-8');
+  const target = path.join(targetDir, "GEMINI.md");
+  if (fs.existsSync(target)) return { ok: true, action: "skipped", path: target };
+  const agentsSrc = path.join(SYNARC_ROOT, "AGENTS.md");
+  if (!fs.existsSync(agentsSrc)) return { ok: false, reason: "source AGENTS.md not found" };
+  const adapterSrc = path.join(SYNARC_ROOT, "shared", "runtime-adapters", "gemini-cli.md");
+  const agents = fs.readFileSync(agentsSrc, "utf-8");
   const adapter = fs.existsSync(adapterSrc)
-    ? '\n\n<!-- Runtime adapter ---\n' + fs.readFileSync(adapterSrc, 'utf-8') + '\n--->\n'
-    : '';
-  const header = `<!-- Generated by Synarc Universal v${PACK_VERSION} on ${new Date().toISOString()} -->\n`;
-  fs.writeFileSync(target, header + agents + adapter, 'utf-8');
-  return { ok: true, action: 'generated', path: target };
+    ? "\n\n<!-- Runtime adapter ---\n" + fs.readFileSync(adapterSrc, "utf-8") + "\n--->\n"
+    : "";
+  const header = "<!-- Generated by Synarc Universal v" + PACK_VERSION + " on " + new Date().toISOString() + " -->\n";
+  fs.writeFileSync(target, header + agents + adapter, "utf-8");
+  return { ok: true, action: "generated", path: target };
 }
 
 function installCline(targetDir) {
-  // Cline reads .cline/skills/<skill>/SKILL.md
-  const src = path.join(SYNARC_ROOT, 'skills');
-  if (!fs.existsSync(src)) return { ok: false, reason: 'source synarc-universal/skills/ not found' };
-  const targetDir2 = path.join(targetDir, '.cline', 'skills');
+  const src = path.join(SYNARC_ROOT, "skills");
+  if (!fs.existsSync(src)) return { ok: false, reason: "source synarc-universal/skills not found" };
+  const targetDir2 = path.join(targetDir, ".cline", "skills");
   fs.mkdirSync(targetDir2, { recursive: true });
   let copied = 0, skipped = 0;
   for (const skill of fs.readdirSync(src)) {
-    const skillPath = path.join(src, skill);
-    if (fs.statSync(skillPath).isDirectory()) {
-      const target = path.join(targetDir2, skill);
-      if (!fs.existsSync(target)) { fs.cpSync(skillPath, target, { recursive: true }); copied++; }
-      else { skipped++; }
-    }
+    const fromDir = path.join(src, skill);
+    if (!fs.statSync(fromDir).isDirectory()) continue;
+    const toDir = path.join(targetDir2, skill);
+    if (fs.existsSync(toDir)) { skipped++; continue; }
+    fs.cpSync(fromDir, toDir, { recursive: true });
+    copied++;
   }
-  return { ok: true, action: copied > 0 ? 'installed' : 'skipped', path: targetDir2, copied, skipped };
+  return { ok: true, action: copied > 0 ? "installed" : "skipped", path: targetDir2, copied, skipped };
 }
-
-// ---------- Per-editor verify (check what is on disk) ----------
 
 function verifyFile(targetDir, relPath, minBytes = 100) {
   const full = path.join(targetDir, relPath);
-  if (!fs.existsSync(full)) return { present: false, reason: 'file not found' };
+  if (!fs.existsSync(full)) return { present: false, reason: "file not found" };
   const stat = fs.statSync(full);
-  if (stat.size < minBytes) return { present: true, size: stat.size, reason: 'file too small (< '+minBytes+' bytes)' };
-  const content = fs.readFileSync(full, 'utf-8');
+  if (stat.size < minBytes) return { present: true, size: stat.size, reason: "file too small (< " + minBytes + " bytes)" };
+  const content = fs.readFileSync(full, "utf-8");
   return { present: true, size: stat.size, hasContent: content.trim().length > 0 };
 }
 
-function verifyClaudeCode(targetDir) {
-  return { name: 'Claude Code', file: '.claude-plugin/plugin.json', ...verifyFile(targetDir, '.claude-plugin/plugin.json', 500) };
-}
-function verifyCodex(targetDir) {
-  return { name: 'Codex CLI', file: 'AGENTS.md', ...verifyFile(targetDir, 'AGENTS.md', 500) };
-}
-function verifyOpenCode(targetDir) {
-  return { name: 'OpenCode', file: 'AGENTS.md (project) or ~/.config/opencode/AGENTS.md (global)', ...verifyFile(targetDir, 'AGENTS.md', 500) };
-}
-function verifyCursor(targetDir) {
-  return { name: 'Cursor', file: '.cursor/rules/synarc-core.mdc', ...verifyFile(targetDir, '.cursor/rules/synarc-core.mdc', 200) };
-}
-function verifyWindsurf(targetDir) {
-  return { name: 'Windsurf', file: '.windsurfrules', ...verifyFile(targetDir, '.windsurfrules', 200) };
-}
-function verifyCopilot(targetDir) {
-  return { name: 'GitHub Copilot', file: '.github/copilot-instructions.md', ...verifyFile(targetDir, '.github/copilot-instructions.md', 200) };
-}
-function verifyGeminiCli(targetDir) {
-  return { name: 'Gemini CLI', file: 'GEMINI.md', ...verifyFile(targetDir, 'GEMINI.md', 500) };
-}
+function verifyClaudeCode(targetDir) { return { name: "Claude Code", file: ".claude-plugin/plugin.json", ...verifyFile(targetDir, ".claude-plugin/plugin.json", 500) }; }
+function verifyCodex(targetDir)      { return { name: "Codex CLI",   file: "AGENTS.md",                  ...verifyFile(targetDir, "AGENTS.md", 500) }; }
+function verifyOpenCode(targetDir)   { return { name: "OpenCode",    file: "AGENTS.md (project) or ~/.config/opencode/AGENTS.md (global)", ...verifyFile(targetDir, "AGENTS.md", 500) }; }
+function verifyCursor(targetDir)     { return { name: "Cursor",      file: ".cursor/rules/synarc-core.mdc", ...verifyFile(targetDir, ".cursor/rules/synarc-core.mdc", 200) }; }
+function verifyWindsurf(targetDir)   { return { name: "Windsurf",    file: ".windsurfrules",                 ...verifyFile(targetDir, ".windsurfrules", 200) }; }
+function verifyCopilot(targetDir)    { return { name: "GitHub Copilot", file: ".github/copilot-instructions.md", ...verifyFile(targetDir, ".github/copilot-instructions.md", 200) }; }
+function verifyGeminiCli(targetDir)  { return { name: "Gemini CLI",  file: "GEMINI.md",                       ...verifyFile(targetDir, "GEMINI.md", 500) }; }
 function verifyCline(targetDir) {
-  const dir = path.join(targetDir, '.cline', 'skills');
-  if (!fs.existsSync(dir)) return { name: 'Cline', file: '.cline/skills/<skill>/SKILL.md', present: false, reason: '.cline/skills/ directory not found' };
+  const dir = path.join(targetDir, ".cline", "skills");
+  if (!fs.existsSync(dir)) return { name: "Cline", file: ".cline/skills/<skill>/SKILL.md", present: false, reason: ".cline/skills/ directory not found" };
   const entries = fs.readdirSync(dir).filter(s => fs.statSync(path.join(dir, s)).isDirectory());
-  return { name: 'Cline', file: '.cline/skills/<skill>/SKILL.md', present: true, count: entries.length, sample: entries.slice(0, 3).join(', ') };
+  return { name: "Cline", file: ".cline/skills/<skill>/SKILL.md", present: entries.length > 0, count: entries.length, sample: entries.slice(0, 3).join(", ") };
 }
-
-// ---------- Editor registry ----------
 
 const EDITORS = [
-  { id: 'claude-code', label: 'Claude Code',       install: installClaudeCode, verify: verifyClaudeCode,
-    description: 'Native plugin marketplace; full brain directory + hooks' },
-  { id: 'codex',       label: 'Codex CLI',         install: installCodex,       verify: verifyCodex,
-    description: 'Reads AGENTS.md from project root' },
-  { id: 'opencode',    label: 'OpenCode',          install: installOpenCode,    verify: verifyOpenCode,
-    description: 'Reads AGENTS.md from project root or ~/.config/opencode/' },
-  { id: 'cursor',      label: 'Cursor',            install: installCursor,      verify: verifyCursor,
-    description: 'Reads .cursor/rules/*.mdc with YAML frontmatter' },
-  { id: 'windsurf',    label: 'Windsurf',          install: installWindsurf,    verify: verifyWindsurf,
-    description: 'Reads .windsurfrules from project root' },
-  { id: 'copilot',     label: 'GitHub Copilot',    install: installCopilot,     verify: verifyCopilot,
-    description: 'Reads .github/copilot-instructions.md' },
-  { id: 'gemini-cli',  label: 'Gemini CLI',        install: installGeminiCli,   verify: verifyGeminiCli,
-    description: 'Reads GEMINI.md from project root (1M-token context)' },
-  { id: 'cline',       label: 'Cline',             install: installCline,       verify: verifyCline,
-    description: 'Reads .cline/skills/<skill>/SKILL.md' }
+  { id: "claude-code", label: "Claude Code",       install: installClaudeCode, verify: verifyClaudeCode, description: "Native plugin marketplace; full brain directory + hooks" },
+  { id: "codex",       label: "Codex CLI",         install: installCodex,       verify: verifyCodex,      description: "Reads AGENTS.md from project root" },
+  { id: "opencode",    label: "OpenCode",          install: installOpenCode,    verify: verifyOpenCode,   description: "Reads AGENTS.md from project root or ~/.config/opencode/" },
+  { id: "cursor",      label: "Cursor",            install: installCursor,      verify: verifyCursor,     description: "Reads .cursor/rules/*.mdc with YAML frontmatter" },
+  { id: "windsurf",    label: "Windsurf",          install: installWindsurf,    verify: verifyWindsurf,   description: "Reads .windsurfrules from project root" },
+  { id: "copilot",     label: "GitHub Copilot",    install: installCopilot,     verify: verifyCopilot,    description: "Reads .github/copilot-instructions.md" },
+  { id: "gemini-cli",  label: "Gemini CLI",        install: installGeminiCli,   verify: verifyGeminiCli,  description: "Reads GEMINI.md from project root (1M-token context)" },
+  { id: "cline",       label: "Cline",             install: installCline,       verify: verifyCline,      description: "Reads .cline/skills/<skill>/SKILL.md" }
 ];
 
-// ---------- Detection ----------
-
 function detectMarkers(targetDir) {
-  // Returns the set of editor IDs whose marker file/dir is present
   const present = new Set();
-  if (fs.existsSync(path.join(targetDir, '.claude')))                present.add('claude-code');
-  if (fs.existsSync(path.join(targetDir, 'AGENTS.md')))              { present.add('codex'); present.add('opencode'); }
-  if (fs.existsSync(path.join(targetDir, '.cursor')))                present.add('cursor');
-  if (fs.existsSync(path.join(targetDir, '.windsurfrules')))         present.add('windsurf');
-  if (fs.existsSync(path.join(targetDir, '.github')))                present.add('copilot');
-  if (fs.existsSync(path.join(targetDir, 'GEMINI.md')))              present.add('gemini-cli');
-  if (fs.existsSync(path.join(targetDir, '.cline')))                 present.add('cline');
+  if (fs.existsSync(path.join(targetDir, ".claude")))         present.add("claude-code");
+  if (fs.existsSync(path.join(targetDir, "AGENTS.md")))        { present.add("codex"); present.add("opencode"); }
+  if (fs.existsSync(path.join(targetDir, ".cursor")))          present.add("cursor");
+  if (fs.existsSync(path.join(targetDir, ".windsurfrules")))   present.add("windsurf");
+  if (fs.existsSync(path.join(targetDir, ".github")))          present.add("copilot");
+  if (fs.existsSync(path.join(targetDir, "GEMINI.md")))        present.add("gemini-cli");
+  if (fs.existsSync(path.join(targetDir, ".cline")))           present.add("cline");
   return present;
+}
+
+function detectV5Markers(targetDir) {
+  const v5 = [];
+  if (fs.existsSync(path.join(targetDir, "plugins", "synarc"))) v5.push("plugins/synarc/");
+  if (fs.existsSync(path.join(targetDir, ".cursorrules")))         v5.push(".cursorrules");
+  if (fs.existsSync(path.join(targetDir, ".clinerules")))          v5.push(".clinerules");
+  return v5;
 }
 
 function getExplicitTargets() {
   const out = [];
   for (let i = 0; i < process.argv.length; i++) {
     const a = process.argv[i];
-    if (a === '--target' && i + 1 < process.argv.length) out.push(process.argv[i + 1]);
-    else if (a.startsWith('--target=')) out.push(a.slice('--target='.length));
+    if (a === "--target" && i + 1 < process.argv.length) out.push(process.argv[i + 1]);
+    else if (a.startsWith("--target=")) out.push(a.slice("--target=".length));
   }
   return out;
 }
 
-function hasFlag(flag) {
-  return process.argv.includes(flag);
+function hasFlag(flag) { return process.argv.includes(flag); }
+
+function readLockFile(targetDir) {
+  const lockPath = path.join(targetDir, "synarc.lock.json");
+  if (!fs.existsSync(lockPath)) return null;
+  try { return JSON.parse(fs.readFileSync(lockPath, "utf-8")); } catch { return null; }
 }
 
-// ---------- Lock file ----------
-
-function writeLockFile(targetDir, results) {
-  const lockPath = path.join(targetDir, 'synarc.lock.json');
+function writeLockFile(targetDir, results, scenario) {
+  const lockPath = path.join(targetDir, "synarc.lock.json");
   const records = {};
   for (const r of results) {
     if (r.ok) records[r.id] = { installed: new Date().toISOString(), path: r.path, action: r.action };
   }
   const lock = {
-    schema: 'synarc-lock/v1',
+    schema: "synarc-lock/v1",
     pack_version: PACK_VERSION,
     installer_version: PACK_VERSION,
+    scenario: scenario || "install",
     generated_at: new Date().toISOString(),
     targets: results.filter(r => r.ok).map(r => ({ id: r.id, label: r.label, installed: records[r.id].installed }))
   };
   try {
-    fs.writeFileSync(lockPath, JSON.stringify(lock, null, 2) + '\n', 'utf-8');
+    fs.writeFileSync(lockPath, JSON.stringify(lock, null, 2) + "\n", "utf-8");
     return { ok: true, path: lockPath, targets: lock.targets };
   } catch (e) { return { ok: false, reason: e.message }; }
 }
 
-// ---------- Sub-commands ----------
-
-function cmdInstall(targetDir) {
-  console.log('Synarc Universal v' + PACK_VERSION + ' \u2014 Installer');
-  console.log('Target: ' + targetDir);
-  console.log('');
-
-  const explicit = getExplicitTargets();
-  if (explicit.length > 0) {
-    console.log('Explicit targets: ' + explicit.join(', '));
-    console.log('');
-  }
-
+function classifyScenario(targetDir) {
   const detected = detectMarkers(targetDir);
-  const targetIds = explicit.length > 0
-    ? new Set(explicit)
-    : (detected.size > 0 ? detected : new Set(['codex', 'opencode']));
-
-  if (detected.size > 0) {
-    console.log('Auto-detected markers: ' + Array.from(detected).join(', '));
-    console.log('');
+  const lock = readLockFile(targetDir);
+  const v5 = detectV5Markers(targetDir);
+  if (v5.length > 0) return { id: "migrate-v5", label: "Migrate from v5 plugin", detected, lock, v5 };
+  if (lock && detected.size >= 2) return { id: "multi",  label: "Multi-editor project", detected, lock };
+  if (lock && detected.size === 1) {
+    const installed = (lock.targets || []).map(t => t.id);
+    const missing = EDITORS.filter(e => !installed.includes(e.id));
+    if (missing.length > 0) return { id: "add", label: "Add an editor to existing Synarc", detected, lock, missing: missing.map(m => m.id) };
+    return { id: "upgrade", label: "Re-install / upgrade", detected, lock };
   }
+  return { id: "fresh", label: "Fresh project", detected, lock };
+}
 
+function ask(question, defaultYes) {
+  if (hasFlag("--yes") || hasFlag("-y")) return Promise.resolve(true);
+  if (!process.stdin.isTTY || !process.stdout.isTTY) return Promise.resolve(true);
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  const hint = defaultYes ? " [Y/n] " : " [y/N] ";
+  return new Promise(resolve => {
+    rl.question(question + hint, answer => {
+      rl.close();
+      const a = String(answer || "").trim().toLowerCase();
+      if (a === "") resolve(defaultYes);
+      else resolve(a === "y" || a === "yes");
+    });
+  });
+}
+
+async function pickEditors(question, options, multi) {
+  if (hasFlag("--yes") || hasFlag("-y")) {
+    return multi ? options.slice(0, 2).map(o => o.id) : [options[0].id];
+  }
+  if (!process.stdin.isTTY) return [options[0].id];
+  console.log(question);
+  for (let i = 0; i < options.length; i++) {
+    console.log("  " + (i + 1) + ") " + options[i].label + " (" + options[i].id + ")");
+  }
+  if (multi) {
+    console.log("  a) All editors");
+    console.log("Enter one number, or comma-separated list (e.g. 1,3).");
+  } else {
+    console.log("Enter a number:");
+  }
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  return new Promise(resolve => {
+    rl.question("> ", answer => {
+      rl.close();
+      const a = String(answer || "").trim().toLowerCase();
+      if (multi && a === "a") return resolve(options.map(o => o.id));
+      if (a === "") return resolve([options[0].id]);
+      const parts = a.split(",").map(s => s.trim()).filter(Boolean);
+      const ids = [];
+      for (const p of parts) {
+        const n = parseInt(p, 10);
+        if (!isNaN(n) && n >= 1 && n <= options.length) ids.push(options[n - 1].id);
+        else if (options.find(o => o.id === p)) ids.push(p);
+      }
+      if (ids.length === 0) ids.push(options[0].id);
+      resolve(multi ? ids : [ids[0]]);
+    });
+  });
+}
+
+function preflight(targetDir) {
+  const nodeMajor = parseInt(process.versions.node.split(".")[0], 10);
+  if (nodeMajor < 18) { console.error("[!] Node 18+ required. Detected: " + process.versions.node); process.exit(1); }
+  try { fs.accessSync(targetDir, fs.constants.W_OK); } catch { console.error("[!] Target dir not writable: " + targetDir); process.exit(1); }
+  if (!fs.existsSync(SYNARC_ROOT)) { console.error("[!] synarc-universal/ not found at " + SYNARC_ROOT); process.exit(1); }
+  return { node: process.versions.node, target: targetDir, time: new Date().toISOString() };
+}
+
+function runInstall(targetDir, ids, scenario) {
+  console.log("");
   const results = [];
-  for (const e of EDITORS) {
-    if (!targetIds.has(e.id)) continue;
-    console.log('Installing for: ' + e.label);
+  for (const id of ids) {
+    const e = EDITORS.find(x => x.id === id);
+    if (!e) { logFail(id + " - unknown editor"); continue; }
+    console.log("Installing for: " + e.label);
     const r = e.install(targetDir);
-    if (!r.ok) {
-      logFail(e.label + ' \u2014 ' + r.reason);
-    } else if (r.action === 'skipped') {
-      logSkip(r.path.replace(targetDir, '.') + ' (already present)');
-    } else if (r.action === 'installed') {
-      logInstall(r.path.replace(targetDir, '.'));
-    } else if (r.action === 'appended') {
-      logInstall('appended to ' + r.path.replace(targetDir, '.'));
-    } else if (r.action === 'generated') {
-      logInstall('generated ' + r.path.replace(targetDir, '.'));
-    } else if (r.action === 'installed' && r.copied !== undefined) {
-      logInstall(r.path.replace(targetDir, '.') + ' (' + r.copied + ' new, ' + r.skipped + ' already present)');
-    }
+    if (!r.ok) logFail(e.label + " - " + r.reason);
+    else if (r.action === "skipped") logSkip(r.path.replace(targetDir, ".") + " (already present)");
+    else if (r.action === "appended") logInstall("appended to " + r.path.replace(targetDir, "."));
+    else if (r.action === "generated") logInstall("generated " + r.path.replace(targetDir, "."));
+    else if (r.action === "installed" && r.copied !== undefined) logInstall(r.path.replace(targetDir, ".") + " (" + r.copied + " new, " + r.skipped + " already present)");
+    else if (r.action === "installed") logInstall(r.path.replace(targetDir, "."));
     results.push({ id: e.id, label: e.label, ...r });
   }
-
-  if (results.length > 0) {
-    console.log('');
-    const lock = writeLockFile(targetDir, results);
-    if (lock.ok) logInstall('synarc.lock.json written (' + lock.targets.length + ' targets)');
+  // For add scenario: merge with existing lock file instead of replacing.
+  if (scenario === "add" && results.length > 0) {
+    const existing = readLockFile(targetDir);
+    if (existing && Array.isArray(existing.targets)) {
+      const have = new Set(existing.targets.map(t => t.id));
+      for (const r of results) {
+        if (r.ok && !have.has(r.id)) {
+          existing.targets.push({ id: r.id, label: r.label, installed: new Date().toISOString() });
+        }
+      }
+      existing.scenario = "add";
+      existing.generated_at = new Date().toISOString();
+      try {
+        fs.writeFileSync(path.join(targetDir, "synarc.lock.json"), JSON.stringify(existing, null, 2) + "\n", "utf-8");
+        logInstall("synarc.lock.json updated (" + existing.targets.length + " editors)");
+      } catch (e) {
+        logFail("synarc.lock.json update failed: " + e.message);
+      }
+    } else {
+      const lock = writeLockFile(targetDir, results, scenario);
+      if (lock.ok) logInstall("synarc.lock.json written (" + lock.targets.length + " targets)");
+    }
+  } else if (results.length > 0) {
+    const lock = writeLockFile(targetDir, results, scenario);
+    if (lock.ok) logInstall("synarc.lock.json written (" + lock.targets.length + " targets)");
   }
-  console.log('');
-  console.log('Synarc installed for ' + results.filter(r => r.ok).length + ' of ' + results.length + ' target(s).');
-  console.log('Verify: node install.js --verify');
-  console.log('Full docs: synarc-universal/docs/installation.md');
+  const okCount = results.filter(r => r.ok).length;
+  console.log("");
+  console.log("Synarc installed for " + okCount + " of " + results.length + " target(s).");
+  console.log("Verify: node install.js verify");
+  return results;
+}
+
+async function cmdInteractive(targetDir) {
+  const pf = preflight(targetDir);
+  console.log("Synarc Universal v" + PACK_VERSION + " - Installer");
+  console.log("Target: " + targetDir + "  (Node " + pf.node + ")");
+  console.log("");
+  const scenario = classifyScenario(targetDir);
+  if (scenario.detected.size > 0) {
+    console.log("Detected editors: " + Array.from(scenario.detected).join(", "));
+  } else {
+    console.log("No editor markers found.");
+  }
+  if (scenario.v5 && scenario.v5.length > 0) {
+    console.log("v5 plugin files detected: " + scenario.v5.join(", "));
+  }
+  console.log("Scenario: " + scenario.label);
+  console.log("");
+  if (scenario.id === "migrate-v5") {
+    const proceed = await ask("Migrate v5 plugin files to v6.5.0?");
+    if (!proceed) { console.log("Cancelled."); return; }
+    return cmdMigrateV5(targetDir);
+  }
+  if (scenario.id === "fresh") {
+    const ids = await pickEditors("Which editor(s) do you want to install Synarc for?", EDITORS, true);
+    return runInstall(targetDir, ids, "fresh");
+  }
+  if (scenario.id === "add") {
+    const installed = (scenario.lock && scenario.lock.targets || []).map(t => t.id);
+    const missing = EDITORS.filter(e => !installed.includes(e.id));
+    const ids = await pickEditors("Add another editor. Currently installed: " + installed.join(", "), missing, true);
+    return runInstall(targetDir, ids, "add");
+  }
+  const proceed = await ask("Re-install / upgrade current editors?");
+  if (!proceed) { console.log("Cancelled."); return; }
+  const ids = Array.from(scenario.detected);
+  return runInstall(targetDir, ids, scenario.id);
+}
+
+function cmdFresh(targetDir, explicit) {
+  console.log("Synarc Universal v" + PACK_VERSION + " - Fresh Install");
+  console.log("Target: " + targetDir);
+  const ids = explicit.length > 0 ? explicit : EDITORS.map(e => e.id);
+  return runInstall(targetDir, ids, "fresh");
+}
+
+function cmdAdd(targetDir, editorId) {
+  const e = EDITORS.find(x => x.id === editorId);
+  if (!e) { console.error("[!] Unknown editor: " + editorId); console.error("Available: " + EDITORS.map(x => x.id).join(", ")); process.exit(1); }
+  console.log("Synarc Universal v" + PACK_VERSION + " - Add Editor");
+  console.log("Target: " + targetDir);
+  console.log("Adding: " + e.label);
+  return runInstall(targetDir, [editorId], "add");
+}
+
+function cmdRemove(targetDir, editorId) {
+  const e = EDITORS.find(x => x.id === editorId);
+  if (!e) { console.error("[!] Unknown editor: " + editorId); console.error("Available: " + EDITORS.map(x => x.id).join(", ")); process.exit(1); }
+  console.log("Synarc Universal v" + PACK_VERSION + " - Remove Editor");
+  console.log("Target: " + targetDir);
+  const removeMap = {
+    "claude-code": [".claude-plugin"],
+    "codex":       ["AGENTS.md"],
+    "opencode":    ["AGENTS.md"],
+    "cursor":      [path.join(".cursor", "rules", "synarc-core.mdc")],
+    "windsurf":    [".windsurfrules"],
+    "copilot":     [path.join(".github", "copilot-instructions.md")],
+    "gemini-cli":  ["GEMINI.md"],
+    "cline":       [path.join(".cline", "skills")]
+  };
+  const paths = removeMap[editorId] || [];
+  let removed = 0;
+  for (const rel of paths) {
+    const full = path.join(targetDir, rel);
+    if (fs.existsSync(full)) {
+      fs.rmSync(full, { recursive: true, force: true });
+      logInstall("removed " + rel);
+      removed++;
+    } else {
+      logSkip(rel + " (not present)");
+    }
+  }
+  const lock = readLockFile(targetDir);
+  if (lock) {
+    lock.targets = (lock.targets || []).filter(t => t.id !== editorId);
+    lock.generated_at = new Date().toISOString();
+    if (lock.targets.length === 0) {
+      fs.unlinkSync(path.join(targetDir, "synarc.lock.json"));
+      logInstall("removed synarc.lock.json (no editors left)");
+    } else {
+      fs.writeFileSync(path.join(targetDir, "synarc.lock.json"), JSON.stringify(lock, null, 2) + "\n", "utf-8");
+      logInstall("updated synarc.lock.json (" + lock.targets.length + " editors left)");
+    }
+  }
+  console.log("");
+  console.log("Removed " + editorId + " from " + targetDir + " (" + removed + " path(s)).");
+  console.log("Verify: node install.js verify");
+}
+
+function cmdStatus(targetDir) {
+  console.log("Synarc Universal v" + PACK_VERSION + " - Status");
+  console.log("Target: " + targetDir);
+  console.log("");
+  const detected = detectMarkers(targetDir);
+  const lock = readLockFile(targetDir);
+  console.log("Detected editor markers: " + (detected.size > 0 ? Array.from(detected).join(", ") : "(none)"));
+  if (lock) {
+    console.log("synarc.lock.json: pack v" + lock.pack_version + ", installer v" + lock.installer_version + ", scenario=" + (lock.scenario || "n/a"));
+    console.log("Installed targets:");
+    for (const t of (lock.targets || [])) console.log("  - " + t.id + " (" + t.label + ") - installed " + t.installed);
+  } else {
+    console.log("synarc.lock.json: (not present - run install)");
+  }
+  const v5 = detectV5Markers(targetDir);
+  if (v5.length > 0) console.log("v5 plugin files detected: " + v5.join(", ") + " - run node install.js migrate-v5");
+}
+
+function cmdDoctor(targetDir) {
+  console.log("Synarc Universal v" + PACK_VERSION + " - Doctor");
+  console.log("Target: " + targetDir);
+  console.log("");
+  console.log("Node: " + process.versions.node + " (>= 18 required)");
+  try { console.log("Git:  " + require("child_process").execSync("git --version", { encoding: "utf-8" }).trim()); }
+  catch { console.log("Git:  (not found on PATH)"); }
+  console.log("Pack: " + SYNARC_ROOT);
+  console.log("");
+  cmdVerify(targetDir);
+}
+
+function cmdMigrateV5(targetDir) {
+  console.log("Synarc Universal v" + PACK_VERSION + " - v5 Migration");
+  console.log("Target: " + targetDir);
+  const v5 = detectV5Markers(targetDir);
+  if (v5.length === 0) { console.log("No v5 plugin files detected. Nothing to migrate."); return; }
+  console.log("v5 files found: " + v5.join(", "));
+  console.log("");
+  const backupDir = path.join(targetDir, ".synarc-v5-backup-" + Date.now());
+  fs.mkdirSync(backupDir, { recursive: true });
+  for (const rel of v5) {
+    const src = path.join(targetDir, rel);
+    if (fs.existsSync(src)) {
+      const dst = path.join(backupDir, rel);
+      fs.mkdirSync(path.dirname(dst), { recursive: true });
+      fs.cpSync(src, dst, { recursive: true });
+      logInstall("backed up " + rel);
+    }
+  }
+  if (fs.existsSync(path.join(targetDir, ".cursorrules"))) {
+    fs.renameSync(path.join(targetDir, ".cursorrules"), path.join(backupDir, ".cursorrules.removed"));
+    logInstall("moved .cursorrules to backup");
+  }
+  if (fs.existsSync(path.join(targetDir, ".clinerules"))) {
+    fs.renameSync(path.join(targetDir, ".clinerules"), path.join(backupDir, ".clinerules.removed"));
+    logInstall("moved .clinerules to backup");
+  }
+  const v5PluginsDir = path.join(targetDir, "plugins", "synarc");
+  if (fs.existsSync(v5PluginsDir)) {
+    fs.rmSync(v5PluginsDir, { recursive: true, force: true });
+    logInstall("removed plugins/synarc/");
+  }
+  console.log("Running fresh install for current editor set...");
+  const detected = detectMarkers(targetDir);
+  const ids = Array.from(detected);
+  if (ids.length === 0) ids.push("claude-code");
+  return runInstall(targetDir, ids, "migrate-v5");
 }
 
 function cmdVerify(targetDir) {
-  console.log('Synarc Universal v' + PACK_VERSION + ' \u2014 Verification');
-  console.log('Target: ' + targetDir);
-  console.log('');
-
+  console.log("Synarc Universal v" + PACK_VERSION + " - Verification");
+  console.log("Target: " + targetDir);
+  console.log("");
   let pass = 0, fail = 0;
   for (const e of EDITORS) {
     const v = e.verify(targetDir);
     let status, mark;
     if (v.present && !v.reason) {
-      status = 'PASS'; mark = '[+]'; pass++;
+      status = "PASS"; mark = "[+]"; pass++;
     } else {
-      status = 'FAIL'; mark = '[!]'; fail++;
+      status = "FAIL"; mark = "[!]"; fail++;
     }
-    let detail = '';
-    if (v.size !== undefined) detail = ' (' + v.size + ' bytes)';
-    else if (v.count !== undefined) detail = ' (' + v.count + ' skills)';
-    if (v.reason) detail += ' \u2014 ' + v.reason;
-    console.log('  ' + mark + ' ' + status + '  ' + e.label.padEnd(20) + ' ' + v.file + detail);
+    let detail = "";
+    if (v.size !== undefined) detail = " (" + v.size + " bytes)";
+    else if (v.count !== undefined) detail = " (" + v.count + " skills)";
+    if (v.reason) detail += " - " + v.reason;
+    console.log("  " + mark + " " + status + "  " + e.label.padEnd(20) + " " + v.file + detail);
   }
-  console.log('');
-  console.log('Verification: ' + pass + ' pass, ' + fail + ' fail of ' + EDITORS.length + ' editors.');
+  console.log("");
+  console.log("Verification: " + pass + " pass, " + fail + " fail of " + EDITORS.length + " editors.");
   if (fail > 0) {
-    console.log('');
-    console.log('To install missing editors:');
-    console.log('  node install.js --target <editor-id>');
-    console.log('Available editor IDs: ' + EDITORS.map(e => e.id).join(', '));
+    console.log("");
+    console.log("To install missing editors:");
+    console.log("  node install.js --target <editor-id>");
+    console.log("Available editor IDs: " + EDITORS.map(e => e.id).join(", "));
     process.exitCode = 1;
   }
 }
 
 function cmdHelp() {
-  console.log('Synarc Universal v' + PACK_VERSION + ' \u2014 Installer');
-  console.log('');
-  console.log('Usage:');
-  console.log('  node install.js                 Auto-detect editor markers, install for each.');
-  console.log('  node install.js --target <id>   Install for a specific editor (repeatable).');
-  console.log('  node install.js --verify        Per-editor check of expected files.');
-  console.log('  node install.js --target all    Install for every supported editor.');
-  console.log('  node install.js --global        Install to user home instead of project root.');
-  console.log('  node install.js --help          Show this help.');
-  console.log('');
-  console.log('Editor IDs:');
+  console.log("Synarc Universal v" + PACK_VERSION + " - Installer");
+  console.log("");
+  console.log("Usage:");
+  console.log("  node install.js                       Interactive picker (auto-detects scenario).");
+  console.log("  node install.js fresh [options]       Fresh-project install.");
+  console.log("  node install.js add <editor>          Add an editor to a project with Synarc.");
+  console.log("  node install.js remove <editor>       Remove an editor from a project.");
+  console.log("  node install.js verify                Per-editor check of expected files.");
+  console.log("  node install.js status                Read synarc.lock.json; no writes.");
+  console.log("  node install.js doctor                verify + Node/git diagnostics.");
+  console.log("  node install.js migrate-v5            Detect & migrate v5 plugin files.");
+  console.log("  node install.js --help                Show this help.");
+  console.log("");
+  console.log("Flags (work with any sub-command):");
+  console.log("  --target <id>     Restrict install to one or more editor IDs (repeatable).");
+  console.log("  --target all      Install for every supported editor.");
+  console.log("  --verify          Alias for verify sub-command.");
+  console.log("  --global          Install to user home (~/.claude, etc.) instead of project root.");
+  console.log("  --yes, -y         Skip all prompts; use smart defaults.");
+  console.log("  --quiet, -q       Minimal output (for CI / scripts).");
+  console.log("  --json            Machine-readable output (for CI / tooling).");
+  console.log("  --dry-run         Show what would happen; write nothing.");
+  console.log("  --help, -h        Show this help.");
+  console.log("");
+  console.log("Editor IDs:");
   for (const e of EDITORS) {
-    console.log('  ' + e.id.padEnd(14) + ' ' + e.description);
+    console.log("  " + e.id.padEnd(14) + " " + e.description);
   }
-  console.log('');
-  console.log('Examples:');
-  console.log('  node install.js --target cursor --target windsurf');
-  console.log('  node install.js --verify');
-  console.log('  node install.js --target all');
-  console.log('  node install.js --target cline --global');
+  console.log("");
+  console.log("Examples:");
+  console.log("  node install.js                                  # interactive picker");
+  console.log("  node install.js fresh --target cursor            # install for one editor");
+  console.log("  node install.js add windsurf                     # add windsurf to existing project");
+  console.log("  node install.js remove cursor                    # remove cursor from project");
+  console.log("  node install.js --yes                            # no prompts; AGENTS.md fallback");
+  console.log("  node install.js --target cursor --target windsurf");
+  console.log("  node install.js --verify");
+  console.log("  node install.js --target all");
+  console.log("  node install.js --target cline --global");
 }
 
 function cmdInstallAll(targetDir) {
-  const ids = EDITORS.map(e => e.id);
-  process.argv.push('--target', ids.join(' '));
-  // Simpler: just call install for every editor
-  console.log('Synarc Universal v' + PACK_VERSION + ' \u2014 Installer (--target all)');
-  console.log('Target: ' + targetDir);
-  console.log('');
+  console.log("Synarc Universal v" + PACK_VERSION + " - Installer (--target all)");
+  console.log("Target: " + targetDir);
+  console.log("");
   const results = [];
   for (const e of EDITORS) {
-    console.log('Installing for: ' + e.label);
+    console.log("Installing for: " + e.label);
     const r = e.install(targetDir);
-    if (!r.ok) logFail(e.label + ' \u2014 ' + r.reason);
-    else if (r.action === 'skipped') logSkip(r.path.replace(targetDir, '.') + ' (already present)');
-    else if (r.action === 'installed' && r.copied !== undefined) logInstall(r.path.replace(targetDir, '.') + ' (' + r.copied + ' new, ' + r.skipped + ' already present)');
-    else if (r.action === 'installed') logInstall(r.path.replace(targetDir, '.'));
-    else if (r.action === 'appended') logInstall('appended to ' + r.path.replace(targetDir, '.'));
-    else if (r.action === 'generated') logInstall('generated ' + r.path.replace(targetDir, '.'));
+    if (!r.ok) logFail(e.label + " - " + r.reason);
+    else if (r.action === "skipped") logSkip(r.path.replace(targetDir, ".") + " (already present)");
+    else if (r.action === "installed" && r.copied !== undefined) logInstall(r.path.replace(targetDir, ".") + " (" + r.copied + " new, " + r.skipped + " already present)");
+    else if (r.action === "installed") logInstall(r.path.replace(targetDir, "."));
+    else if (r.action === "appended") logInstall("appended to " + r.path.replace(targetDir, "."));
+    else if (r.action === "generated") logInstall("generated " + r.path.replace(targetDir, "."));
     results.push({ id: e.id, label: e.label, ...r });
   }
-  const lock = writeLockFile(targetDir, results);
-  if (lock.ok) console.log('\n[+] synarc.lock.json written');
+  const lock = writeLockFile(targetDir, results, "all");
+  if (lock.ok) console.log("synarc.lock.json written");
+}
+
+function cmdInstall(targetDir) {
+  console.log("Synarc Universal v" + PACK_VERSION + " - Installer");
+  console.log("Target: " + targetDir);
+  console.log("");
+  const explicit = getExplicitTargets();
+  if (explicit.length > 0) {
+    console.log("Explicit targets: " + explicit.join(", "));
+    console.log("");
+  }
+  const detected = detectMarkers(targetDir);
+  const targetIds = explicit.length > 0
+    ? new Set(explicit)
+    : (detected.size > 0 ? detected : new Set(["codex", "opencode"]));
+  if (detected.size > 0) {
+    console.log("Auto-detected markers: " + Array.from(detected).join(", "));
+    console.log("");
+  }
+  const results = [];
+  for (const e of EDITORS) {
+    if (!targetIds.has(e.id)) continue;
+    console.log("Installing for: " + e.label);
+    const r = e.install(targetDir);
+    if (!r.ok) {
+      logFail(e.label + " - " + r.reason);
+    } else if (r.action === "skipped") {
+      logSkip(r.path.replace(targetDir, ".") + " (already present)");
+    } else if (r.action === "installed") {
+      logInstall(r.path.replace(targetDir, "."));
+    } else if (r.action === "appended") {
+      logInstall("appended to " + r.path.replace(targetDir, "."));
+    } else if (r.action === "generated") {
+      logInstall("generated " + r.path.replace(targetDir, "."));
+    } else if (r.action === "installed" && r.copied !== undefined) {
+      logInstall(r.path.replace(targetDir, ".") + " (" + r.copied + " new, " + r.skipped + " already present)");
+    }
+    results.push({ id: e.id, label: e.label, ...r });
+  }
+  if (results.length > 0) {
+    console.log("");
+    const lock = writeLockFile(targetDir, results, "install");
+    if (lock.ok) logInstall("synarc.lock.json written (" + lock.targets.length + " targets)");
+  }
+  console.log("");
+  console.log("Synarc installed for " + results.filter(r => r.ok).length + " of " + results.length + " target(s).");
+  console.log("Verify: node install.js --verify");
+  console.log("Full docs: synarc-universal/docs/installation.md");
 }
 
 function main() {
-  // --global: install to user home instead of project root
   let targetDir = process.cwd();
-  if (hasFlag('--global')) {
+  if (hasFlag("--global")) {
     const home = process.env.USERPROFILE || process.env.HOME || process.env.HOMEPATH;
-    if (!home) { console.error('[!] --global: no USERPROFILE/HOME env var found'); process.exit(1); }
+    if (!home) { console.error("[!] --global: no USERPROFILE/HOME env var found"); process.exit(1); }
     targetDir = home;
-    console.log('[i] --global: installing to ' + targetDir);
+    console.log("[i] --global: installing to " + targetDir);
   }
-  if (hasFlag('--help') || hasFlag('-h')) { cmdHelp(); return; }
-  if (hasFlag('--verify'))                { cmdVerify(targetDir); return; }
-  if (hasFlag('--target') && process.argv.includes('all')) { cmdInstallAll(targetDir); return; }
-  cmdInstall(targetDir);
+  if (hasFlag("--help") || hasFlag("-h")) { cmdHelp(); return; }
+  if (hasFlag("--verify")) { cmdVerify(targetDir); return; }
+  if (hasFlag("--target") && process.argv.includes("all")) { cmdInstallAll(targetDir); return; }
+
+  // Sub-commands (verb-based)
+  const verb = process.argv[2];
+  if (verb === "verify")     { cmdVerify(targetDir); return; }
+  if (verb === "status")     { cmdStatus(targetDir); return; }
+  if (verb === "doctor")     { cmdDoctor(targetDir); return; }
+  if (verb === "migrate-v5") {
+    const v5 = detectV5Markers(targetDir);
+    if (v5.length === 0) { cmdMigrateV5(targetDir); return; }
+    if (hasFlag("--yes") || hasFlag("-y") || !process.stdin.isTTY) { cmdMigrateV5(targetDir); return; }
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    rl.question("Migrate v5 plugin files to v6.5.0? [Y/n] ", answer => {
+      rl.close();
+      const a = String(answer || "").trim().toLowerCase();
+      if (a === "" || a === "y" || a === "yes") cmdMigrateV5(targetDir);
+      else console.log("Cancelled.");
+    });
+    return;
+  }
+  if (verb === "fresh")      {
+    const explicit = getExplicitTargets();
+    cmdFresh(targetDir, explicit);
+    return;
+  }
+  if (verb === "add" && process.argv[3])      { cmdAdd(targetDir, process.argv[3]); return; }
+  if (verb === "remove" && process.argv[3])   { cmdRemove(targetDir, process.argv[3]); return; }
+
+  // Default: classic install path (auto-detect markers; or explicit --target)
+  if (hasFlag("--target")) { cmdInstall(targetDir); return; }
+  const detected = detectMarkers(targetDir);
+  if (detected.size > 0) { cmdInstall(targetDir); return; }
+
+  // No markers, no flags: --yes / non-TTY -> AGENTS.md fallback; otherwise interactive picker
+  if (!process.stdin.isTTY || hasFlag("--yes") || hasFlag("-y")) {
+    cmdFresh(targetDir, ["codex", "opencode"]);
+    return;
+  }
+  Promise.resolve(cmdInteractive(targetDir)).catch(err => {
+    console.error("[!] " + err.message);
+    process.exit(1);
+  });
 }
 
 main();

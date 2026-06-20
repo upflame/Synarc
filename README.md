@@ -1,141 +1,263 @@
 # Synarc — Engineering Intelligence Runtime
 
-![Synarc Banner](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790150/synarc-banner_lytvq5.png)
-
 [![Version](https://img.shields.io/badge/version-6.5.0-blue)](https://github.com/upflame-labs/synarc/releases)
-[![Stage](https://img.shields.io/badge/stage-production-success)](https://github.com/upflame-labs/synarc)
 [![License](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)
 [![Runtime](https://img.shields.io/badge/runtime-cross--platform-purple)](https://github.com/upflame-labs/synarc)
 [![Build](https://img.shields.io/badge/build-passing-success)](https://github.com/upflame-labs/synarc/actions)
-[![Vendor Lock-In](https://img.shields.io/badge/vendor--lockin-0%25-brightgreen)](https://github.com/upflame-labs/synarc)
-[![Reference Integrity](https://img.shields.io/badge/references-0%20broken-success)](https://github.com/upflame-labs/synarc)
-[![Package Size](https://img.shields.io/badge/npm-3.4%20MB-blue)](https://www.npmjs.com/package/synarc-universal)
 
-Synarc is an engineering intelligence runtime for AI-assisted software development. It provides structured change classification, risk assessment, intent verification, audit trails, and session continuity across all major AI coding agents. The runtime operates as a skill pack — no executables, no network calls, no external dependencies.
+Structured change classification, risk assessment, intent verification, and audit trails for AI coding agents. Works with Claude Code, Codex CLI, OpenCode, Cursor, Windsurf, GitHub Copilot, Gemini CLI, and Cline.
 
----
+## Before / After
 
-## Overview
-
-AI coding agents execute changes rapidly, but without structured governance, each session risks context fragmentation, unplanned scope expansion, and undetected contract violations. Synarc addresses this by interposing a deterministic governance layer between developer intent and agent execution.
-
-The runtime is organized as a multi-skill architecture:
-
-- **Intent Contracts** — formal commitments before execution: scope boundary, explicit promises, risk cap, and post-execution verification
-- **Change Classification** — 12 WorkTypes across 7 dimensions with deterministic risk floors
-- **Verification Engine** — post-execution diff analysis against contract promises
-- **Audit & Compliance** — immutable audit trail with rollback-to-intent and regulatory export (EU AI Act, SOC2, HIPAA)
-- **Session Continuity** — persistent session ledger across context resets
-- **Cognition Mesh** — multi-role team collaboration with shared working memory
-
----
-
-## Features
-
-| Capability | Description |
-|------------|-------------|
-| Intent Contracts | Propose → Accept → Execute → Verify → Fulfill lifecycle for every change |
-| Intent Templates | 11 per-WorkType contract templates with default promises and scope rules |
-| Verification Engine | Scope checking, promise verification, risk delta, composite verdict matrix |
-| Audit Trail | Immutable records per contract lifecycle event, rollback-to-intent protocol |
-| Change Classification | 12 WorkTypes, 7 dimensions, deterministic risk floors per domain |
-| Risk Assessment | 6-level risk ladder with hard floors for auth, payments, schema changes |
-| Context Injection | COMPACT (50 tokens), STANDARD (200 tokens), FULL (500 tokens) levels |
-| Session Tracking | Immutable ledger persisting across sessions and context resets |
-| Quality Gates | Zero-tolerance enforcement per WorkType |
-| Error Intelligence | 6-step protocol with persistent error memory |
-| Cognition Mesh | Multi-role collaboration — up to 9 specialized roles per task |
-
----
-
-## Architecture
-
-The runtime implements a 7-step pipeline executed on every interaction:
+Without Synarc, your agent goes straight to edits:
 
 ```
-Classify → Inject → Execute → Log → Aggregate → Checkpoint → Emit
+> add a new API endpoint for /billing/usage
+
+Sure — I'll add a route handler, update the OpenAPI spec, and add a test.
+[edits 6 files, no plan, no risk check, no verification]
 ```
 
-Each step is deterministic and runtime-agnostic — the same pipeline operates identically across Claude Code, Codex CLI, Cursor, Windsurf, OpenCode, Gemini CLI, Copilot, Cline, and any AGENTS.md-compatible runtime.
+With Synarc, the same request opens an Intent Contract first:
 
-### Cache Architecture
+```
+> add a new API endpoint for /billing/usage
 
-| Tier | Contents | Scope |
-|------|----------|-------|
-| 0 | Pack header (AGENTS.md, manifest.yaml) | Session |
-| 1 | Core reasoning (synarc-core, cognition-layer, schemas) | Session (~60 KB) |
-| 2 | Active domain skill (one of 56) | Task (~10 KB each) |
-| 3 | Skill references | Lazy-loaded |
-| 4 | Dynamic context (project files, tool outputs) | Never cached |
+WorkType : FEATURE
+Risk     : HIGH (billing domain — hard floor)
+Scale    : SMALL
+Scope    : [src/api/billing/usage.ts, src/api/billing/usage.test.ts, openapi.yaml]
+Promises :
+  - [x] Idempotent on duplicate POSTs
+  - [x] Backward-compatible response shape
+  - [x] Audit log entry per call
+Verify   : scope-check, contract-check, test-run
 
-### Scale Adaptation
+Proceed? [Y/n] y
 
-| Scale | Threshold | Tracking Depth |
-|-------|-----------|----------------|
-| NANO | Single file, single purpose | WorkType + risk only |
-| MICRO | 2-10 files | CURRENT_STATE.md |
-| SMALL | <5k LOC, 1-5 modules | Full brain directory |
-| MEDIUM | 5k-50k LOC, team | Full ledger |
-| LARGE | 50k-500k LOC, multi-service | Service-boundary tracking |
-| ENTERPRISE | >500k LOC, regulated | Compliance audit trail |
+[edits 3 files, runs tests, reports verification verdict]
+```
 
-Auto-detected. Zero configuration.
+Same intent. Different discipline. The agent proposes a contract, you accept, it executes, it verifies.
 
----
-
-## Quick Start
-
-### Prerequisites
-
-Any AI coding runtime: Claude Code, Codex CLI, Cursor, Windsurf, OpenCode, Gemini CLI, Copilot, or Cline.
-
-### One command (recommended)
-
-From inside the project you want to add Synarc to:
+## Install
 
 ```bash
 git clone https://github.com/upflame-labs/synarc.git
-cd synarc
+cd <your-project>
 node synarc-universal/scripts/install.js
 ```
 
-The installer auto-detects your editor markers (`.cursor/`, `.claude/`, `.github/`, etc.) and installs the right file for each one. If nothing is detected, it installs the AGENTS.md fallback for Codex / OpenCode.
+The installer detects your editor markers (`.cursor/`, `.claude/`, `.github/`, etc.) and writes the right file for each. If nothing is detected, it asks which editors to install for.
 
-To install for every supported editor in one shot:
-
-```bash
-node synarc-universal/scripts/install.js --target all
-```
-
-### Per-editor commands
+**Or via npx once published:**
 
 ```bash
-# Install for a specific editor (repeatable)
-node synarc-universal/scripts/install.js --target claude-code
-node synarc-universal/scripts/install.js --target codex
-node synarc-universal/scripts/install.js --target opencode
-node synarc-universal/scripts/install.js --target cursor
-node synarc-universal/scripts/install.js --target windsurf
-node synarc-universal/scripts/install.js --target copilot
-node synarc-universal/scripts/install.js --target gemini-cli
-node synarc-universal/scripts/install.js --target cline
-
-# Combine: install for several at once
-node synarc-universal/scripts/install.js --target cursor --target windsurf --target copilot
-
-# Install globally (per-user, every project on this machine)
-node synarc-universal/scripts/install.js --target cline --global
+npx synarc-universal
 ```
 
-### Verify Installation
+### Choose your scenario
 
-Run the per-editor check to confirm every file landed where the editor expects it:
+| Your situation | Command | What happens |
+|---|---|---|
+| Brand new project, no editor configured | `node install.js` | Interactive picker asks which editors to install |
+| Already have one editor, want to add Synarc | `node install.js add <editor>` | Installs Synarc for that editor, leaves the rest alone |
+| Project with multiple editors | `node install.js add <editor>` | Installs the missing editor only |
+| Want everything everywhere | `node install.js --target all` | Installs Synarc for all 8 supported editors |
+| Remove Synarc from one editor | `node install.js remove <editor>` | Deletes only that editor's config file |
+| Migrate from v5 plugin files | `node install.js migrate-v5` | Backs up v5 files, installs v6.5.0 |
+| Just check the install | `node install.js verify` | Reports PASS/FAIL per editor |
+| Read the lock file | `node install.js status` | Prints installed editors, no writes |
+| Full diagnostics | `node install.js doctor` | verify + Node version + git version |
+
+`<editor>` is one of: `claude-code`, `codex`, `opencode`, `cursor`, `windsurf`, `copilot`, `gemini-cli`, `cline`.
+
+## Scenarios
+
+### 1. Fresh project (no editor markers)
+
+You have a new repo and haven't set up an editor-specific config yet. The installer doesn't know which editor to target, so it asks.
+
+**Run:**
 
 ```bash
-node synarc-universal/scripts/install.js --verify
+node synarc-universal/scripts/install.js
 ```
 
-Expected output:
+**What happens:**
+
+```
+Synarc Universal v6.5.0 - Installer
+Target: /your/project  (Node 22.12.0)
+
+No editor markers found.
+Scenario: Fresh project
+
+Which editor(s) do you want to install Synarc for?
+  1) Claude Code (claude-code)
+  2) Codex CLI (codex)
+  3) OpenCode (opencode)
+  4) Cursor (cursor)
+  5) Windsurf (windsurf)
+  6) GitHub Copilot (copilot)
+  7) Gemini CLI (gemini-cli)
+  8) Cline (cline)
+  a) All editors
+Enter one number, or comma-separated list (e.g. 1,3).
+> 1,4
+
+Installing for: Claude Code
+  [+] ./.claude-plugin/plugin.json
+Installing for: Cursor
+  [+] ./.cursor/rules/synarc-core.mdc
+  [+] synarc.lock.json written (2 targets)
+```
+
+**What gets written:** `.claude-plugin/plugin.json` + `.cursor/rules/synarc-core.mdc` + `synarc.lock.json`.
+
+### 2. Already have one editor
+
+You're using Codex CLI in a project. You want to add Cursor too. The installer detects the existing `AGENTS.md` and prompts to add another.
+
+**Run:**
+
+```bash
+node synarc-universal/scripts/install.js add cursor
+```
+
+**What happens:**
+
+```
+Synarc Universal v6.5.0 - Add Editor
+Target: /your/project
+Adding: Cursor
+
+Installing for: Cursor
+  [+] ./.cursor/rules/synarc-core.mdc
+  [+] synarc.lock.json updated (2 editors)
+```
+
+**What gets written:** `.cursor/rules/synarc-core.mdc`. `AGENTS.md` and the lock file are left alone.
+
+### 3. Multi-editor project
+
+You're running Claude Code and Cursor side by side. The installer sees both markers and supports both.
+
+**Run:**
+
+```bash
+node synarc-universal/scripts/install.js verify
+```
+
+**What happens:**
+
+```
+Synarc Universal v6.5.0 - Verification
+Target: /your/project
+
+  [+] PASS  Claude Code          .claude-plugin/plugin.json (1317 bytes)
+  [+] PASS  Cursor               .cursor/rules/synarc-core.mdc (1429 bytes)
+
+Verification: 2 pass, 0 fail of 8 editors.
+```
+
+To add a third editor:
+
+```bash
+node synarc-universal/scripts/install.js add windsurf
+```
+
+### 4. Removing an editor
+
+You stopped using Cursor, want to clean up the rule file. The installer removes only that file and updates the lock file.
+
+**Run:**
+
+```bash
+node synarc-universal/scripts/install.js remove cursor
+```
+
+**What happens:**
+
+```
+Synarc Universal v6.5.0 - Remove Editor
+Target: /your/project
+  [+] removed .cursor/rules/synarc-core.mdc
+  [+] updated synarc.lock.json (1 editors left)
+```
+
+**What gets written:** nothing. The lock file is updated (or removed if no editors left). All other editor configs are untouched.
+
+### 5. Migrating from v5 plugin
+
+You have a v5 plugin layout (`plugins/synarc/`, `.cursorrules`, `.clinerules`). The installer backs up the v5 files, removes them, and installs v6.5.0.
+
+**Run:**
+
+```bash
+node synarc-universal/scripts/install.js migrate-v5
+```
+
+**What happens:**
+
+```
+Synarc Universal v6.5.0 - v5 Migration
+Target: /your/project
+v5 files found: plugins/synarc/, .cursorrules, .clinerules
+
+  [+] backed up plugins/synarc/
+  [+] backed up .cursorrules
+  [+] backed up .clinerules
+  [+] moved .cursorrules to backup
+  [+] moved .clinerules to backup
+  [+] removed plugins/synarc/
+Running fresh install for current editor set...
+
+Installing for: Claude Code
+  [+] ./.claude-plugin/plugin.json
+  [+] synarc.lock.json written (1 targets)
+```
+
+**What gets written:** `.synarc-v5-backup-<timestamp>/` (backup of v5 files) + new editor config + lock file.
+
+### 6. CI / scripted install (no prompts)
+
+In CI or when scripting, you don't want the interactive picker. Use `--yes` (or `-y`) to skip prompts and use smart defaults.
+
+**Run:**
+
+```bash
+node synarc-universal/scripts/install.js --yes
+```
+
+**What happens:**
+
+```
+Synarc Universal v6.5.0 - Fresh Install
+Target: /your/project
+
+Installing for: Codex CLI
+  [+] ./AGENTS.md
+Installing for: OpenCode
+  [~] ./AGENTS.md (already present)
+  [+] synarc.lock.json written (2 targets)
+```
+
+`--yes` defaults to Codex + OpenCode (the AGENTS.md fallback pair). For specific editors in CI:
+
+```bash
+node synarc-universal/scripts/install.js --target cursor --target windsurf --yes
+```
+
+## Verify
+
+Run the per-editor check at any time:
+
+```bash
+node synarc-universal/scripts/install.js verify
+```
+
+Expected output on a full install:
 
 ```
   [+] PASS  Claude Code          .claude-plugin/plugin.json (1317 bytes)
@@ -150,81 +272,118 @@ Expected output:
 Verification: 8 pass, 0 fail of 8 editors.
 ```
 
-After install, start a new session in any editor and ask an engineering question. The Synarc classification headers (`WorkType`, `Risk`, `Scale`) should appear in the response.
+Exit code `0` on full pass, `1` if anything is missing.
 
-See [Installation Guide](synarc-universal/docs/installation.md) for the full per-editor deep dive.
+## Reference
 
-> what did we change?
-── Session Ledger ──
-[14:00] FEATURE | auth/router.ts (+12, -3) | MEDIUM | IN_SCOPE
-[14:05] FIX    | auth/middleware.ts (+5, -0) | LOW | IN_SCOPE
-Aggregate: MEDIUM (stable)
-─────────────────────
+### Features
+
+| Capability | Description |
+|------------|-------------|
+| Intent Contracts | Propose → Accept → Execute → Verify → Fulfill lifecycle for every change |
+| Change Classification | 12 WorkTypes across 7 dimensions with deterministic risk floors |
+| Verification Engine | Post-execution diff analysis against contract promises |
+| Audit Trail | Immutable records per contract lifecycle, rollback-to-intent |
+| Session Continuity | Persistent session ledger across context resets |
+| Cognition Mesh | Multi-role team collaboration with shared working memory |
+| 56 Skills | Domain coverage: engineering, AI-era, product, design, quality, security, data, ML, leadership, industry verticals |
+| 8 Active Runtimes | Claude Code, Codex CLI, OpenCode, Cursor, Windsurf, Copilot, Gemini CLI, Cline (Roo Code shut down 2026-05-15) |
+
+### Architecture
+
+The runtime is a 7-step pipeline:
+
+```
+Classify → Inject → Execute → Log → Aggregate → Checkpoint → Emit
 ```
 
-### Available Commands
+Deterministic and runtime-agnostic — same pipeline across all 8 supported editors.
 
-| Command | Response |
-|---------|----------|
-| `what did we change?` | Full session ledger |
-| `summarize this session` | Cognitive summary |
-| `is this safe to deploy?` | Risk delta + explicit YES/NO |
-| `what tests are missing?` | All unfilled test gaps |
-| `generate a snapshot` | Brain snapshot entry |
-| `full handoff` | Agent handoff block + brain updates |
-| `run quality gates` | All gates PASS/FAIL report |
+**Cache architecture** (5 tiers):
 
----
+| Tier | Contents | Scope |
+|------|----------|-------|
+| 0 | Pack header (AGENTS.md, manifest.yaml) | Session |
+| 1 | Core reasoning (synarc-core, cognition-layer, schemas) | Session (~60 KB) |
+| 2 | Active domain skill (one of 56) | Task (~10 KB each) |
+| 3 | Skill references | Lazy-loaded |
+| 4 | Dynamic context (project files, tool outputs) | Never cached |
 
-## Project Structure
+**Scale adaptation** (auto-detected, zero config):
+
+| Scale | Threshold | Tracking |
+|-------|-----------|----------|
+| NANO | Single file, single purpose | WorkType + risk only |
+| MICRO | 2-10 files | CURRENT_STATE.md |
+| SMALL | <5k LOC, 1-5 modules | Full brain directory |
+| MEDIUM | 5k-50k LOC, team | Full ledger |
+| LARGE | 50k-500k LOC, multi-service | Service-boundary tracking |
+| ENTERPRISE | >500k LOC, regulated | Compliance audit trail |
+
+### Project structure
 
 ```
 synarc-universal/
-├── AGENTS.md                    # Activation entry point
-├── package.json                 # npm package manifest
-├── manifest.yaml                # Universal manifest
-├── scripts/
-│   ├── install.js               # CLI installer
-│   └── install.ps1              # PowerShell installer
-├── skills/                      # 56 domain skills
-│   ├── synarc-core/             # Core runtime (always active)
-│   ├── architect/               # System design & trade-off analysis
-│   ├── backend-engineer/        # Service architecture & API design
-│   ├── security-engineer/       # Threat modeling & defense
-│   ├── debug-engineer/          # Systematic debugging
-│   └── ...                      # 51 additional domain skills
-├── shared/
-│   ├── schemas/                 # JSON Schema definitions
-│   ├── workflows/               # Canonical workflow definitions
-│   ├── guardrails/              # Constitutional safety rules
-│   ├── standards/               # Naming conventions, frontmatter spec
-│   ├── runtime-adapters/        # Per-runtime compilation rules
-│   ├── prompts/                 # Fallback prompt tiers
-│   └── checklists/              # Review checklists
-├── docs/                        # Documentation
-└── security/                    # OWASP mapping, adversarial scenarios
+|-- AGENTS.md                    # Activation entry point
+|-- manifest.yaml                # Universal manifest (56 skills)
+|-- package.json                 # npm package manifest
+|-- scripts/
+|   |-- install.js               # Scenario-based installer (--target, verify, add, remove, status, doctor, migrate-v5)
+|   `-- install.ps1              # PowerShell delegate
+|-- skills/                      # 56 domain skills
+|   |-- synarc-core/             # Core runtime (always active)
+|   |-- architect/               # System design & trade-off analysis
+|   |-- backend-engineer/        # Service architecture & API design
+|   |-- security-engineer/       # Threat modeling & defense
+|   |-- debug-engineer/          # Systematic debugging
+|   `-- ...                      # 51 additional domain skills
+|-- shared/
+|   |-- schemas/                 # JSON Schema definitions
+|   |-- workflows/               # Canonical workflow definitions
+|   |-- guardrails/              # Constitutional safety rules
+|   |-- standards/               # Naming conventions, frontmatter spec
+|   |-- runtime-adapters/        # Per-runtime compilation rules
+|   |-- prompts/                 # Fallback prompt tiers
+|   `-- checklists/              # Review checklists
+|-- docs/                        # Documentation
+`-- security/                    # OWASP mapping, adversarial scenarios
 ```
 
----
+### Available commands
 
-## Documentation
+```bash
+node install.js                       # Interactive picker (auto-detects scenario)
+node install.js fresh --target X      # Fresh install, optional target
+node install.js add <editor>          # Add an editor to existing project
+node install.js remove <editor>       # Remove an editor
+node install.js verify                # Per-editor check
+node install.js status                # Read lock file, no writes
+node install.js doctor                # verify + Node/git diagnostics
+node install.js migrate-v5            # v5 plugin migration
+node install.js --target all          # Install for every editor
+node install.js --global              # Install to user home
+node install.js --yes                 # Skip prompts (CI / scripts)
+node install.js --help                # Full flag reference
+```
 
-| Category | Links |
-|----------|-------|
-| Getting Started | [Installation](synarc-universal/docs/installation.md) · [Architecture](synarc-universal/docs/architecture.md) · [Usage](synarc-universal/docs/usage.md) · [Deployment](synarc-universal/docs/enterprise-deployment.md) · [Migration](synarc-universal/docs/migration-guide.md) |
-| Workflows | [Change Classification](synarc-universal/shared/workflows/change-classification.md) · [Risk Assessment](synarc-universal/shared/workflows/risk-assessment.md) · [Context Injection](synarc-universal/shared/workflows/context-injection.md) · [Session Tracking](synarc-universal/shared/workflows/session-tracking.md) · [Quality Gates](synarc-universal/shared/workflows/quality-gates.md) · [Error Intelligence](synarc-universal/shared/workflows/error-intelligence.md) |
-| Intent Contracts | [Contract Lifecycle](synarc-universal/shared/workflows/intent-contracts.md) · [Templates](synarc-universal/shared/workflows/intent-templates.md) · [Verification](synarc-universal/shared/workflows/verification-engine.md) · [Audit & Compliance](synarc-universal/shared/workflows/audit-compliance.md) |
-| Schemas | [Intent Contract](synarc-universal/shared/schemas/intent-contract.schema.json) · [Intent Template](synarc-universal/shared/schemas/intent-template.schema.json) · [Verification Result](synarc-universal/shared/schemas/verification-result.schema.json) · [Audit Record](synarc-universal/shared/schemas/audit-record.schema.json) · [Ledger Entry](synarc-universal/shared/schemas/ledger-entry.schema.json) · [Risk Assessment](synarc-universal/shared/schemas/risk-assessment.schema.json) · [Guardrails](synarc-universal/shared/schemas/guardrails.schema.json) |
+### Documentation
 
----
+| Doc | Purpose |
+|-----|---------|
+| [Installation](synarc-universal/docs/installation.md) | One-command install + per-editor deep dive + scenarios |
+| [Architecture](synarc-universal/docs/architecture.md) | Universal agent skill architecture, 7-layer design |
+| [Usage](synarc-universal/docs/usage.md) | Skill activation, writing new skills, fallback tiers |
+| [Compatibility](synarc-universal/docs/compatibility.md) | Capability × runtime matrix |
+| [Migration](synarc-universal/docs/migration-guide.md) | Migrating from v5 (per-editor plugins) to v6.5.0 |
+| [Enterprise Deployment](synarc-universal/docs/enterprise-deployment.md) | Org-scale install, CI/CD, compliance |
 
-## Security & Compliance
+### Security & compliance
 
 | Guard | Status |
 |-------|--------|
 | Sandboxed execution | Enabled |
 | No network access | Verified |
-| No filesystem write outside /brain/ | Enforced |
+| No filesystem write outside project | Enforced |
 | Deterministic activation | Validated |
 | Safe fallbacks on protocol error | Configured |
 | Hash-verified integrity (SHA-256) | Active |
@@ -243,18 +402,10 @@ synarc-universal/
 
 **Regulatory mappings:** EU AI Act, SOC2, HIPAA — export templates included.
 
----
+### Contributing
 
-## Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on submitting issues, feature requests, and pull requests. This project follows [Semantic Versioning](https://semver.org/) and maintains a [CHANGELOG](CHANGELOG.md).
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on submitting issues, feature requests, and pull requests.
+### License
 
-This project follows [Semantic Versioning](https://semver.org/) and maintains a [CHANGELOG](CHANGELOG.md).
-
----
-
-## License
-
-MIT — see [LICENSE](LICENSE).
-
-Built by [UpFlame Labs](https://github.com/upflame-labs).
+MIT — see [LICENSE](LICENSE). Built by [UpFlame Labs](https://github.com/upflame-labs).
