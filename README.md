@@ -1,4 +1,4 @@
-# Synarc — Engineering Intelligence Runtime
+# Synarc â€” Engineering Intelligence Runtime
 
 [![Version](https://img.shields.io/badge/version-6.5.0-blue)](https://github.com/upflame-labs/synarc/releases)
 [![License](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)
@@ -14,7 +14,7 @@ Without Synarc, your agent goes straight to edits:
 ```
 > add a new API endpoint for /billing/usage
 
-Sure — I'll add a route handler, update the OpenAPI spec, and add a test.
+Sure â€” I'll add a route handler, update the OpenAPI spec, and add a test.
 [edits 6 files, no plan, no risk check, no verification]
 ```
 
@@ -24,7 +24,7 @@ With Synarc, the same request opens an Intent Contract first:
 > add a new API endpoint for /billing/usage
 
 WorkType : FEATURE
-Risk     : HIGH (billing domain — hard floor)
+Risk     : HIGH (billing domain â€” hard floor)
 Scale    : SMALL
 Scope    : [src/api/billing/usage.ts, src/api/billing/usage.test.ts, openapi.yaml]
 Promises :
@@ -54,6 +54,74 @@ The installer detects your editor markers (`.cursor/`, `.claude/`, `.github/`, e
 
 ```bash
 npx synarc-universal
+```
+
+### Quick install for specific editors
+
+Copy-paste the block for the editor(s) you use. Each block assumes you've cloned the repo and want Synarc installed for a single editor in your current project.
+
+#### Claude Code
+
+```bash
+# 1. Clone (if you haven't)
+git clone https://github.com/upflame-labs/synarc.git
+cd synarc
+
+# 2. Copy the plugin manifest into your project
+node synarc-universal/scripts/install.js add claude-code
+
+# 3. Trust the plugin in Claude Code
+claude plugin trust synarc
+claude plugin enable synarc
+```
+
+Or use the native marketplace (faster, no clone):
+
+```bash
+claude plugin marketplace add upflame-labs/synarc
+claude plugin install synarc
+```
+
+#### Codex CLI
+
+```bash
+# 1. Clone into the project you want Synarc in
+git clone https://github.com/upflame-labs/synarc.git
+cd <your-project>
+
+# 2. Drop the AGENTS.md at your project root
+node synarc-universal/scripts/install.js add codex
+
+# 3. Start a Codex session - it will auto-discover AGENTS.md
+codex
+```
+
+Global install (every project on this machine):
+
+```bash
+git clone https://github.com/upflame-labs/synarc.git ~/synarc
+node ~/synarc/synarc-universal/scripts/install.js add codex --global
+```
+
+#### OpenCode
+
+```bash
+# 1. Clone into the project you want Synarc in
+git clone https://github.com/upflame-labs/synarc.git
+cd <your-project>
+
+# 2. Drop the AGENTS.md at your project root
+node synarc-universal/scripts/install.js add opencode
+
+# 3. Start an OpenCode session - it will auto-discover AGENTS.md
+opencode
+```
+
+Global install (every project on this machine):
+
+```bash
+git clone https://github.com/upflame-labs/synarc.git ~/synarc
+node ~/synarc/synarc-universal/scripts/install.js add opencode --global
 ```
 
 ### Choose your scenario
@@ -280,7 +348,7 @@ Exit code `0` on full pass, `1` if anything is missing.
 
 | Capability | Description |
 |------------|-------------|
-| Intent Contracts | Propose → Accept → Execute → Verify → Fulfill lifecycle for every change |
+| Intent Contracts | Propose â†’ Accept â†’ Execute â†’ Verify â†’ Fulfill lifecycle for every change |
 | Change Classification | 12 WorkTypes across 7 dimensions with deterministic risk floors |
 | Verification Engine | Post-execution diff analysis against contract promises |
 | Audit Trail | Immutable records per contract lifecycle, rollback-to-intent |
@@ -294,10 +362,10 @@ Exit code `0` on full pass, `1` if anything is missing.
 The runtime is a 7-step pipeline:
 
 ```
-Classify → Inject → Execute → Log → Aggregate → Checkpoint → Emit
+Classify â†’ Inject â†’ Execute â†’ Log â†’ Aggregate â†’ Checkpoint â†’ Emit
 ```
 
-Deterministic and runtime-agnostic — same pipeline across all 8 supported editors.
+Deterministic and runtime-agnostic â€” same pipeline across all 8 supported editors.
 
 **Cache architecture** (5 tiers):
 
@@ -373,7 +441,7 @@ node install.js --help                # Full flag reference
 | [Installation](synarc-universal/docs/installation.md) | One-command install + per-editor deep dive + scenarios |
 | [Architecture](synarc-universal/docs/architecture.md) | Universal agent skill architecture, 7-layer design |
 | [Usage](synarc-universal/docs/usage.md) | Skill activation, writing new skills, fallback tiers |
-| [Compatibility](synarc-universal/docs/compatibility.md) | Capability × runtime matrix |
+| [Compatibility](synarc-universal/docs/compatibility.md) | Capability Ã— runtime matrix |
 | [Migration](synarc-universal/docs/migration-guide.md) | Migrating from v5 (per-editor plugins) to v6.5.0 |
 | [Enterprise Deployment](synarc-universal/docs/enterprise-deployment.md) | Org-scale install, CI/CD, compliance |
 
@@ -400,7 +468,7 @@ node install.js --help                # Full flag reference
 | Network / IAM config | CRITICAL | Security boundary change |
 | INCIDENT response | CRITICAL | Production emergency |
 
-**Regulatory mappings:** EU AI Act, SOC2, HIPAA — export templates included.
+**Regulatory mappings:** EU AI Act, SOC2, HIPAA â€” export templates included.
 
 ### Contributing
 
@@ -408,4 +476,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on submitting issues, feat
 
 ### License
 
-MIT — see [LICENSE](LICENSE). Built by [UpFlame Labs](https://github.com/upflame-labs).
+MIT â€” see [LICENSE](LICENSE). Built by [UpFlame Labs](https://github.com/upflame-labs).
