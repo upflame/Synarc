@@ -34,3 +34,7 @@ You should receive a response within 48 hours. If you do not, please follow up.
 ## OWASP Top 10 for LLMs
 
 Synarc maps controls to the OWASP LLM Top 10 (LLM01-LLM10). See [security/OWASP-LLM-mapping.md](synarc-universal/security/OWASP-LLM-mapping.md) for detailed mappings.
+
+## Review Surface
+
+The security review surface is synarc-universal/. Older directories at the repo root (plugins/, docs/, examples/, rain/, RELEASES.md, CLAUDE.md, GEMINI.md) were removed in v6.5.0 and contain no executable code. Their full history is reachable via git log for audit purposes only — they are not part of any current release artifact.

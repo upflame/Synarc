@@ -69,3 +69,35 @@ npm run test-fallbacks  # test fallback chains
 ## Release Process
 
 This project follows [Semantic Versioning](https://semver.org/). Releases are tagged and published to npm and the Claude Code marketplace.
+
+## Code Layout
+
+The active product is `synarc-universal/`. Everything outside that directory is repo metadata.
+
+```
+.
+|-- AGENTS.md                          # Editor auto-discovery entry
+|-- README.md                          # This file (Microsoft pattern)
+|-- CHANGELOG.md                       # Release history
+|-- CONTRIBUTING.md                    # You are here
+|-- CODE_OF_CONDUCT.md
+|-- SECURITY.md                        # Vulnerability disclosure
+|-- LICENSE
+|-- .claude-plugin/                    # Claude Code marketplace (plugin.json + marketplace.json)
+|-- .cursor/                           # Cursor rule (synarc-core.mdc)
+|-- .github/                           # PR + issue templates
+|-- SUPPORT.md
+|-- CODEOWNERS
+|__ synarc-universal/                  # The product: 56 skills, installer, docs, security
+    |-- AGENTS.md                      # Full activation entry (10 KB)
+    |-- manifest.yaml                  # Universal manifest (56 skills)
+    |-- package.json                   # npm package
+    |-- SCHEMA.md                      # SKILL.md frontmatter spec
+    |-- scripts/                       # install.js (scenario-based), PowerShell validators
+    |-- docs/                          # installation, architecture, usage, compatibility, migration
+    |-- security/                      # OWASP LLM, prompt injection, capability boundaries
+    |-- shared/                        # schemas, workflows, runtime-adapters, prompts, checklists
+    |__ skills/                        # 56 domain skills, one directory each
+```
+
+Older layout (v5 plugins/ at the repo root, v6.0.0 docs/ at the repo root, examples/, brain/, RELEASES.md) was removed in v6.5.0. The full history is reachable via `git log`.

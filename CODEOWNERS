@@ -1,0 +1,23 @@
+# Code owners for Synarc
+# See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default: UpFlame Labs owns the active product
+/synarc-universal/      @upflame-labs
+/synarc-universal/scripts/ @upflame-labs
+
+# Root-level metadata: UpFlame Labs owns
+/AGENTS.md              @upflame-labs
+/README.md              @upflame-labs
+/CHANGELOG.md           @upflame-labs
+/CONTRIBUTING.md        @upflame-labs
+/CODE_OF_CONDUCT.md     @upflame-labs
+/SECURITY.md            @upflame-labs
+/SUPPORT.md             @upflame-labs
+
+# Marketplace + editor configs
+/.claude-plugin/        @upflame-labs
+/.cursor/               @upflame-labs
+
+# GitHub templates
+/.github/               @upflame-labs
+/CODEOWNERS             @upflame-labs
