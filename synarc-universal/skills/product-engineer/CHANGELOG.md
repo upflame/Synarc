@@ -2,9 +2,9 @@
 title: product-engineer Changelog
 ---
 
-# Changelog â€” product-engineer
+# Changelog — product-engineer
 
-## 1.0.0 â€” 2026-06-02
+## 1.0.0 — 2026-06-02
 
 ### Universalized Release
 

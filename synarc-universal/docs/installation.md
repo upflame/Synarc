@@ -1,5 +1,5 @@
 ---
-title: Installation Guide â€” Synarc Universal Skill Pack
+title: Installation Guide — Synarc Universal Skill Pack
 description: One-command install + per-editor deep dive for Claude Code, Codex CLI, OpenCode, Cursor, Windsurf, GitHub Copilot, Gemini CLI, and Cline.
 version: 6.5.0
 schema: skill-pack/v1
@@ -14,13 +14,46 @@ compatible_agents:
   - cline
 ---
 
-# Synarc Universal â€” Installation Guide (v6.5.0)
+# Synarc Universal — Installation Guide (v6.5.0)
 
 Synarc v6.5.0 ships **56 skills** plus the Cognition Mesh runtime. The pack supports **8 active AI coding agents**. Every install path is verified end-to-end by `node install.js --verify`.
 
 ---
 
-## TL;DR â€” One command for any project
+## On this page
+
+- [TL;DR — One command for any project](#tldr-one-command-for-any-project)
+- [Scenarios](#scenarios)
+  - [Available sub-commands](#available-sub-commands)
+  - [Scenario 1: Fresh project](#scenario-1-fresh-project)
+  - [Scenario 2: Add an editor to existing project](#scenario-2-add-an-editor-to-existing-project)
+  - [Scenario 3: Multi-editor project](#scenario-3-multi-editor-project)
+  - [Scenario 4: Remove an editor](#scenario-4-remove-an-editor)
+  - [Scenario 5: Migrate from v5 plugin files](#scenario-5-migrate-from-v5-plugin-files)
+  - [Scenario 6: CI / scripted install (no prompts)](#scenario-6-ci-scripted-install-no-prompts)
+  - [Scenario classification logic](#scenario-classification-logic)
+- [What you get](#what-you-get)
+- [Editor compatibility matrix](#editor-compatibility-matrix)
+- [Per-editor deep dive](#per-editor-deep-dive)
+  - [1. Claude Code (Recommended)](#1-claude-code-recommended)
+  - [2. Codex CLI](#2-codex-cli)
+  - [3. OpenCode](#3-opencode)
+  - [4. Cursor](#4-cursor)
+  - [5. Windsurf](#5-windsurf)
+  - [6. GitHub Copilot](#6-github-copilot)
+  - [7. Gemini CLI](#7-gemini-cli)
+  - [8. Cline](#8-cline)
+- [Roo Code â†’ Cline (Migration)](#roo-code-â-cline-migration)
+  - [If you previously had `.roo/skills/`:](#if-you-previously-had-rooskills)
+  - [If you are installing fresh:](#if-you-are-installing-fresh)
+  - [Cognition Mesh Activation (v6)](#cognition-mesh-activation-v6)
+- [Verification reference](#verification-reference)
+- [Post-Installation Checklist](#post-installation-checklist)
+- [Troubleshooting](#troubleshooting)
+- [Managing Multiple Projects](#managing-multiple-projects)
+- [Per-Skill Plugin Install (Claude Code)](#per-skill-plugin-install-claude-code)
+
+## TL;DR — One command for any project
 
 From inside the project you want to add Synarc to:
 
@@ -284,10 +317,10 @@ You can override classification by using the verb sub-commands directly (`fresh`
 ---
 ## What you get
 
-- **56 skills** â€” `synarc-universal/skills/` covers engineering, AI-era, product, design, quality, security, data, ML, leadership, and industry verticals.
-- **Cognition Mesh** â€” multi-role collaboration in `synarc-core`.
-- **Intent Contracts** â€” formal agent commitments, per-WorkType templates, post-execution verification, audit trail, rollback-to-intent.
-- **Editor-native formats** â€” each editor gets the file format it actually reads (`.mdc`, `.windsurfrules`, `GEMINI.md`, etc.), not just a copy of the AGENTS.md.
+- **56 skills** — `synarc-universal/skills/` covers engineering, AI-era, product, design, quality, security, data, ML, leadership, and industry verticals.
+- **Cognition Mesh** — multi-role collaboration in `synarc-core`.
+- **Intent Contracts** — formal agent commitments, per-WorkType templates, post-execution verification, audit trail, rollback-to-intent.
+- **Editor-native formats** — each editor gets the file format it actually reads (`.mdc`, `.windsurfrules`, `GEMINI.md`, etc.), not just a copy of the AGENTS.md.
 
 No package manager, runtime, or build step is required. The pack is pure Markdown + YAML.
 
@@ -305,7 +338,7 @@ No package manager, runtime, or build step is required. The pack is pure Markdow
 | **GitHub Copilot** | `.github/copilot-instructions.md` (appended) | project root | IDE file access | No |
 | **Gemini CLI** | `GEMINI.md` | project root | 1M-token context, full access | No (session-only) |
 | **Cline** | `.cline/skills/<skill>/SKILL.md` (all 56) | project root | Full read/write + terminal | Yes |
-| _Roo Code_ | _shut down 2026-05-15_ | _migrate to Cline_ | â€” | â€” |
+| _Roo Code_ | _shut down 2026-05-15_ | _migrate to Cline_ | — | — |
 
 ---
 
@@ -315,7 +348,7 @@ No package manager, runtime, or build step is required. The pack is pure Markdow
 
 Claude Code has a native plugin marketplace. This is the fastest path.
 
-**Option A â€” Plugin marketplace (preferred)**
+**Option A — Plugin marketplace (preferred)**
 
 ```bash
 claude plugin marketplace add upflame-labs/synarc
@@ -324,7 +357,7 @@ claude plugin install synarc
 
 The `synarc` plugin bundles all 56 skills as reference files. One install activates everything.
 
-**Option B â€” Local clone + auto-install**
+**Option B — Local clone + auto-install**
 
 ```bash
 git clone https://github.com/upflame-labs/synarc.git
@@ -334,7 +367,7 @@ node synarc-universal/scripts/install.js --target claude-code
 
 The installer writes `.claude-plugin/plugin.json` in the project root. The plugin's `entrypoint` points to `synarc-universal/AGENTS.md`, so Claude Code loads the full pack on session start.
 
-**Option C â€” Global skills directory (per-skill)**
+**Option C — Global skills directory (per-skill)**
 
 ```bash
 # bash
@@ -344,9 +377,9 @@ cp -r synarc-universal/skills/ ~/.claude/skills/synarc-universal/
 Copy-Item synarc-universal/skills/ ~/.claude/skills/synarc-universal/ -Recurse
 ```
 
-**What gets written** â€” `.claude-plugin/plugin.json` (1.3 KB). Brain directory (`brain/`) is auto-created on first session.
+**What gets written** — `.claude-plugin/plugin.json` (1.3 KB). Brain directory (`brain/`) is auto-created on first session.
 
-**Verify** â€” `claude plugin list` shows `synarc`. Trigger a classification prompt â€” the headers `WorkType`, `Risk`, `Scale` should appear in Claude's response.
+**Verify** — `claude plugin list` shows `synarc`. Trigger a classification prompt — the headers `WorkType`, `Risk`, `Scale` should appear in Claude's response.
 
 ---
 
@@ -362,9 +395,9 @@ node synarc-universal/scripts/install.js --target codex
 
 This copies `synarc-universal/AGENTS.md` to `./AGENTS.md` in the project root. Keep `synarc-universal/` reachable from the project tree (same repo or submodule) so the skill references resolve.
 
-**What gets written** â€” `AGENTS.md` (~10 KB). Codex loads it on every session start.
+**What gets written** — `AGENTS.md` (~10 KB). Codex loads it on every session start.
 
-**Verify** â€” Start a Codex session and ask: "What is the WorkType for adding a new API endpoint?" Synarc classification headers should appear.
+**Verify** — Start a Codex session and ask: "What is the WorkType for adding a new API endpoint?" Synarc classification headers should appear.
 
 ---
 
@@ -382,9 +415,9 @@ node synarc-universal/scripts/install.js --target opencode --global
 
 The `skills/` directory must be present in the same project tree for skill references to resolve.
 
-**What gets written** â€” `AGENTS.md` (~10 KB) at project root, or `~/.config/opencode/AGENTS.md` with `--global`.
+**What gets written** — `AGENTS.md` (~10 KB) at project root, or `~/.config/opencode/AGENTS.md` with `--global`.
 
-**Verify** â€” Run a task that matches a skill intent (e.g., "review this PR for security issues"). The corresponding skill's behavior activates automatically.
+**Verify** — Run a task that matches a skill intent (e.g., "review this PR for security issues"). The corresponding skill's behavior activates automatically.
 
 ---
 
@@ -409,9 +442,9 @@ Cursor activation modes:
 
 The bundled rule uses `alwaysApply: true` so Synarc is on for every conversation.
 
-**What gets written** â€” `.cursor/rules/synarc-core.mdc` (1.4 KB).
+**What gets written** — `.cursor/rules/synarc-core.mdc` (1.4 KB).
 
-**Verify** â€” In Cursor Chat or Inline mode, trigger a skill intent. The agent should apply the rule and show classification headers.
+**Verify** — In Cursor Chat or Inline mode, trigger a skill intent. The agent should apply the rule and show classification headers.
 
 ---
 
@@ -425,9 +458,9 @@ node synarc-universal/scripts/install.js --target windsurf
 
 The installer writes the compiled Windsurf rule (sourced from `synarc-universal/shared/runtime-adapters/windsurf.md`) to `.windsurfrules` in the project root.
 
-**What gets written** â€” `.windsurfrules` (1.8 KB).
+**What gets written** — `.windsurfrules` (1.8 KB).
 
-**Verify** â€” Start a Cascade session. Synarc behaviors should be active â€” ask about a change and the agent should classify it.
+**Verify** — Start a Cascade session. Synarc behaviors should be active — ask about a change and the agent should classify it.
 
 ---
 
@@ -441,9 +474,9 @@ node synarc-universal/scripts/install.js --target copilot
 
 The installer **appends** the compiled Copilot adapter (sourced from `synarc-universal/shared/runtime-adapters/copilot.md`) to `.github/copilot-instructions.md`. If the file already exists, your existing instructions are preserved and Synarc content is added after a separator.
 
-**What gets written** â€” `.github/copilot-instructions.md` (appended, ~1.8 KB added).
+**What gets written** — `.github/copilot-instructions.md` (appended, ~1.8 KB added).
 
-**Verify** â€” In a Copilot Chat session, ask about a code change. Synarc classification should appear in the response.
+**Verify** — In a Copilot Chat session, ask about a code change. Synarc classification should appear in the response.
 
 ---
 
@@ -457,9 +490,9 @@ node synarc-universal/scripts/install.js --target gemini-cli
 
 The installer **generates** `GEMINI.md` from the `AGENTS.md` template plus the Gemini CLI runtime adapter, with a timestamp header.
 
-**What gets written** â€” `GEMINI.md` (~12 KB, generated, includes runtime adapter).
+**What gets written** — `GEMINI.md` (~12 KB, generated, includes runtime adapter).
 
-**Verify** â€” Start a Gemini CLI session. Skill intents are recognized and matched automatically.
+**Verify** — Start a Gemini CLI session. Skill intents are recognized and matched automatically.
 
 ---
 
@@ -475,11 +508,11 @@ node synarc-universal/scripts/install.js --target cline
 node synarc-universal/scripts/install.js --target cline --global
 ```
 
-The installer copies all 56 skill directories from `synarc-universal/skills/` into `.cline/skills/`. Re-runs are idempotent â€” existing skills are not overwritten.
+The installer copies all 56 skill directories from `synarc-universal/skills/` into `.cline/skills/`. Re-runs are idempotent — existing skills are not overwritten.
 
-**What gets written** â€” `.cline/skills/<skill>/SKILL.md` for all 56 skills (1.8 MB total).
+**What gets written** — `.cline/skills/<skill>/SKILL.md` for all 56 skills (1.8 MB total).
 
-**Verify** â€” Ask a domain-specific engineering question. Cline should activate the corresponding skill.
+**Verify** — Ask a domain-specific engineering question. Cline should activate the corresponding skill.
 
 ---
 
@@ -532,7 +565,7 @@ Run `node synarc-universal/scripts/install.js --verify` at any time. The output 
 | Gemini CLI | `GEMINI.md` | 500 bytes |
 | Cline | `.cline/skills/<skill>/SKILL.md` (all 56) | per-skill files present |
 
-**Exit code** â€” `0` on full pass, `1` if any editor's file is missing or too small.
+**Exit code** — `0` on full pass, `1` if any editor's file is missing or too small.
 
 ---
 
@@ -541,7 +574,7 @@ Run `node synarc-universal/scripts/install.js --verify` at any time. The output 
 | Check | Expected |
 |---|---|
 | Skill pack files present | `synarc-universal/skills/`, `shared/`, `AGENTS.md`, `manifest.yaml` |
-| Editor-specific config in place | Run `node install.js --verify` â€” all 8 editors should show PASS |
+| Editor-specific config in place | Run `node install.js --verify` — all 8 editors should show PASS |
 | Intent activation works | Skill activates when matching intent is detected |
 | Fallback tiers functional | All 4 tiers degrade gracefully |
 | Brain persistence (editor-dependent) | `brain/` directory created on first session (Claude Code, OpenCode, Cline) |
@@ -603,4 +636,12 @@ claude plugin install release-engineer@upflame-marketplace
 claude plugin install accessibility-engineer@upflame-marketplace
 ```
 
-The full `synarc@upflame-marketplace` install is recommended for most users â€” it bundles all roles as reference files with no extra install commands.
+The full `synarc@upflame-marketplace` install is recommended for most users — it bundles all roles as reference files with no extra install commands.
+
+## See also
+
+- [Usage Guide](usage.md)
+- [Compatibility Matrix](compatibility.md)
+- [Migration Guide](migration-guide.md)
+- [Enterprise Deployment](enterprise-deployment.md)
+

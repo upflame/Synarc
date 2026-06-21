@@ -16,17 +16,17 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 
 
 
-## P0 — INTELLIGENCE AUGMENTATION
+## P0 â€” INTELLIGENCE AUGMENTATION
 
-### P0.1 — Token Optimization Defaults
+### P0.1 â€” Token Optimization Defaults
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
+**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process â€” output the result.
 
 **COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
 
 **Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
 
-### P0.2 — Adaptive Learning Triggers
+### P0.2 â€” Adaptive Learning Triggers
 
 **Learning Triggers:**
 - New pattern discovered in this domain ? store in brain/error_patterns/ or brain/decisions/
@@ -39,7 +39,7 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 - Domain conventions: stored in brain/ (update on every discovery)
 - Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
 
-### P0.3 — Smart Auto-Prompt Rules
+### P0.3 â€” Smart Auto-Prompt Rules
 
 **Optimistic Action Threshold:** > 80% confidence ? act immediately. 60-80% ? brief confirmation. < 60% ? clarify first.
 
@@ -299,7 +299,7 @@ Cost per Active User Breakdown:
 **Methods of Cloud Cost Forecasting:**
 
 1. **Linear Extrapolation**: Low-effort, rough estimate. Use for steady-state workloads.
-   - `Forecast = Current Spend × (1 + Growth Rate)`
+   - `Forecast = Current Spend Ã— (1 + Growth Rate)`
 
 2. **Time Series Forecasting**: ARIMA, Exponential Smoothing. Use for workloads with seasonal patterns.
    - Accounts for weekly, monthly, seasonal cycles.
@@ -617,9 +617,9 @@ Storage: $0.001/GB/month (Glacier Deep Archive) vs $0.023/GB/month (Standard)
 | Unattached volumes | Waste identification | Any |
 
 
-## 8 — UNIT ECONOMICS AND VALUE DRIVERS
+## 8 â€” UNIT ECONOMICS AND VALUE DRIVERS
 
-### 8.1 — Unit Economics Framework
+### 8.1 â€” Unit Economics Framework
 
 **Unit Economics Definition:**
 
@@ -627,7 +627,7 @@ Unit economics measures the cost and revenue associated with a single unit of bu
 
 ```
 Gross Margin per Unit = Revenue per Unit - Cost per Unit
-LTV (Lifetime Value) = Gross Margin per Unit × Average Customer Lifetime
+LTV (Lifetime Value) = Gross Margin per Unit Ã— Average Customer Lifetime
 CAC (Customer Acquisition Cost) = Total Sales and Marketing Costs / New Customers Acquired
 LTV:CAC Ratio = LTV / CAC
 Payback Period = CAC / Monthly Gross Margin per Customer
@@ -642,7 +642,7 @@ Payback Period = CAC / Monthly Gross Margin per Customer
 | Gross Margin | > 60% | 40-60% | < 40% |
 | Churn | < 5% monthly | 5-10% monthly | > 10% monthly |
 
-### 8.2 — Cloud Cost per Unit
+### 8.2 â€” Cloud Cost per Unit
 
 **Calculating Cost per Feature:**
 
@@ -673,7 +673,7 @@ for feature, calls in feature_api_calls.items():
 2. Medium-cost features (20-60%) get periodic review
 3. Low-cost features (bottom 40%) are left as-is unless obvious waste
 
-### 8.3 — Margins by Service Tier
+### 8.3 â€” Margins by Service Tier
 
 **Cost-to-Serve Analysis:**
 
@@ -715,7 +715,7 @@ for tier, costs in service_tiers.items():
 
 Free tier is a customer acquisition channel, not a profit center. If free tier conversion rate is < 5%, reconsider free tier offering.
 
-### 8.4 — Optimization ROI Framework
+### 8.4 â€” Optimization ROI Framework
 
 **Prioritizing Optimization Projects:**
 

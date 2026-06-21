@@ -7,6 +7,27 @@ schema: skill-pack/v1
 
 # Compatibility Matrix — Synarc Universal Skill Pack
 
+## On this page
+
+- [Capability × Runtime Matrix](#capability-runtime-matrix)
+- [Legend](#legend)
+- [Feature Descriptions](#feature-descriptions)
+  - [YAML Frontmatter](#yaml-frontmatter)
+  - [Intent Activation](#intent-activation)
+  - [Fallback Tiers (1–4)](#fallback-tiers-1-4)
+  - [Brain Persistence](#brain-persistence)
+  - [File Operations](#file-operations)
+  - [Command Execution](#command-execution)
+  - [Guardrails](#guardrails)
+  - [Session Tracking](#session-tracking)
+  - [Change Classification](#change-classification)
+  - [Risk Assessment](#risk-assessment)
+  - [Quality Gates](#quality-gates)
+  - [Error Intelligence](#error-intelligence)
+- [Graceful Degradation](#graceful-degradation)
+- [Dependency Resolution Support](#dependency-resolution-support)
+- [Transport Layer Support](#transport-layer-support)
+
 ## Capability × Runtime Matrix
 
 |  Capability | Codex | OpenCode | Cursor | Gemini | Claude | Copilot | Windsurf | Cline  |
@@ -123,3 +144,10 @@ Dependency resolution is primarily a pack-level concern — the `manifest.yaml` 
 |  .windsurfrules | No | No | No | No | No | No | Yes | No  |
 |  .clinerules | No | No | No | No | No | No | No | Yes  |
 |  copilot-instructions.md | No | No | No | No | No | Yes | No | No  |
+
+## See also
+
+- [Installation Guide](installation.md)
+- [Architecture Overview](architecture.md)
+- [Migration Guide](migration-guide.md)
+

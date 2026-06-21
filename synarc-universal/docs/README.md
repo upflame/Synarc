@@ -89,7 +89,7 @@ The installer writes the right file for each editor at the project root:
 ## Verification reference
 
 
-ode install.js --verify reports one line per editor with PASS / FAIL and the file size:
+node install.js --verify reports one line per editor with PASS / FAIL and the file size:
 
 `
   [+] PASS  Claude Code          .claude-plugin/plugin.json (1317 bytes)

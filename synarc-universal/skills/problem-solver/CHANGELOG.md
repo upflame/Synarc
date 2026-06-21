@@ -2,9 +2,9 @@
 title: problem-solver Changelog
 ---
 
-# Changelog â€” problem-solver
+# Changelog — problem-solver
 
-## 2.0.0 â€” 2026-06-02
+## 2.0.0 — 2026-06-02
 
 ### Universalized Release
 

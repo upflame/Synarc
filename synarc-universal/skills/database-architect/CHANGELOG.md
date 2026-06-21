@@ -2,9 +2,9 @@
 title: database-architect Changelog
 ---
 
-# Changelog â€” database-architect
+# Changelog — database-architect
 
-## 4.0.0 â€” 2026-06-02
+## 4.0.0 — 2026-06-02
 
 ### Universalized Release
 

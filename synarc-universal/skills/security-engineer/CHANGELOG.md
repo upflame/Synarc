@@ -2,9 +2,9 @@
 title: security-engineer Changelog
 ---
 
-# Changelog â€” security-engineer
+# Changelog — security-engineer
 
-## 2.0.0 â€” 2026-06-02
+## 2.0.0 — 2026-06-02
 
 ### Universalized Release
 

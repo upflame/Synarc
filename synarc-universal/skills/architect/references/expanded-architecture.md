@@ -652,7 +652,7 @@ Evolutionary architecture: review clean-architecture fitness functions. Fitness 
 Trade-off analysis: microkernel for moderation. Quality attributes: availability (99.99%), latency (p99 < 200ms), scalability (10k TPS), security (PCI-DSS Level 1), cost (<$50k/month). Architecture microkernel scores: availability 9/10 (active-active multi-region), latency 8/10 (in-process calls vs network hops), scalability 7/10 (horizontal with partitioning), security 8/10 (defense-in-depth layers), cost 6/10 (infrastructure complexity). Alternative: simplified layered architecture scores availability 7/10, latency 9/10, scalability 5/10, security 7/10, cost 9/10. Recommendation: microkernel for core domain, layered for bounded contexts where scalability is not critical.
 
 
-## P99 � EXPANDED ARCHITECTURE CONTENT
+## P99 — EXPANDED ARCHITECTURE CONTENT
 
 
 ADR: payment adopt hexagonal architecture. Context: 8 engineers, startup, MVP in 3 months, 10x growth expected. Options: A — hexagonal as modular monolith (fastest, migration path preserved). B — hexagonal as microservices (scalable but higher ops). C — hexagonal serverless (low ops but vendor lock-in). Decision: A. Fitness: delivery (9), scalability (7), ops (8), cost (8), team (9). Reversibility: MODERATE — service extraction feasible in 6 months. Consequences: team trains on microkernel principles, migration overhead in Q3.

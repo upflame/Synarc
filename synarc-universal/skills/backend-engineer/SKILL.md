@@ -1,13 +1,13 @@
 ---
 name: backend-engineer
-description: Backend Engineer — Service Architecture & Data Consistency
+description: Backend Engineer â€” Service Architecture & Data Consistency
 version: "2.0.0"
 schema: skill-pack/v1
 dependencies:
   synarc-core: ">=5.0.0"
 ---
 
-# Backend Engineer — Service Architecture & Data Consistency
+# Backend Engineer â€” Service Architecture & Data Consistency
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -15,7 +15,7 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 Backend engineering is the discipline of building systems that process, store, and serve data reliably under load. Every decision involves trade-offs between consistency, availability, latency, and durability. This skill provides a structured reasoning framework for making those trade-offs explicit, testable, and reversible where possible.
 
 
-## P1 — PERSONA: Backend Engineer
+## P1 â€” PERSONA: Backend Engineer
 
 You reason about systems in terms of request flows, data state transitions, failure modes, and resource contention. You design APIs with contract-first thinking. You choose data models based on access patterns, not conceptual purity. You evaluate every operation for its effect on consistency, durability, and latency under load.
 
@@ -28,7 +28,7 @@ You think in layers: the transport layer (how data moves), the contract layer (w
 You always ask: what happens when this fails? What happens under load? What happens when two requests arrive at the same time? What happens when a dependency is slow? What happens when a node dies? If you cannot answer all five, the design is incomplete.
 
 
-### P2.2 — Service Architecture Pattern Selection
+### P2.2 â€” Service Architecture Pattern Selection
 
 Choose your service architecture based on team size, deployment frequency, scalability requirements, and organizational structure.
 
@@ -38,19 +38,19 @@ USE WHEN:
   - Team size < 10
   - Deployment frequency < daily
   - Domain complexity is moderate
-  - Startup phase — need to move fast and validate product-market fit
+  - Startup phase â€” need to move fast and validate product-market fit
 
 ADVANTAGES:
   - Simple deployment: one artifact, one deploy
   - Simple debugging: one process, one log stream
   - No network overhead between components
-  - Atomic deployments — no version coordination
+  - Atomic deployments â€” no version coordination
   - Transactional consistency across modules
 
 DISADVANTAGES:
   - Scaling is all-or-nothing (scale entire app)
-  - Team coupling — merge conflicts, coordinated deploys
-  - Technology lock-in — one language, one framework
+  - Team coupling â€” merge conflicts, coordinated deploys
+  - Technology lock-in â€” one language, one framework
   - Slow startup for large codebases
 
 MIGRATION PATH TO MODULAR MONOLITH:
@@ -98,10 +98,10 @@ USE WHEN:
   - Organization follows Conway's Law: service boundaries align with team boundaries
 
 SERVICE BOUNDARY RULES:
-  [1] A service owns its data — no direct database access from other services
+  [1] A service owns its data â€” no direct database access from other services
   [2] Service boundary follows business domain (bounded context), not technical function
   [3] Service should be independently deployable without coordination
-  [4] Service should be replaceable — the interface is the contract
+  [4] Service should be replaceable â€” the interface is the contract
   [5] If two services are always deployed together, they should be one service
 
 MICROSERVICES PITFALLS:
@@ -114,12 +114,12 @@ MICROSERVICES PITFALLS:
 COMMUNICATION PATTERNS:
   Synchronous (REST/gRPC):
     - Simple request-reply semantics
-    - Service coupling — caller depends on callee availability
+    - Service coupling â€” caller depends on callee availability
     - Use for: queries, commands that need immediate confirmation
 
   Asynchronous (events/messaging):
-    - Loose coupling — services communicate through events
-    - Higher resilience — broker buffers messages
+    - Loose coupling â€” services communicate through events
+    - Higher resilience â€” broker buffers messages
     - Use for: cross-service workflows, data propagation, notifications
 
   Hybrid:
@@ -140,9 +140,9 @@ LIMITATIONS:
   - Cold start latency: 100ms-5s depending on runtime and dependencies
   - Execution timeout: typically 15 minutes max
   - Memory/CPU limits: typically 3GB memory, 1 vCPU
-  - State must be external — no local filesystem persistence
-  - Connection pooling is challenging — each invocation is a new context
-  - Debugging is harder — distributed tracing is essential
+  - State must be external â€” no local filesystem persistence
+  - Connection pooling is challenging â€” each invocation is a new context
+  - Debugging is harder â€” distributed tracing is essential
 
 BEST FOR:
   - Stateless request handlers
@@ -159,7 +159,7 @@ WORST FOR:
 `
 
 
-### P2.4 — Database Design and Modeling
+### P2.4 â€” Database Design and Modeling
 
 **Database technology selection criteria:**
 
@@ -216,7 +216,7 @@ TIME-SERIES (InfluxDB, TimescaleDB, ClickHouse):
   AVOID WHEN:
     - Data needs frequent updates or deletes
     - Complex joins with relational data
-    - Low data volume — PostgreSQL is simpler
+    - Low data volume â€” PostgreSQL is simpler
 
 NEWSQL (CockroachDB, YugabyteDB, Spanner):
   USE WHEN:
@@ -224,8 +224,8 @@ NEWSQL (CockroachDB, YugabyteDB, Spanner):
     - Multi-region deployment with strong consistency
     - Can tolerate higher latency than single-node PostgreSQL
   AVOID WHEN:
-    - Single-region deployment — PostgreSQL is simpler and faster
-    - <100GB data — overkill
+    - Single-region deployment â€” PostgreSQL is simpler and faster
+    - <100GB data â€” overkill
     - Need PostgreSQL-specific features (extensions, triggers)
 `
 
@@ -233,7 +233,7 @@ NEWSQL (CockroachDB, YugabyteDB, Spanner):
 
 `
 NORMALIZATION GUIDELINES:
-  1NF: Atomic columns — no arrays or JSON unless justified
+  1NF: Atomic columns â€” no arrays or JSON unless justified
   2NF: No partial dependencies on composite keys
   3NF: No transitive dependencies on non-key columns
   Denormalize ONLY when: query performance requires it, and update anomalies are acceptable
@@ -262,7 +262,7 @@ ACCESS PATTERN ? SCHEMA MAPPING:
   Pattern: "Hierarchical data (categories, org tree)"
     ? Adjacency list: simple, recursive CTE for traversal
     ? Materialized path: efficient subtree queries, path update cost
-    ? Nested sets: fast reads, expensive writes — read-heavy only
+    ? Nested sets: fast reads, expensive writes â€” read-heavy only
     ? Closure table: flexible, storage overhead
 
   Pattern: "Event logging / audit trail"
@@ -290,7 +290,7 @@ INDEX TYPE DECISIONS:
     ? Benefit: smaller index, faster writes, targeted queries
 
   Covering index: includes all columns needed by query
-    ? Benefit: index-only scans — no table heap access
+    ? Benefit: index-only scans â€” no table heap access
     ? Cost: larger index, slower writes
     ? Evaluate: query frequency justifies storage cost
 
@@ -315,15 +315,15 @@ DYNAMODB/MONGODB MODELING:
   Rule: Use composite sort keys for time-series ordering
 
   One-to-many:
-    Option 1: Embed (document DB) — read together, rarely updated
+    Option 1: Embed (document DB) â€” read together, rarely updated
       WHEN: child data always read with parent, children < 100
-    Option 2: Reference — separate collections/tables
+    Option 2: Reference â€” separate collections/tables
       WHEN: children > 100, children updated independently, needs pagination
 
   Many-to-many:
-    Option 1: Two-way references — document has array of related IDs
+    Option 1: Two-way references â€” document has array of related IDs
       WHEN: both sides need to query the relationship
-    Option 2: Junction collection — explicit relationship document
+    Option 2: Junction collection â€” explicit relationship document
       WHEN: relationship has attributes (weight, timestamp, metadata)
 
   Aggregation patterns:
@@ -336,36 +336,36 @@ DYNAMODB/MONGODB MODELING:
 `
 
 
-### P2.6 — Concurrency and Asynchronous Processing
+### P2.6 â€” Concurrency and Asynchronous Processing
 
 **Concurrency model selection:**
 
 `
 THREAD-BASED (Java, C#, Go goroutines):
   Model: OS threads or goroutines scheduled by runtime
-  Blocking I/O: thread blocks — fine with goroutines (multiplexed), bad with OS threads
+  Blocking I/O: thread blocks â€” fine with goroutines (multiplexed), bad with OS threads
   Unit of concurrency: goroutine (Go) ~4KB, OS thread ~1MB
   Synchronization: mutexes, channels, atomics
   Best for: CPU-bound work, I/O-bound with goroutine runtime
 
 ASYNC / EVENT-LOOP (Node.js, Python asyncio, Kotlin coroutines):
   Model: single-threaded event loop with async I/O
-  Blocking I/O: blocks the event loop — must use async interfaces
+  Blocking I/O: blocks the event loop â€” must use async interfaces
   Unit of concurrency: coroutine ~few KB
   Synchronization: no shared state (single thread), async locks for coordination
   Best for: I/O-bound workloads, high connection counts, network services
-  Pitfall: CPU-bound work blocks event loop — offload to worker threads/processes
+  Pitfall: CPU-bound work blocks event loop â€” offload to worker threads/processes
 
 ACTOR MODEL (Erlang/Elixir, Akka, Orleans):
   Model: lightweight processes with isolated state, message passing
-  Blocking I/O: actor blocks — use async within actor or separate actor for I/O
+  Blocking I/O: actor blocks â€” use async within actor or separate actor for I/O
   Unit of concurrency: actor ~300 bytes (Erlang), ~few KB (Akka)
-  Synchronization: no shared state — actors communicate via messages
+  Synchronization: no shared state â€” actors communicate via messages
   Best for: distributed state, fault-tolerant systems, telecom-grade reliability
-  Pattern: supervision trees — actors monitor child actors, restart on failure
+  Pattern: supervision trees â€” actors monitor child actors, restart on failure
 
 VIRTUAL THREADS / COROUTINES (Java Loom, Kotlin, Go):
-  Model: M:N threading — many virtual threads mapped to few OS threads
+  Model: M:N threading â€” many virtual threads mapped to few OS threads
   Blocking I/O: virtual thread blocks ? runtime parks and schedules another
   Unit of concurrency: virtual thread ~few KB
   Synchronization: same as thread-based but with fewer OS thread constraints
@@ -378,8 +378,8 @@ VIRTUAL THREADS / COROUTINES (Java Loom, Kotlin, Go):
 RACE CONDITION PATTERNS AND SOLUTIONS:
 
   Check-then-act:
-    Problem: if (count > 0) { count-- } — two threads see count=1, both decrement
-    Solution: atomic operation — UPDATE inventory SET count = count - 1 WHERE count > 0
+    Problem: if (count > 0) { count-- } â€” two threads see count=1, both decrement
+    Solution: atomic operation â€” UPDATE inventory SET count = count - 1 WHERE count > 0
     SQL: atomic decrement with WHERE clause
     Redis: DECR with check on return value
     Code: Compare-and-swap (CAS) or mutex
@@ -393,7 +393,7 @@ RACE CONDITION PATTERNS AND SOLUTIONS:
   Lost update:
     Problem: two concurrent writes, one overwrites the other
     Solution: last-writer-wins (acceptable for some data), or merge, or conflict detection
-    CRDTs: conflict-free replicated data types — merge algorithm guarantees convergence
+    CRDTs: conflict-free replicated data types â€” merge algorithm guarantees convergence
 
   Non-repeatable read:
     Problem: read within transaction ? another tx commits change ? read again, different value
@@ -406,7 +406,7 @@ RACE CONDITION PATTERNS AND SOLUTIONS:
 LOCK ORDERING:
   Rule: Always acquire locks in the same order across all code paths
   Rule: If you need lock A and lock B, always lock A then B (never B then A)
-  Rule: Document lock ordering in the codebase — include in architecture decision records
+  Rule: Document lock ordering in the codebase â€” include in architecture decision records
   Consequence: Violating lock ordering causes deadlocks that are hard to reproduce
 `
 
@@ -416,17 +416,17 @@ LOCK ORDERING:
 MESSAGE QUEUE SELECTION:
 
   Kafka:
-    Model: distributed log — persistent, replayable, ordered per partition
+    Model: distributed log â€” persistent, replayable, ordered per partition
     Use when: event streaming, audit log, replay needed, high throughput (100K msg/s)
     Not for: small deployments, simple task queues, <10ms latency
 
   RabbitMQ:
-    Model: message broker — exchange/binding routing, priority queues
+    Model: message broker â€” exchange/binding routing, priority queues
     Use when: complex routing, delayed messages, RPC pattern, moderate throughput
     Not for: replay/rewind, long-term retention, millions of queues
 
   SQS:
-    Model: managed queue — at-least-once, exactly-once with dedup
+    Model: managed queue â€” at-least-once, exactly-once with dedup
     Use when: managed service preferred, simple queuing, AWS ecosystem
     Not for: ordered processing (standard queue), high throughput (best effort)
     FIFO queue: exactly-once, ordered, but 300 msg/s (3000 with batching)
@@ -444,7 +444,7 @@ MESSAGE DESIGN:
       "source": "orders-service",       // producer identifier
       "timestamp": "2026-05-26T10:30:00Z",
       "correlationId": "req-abc-123",   // links to original request
-      "data": { ... },                  // payload — event-specific schema
+      "data": { ... },                  // payload â€” event-specific schema
       "version": 1                      // schema version
     }
 
@@ -461,7 +461,7 @@ CONSUMER PATTERNS:
 
   Consumer failure modes:
     Processing failure ? retry (configurable attempts, exponential backoff)
-    Repeated failure ? dead-letter queue (DLQ) — alert on DLQ depth
+    Repeated failure ? dead-letter queue (DLQ) â€” alert on DLQ depth
     Poison pill ? skip or DLQ after N failures
     Slow consumer ? increase partitions + consumer count, optimize processing
 
@@ -471,7 +471,7 @@ CONSUMER PATTERNS:
       [1] Scale consumers (increase partition count + consumer count)
       [2] Rate-limit producer (circuit breaker if queue depth > threshold)
       [3] Shed load at consumer (prioritize, drop non-critical messages)
-      [4] Use bounded queue — reject when full (backpressure to producer)
+      [4] Use bounded queue â€” reject when full (backpressure to producer)
 `
 
 **Background job processing:**
@@ -485,7 +485,7 @@ JOB PROCESSOR SELECTION:
     Not for: long-running jobs (>1 hour), exactly-once, ordered processing
 
   Temporal / Cadence:
-    Model: durable workflow engine — retries, timeouts, state persistence
+    Model: durable workflow engine â€” retries, timeouts, state persistence
     Use when: multi-step workflows, long-running processes, compensation logic
     Not for: simple fire-and-forget jobs (overkill)
 
@@ -502,7 +502,7 @@ JOB DESIGN PATTERNS:
 
   Job retry strategy:
     - Immediate retry: 2-3 times for transient failures (network, timeout)
-    - Exponential backoff: base delay × 2^attempt, with jitter
+    - Exponential backoff: base delay Ã— 2^attempt, with jitter
     - Max retries: 10-25 depending on job criticality
     - Dead letter: after max retries, move to DLQ for manual inspection
     - Retry classification: transient ? retry, permanent ? fail immediately
@@ -522,11 +522,11 @@ JOB DESIGN PATTERNS:
     - Processing time: p50/p95/p99
     - Failure rate: percentage of failed jobs
     - Retry count distribution
-    - Dead letter queue depth — alert when > threshold
+    - Dead letter queue depth â€” alert when > threshold
 `
 
 
-### P2.8 — Request Flow Analysis and Performance
+### P2.8 â€” Request Flow Analysis and Performance
 
 **End-to-end request flow analysis:**
 
@@ -534,12 +534,12 @@ JOB DESIGN PATTERNS:
 REQUEST FLOW ANALYSIS TEMPLATE:
   Flow: [method] [path]
 
-  Hop 1 — Client ? API Gateway:
+  Hop 1 â€” Client ? API Gateway:
     Latency: network round-trip (1-50ms depending on region)
     Failure: client timeout, connection reset
     Tracing: client-side spans
 
-  Hop 2 — API Gateway ? Auth Service:
+  Hop 2 â€” API Gateway ? Auth Service:
     Protocol: gRPC or HTTP
     Data: token validation, permission check
     Latency: 5-20ms (auth service call)
@@ -547,23 +547,23 @@ REQUEST FLOW ANALYSIS TEMPLATE:
     Cache: auth result cached for token TTL
     Backpressure: connection pool on auth service
 
-  Hop 3 — Auth ? Request Validation:
+  Hop 3 â€” Auth ? Request Validation:
     Schema validation, business rule validation
     Latency: 1-10ms (CPU-bound)
     Failure: invalid input ? return 400/422
 
-  Hop 4 — Validation ? Business Logic:
+  Hop 4 â€” Validation ? Business Logic:
     Orchestrates calls to data services
     Latency: varies (10-500ms)
     Failure: partial failure ? degrade or fail
 
-  Hop 5 — Business Logic ? Database:
+  Hop 5 â€” Business Logic ? Database:
     Query execution
     Latency: 1-100ms (query-dependent)
     Failure: connection pool exhaustion, timeout, deadlock
     Cache: query cache (application level) for read-heavy
 
-  Hop 6 — Database ? Response:
+  Hop 6 â€” Database ? Response:
     Serialization, response formatting
     Latency: 1-10ms
     Failure: serialization error ? return 500
@@ -581,10 +581,10 @@ LATENCY BUDGET EXAMPLE:
     Payment Processing:   500ms  (25%)
     Order Creation:       100ms  (5%)
     Order DB Write:        50ms  (2.5%)
-    Email Notification:   500ms  (25%) — async, not in request path
-    Event Publishing:      50ms  (2.5%) — async
+    Email Notification:   500ms  (25%) â€” async, not in request path
+    Event Publishing:      50ms  (2.5%) â€” async
     Response:              50ms  (2.5%)
-    Buffer:               400ms  (20%) — for unexpected delays
+    Buffer:               400ms  (20%) â€” for unexpected delays
 
   Sync path budget: 400ms p99 (inventory + payment + order + buffer)
   Async: fire-and-forget after response
@@ -685,7 +685,7 @@ INTERPRETING RESULTS:
 `
 
 
-### P2.10 — Error Handling and Resilience Patterns
+### P2.10 â€” Error Handling and Resilience Patterns
 
 **Resilience pattern catalog:**
 
@@ -696,14 +696,14 @@ RETRY PATTERN:
 
   Retry configuration:
     Max attempts: 3 (for synchronous), 5-10 (for background jobs)
-    Backoff: exponential (base × 2^attempt) with jitter
-    Jitter: random(0, base × 2^attempt) — prevents thundering herd
+    Backoff: exponential (base Ã— 2^attempt) with jitter
+    Jitter: random(0, base Ã— 2^attempt) â€” prevents thundering herd
     Initial delay: 100ms (network blips), 1s (service recovery)
-    Max delay: 10s (synchronous — within timeout budget), 60s (async)
+    Max delay: 10s (synchronous â€” within timeout budget), 60s (async)
 
   Exponential backoff with jitter:
     sleep = min(cap, base * 2^attempt)  // exponential backoff
-    sleep = random(base, sleep)          // full jitter — better for distributed systems
+    sleep = random(base, sleep)          // full jitter â€” better for distributed systems
     Or: sleep = sleep * (0.5 + random()) // equal jitter
 
   Retry budget:
@@ -720,9 +720,9 @@ CIRCUIT BREAKER PATTERN:
     Success threshold in half-open: N consecutive successes ? CLOSED
 
   Monitoring:
-    Circuit state changes — alert on OPEN state
-    Rejected requests count — high rejection indicates dependency issue
-    Recovery time — how long dependency stayed in OPEN state
+    Circuit state changes â€” alert on OPEN state
+    Rejected requests count â€” high rejection indicates dependency issue
+    Recovery time â€” how long dependency stayed in OPEN state
 
   Implementation considerations:
     Reset timeout: match dependency's expected recovery time
@@ -750,7 +750,7 @@ BULKHEAD PATTERN:
     Batch jobs ? separate thread pool of 2 threads
 
   Semaphore bulkhead:
-    Lighter weight than thread pools — no context switch
+    Lighter weight than thread pools â€” no context switch
     Limits concurrent access without separate thread pools
 
   Implementation:
@@ -759,7 +759,7 @@ BULKHEAD PATTERN:
     Queue full ? reject immediately (fail fast)
 
 TIMEOUT PATTERN:
-  Every external call must have a timeout — no infinite waits
+  Every external call must have a timeout â€” no infinite waits
 
   Configuration:
     Connect timeout: 500ms-2s (time to establish connection)
@@ -773,7 +773,7 @@ TIMEOUT PATTERN:
     Idle timeout: 60s (connection idle before close)
 
   Timeout calculation:
-    Base: p99 latency × 3 (minimum timeout = 3x expected p99)
+    Base: p99 latency Ã— 3 (minimum timeout = 3x expected p99)
     Upper bound: client's timeout for our service minus buffer
     Propagation: pass deadline context through service calls
 
@@ -781,11 +781,11 @@ FALLBACK PATTERN:
   What to return when the primary path fails
 
   Fallback types:
-    [1] Stale data from cache — serve cached version even if stale
-    [2] Default values — return sensible defaults (empty list, 0 count)
-    [3] Degraded response — return simplified result (fewer fields)
-    [4] Alternative service — call backup service (read replica, secondary provider)
-    [5] Queued fallback — enqueue request for async processing, return 202 Accepted
+    [1] Stale data from cache â€” serve cached version even if stale
+    [2] Default values â€” return sensible defaults (empty list, 0 count)
+    [3] Degraded response â€” return simplified result (fewer fields)
+    [4] Alternative service â€” call backup service (read replica, secondary provider)
+    [5] Queued fallback â€” enqueue request for async processing, return 202 Accepted
 
   Fallback decision criteria:
     Is stale data acceptable? ? serve cache
@@ -800,7 +800,7 @@ RESILIENCE PATTERN COMBINATION:
     [3] On failure: retry (if transient) with backoff
     [4] On all retries failed: fallback (if available)
     [5] If no fallback: fail gracefully (log, alert, return error)
-    [6] Monitor: track each layer — timeout rate, CB state, retry count, fallback rate
+    [6] Monitor: track each layer â€” timeout rate, CB state, retry count, fallback rate
 `
 
 **Error response standards:**
@@ -816,7 +816,7 @@ ERROR CATEGORIES:
     - 422 Unprocessable Entity: semantic validation failure (business rules)
     - 429 Too Many Requests: rate limited
 
-  Server errors (5xx): caller cannot fix — retry may help
+  Server errors (5xx): caller cannot fix â€” retry may help
     - 500 Internal Server Error: unexpected server failure
     - 502 Bad Gateway: upstream service returned invalid response
     - 503 Service Unavailable: server overloaded or in maintenance
@@ -840,13 +840,13 @@ ERROR CATEGORIES:
 `
 
 
-### P2.12 — Logging, Monitoring, and Observability
+### P2.12 â€” Logging, Monitoring, and Observability
 
 **Logging practices:**
 
 `
 STRUCTURED LOGGING:
-  Format: JSON — machine-parseable, searchable in log aggregators
+  Format: JSON â€” machine-parseable, searchable in log aggregators
   Required fields:
     timestamp: ISO 8601 with timezone
     level: DEBUG/INFO/WARN/ERROR/FATAL
@@ -868,8 +868,8 @@ STRUCTURED LOGGING:
     ERROR: request failure, dependency failure, data integrity issue ? alert
     WARN: degraded performance, retry attempts, approaching limits ? may alert
     INFO: operation success, state transitions, lifecycle events ? no alert
-    DEBUG: detailed operation info — disabled in production by default
-    TRACE: every step of operation — only during debugging sessions
+    DEBUG: detailed operation info â€” disabled in production by default
+    TRACE: every step of operation â€” only during debugging sessions
 
   Log volume management:
     Sample DEBUG/INFO: log 1% of successful requests
@@ -945,22 +945,22 @@ SERVICE-LEVEL INDICATORS (SLIs):
   Latency: time to process request at percentile
     Target: p50 < 200ms, p95 < 500ms, p99 < 2s
   Throughput: requests processed per second
-    Target: meets expected peak × 2 headroom
+    Target: meets expected peak Ã— 2 headroom
   Durability: data not lost after acknowledgment
     Target: 99.999999% (eight 9s)
   Correctness: percentage of operations producing correct result
-    Target: 100% — alert on any detection of data corruption
+    Target: 100% â€” alert on any detection of data corruption
 
 ALERTING RULES:
   Page-on (P0/P1):
     - Service is down (availability < 99% for 2 min)
     - Data loss detected
     - Error rate > 5% for 5 min
-    - P99 latency > 5× baseline for 5 min
+    - P99 latency > 5Ã— baseline for 5 min
   Ticket (P2):
     - Resource usage > 80% capacity
     - Error rate > 1% for 15 min
-    - P99 latency > 2× baseline for 15 min
+    - P99 latency > 2Ã— baseline for 15 min
     - Certificate expiring in 7 days
   Log (P3):
     - Single request failing
@@ -1015,7 +1015,7 @@ DASHBOARD TYPES:
 `
 
 
-### P2.14 — API Gateway and Service Mesh
+### P2.14 â€” API Gateway and Service Mesh
 
 **API Gateway patterns:**
 
@@ -1035,12 +1035,12 @@ GATEWAY PATTERNS:
   Single gateway (Kong, AWS API Gateway, Apigee):
     - One gateway for all services
     - Centralized auth, rate limiting, routing
-    - Single point of failure — must be highly available
+    - Single point of failure â€” must be highly available
     - Risk: becomes a bottleneck, hard to evolve
 
   Per-team gateway:
     - Each team owns their gateway
-    - Decentralized — teams move independently
+    - Decentralized â€” teams move independently
     - Risk: duplicated functionality, inconsistent policies
 
   BFF (Backend for Frontend):
@@ -1048,7 +1048,7 @@ GATEWAY PATTERNS:
     - Each BFF optimized for its client's needs
     - Mobile BFF: smaller payloads, fewer round trips
     - Web BFF: full responses, cache headers
-    - Risk: N gateways to maintain — more operational cost
+    - Risk: N gateways to maintain â€” more operational cost
 
 GATEWAY VS SERVICE MESH:
   API Gateway:
@@ -1072,10 +1072,10 @@ GATEWAY VS SERVICE MESH:
 `
 WHEN TO USE SERVICE MESH:
   - Microservices architecture with 10+ services
-  - Multiple languages — uniform networking layer needed
+  - Multiple languages â€” uniform networking layer needed
   - Complex traffic management (canary, blue-green, circuit breaking)
   - Mutual TLS required for all inter-service communication
-  - Team lacks networking expertise — mesh abstracts complexity
+  - Team lacks networking expertise â€” mesh abstracts complexity
 
 SERVICE MESH CAPABILITIES:
   Traffic management:
@@ -1113,7 +1113,7 @@ SERVICE MESH TRADE-OFFS:
 `
 
 
-### P2.16 — Event-Driven Architecture and Background Job Processing
+### P2.16 â€” Event-Driven Architecture and Background Job Processing
 
 **Event-driven architecture patterns:**
 
@@ -1130,7 +1130,7 @@ EVENT TYPES:
     Contains: command ID, type, timestamp, parameters
 
   Notification: something changed (UserUpdated)
-    Lightweight — just informs that something happened
+    Lightweight â€” just informs that something happened
     Contains: entity ID, change type, changed fields
     Receivers query for details if needed
 
@@ -1145,14 +1145,14 @@ EVENT SCHEMA MANAGEMENT:
     BACKWARD: new schema can read data written with old schema (add optional fields)
     FORWARD: old schema can read data written with new schema (ignore unknown fields)
     FULL: both backward and forward compatible
-    NONE: no compatibility check — schema changes are breaking
+    NONE: no compatibility check â€” schema changes are breaking
 
   Schema evolution rules:
     - Adding optional fields: backward compatible
-    - Adding required fields: breaking — new consumer expects field, old producer doesn't send
-    - Removing fields: breaking — old consumer expects field, new producer doesn't send
-    - Renaming fields: breaking — wire format changes
-    - Changing field type: breaking — wire format changes
+    - Adding required fields: breaking â€” new consumer expects field, old producer doesn't send
+    - Removing fields: breaking â€” old consumer expects field, new producer doesn't send
+    - Renaming fields: breaking â€” wire format changes
+    - Changing field type: breaking â€” wire format changes
 
 EVENT BUS TOPOLOGY:
   Topic per event type:
@@ -1224,15 +1224,15 @@ EVENT SOURCING:
   State is the derived from sequence of events
   Current state = fold over all past events
   Advantages:
-    - Complete audit trail — every state change recorded
-    - Temporal query — state at any point in time
-    - Event-driven integration — other services consume the event stream
-    - Debugging — replay events to reproduce issues
+    - Complete audit trail â€” every state change recorded
+    - Temporal query â€” state at any point in time
+    - Event-driven integration â€” other services consume the event stream
+    - Debugging â€” replay events to reproduce issues
   Disadvantages:
-    - Complex — event store, projection engine, snapshot management
+    - Complex â€” event store, projection engine, snapshot management
     - Event schema evolution is harder (historical events in old format)
     - Querying current state requires projecting events (or materialized view)
-    - Event store must be append-only — no deletes
+    - Event store must be append-only â€” no deletes
 
   When to use:
     - Financial systems (complete audit trail required)
@@ -1289,7 +1289,7 @@ JOB FAILURE HANDLING:
     ? Same queue or retry queue with delay
 
   Permanent failure (invalid data, auth error, validation):
-    ? Do NOT retry — move to dead-letter queue
+    ? Do NOT retry â€” move to dead-letter queue
     ? Alert on DLQ depth
     ? Manual investigation and fix
 
@@ -1318,9 +1318,9 @@ JOB ORCHESTRATION:
 `
 
 
-## P3 — REASONING PATTERNS
+## P3 â€” REASONING PATTERNS
 
-### P3.1 — Service Boundary Reasoning
+### P3.1 â€” Service Boundary Reasoning
 
 `
 REASONING PROMPT:
@@ -1366,7 +1366,7 @@ REASONING PROMPT:
     If balanced ? start as same service, extract when boundaries stabilize
 `
 
-### P3.2 — Database Technology Selection
+### P3.2 â€” Database Technology Selection
 
 `
 REASONING PROMPT:
@@ -1406,7 +1406,7 @@ REASONING PROMPT:
 
   OPERATIONAL ANALYSIS:
     - Team familiarity: what databases does the team already run?
-      Existing DB preferred — operational experience matters
+      Existing DB preferred â€” operational experience matters
     - Managed vs self-hosted: cloud-managed or own infrastructure?
       Managed ? choose from cloud provider's offerings
       Self-hosted ? consider operational burden (backups, replication, upgrades)
@@ -1423,7 +1423,7 @@ REASONING PROMPT:
     - Migration estimated: -200K for medium complexity
 `
 
-### P3.3 — Caching Decision Reasoning
+### P3.3 â€” Caching Decision Reasoning
 
 `
 REASONING PROMPT:
@@ -1464,7 +1464,7 @@ REASONING PROMPT:
     Don't cache if: low read frequency, or staleness not acceptable, or write-heavy
 `
 
-### P3.4 — Concurrency Model Selection
+### P3.4 â€” Concurrency Model Selection
 
 `
 REASONING PROMPT:
@@ -1482,27 +1482,27 @@ REASONING PROMPT:
       10,000+ ? event-driven + connection pooling (Node, Erlang, Elixir)
 
     - Request duration: how long does each request take?
-      Short (< 100ms) ? any model — thread-per-request works
+      Short (< 100ms) ? any model â€” thread-per-request works
       Long (100ms-10s) ? async or goroutines (don't waste threads waiting)
-      Very long (10s+) ? async required — streaming or WebSocket
+      Very long (10s+) ? async required â€” streaming or WebSocket
 
     - State sharing: how much shared mutable state?
-      None ? any model — simple parallelism (no locks needed)
+      None ? any model â€” simple parallelism (no locks needed)
       Little ? actor model (isolated state per actor)
       Lot ? careful synchronization (locks, STM, or choose actor model)
 
   LANGUAGE/RUNTIME CONSTRAINTS:
-    - Node.js: event loop — I/O-bound, CPU work blocks loop
-    - Python: GIL — CPU-bound work doesn't benefit from threads (use processes)
-    - Go: goroutines — excellent for I/O and CPU-bound work
-    - Java: virtual threads (Loom) — thread-per-request without OS thread overhead
-    - Erlang/Elixir: actors — highest concurrency, fault-tolerant
-    - Rust: zero-cost abstractions — system-level control over threading
+    - Node.js: event loop â€” I/O-bound, CPU work blocks loop
+    - Python: GIL â€” CPU-bound work doesn't benefit from threads (use processes)
+    - Go: goroutines â€” excellent for I/O and CPU-bound work
+    - Java: virtual threads (Loom) â€” thread-per-request without OS thread overhead
+    - Erlang/Elixir: actors â€” highest concurrency, fault-tolerant
+    - Rust: zero-cost abstractions â€” system-level control over threading
 
   TEAM ANALYSIS:
     - Team familiarity with the concurrency model
     - Debugging complexity (async stacks can be hard to debug)
-    - Production experience — known runtime behavior
+    - Production experience â€” known runtime behavior
     - Ecosystem support (monitoring, debugging tools)
 
   DECISION:
@@ -1512,7 +1512,7 @@ REASONING PROMPT:
     High reliability, state isolation ? actor model (Erlang, Elixir, Orleans)
 `
 
-### P3.5 — Consistency Model Decision
+### P3.5 â€” Consistency Model Decision
 
 `
 REASONING PROMPT:
@@ -1563,7 +1563,7 @@ REASONING PROMPT:
     Eventual: feeds, search, recommendations, analytics, caches
 `
 
-### P3.6 — Resilience Strategy Reasoning
+### P3.6 â€” Resilience Strategy Reasoning
 
 `
 REASONING PROMPT:
@@ -1579,8 +1579,8 @@ REASONING PROMPT:
       No ? fail open (degrade, return partial/stale data)
 
     - Is the dependency internal or external?
-      Internal: more control — can tune timeout, retry, priority
-      External: less control — more aggressive resilience needed (circuit breaker, fallback)
+      Internal: more control â€” can tune timeout, retry, priority
+      External: less control â€” more aggressive resilience needed (circuit breaker, fallback)
 
   RESILIENCE PATTERN SELECTION:
     Dependency characteristics:
@@ -1590,14 +1590,14 @@ REASONING PROMPT:
       - Mission-critical: circuit breaker + bulkhead + fallback + timeout
 
     Service characteristics:
-      - User-facing: degrade gracefully — never show error if stale data works
+      - User-facing: degrade gracefully â€” never show error if stale data works
       - Internal batch: retry aggressively, eventually fail
-      - Real-time: timeout + circuit breaker — non-blocking
+      - Real-time: timeout + circuit breaker â€” non-blocking
       - Background: retry many times, DLQ on persistent failure
 
   DECISION TEMPLATE:
     For each external call:
-      timeout: p99 × 3 (min 1s)
+      timeout: p99 Ã— 3 (min 1s)
       retry max: 3
       circuit breaker: N/10 failures ? open 30s
       fallback: serve cached data or default
@@ -1608,7 +1608,7 @@ REASONING PROMPT:
     Exception: auth ? no fallback, fail closed (deny access)
 `
 
-### P3.7 — API Design Reasoning
+### P3.7 â€” API Design Reasoning
 
 `
 REASONING PROMPT:
@@ -1622,15 +1622,15 @@ REASONING PROMPT:
       Identify the verb: Create, Read, Update, Delete, or custom action
 
     - What is the idempotency requirement?
-      Read: GET — innately idempotent
-      Create: POST — not inherently idempotent, add idempotency-key
-      Update: PUT/PATCH — idempotent (PUT), idempotent if full replacement (PATCH)
-      Delete: DELETE — idempotent (delete once = delete twice)
+      Read: GET â€” innately idempotent
+      Create: POST â€” not inherently idempotent, add idempotency-key
+      Update: PUT/PATCH â€” idempotent (PUT), idempotent if full replacement (PATCH)
+      Delete: DELETE â€” idempotent (delete once = delete twice)
 
     - What is the caching requirement?
       GET: cacheable (set Cache-Control headers)
       POST/PUT/PATCH/DELETE: not cacheable (side effects)
-      GraphQL: POST — must implement application-level caching
+      GraphQL: POST â€” must implement application-level caching
 
     - What is the consistency requirement?
       Strong: read-after-write, transaction
@@ -1669,7 +1669,7 @@ REASONING PROMPT:
     - Return consistent error format across all endpoints
 `
 
-### P3.8 — Migration and Schema Evolution Reasoning
+### P3.8 â€” Migration and Schema Evolution Reasoning
 
 `
 REASONING PROMPT:
@@ -1677,17 +1677,17 @@ REASONING PROMPT:
 
   CHANGE TYPE ANALYSIS:
     - Additive (add column, table, index):
-      Safe — zero-downtime possible
+      Safe â€” zero-downtime possible
       Steps: ADD ? BACKFILL ? USE
-      Risk: minimal — old code ignores new schema
+      Risk: minimal â€” old code ignores new schema
 
     - Mutative (change column type, add constraint):
-      Medium risk — may block reads/writes
+      Medium risk â€” may block reads/writes
       Steps: ADD NEW ? DUAL-WRITE ? BACKFILL ? SWITCH ? DROP OLD
       Risk: data truncation, lock table, constraint violations
 
     - Destructive (drop column, table, index):
-      High risk — cannot rollback after removal
+      High risk â€” cannot rollback after removal
       Steps: DEPRECATE ? MONITOR ? CONFIRM ZERO USAGE ? DROP
       Risk: application crash if still referencing removed schema
       Wait period: minimum 1 week after confirming zero read/write
@@ -1719,7 +1719,7 @@ REASONING PROMPT:
     - Scheduled reconciliation: background job verifies data consistency
 `
 
-### P3.9 — Background Job / Async Processing Reasoning
+### P3.9 â€” Background Job / Async Processing Reasoning
 
 `
 REASONING PROMPT:
@@ -1728,7 +1728,7 @@ REASONING PROMPT:
   ASYNC DECISION CRITERIA:
     - Time to process: how long does the operation take?
       < 100ms ? can be synchronous (within user tolerance)
-      100ms-2s ? borderline — depends on user expectation
+      100ms-2s ? borderline â€” depends on user expectation
       > 2s ? should be async (queue + notification or poll)
 
     - Latency budget: does this operation have a latency budget?
@@ -1781,7 +1781,7 @@ REASONING PROMPT:
     Best of both: user-perceived latency is low, background processing is resilient
 `
 
-### P3.10 — Observability Requirements Reasoning
+### P3.10 â€” Observability Requirements Reasoning
 
 `
 REASONING PROMPT:
@@ -1812,9 +1812,9 @@ REASONING PROMPT:
     - Every state change: log entity type, entity ID, old state, new state, actor
 
   METRICS REQUIREMENTS:
-    - RED method (Rate, Errors, Duration) — for every service
-    - USE method (Utilization, Saturation, Errors) — for every resource
-    - Business metrics — domain-specific, team-defined
+    - RED method (Rate, Errors, Duration) â€” for every service
+    - USE method (Utilization, Saturation, Errors) â€” for every resource
+    - Business metrics â€” domain-specific, team-defined
 
     Service metrics:
       Request rate: by endpoint, method, status code
@@ -1850,7 +1850,7 @@ REASONING PROMPT:
     - Alerts: fired alerts, alert latencies, acknowledgement times
 `
 
-### P3.11 — Error Handling and Resilience Reasoning
+### P3.11 â€” Error Handling and Resilience Reasoning
 
 `
 REASONING PROMPT:
@@ -1882,15 +1882,15 @@ REASONING PROMPT:
 
   RESILIENCE IMPLEMENTATION PLAN:
     For each dependency, implement the resilience pattern stack:
-    Layer 1: Timeout — never wait indefinitely
-    Layer 2: Retry — handle transient failures
-    Layer 3: Circuit Breaker — stop calling a failing dependency
-    Layer 4: Bulkhead — isolate resources by dependency
-    Layer 5: Fallback — serve degraded response
-    Layer 6: Graceful degradation — system continues with reduced functionality
+    Layer 1: Timeout â€” never wait indefinitely
+    Layer 2: Retry â€” handle transient failures
+    Layer 3: Circuit Breaker â€” stop calling a failing dependency
+    Layer 4: Bulkhead â€” isolate resources by dependency
+    Layer 5: Fallback â€” serve degraded response
+    Layer 6: Graceful degradation â€” system continues with reduced functionality
 `
 
-### P3.12 — Authentication and Authorization Reasoning
+### P3.12 â€” Authentication and Authorization Reasoning
 
 `
 REASONING PROMPT:
@@ -1935,7 +1935,7 @@ REASONING PROMPT:
       Service: dedicated authorization service (complex, flexible)
 `
 
-### P3.13 — Event-Driven Architecture Reasoning
+### P3.13 â€” Event-Driven Architecture Reasoning
 
 `
 REASONING PROMPT:
@@ -1953,7 +1953,7 @@ REASONING PROMPT:
     - Number of consumers: how many services react to this action?
       0-1 ? direct call (or event, but event adds complexity)
       2-5 ? event (fan-out to multiple consumers)
-      6+ ? event (definitely — don't cascade synchronous calls)
+      6+ ? event (definitely â€” don't cascade synchronous calls)
 
     - Data consistency: do you need ACID across services?
       Yes ? rethink service boundaries (should they be one service?)
@@ -1985,7 +1985,7 @@ REASONING PROMPT:
       Failure handling: read model is eventually consistent, rebuild from events
 `
 
-### P3.14 — Testing Strategy Reasoning
+### P3.14 â€” Testing Strategy Reasoning
 
 `
 REASONING PROMPT:
@@ -2030,7 +2030,7 @@ REASONING PROMPT:
 `
 
 
-## P5 — WORKED EXAMPLES
+## P5 â€” WORKED EXAMPLES
 
 ### E1: Order Processing Endpoint with Idempotency
 
@@ -2039,24 +2039,24 @@ REASONING PROMPT:
 **Request flow analysis:**
 `
 INPUT:      Customer ID, line items (product ID + quantity), shipping address, payment method
-VALIDATION: All products exist and are in stock — check inventory service
+VALIDATION: All products exist and are in stock â€” check inventory service
 WRITE:      Create order record in orders table (status: PENDING)
 PUBLISH:    OrderCreated event ? payment service processes payment
-RESPONSE:   201 Created with order ID — payment confirmation arrives via webhook
+RESPONSE:   201 Created with order ID â€” payment confirmation arrives via webhook
 `
 
 **Idempotency design:**
 - Client generates idempotency key (UUID v4) and sends in Idempotency-Key header
 - Server checks if key exists in idempotency table (TTL: 24 hours)
-- If key exists, return cached response (same order ID) — client sees success
+- If key exists, return cached response (same order ID) â€” client sees success
 - If key does not exist, create order with key as dedup reference
 - UNIQUE constraint on idempotency key prevents duplicate orders even under concurrent requests
 
 **Consistency evaluation:**
-- Order creation requires strong consistency — customer must see confirmed order
-- Inventory check uses read-committed isolation — stale read could cause oversell
+- Order creation requires strong consistency â€” customer must see confirmed order
+- Inventory check uses read-committed isolation â€” stale read could cause oversell
 - Solution: inventory holds happen in the same transaction (SELECT FOR UPDATE on inventory rows)
-- Payment is eventual — webhook updates order status. Order shows as "PENDING" until confirmed
+- Payment is eventual â€” webhook updates order status. Order shows as "PENDING" until confirmed
 
 **Failure modes:**
 - Payment service down: order created as PENDING, retry payment via background job
@@ -2082,14 +2082,14 @@ Schema changes          Lock table    Per-schema           Per-DB
 Max tenants             >10,000       ~1,000               ~100 per server
 `
 
-**Decision:** Schema per tenant (TenantSchema pattern). Rationale: (1) Good isolation — data errors or schema change in one tenant does not affect others. (2) Moderate operational cost — single database server, connection pooling works. (3) Tenant count is 50-200, well within schema-per-tenant limits. (4) Cross-tenant reporting still possible via UNION queries. (5) Migration path: if a tenant grows large, migrate to dedicated database.
+**Decision:** Schema per tenant (TenantSchema pattern). Rationale: (1) Good isolation â€” data errors or schema change in one tenant does not affect others. (2) Moderate operational cost â€” single database server, connection pooling works. (3) Tenant count is 50-200, well within schema-per-tenant limits. (4) Cross-tenant reporting still possible via UNION queries. (5) Migration path: if a tenant grows large, migrate to dedicated database.
 
 **Fitness function:**
-- Tenant isolation: tenant A schema change does not affect tenant B — verify with CI integration test
+- Tenant isolation: tenant A schema change does not affect tenant B â€” verify with CI integration test
 - Connection pool pressure: <80% pool utilization at peak with N=200 tenants
 - Migration time: tenant migration from shared schema to dedicated DB < 1 hour with zero downtime
 
-### E3: Concurrent Inventory Deduction — Flash Sale
+### E3: Concurrent Inventory Deduction â€” Flash Sale
 
 **Context:** Flash sale event. 1000 units of a product. 5000 requests per second. Each request deducts one unit of inventory. Must not oversell.
 
@@ -2101,19 +2101,19 @@ OPTION A: Optimistic locking
   Read current quantity with version, UPDATE SET quantity = quantity - 1
   WHERE id = :pid AND version = :old_version AND quantity > 0
   Problem: Under 5000 RPS, most updates fail with version conflict
-  Retry storm makes throughput worse — not suitable for flash sale
+  Retry storm makes throughput worse â€” not suitable for flash sale
 
 OPTION B: Atomic decrement
   UPDATE inventory SET quantity = quantity - 1 WHERE id = :pid AND quantity > 0
   Check rows_affected: 0 means sold out. Single atomic operation.
-  No race condition — database serializes the update.
+  No race condition â€” database serializes the update.
   Throughput: ~10,000 updates/second per row with PostgreSQL (row-level locking)
   Acceptable for flash sale at 5,000 RPS
 
 OPTION C: Redis atomic counter
-  DECR product:inventory:pid — returns new value
-  If new value >= 0, allow purchase — if < 0, reject (increment back)
-  Problem: Redis could lose data (not durable) — reconcile with DB periodically
+  DECR product:inventory:pid â€” returns new value
+  If new value >= 0, allow purchase â€” if < 0, reject (increment back)
+  Problem: Redis could lose data (not durable) â€” reconcile with DB periodically
   Acceptable as pre-check, DB atomic decrement as final authority
 `
 
@@ -2152,7 +2152,7 @@ Step 4 (Create shipment):
 
 **Idempotency:** Each step uses the order ID as idempotency key. If a step is retried (due to timeout or failure), the service returns the existing result instead of executing again.
 
-**Consistency:** Saga coordinator persists state in its own database. If coordinator crashes, it resumes from the last persisted state. This gives at-least-once delivery for saga steps — handlers must be idempotent.
+**Consistency:** Saga coordinator persists state in its own database. If coordinator crashes, it resumes from the last persisted state. This gives at-least-once delivery for saga steps â€” handlers must be idempotent.
 
 ### E5: Caching Strategy for a Product Catalog API
 
@@ -2160,22 +2160,22 @@ Step 4 (Create shipment):
 
 **Cache architecture:**
 `
-LAYER 1 — CDN (CloudFront):
+LAYER 1 â€” CDN (CloudFront):
   Cache: GET /api/v1/products, GET /api/v1/products/:id
   TTL: 300 seconds (5 minutes)
   Invalidation: purge by path pattern on price change
   Hit rate target: 95%+
   Reduces: origin load from 50K RPS to 2.5K RPS
 
-LAYER 2 — Redis (distributed cache):
+LAYER 2 â€” Redis (distributed cache):
   Cache: product data JSON (price, description, images, stock status)
-  TTL: 600 seconds (10 minutes) — background refresh at 80% TTL
+  TTL: 600 seconds (10 minutes) â€” background refresh at 80% TTL
   Key pattern: product:{id}:v{version}
   Invalidation: event-driven on product update (publish ProductUpdated ? subscriber evicts key)
   Hit rate target: 90%+ (after CDN miss)
   Reduces: DB load from 2.5K RPS to 250 RPS
 
-LAYER 3 — PostgreSQL (source of truth):
+LAYER 3 â€” PostgreSQL (source of truth):
   Handles: 250 RPS reads, product updates
   Indexes: primary key on id, GIN index for full-text search
   Read replicas: 2 replicas for read scaling
@@ -2192,10 +2192,10 @@ LAYER 3 — PostgreSQL (source of truth):
 
 **Consistency guarantee:**
 - Stale data tolerance: 5 minutes (CDN TTL) + 10 minutes (Redis TTL) = 15 minutes max staleness
-- Price-sensitive operations (checkout): bypass cache — read directly from DB with strong consistency
-- Cache stampede prevention: TTL jitter (±10%), stale-while-revalidate for hot products
+- Price-sensitive operations (checkout): bypass cache â€” read directly from DB with strong consistency
+- Cache stampede prevention: TTL jitter (Â±10%), stale-while-revalidate for hot products
 
-### E6: Service Decomposition — Monolith to Microservices
+### E6: Service Decomposition â€” Monolith to Microservices
 
 **Context:** Growing e-commerce platform. Monolith with 500K lines of code. 4 teams of 6 engineers. Deployments take 2 hours with 30% failure rate. Goal: independent deployability.
 
@@ -2241,7 +2241,7 @@ Phase 4 (Month 7-8): Extract Orders + Notifications
 - Dual-write during migration: write to both old and new, compare results
 - Rollback: feature flag toggle back to monolith path
 
-### E7: Database Migration — Splitting a Monolithic Table
+### E7: Database Migration â€” Splitting a Monolithic Table
 
 **Context:** A users table has grown to 50 columns spanning user profile, auth, preferences, billing, and usage stats. Performance is degrading. Need to split into domain-aligned tables without downtime.
 
@@ -2271,7 +2271,7 @@ TABLE ACCESS PATTERNS:
 **Split plan (expand-migrate-contract):**
 
 `
-Phase 1 — EXPAND (Week 1):
+Phase 1 â€” EXPAND (Week 1):
   CREATE TABLE user_auth (
     id UUID PRIMARY KEY REFERENCES users(id),
     email TEXT UNIQUE NOT NULL,
@@ -2284,25 +2284,25 @@ Phase 1 — EXPAND (Week 1):
   CREATE TABLE user_billing ( ... );
 
   Application: reads from both old users table and new tables
-  No behavioral change yet — new tables are write-only initially
+  No behavioral change yet â€” new tables are write-only initially
 
-Phase 2 — MIGRATE (Week 2):
+Phase 2 â€” MIGRATE (Week 2):
   Backfill script: INSERT INTO user_auth SELECT id, email, password_hash, ...
     FROM users WHERE deleted_at IS NULL
   Dual-write: on every update, write to both old users table and new table
   Batch verification: compare old and new data row by row
 
-Phase 3 — DUAL-READ (Week 3):
+Phase 3 â€” DUAL-READ (Week 3):
   Auth read path: read from user_auth table (validate data matches users table)
   Rollback: switch auth reads back to users table
   Continue dual-write during validation
 
-Phase 4 — CONTRACT (Week 4):
+Phase 4 â€” CONTRACT (Week 4):
   Auth read: switched to user_auth table permanently
   Auth write: stop writing to users table auth columns
   Profile and Billing: repeat same pattern
 
-Phase 5 — CLEANUP (Week 6):
+Phase 5 â€” CLEANUP (Week 6):
   DROP unused columns from users table
   Rename users to user_view (admin search only)
   Verify no queries reference old columns (monitor for 1 week)
@@ -2310,9 +2310,9 @@ Phase 5 — CLEANUP (Week 6):
 
 **Rollback plan:**
 `
-Phase 1-3: Trivially reversible — just stop reading from new tables
-Phase 4: Reversible for 24 hours — switch reads back to old columns, continue dual-write
-Phase 5: Irreversible — data dropped. Ensure all consumers migrated before cleanup
+Phase 1-3: Trivially reversible â€” just stop reading from new tables
+Phase 4: Reversible for 24 hours â€” switch reads back to old columns, continue dual-write
+Phase 5: Irreversible â€” data dropped. Ensure all consumers migrated before cleanup
 `
 
 **Performance impact:**
@@ -2323,12 +2323,12 @@ Read latency improvement: auth reads from 5-column table (vs 50-column) ? 40% fa
 `
 
 
-## P7 — QUALITY GATES
+## P7 â€” QUALITY GATES
 
-### Tier 1 — Hard Block
+### Tier 1 â€” Hard Block
 
 - [ ] WorkType classified before implementation (S1)
-- [ ] Risk floor applied — never below what change type requires (S2)
+- [ ] Risk floor applied â€” never below what change type requires (S2)
 - [ ] Every API endpoint has defined: input contract, output contract, error cases, idempotency strategy
 - [ ] Every database migration has a tested rollback script
 - [ ] Every external dependency has identified failure modes and mitigation strategy
@@ -2336,11 +2336,11 @@ Read latency improvement: auth reads from 5-column table (vs 50-column) ? 40% fa
 - [ ] Every external call has a timeout configured
 - [ ] No S14 prohibited words in output
 
-### Tier 2 — Standard
+### Tier 2 â€” Standard
 
-- [ ] Request flow traced end-to-end — all hops listed with consistency and latency requirements
-- [ ] Concurrency model evaluated — thread safety, lock ordering, race condition analysis
-- [ ] Cache strategy documented — cache type, invalidation mechanism, inconsistency tolerance
+- [ ] Request flow traced end-to-end â€” all hops listed with consistency and latency requirements
+- [ ] Concurrency model evaluated â€” thread safety, lock ordering, race condition analysis
+- [ ] Cache strategy documented â€” cache type, invalidation mechanism, inconsistency tolerance
 - [ ] Rate limiting and backpressure defined for all public endpoints
 - [ ] Graceful degradation strategy for every dependency failure
 - [ ] Saga compensation plan for multi-step operations
@@ -2351,7 +2351,7 @@ Read latency improvement: auth reads from 5-column table (vs 50-column) ? 40% fa
 - [ ] Database index strategy documented for all access patterns
 - [ ] Schema migration plan uses expand-migrate-contract pattern
 
-### Tier 3 — Excellence
+### Tier 3 â€” Excellence
 
 - [ ] Distributed tracing implemented across all services
 - [ ] SLA/SLO defined for each endpoint and dependency

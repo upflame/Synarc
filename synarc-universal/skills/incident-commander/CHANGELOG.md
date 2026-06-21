@@ -2,9 +2,9 @@
 title: incident-commander Changelog
 ---
 
-# Changelog â€” incident-commander
+# Changelog — incident-commander
 
-## 1.0.0 â€” 2026-06-02
+## 1.0.0 — 2026-06-02
 
 ### Universalized Release
 

@@ -2,9 +2,9 @@
 title: engineering-manager Changelog
 ---
 
-# Changelog â€” engineering-manager
+# Changelog — engineering-manager
 
-## 1.0.0 â€” 2026-06-02
+## 1.0.0 — 2026-06-02
 
 ### Universalized Release
 

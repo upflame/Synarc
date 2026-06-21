@@ -2,9 +2,9 @@
 title: frontend-engineer Changelog
 ---
 
-# Changelog â€” frontend-engineer
+# Changelog — frontend-engineer
 
-## 1.0.0 â€” 2026-06-02
+## 1.0.0 — 2026-06-02
 
 ### Universalized Release
 

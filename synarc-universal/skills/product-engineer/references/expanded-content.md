@@ -47,10 +47,10 @@ Is this capability core to our competitive advantage?
 +-- YES -> Build (own the IP, invest in excellence)
 +-- NO -> Does a mature commercial solution exist?
     +-- YES -> Does it meet 80%+ of our needs at reasonable TCO?
-    ¦   +-- YES -> Buy (minimize custom development)
-    ¦   +-- NO -> Can we adapt our process to the tool?
-    ¦       +-- YES -> Buy (change process, use tool)
-    ¦       +-- NO -> Build with limited scope
+    Â¦   +-- YES -> Buy (minimize custom development)
+    Â¦   +-- NO -> Can we adapt our process to the tool?
+    Â¦       +-- YES -> Buy (change process, use tool)
+    Â¦       +-- NO -> Build with limited scope
     +-- NO -> Can we partner with a specialist?
         +-- YES -> Partner (shared investment, shared risk)
         +-- NO -> Build (last resort)
@@ -61,10 +61,10 @@ Is the hypothesis testable?
 +-- NO -> Refine hypothesis (be more specific)
 +-- YES -> Can we run an A/B test?
     +-- YES -> Can we reach the required sample size?
-    ¦   +-- YES -> Run A/B test with preregistration
-    ¦   +-- NO -> Can we accept a larger MDE?
-    ¦       +-- YES -> Run A/B test with larger MDE
-    ¦       +-- NO -> Use qualitative methods (user interviews, usability tests)
+    Â¦   +-- YES -> Run A/B test with preregistration
+    Â¦   +-- NO -> Can we accept a larger MDE?
+    Â¦       +-- YES -> Run A/B test with larger MDE
+    Â¦       +-- NO -> Use qualitative methods (user interviews, usability tests)
     +-- NO -> Can we use a different method?
         +-- YES -> Switchback, MAB, quasi-experimental
         +-- NO -> Use qualitative methods (user interviews, usability tests)
@@ -75,8 +75,8 @@ Is the debt causing measurable harm (velocity, quality, risk)?
 +-- NO -> Monitor (debt may not be worth paying down)
 +-- YES -> Is the cost of paying down the debt less than the harm?
     +-- YES -> Is there a more valuable feature we could build instead?
-    ¦   +-- YES -> Compare RICE scores; prioritize the higher one
-    ¦   +-- NO -> Pay down the debt
+    Â¦   +-- YES -> Compare RICE scores; prioritize the higher one
+    Â¦   +-- NO -> Pay down the debt
     +-- NO -> Accept the debt (paying it costs more than living with it)
         +-- Does the debt enable future features?
             +-- YES -> Pay down if enabler value exceeds cost
@@ -106,9 +106,9 @@ To get the most value from the worked examples in this skill:
 The examples are designed to be reusable templates. The specific numbers change, but the reasoning patterns apply across products and organizations.
 
 
-### Expanded P11: Rapid Experimentation — Advanced Topics
+### Expanded P11: Rapid Experimentation â€” Advanced Topics
 
-**P11.9 — Bayesian vs Frequentist Statistics for Product Engineers**
+**P11.9 â€” Bayesian vs Frequentist Statistics for Product Engineers**
 
 Product engineers encounter both Bayesian and frequentist statistics in experimentation. Understanding when to use each is important.
 
@@ -128,7 +128,7 @@ Product engineers encounter both Bayesian and frequentist statistics in experime
 - Use frequentist for: Standard A/B tests, regulatory contexts, when you want widely accepted methodology.
 - Use Bayesian for: When you want to directly answer "which is better?", when you have prior data to incorporate, when you need to make decisions with limited data.
 
-**P11.10 — Running Experiments on Low-Traffic Products**
+**P11.10 â€” Running Experiments on Low-Traffic Products**
 
 Most product engineering guidance assumes high traffic. Many products do not have the traffic for traditional A/B testing.
 
@@ -150,7 +150,7 @@ Most product engineering guidance assumes high traffic. Many products do not hav
 
 8. **Use proxy metrics.** If the target metric is rare, find a more common metric that is a leading indicator.
 
-**P11.11 — Experimentation Ethics**
+**P11.11 â€” Experimentation Ethics**
 
 Product engineers must consider the ethics of experimentation:
 
@@ -171,9 +171,9 @@ Product engineers must consider the ethics of experimentation:
 - When the experiment would violate regulatory requirements
 - When the team lacks the rigor to run it properly
 
-### Expanded P12: Product Metrics — Advanced Topics
+### Expanded P12: Product Metrics â€” Advanced Topics
 
-**P12.9 — Cohort Analysis Deep Dive**
+**P12.9 â€” Cohort Analysis Deep Dive**
 
 Cohort analysis is one of the most powerful product analytics techniques. It reveals how behavior changes over time and how different user groups behave.
 
@@ -194,11 +194,11 @@ Cohort analysis is one of the most powerful product analytics techniques. It rev
 Cohort Size  Week 1  Week 2  Week 3  Week 4  Week 8  Week 12
 Jan 2023  1000   45%     32%     28%     25%     18%     15%
 Feb 2023  1100   42%     30%     26%     23%     16%     13%
-Mar 2023  1200   40%     28%     24%     21%     14%     —
-Apr 2023  1050   38%     26%     22%     19%     —       —
+Mar 2023  1200   40%     28%     24%     21%     14%     â€”
+Apr 2023  1050   38%     26%     22%     19%     â€”       â€”
 `
 
-In this example, retention is declining over time. Each cohort retains worse than the previous one. This is a critical signal that something is changing — the product may be getting worse, the user mix may be changing, or competitive pressure may be increasing.
+In this example, retention is declining over time. Each cohort retains worse than the previous one. This is a critical signal that something is changing â€” the product may be getting worse, the user mix may be changing, or competitive pressure may be increasing.
 
 **Cohort analysis best practices:**
 - Use consistent cohort periods (weekly or monthly)
@@ -207,7 +207,7 @@ In this example, retention is declining over time. Each cohort retains worse tha
 - Segment by user attributes to find patterns
 - Act on declining cohorts before they become a business problem
 
-**P12.10 — Product Analytics SQL Patterns**
+**P12.10 â€” Product Analytics SQL Patterns**
 
 Product engineers often query analytics data directly. Here are common SQL patterns:
 
@@ -277,7 +277,7 @@ GROUP BY DATE(event_time), feature_name
 ORDER BY date, feature_name
 `
 
-**P12.11 — Building a Metrics Culture**
+**P12.11 â€” Building a Metrics Culture**
 
 Beyond the technical aspects, building a culture where metrics drive decisions requires:
 
@@ -295,9 +295,9 @@ Beyond the technical aspects, building a culture where metrics drive decisions r
 
 **Celebrate metric movements:** When metrics improve, celebrate the team effort. When metrics decline, treat it as a learning opportunity.
 
-### Expanded P13: Engineering Contribution to Roadmap — Advanced
+### Expanded P13: Engineering Contribution to Roadmap â€” Advanced
 
-**P13.7 — Technical Roadmap Communication**
+**P13.7 â€” Technical Roadmap Communication**
 
 Effective technical roadmaps communicate not just WHAT will be built, but WHY.
 
@@ -330,9 +330,9 @@ When presenting a technical roadmap, be explicit about what is NOT included:
 - "We chose to invest in API v2 over mobile improvements because the data shows integration demand is higher."
 - "We are deferring the dashboard redesign to the next quarter to focus on reliability."
 
-**P13.8 — Influencing the Product Roadmap**
+**P13.8 â€” Influencing the Product Roadmap**
 
-Product engineers do not just receive the roadmap — they influence it.
+Product engineers do not just receive the roadmap â€” they influence it.
 
 **How to influence the roadmap:**
 1. Bring data. Show the team metrics that indicate problems or opportunities.
@@ -348,7 +348,7 @@ Product engineers do not just receive the roadmap — they influence it.
 - Do not bypass the product team to get executive sponsorship.
 - Do not overstate the impact or understate the effort.
 
-**P13.9 — Estimating for Product Decisions**
+**P13.9 â€” Estimating for Product Decisions**
 
 Product decisions depend on good estimates. Product engineers help by providing estimates that inform decisions.
 
@@ -362,7 +362,7 @@ Product decisions depend on good estimates. Product engineers help by providing 
 3. Identify the unknowns. "The main uncertainty is the third-party API. I will know more after a 2-day investigation."
 4. Offer to investigate. "I can spend 2 days investigating and give you a narrower estimate."
 
-**P13.10 — Roadmap Review Cadence**
+**P13.10 â€” Roadmap Review Cadence**
 
 Different review frequencies serve different purposes:
 
@@ -382,9 +382,9 @@ Different review frequencies serve different purposes:
 - Who: Company leadership
 - What: Where is the business going? What technical capabilities do we need?
 
-### Expanded P15: Stakeholder Communication — Advanced Patterns
+### Expanded P15: Stakeholder Communication â€” Advanced Patterns
 
-**P15.6 — Communication Styles for Different Stakeholders**
+**P15.6 â€” Communication Styles for Different Stakeholders**
 
 **Executives:**
 Care about: Business outcomes, competitive position, revenue, risk.
@@ -416,35 +416,35 @@ Use: Benefit-focused language, plain language, empathy.
 Avoid: Technical jargon, internal context, over-promising.
 Format: Release notes, product update email, in-app messaging.
 
-**P15.7 — Difficult Conversations Playbook**
+**P15.7 â€” Difficult Conversations Playbook**
 
-**The "no" conversation — declining a feature request:**
+**The "no" conversation â€” declining a feature request:**
 1. Acknowledge: "I understand why this feature would be valuable."
 2. Explain constraint: "We are committed to delivering X this quarter, and adding this would delay X."
 3. Frame trade-off: "We could do this instead of X, or we could do it next quarter."
 4. Offer alternative: "Would a simpler version that takes 1 week work instead of the full version that takes 4 weeks?"
 5. Empower: "I trust your judgment on the best path forward. Let me know what you decide."
 
-**The "I told you so" conversation — when a risk you flagged materializes:**
+**The "I told you so" conversation â€” when a risk you flagged materializes:**
 1. Do not say "I told you so." Ever.
 2. Focus on the current situation: "We have a problem with the system. Here is what happened."
 3. Offer the solution: "We can fix this by [action]. It will take [time] and [cost]."
 4. Propose prevention: "To prevent this from happening again, I recommend [specific change]."
 
-**The "resources" conversation — asking for more resources:**
+**The "resources" conversation â€” asking for more resources:**
 1. Start with impact: "We are at risk of missing the Q3 deadline because we underestimated the integration work."
 2. Quantify the gap: "We need 4 additional weeks of engineering time to complete on schedule."
 3. Offer options: "Option 1: Add one more engineer (2-week schedule impact). Option 2: Reduce scope by 30%. Option 3: Accept the delay."
-4. Make the ask clear: "I recommend Option 1 — adding one engineer costs less than the delay impact."
+4. Make the ask clear: "I recommend Option 1 â€” adding one engineer costs less than the delay impact."
 
-**The "bad news" conversation — delivering a delay or failure:**
+**The "bad news" conversation â€” delivering a delay or failure:**
 1. Say it first: "I need to share some bad news. We are going to miss the deadline."
 2. Explain briefly: "The integration is more complex than expected. We are 3 weeks behind."
 3. State the impact: "The feature will launch in August instead of July."
 4. Offer mitigation: "We can reduce scope to launch a simpler version in July, or we can take the full time and launch the complete version in August."
 5. Ask for input: "Which path would you prefer?"
 
-**P15.8 — Building Trust with Stakeholders**
+**P15.8 â€” Building Trust with Stakeholders**
 
 Trust is the foundation of effective engineering-product partnerships. It is built through consistent behavior over time.
 
@@ -457,9 +457,9 @@ Trust is the foundation of effective engineering-product partnerships. It is bui
 6. Be a partner, not a vendor. Care about outcomes, not just tasks. Contribute to strategy and decisions.
 
 
-### Expanded P2: Philosophy — Deep Dive into Product Engineering Principles
+### Expanded P2: Philosophy â€” Deep Dive into Product Engineering Principles
 
-**P2.8 — The Product Engineer's Decision-Making Framework**
+**P2.8 â€” The Product Engineer's Decision-Making Framework**
 
 Every day, product engineers face decisions that require balancing technical and product considerations. Here is a structured framework for making these decisions:
 
@@ -477,7 +477,7 @@ Every day, product engineers face decisions that require balancing technical and
 
 **Step 7: Review the decision.** Set a review date. Did the decision work out as expected? What would you do differently?
 
-**P2.9 — The Product Engineer's Relationship with Uncertainty**
+**P2.9 â€” The Product Engineer's Relationship with Uncertainty**
 
 Product engineering is about making good decisions with imperfect information. Here is how to handle different types of uncertainty:
 
@@ -500,7 +500,7 @@ Product engineering is about making good decisions with imperfect information. H
 - If the decision is irreversible and the cost of being wrong is high, invest in reducing uncertainty.
 - If the decision is irreversible but delaying is also costly, decide with the best available information.
 
-**P2.10 — The Product Engineer's Communication Principles**
+**P2.10 â€” The Product Engineer's Communication Principles**
 
 **Principle 1: Know your audience.** Adapt your communication to what the audience cares about and understands. Executives care about outcomes. PMs care about scope and timeline. Engineers care about architecture.
 
@@ -514,7 +514,7 @@ Product engineering is about making good decisions with imperfect information. H
 
 **Principle 6: Make it actionable.** Every communication should lead to a decision or action. "I need a decision by Friday on whether to prioritize feature A or feature B."
 
-**P2.11 — Teaching Product Thinking to Other Engineers**
+**P2.11 â€” Teaching Product Thinking to Other Engineers**
 
 As a product engineer, you help your peers develop product thinking:
 
@@ -531,9 +531,9 @@ As a product engineer, you help your peers develop product thinking:
 - Have an engineer present trade-off options to the product team.
 - Ask an engineer to lead a post-launch review.
 
-### Expanded P3: Prioritization — Deep Dive with Calculation Examples
+### Expanded P3: Prioritization â€” Deep Dive with Calculation Examples
 
-**P3.12 — RICE Scoring with Multiple Options: A Detailed Walkthrough**
+**P3.12 â€” RICE Scoring with Multiple Options: A Detailed Walkthrough**
 
 Let us walk through a complete RICE scoring session for a team with 8 competing priorities.
 
@@ -550,56 +550,56 @@ Let us walk through a complete RICE scoring session for a team with 8 competing 
 
 **Scoring session:**
 
-Feature 1 — Advanced Search:
+Feature 1 â€” Advanced Search:
 - Reach: 8,000 users/quarter (search is used by 80% of active users)
 - Impact: 2 (significantly improves a core workflow)
 - Confidence: 70% (user interviews confirm demand, but adoption uncertain)
 - Effort: 4 weeks
 - RICE: (8000 x 2 x 0.7) / 4 = 2,800
 
-Feature 2 — Export to PDF:
+Feature 2 â€” Export to PDF:
 - Reach: 2,000 users/quarter (power users who generate reports)
-- Impact: 1 (moderate improvement, workaround exists — print to PDF)
+- Impact: 1 (moderate improvement, workaround exists â€” print to PDF)
 - Confidence: 90% (clearly needed, well-understood scope)
 - Effort: 2 weeks
 - RICE: (2000 x 1 x 0.9) / 2 = 900
 
-Feature 3 — Team Dashboard:
+Feature 3 â€” Team Dashboard:
 - Reach: 3,000 users/quarter (team leads and managers)
 - Impact: 2 (significantly improves team visibility)
 - Confidence: 60% (assumed need, not validated with research)
 - Effort: 3 weeks
 - RICE: (3000 x 2 x 0.6) / 3 = 1,200
 
-Feature 4 — API Access:
+Feature 4 â€” API Access:
 - Reach: 500 users/quarter (technical users, integration builders)
 - Impact: 3 (enables entirely new use cases and integrations)
 - Confidence: 40% (highly uncertain adoption and usage patterns)
 - Effort: 6 weeks
 - RICE: (500 x 3 x 0.4) / 6 = 100
 
-Feature 5 — Dark Mode:
+Feature 5 â€” Dark Mode:
 - Reach: 10,000 users/quarter (all users, but many will not use it)
-- Impact: 0.5 (marginal improvement — nice to have)
+- Impact: 0.5 (marginal improvement â€” nice to have)
 - Confidence: 80% (well-understood feature, clear scope)
 - Effort: 1 week
 - RICE: (10000 x 0.5 x 0.8) / 1 = 4,000
 
-Feature 6 — Notification Preferences:
+Feature 6 â€” Notification Preferences:
 - Reach: 5,000 users/quarter (users who receive notifications)
 - Impact: 1 (reduces notification fatigue, improves satisfaction)
 - Confidence: 70% (clear problem, but impact magnitude uncertain)
 - Effort: 2 weeks
 - RICE: (5000 x 1 x 0.7) / 2 = 1,750
 
-Feature 7 — Batch Operations:
+Feature 7 â€” Batch Operations:
 - Reach: 3,000 users/quarter (power users managing large volumes)
 - Impact: 2 (significantly improves efficiency for heavy users)
 - Confidence: 75% (observed behavior confirms need)
 - Effort: 3 weeks
 - RICE: (3000 x 2 x 0.75) / 3 = 1,500
 
-Feature 8 — Custom Fields:
+Feature 8 â€” Custom Fields:
 - Reach: 4,000 users/quarter (teams with specialized workflows)
 - Impact: 2 (enables customization, improves workflow fit)
 - Confidence: 50% (some evidence from feature requests, adoption uncertain)
@@ -639,7 +639,7 @@ After discussion, the team decides:
 
 Deferred: Export to PDF, Team Dashboard, Custom Fields, API Access. API Access to be re-scored after a 2-week investigation to increase confidence.
 
-**P3.13 — Cost of Delay with WSJF: Complete Worked Example**
+**P3.13 â€” Cost of Delay with WSJF: Complete Worked Example**
 
 Let us work through a complete WSJF prioritization for a team with three competing features.
 
@@ -671,9 +671,9 @@ Feature C: Performance optimization for search.
 
 **Ranked by WSJF:**
 
-1. Feature C — Performance optimization: 5.67
-2. Feature A — Payment integration: 4.4
-3. Feature B — Dashboard redesign: 2.5
+1. Feature C â€” Performance optimization: 5.67
+2. Feature A â€” Payment integration: 4.4
+3. Feature B â€” Dashboard redesign: 2.5
 
 **Analysis:**
 
@@ -685,9 +685,9 @@ The team should start with Feature C (performance optimization, 3 weeks), then F
 
 However, the time criticality of Feature A (competitor entering the market next quarter) might change the prioritization. If the payment integration must ship before the competitor launch, it should be prioritized even though its WSJF is lower. WSJF is a guide, not an absolute rule.
 
-### Expanded P4: Build vs Buy — Detailed Evaluation Templates
+### Expanded P4: Build vs Buy â€” Detailed Evaluation Templates
 
-**P4.10 — Build vs Buy Decision Template**
+**P4.10 â€” Build vs Buy Decision Template**
 
 Use this template for any significant build vs buy decision:
 
@@ -700,7 +700,7 @@ Decision: [Build vs Buy for Capability X]
    - What is the timeline for needing this capability?
 
 2. Is this capability core to our competitive advantage?
-   [Yes/No] — Explanation:
+   [Yes/No] â€” Explanation:
 
 3. Commercial solutions evaluated:
    [Solution A]: [Strengths], [Weaknesses], [Pricing]
@@ -721,10 +721,10 @@ Decision: [Build vs Buy for Capability X]
    - Buy risks: [List with mitigations]
 
 7. Recommendation:
-   [Build/Buy/Partner] — Rationale:
+   [Build/Buy/Partner] â€” Rationale:
 `
 
-**P4.11 — Evaluating Open Source vs Commercial vs Build**
+**P4.11 â€” Evaluating Open Source vs Commercial vs Build**
 
 Open source adds a fourth dimension to the build vs buy decision.
 
@@ -758,9 +758,9 @@ Open source adds a fourth dimension to the build vs buy decision.
 | Compliance | Self-managed | Often vendor-managed | Self-managed |
 | Innovation | Community-driven | Vendor-driven | Team-driven |
 
-### Expanded P5: Technical Product Decisions — Advanced Topics
+### Expanded P5: Technical Product Decisions â€” Advanced Topics
 
-**P5.10 — Architecture Decision Records with Product Context Template**
+**P5.10 â€” Architecture Decision Records with Product Context Template**
 
 `
 # ADR: [Decision Name]
@@ -795,7 +795,7 @@ Open source adds a fourth dimension to the build vs buy decision.
 - Reconsideration trigger: [What would cause us to revisit this decision?]
 `
 
-**P5.11 — Communicating Technical Risk to Product Stakeholders**
+**P5.11 â€” Communicating Technical Risk to Product Stakeholders**
 
 Technical risk is often invisible to product stakeholders. Product engineers make it visible.
 
@@ -813,9 +813,9 @@ Technical risk is often invisible to product stakeholders. Product engineers mak
 - Red: High probability or high impact. Must mitigate before launch.
 
 **Risk communication during development:**
-"When we evaluated the API, we identified a risk: the API may not handle our peak volume. The probability is moderate (30%), but the impact is high — a failure would block all orders. We have implemented a caching layer as mitigation. We will also run a load test in production during the beta phase to validate performance."
+"When we evaluated the API, we identified a risk: the API may not handle our peak volume. The probability is moderate (30%), but the impact is high â€” a failure would block all orders. We have implemented a caching layer as mitigation. We will also run a load test in production during the beta phase to validate performance."
 
-**P5.12 — Handling "Technical Impossible" Requests**
+**P5.12 â€” Handling "Technical Impossible" Requests**
 
 When a product request seems technically impossible:
 
@@ -836,9 +836,9 @@ C. Multi-factor authentication as a simpler identity verification (2 weeks)
 Which approach would work best for your requirements?"
 
 
-### Expanded P6: Customer Development — Advanced Interview Techniques
+### Expanded P6: Customer Development â€” Advanced Interview Techniques
 
-**P6.7 — The Mom Test: Avoiding False Positives in User Interviews**
+**P6.7 â€” The Mom Test: Avoiding False Positives in User Interviews**
 
 Rob Fitzpatrick's "The Mom Test" provides critical guidance for user interviews. The core idea: people will lie to you to be nice. Your mom will say your business idea is great even if it is terrible. The same applies to user interviews.
 
@@ -880,7 +880,7 @@ Solution testing:
 - "What is missing from this approach?"
 - "What questions does this raise for you?"
 
-**P6.8 — Synthesizing Interview Findings**
+**P6.8 â€” Synthesizing Interview Findings**
 
 After conducting interviews, synthesize the findings to drive decisions.
 
@@ -892,18 +892,18 @@ Interviewer: [Name]
 Number of Interviews: [N]
 
 Key Themes:
-1. [Theme]: [Evidence from interviews] — [Implications for product]
-2. [Theme]: [Evidence from interviews] — [Implications for product]
-3. [Theme]: [Evidence from interviews] — [Implications for product]
+1. [Theme]: [Evidence from interviews] â€” [Implications for product]
+2. [Theme]: [Evidence from interviews] â€” [Implications for product]
+3. [Theme]: [Evidence from interviews] â€” [Implications for product]
 
 Problems Validated:
-- [Problem]: [Number of users who mentioned it] — [Severity assessment]
+- [Problem]: [Number of users who mentioned it] â€” [Severity assessment]
 
 Problems Invalidated:
 - [Assumption we had that was not supported]: [Evidence against]
 
 Opportunities Identified:
-- [Opportunity]: [Evidence] — [Potential impact]
+- [Opportunity]: [Evidence] â€” [Potential impact]
 
 Recommended Next Steps:
 - [Action item with priority]
@@ -914,7 +914,7 @@ Quotes:
 "[Another memorable quote]"
 `
 
-**P6.9 — Customer Development Cadence**
+**P6.9 â€” Customer Development Cadence**
 
 How frequently should engineers engage with customers?
 
@@ -936,9 +936,9 @@ How frequently should engineers engage with customers?
 - Monthly: Present customer insights to broader team
 - Ongoing: Maintain a customer contact list for quick feedback loops
 
-### Expanded P7: Product Discovery — Advanced Techniques
+### Expanded P7: Product Discovery â€” Advanced Techniques
 
-**P7.6 — Continuous Discovery Habits**
+**P7.6 â€” Continuous Discovery Habits**
 
 Teresa Torres's "Continuous Discovery Habits" provides a practical framework for integrating discovery into product development.
 
@@ -968,22 +968,22 @@ An opportunity solution tree maps the relationship between:
 `
 Desired Outcome: [Increase activation to 50%]
 +-- Opportunity 1: [Users do not understand the value proposition]
-¦   +-- Solution A: [Improved onboarding copy]
-¦   ¦   +-- Assumption: [Users read onboarding content]
-¦   ¦       +-- Experiment: [A/B test with shorter vs longer copy]
-¦   +-- Solution B: [Interactive product tour]
-¦       +-- Assumption: [Users complete interactive tours]
-¦           +-- Experiment: [Add tour, measure completion rate]
+Â¦   +-- Solution A: [Improved onboarding copy]
+Â¦   Â¦   +-- Assumption: [Users read onboarding content]
+Â¦   Â¦       +-- Experiment: [A/B test with shorter vs longer copy]
+Â¦   +-- Solution B: [Interactive product tour]
+Â¦       +-- Assumption: [Users complete interactive tours]
+Â¦           +-- Experiment: [Add tour, measure completion rate]
 +-- Opportunity 2: [First-time setup is too complex]
     +-- Solution C: [Pre-populated sample data]
-    ¦   +-- Assumption: [Users understand the product from examples]
-    ¦       +-- Experiment: [Add sample data, measure time to activation]
+    Â¦   +-- Assumption: [Users understand the product from examples]
+    Â¦       +-- Experiment: [Add sample data, measure time to activation]
     +-- Solution D: [Guided setup wizard]
         +-- Assumption: [Users prefer guided setup over self-exploration]
             +-- Experiment: [A/B test wizard vs current flow]
 `
 
-**P7.7 — Running Effective Discovery Sprints**
+**P7.7 â€” Running Effective Discovery Sprints**
 
 Discovery sprints are time-boxed periods focused on learning rather than building.
 
@@ -1021,9 +1021,9 @@ Day 9-10: Test
 - Experiment results with recommendations
 - Decision: proceed to build, iterate, or kill
 
-### Expanded P8: Technical Debt — Detailed Quantification Methods
+### Expanded P8: Technical Debt â€” Detailed Quantification Methods
 
-**P8.6 — Technical Debt Interest Rate Calculation**
+**P8.6 â€” Technical Debt Interest Rate Calculation**
 
 Technical debt accrues interest like financial debt. The "interest rate" is the cost of not addressing the debt.
 
@@ -1046,7 +1046,7 @@ Example:
 | Low | 10-50% | Monitor, fix when modifying area |
 | Negligible | <10% | Not worth fixing |
 
-**P8.7 — Technical Debt Register Template**
+**P8.7 â€” Technical Debt Register Template**
 
 A living document for tracking and managing technical debt:
 
@@ -1059,7 +1059,7 @@ A living document for tracking and managing technical debt:
 | TD-004 | UI | Outdated component library | 2 | 4 | 30% | Low | Backlog | Dave |
 `
 
-**P8.8 — Technical Debt Review Process**
+**P8.8 â€” Technical Debt Review Process**
 
 **Monthly review:**
 - Review new debt items added
@@ -1078,9 +1078,9 @@ A living document for tracking and managing technical debt:
 - Assess if debt management process is working
 - Adjust allocation if needed
 
-### Expanded P9: Engineering ROI — Advanced Calculations
+### Expanded P9: Engineering ROI â€” Advanced Calculations
 
-**P9.8 — Expected Value Calculation for Feature Investment**
+**P9.8 â€” Expected Value Calculation for Feature Investment**
 
 Expected value helps decide whether to invest in features with uncertain outcomes.
 
@@ -1106,7 +1106,7 @@ What if the probabilities are wrong? Recalculate with different assumptions:
 
 Even in the pessimistic scenario, the feature has positive net expected value. This strengthens the investment case.
 
-**P9.9 — Comparing Technical Debt vs Feature Investment**
+**P9.9 â€” Comparing Technical Debt vs Feature Investment**
 
 How to compare a technical debt reduction investment against a feature investment.
 
@@ -1128,7 +1128,7 @@ If the technical debt reduction has a 3+ year benefit, Option B (+) may be bette
 
 **Decision:** If the company plans to be around for 3+ years and the feature value is one-time, the technical debt investment may be the better long-term choice. But if the feature enables ongoing revenue (not just one-time), the comparison changes.
 
-**P9.10 — Engineering ROI Dashboard Design**
+**P9.10 â€” Engineering ROI Dashboard Design**
 
 A practical ROI dashboard for engineering teams:
 

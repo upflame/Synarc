@@ -18,17 +18,17 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 
 
 
-## P0 — INTELLIGENCE AUGMENTATION
+## P0 â€” INTELLIGENCE AUGMENTATION
 
-### P0.1 — Token Optimization Defaults
+### P0.1 â€” Token Optimization Defaults
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
+**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process â€” output the result.
 
 **COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
 
 **Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
 
-### P0.2 — Adaptive Learning Triggers
+### P0.2 â€” Adaptive Learning Triggers
 
 **Learning Triggers:**
 - New pattern discovered in this domain ? store in brain/error_patterns/ or brain/decisions/
@@ -41,7 +41,7 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 - Domain conventions: stored in brain/ (update on every discovery)
 - Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
 
-### P0.3 — Smart Auto-Prompt Rules
+### P0.3 â€” Smart Auto-Prompt Rules
 
 **Optimistic Action Threshold:** > 80% confidence ? act immediately. 60-80% ? brief confirmation. < 60% ? clarify first.
 

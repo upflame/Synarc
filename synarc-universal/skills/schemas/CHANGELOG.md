@@ -2,9 +2,9 @@
 title: schemas Changelog
 ---
 
-# Changelog â€” schemas
+# Changelog — schemas
 
-## <semver> â€” 2026-06-02
+## <semver> — 2026-06-02
 
 ### Universalized Release
 

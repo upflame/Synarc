@@ -2,9 +2,9 @@
 title: testing-strategy Changelog
 ---
 
-# Changelog â€” testing-strategy
+# Changelog — testing-strategy
 
-## 1.0.0 â€” 2026-06-02
+## 1.0.0 — 2026-06-02
 
 ### Universalized Release
 

@@ -15,7 +15,7 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 **Domain:** Site Reliability Engineering  
 **Persona:** SRE Engineer  
 **Parent Skill:** synarc  
-**Skill Level:** 300–400 (Advanced to Distinguished)  
+**Skill Level:** 300â€“400 (Advanced to Distinguished)  
 **Last Updated:** 2026-05-27  
 **Status:** Live
 
@@ -31,12 +31,12 @@ The primary metric of an SRE's effectiveness is not uptime percentage but the ra
 An SRE's daily reality: reading SLI burn rates, tuning alert thresholds, designing chaos experiments, validating capacity models, conducting postmortems, writing automation code, and performing production readiness reviews of adjacent services. The SRE is the production conscience of the organization.
 
 The SRE Engineer persona is characterized by these core competencies:
-1. **Quantitative reasoning** — ability to model reliability mathematically using SLOs, error budgets, and statistical process control
-2. **Systems thinking** — understanding distributed system behavior, emergent properties, cascading failures, and feedback loops
-3. **Software engineering** — writing production-grade automation, tooling, and instrumentation code
-4. **Operational maturity** — incident response discipline, postmortem rigor, and toil reduction instinct
-5. **Communication** — translating technical reliability concepts into business risk language for executives
-6. **Risk management** — making evidence-based tradeoffs between reliability and velocity
+1. **Quantitative reasoning** â€” ability to model reliability mathematically using SLOs, error budgets, and statistical process control
+2. **Systems thinking** â€” understanding distributed system behavior, emergent properties, cascading failures, and feedback loops
+3. **Software engineering** â€” writing production-grade automation, tooling, and instrumentation code
+4. **Operational maturity** â€” incident response discipline, postmortem rigor, and toil reduction instinct
+5. **Communication** â€” translating technical reliability concepts into business risk language for executives
+6. **Risk management** â€” making evidence-based tradeoffs between reliability and velocity
 
 The SRE Engineer does not: manage infrastructure provisioning, configure CI/CD pipelines, write application business logic, perform security audits, or act as the incident commander (IC) during incidents. These roles belong to other personas in the synarc taxonomy.
 
@@ -60,10 +60,10 @@ Zero-downtime is not a goal. The SRE defines reliability targets as explicit ris
 
 The principle: you cannot achieve 100% reliability at any scale, and attempting to do so results in infinite cost curves and zero feature velocity. The SRE negotiates the error budget with product stakeholders:
 
-- Product wants 99.999% (five nines) — that allows 5.26 minutes of downtime per year
+- Product wants 99.999% (five nines) â€” that allows 5.26 minutes of downtime per year
 - Engineering reality: five nines requires multi-region active-active, N+3 redundancy, fault injection testing in production, and 24/7 on-call with 1-minute response SLA
 - Cost: 3x infrastructure, 2x engineering overhead, 40% reduction in feature velocity
-- Negotiated outcome: 99.95% (three and a half nines) — allows 4.38 hours downtime per year — is acceptable with single-region active-passive, N+1 redundancy, and standard on-call
+- Negotiated outcome: 99.95% (three and a half nines) â€” allows 4.38 hours downtime per year â€” is acceptable with single-region active-passive, N+1 redundancy, and standard on-call
 
 The error budget is the common language for this negotiation. Product stakeholders approve budgets of acceptable failure. Engineering spends those budgets on feature velocity.
 
@@ -79,12 +79,12 @@ Risk acceptance requires:
 Toil is defined as operational work that is manual, repetitive, automatable, tactical, devoid of enduring value, and scales linearly with service growth. Toil is the enemy of SRE.
 
 Toil characteristics from Google SRE:
-1. **Manual** — requires human intervention, no automation
-2. **Repetitive** — performed frequently, same steps each time
-3. **Automatable** — could be replaced by a script or tool
-4. **Tactical** — reactive, interrupt-driven, not strategic
-5. **Devoid of enduring value** — service runs the same after it is done
-6. **Scales linearly with service growth** — doubling the service doubles the toil
+1. **Manual** â€” requires human intervention, no automation
+2. **Repetitive** â€” performed frequently, same steps each time
+3. **Automatable** â€” could be replaced by a script or tool
+4. **Tactical** â€” reactive, interrupt-driven, not strategic
+5. **Devoid of enduring value** â€” service runs the same after it is done
+6. **Scales linearly with service growth** â€” doubling the service doubles the toil
 
 Toil classification by time cost:
 | Category | Hours/Week | Severity | Action Required |
@@ -97,11 +97,11 @@ Toil classification by time cost:
 The toil budget: no more than 50% of SRE time on operational work (toil + incident response + on-call). Measured quarterly through time tracking or ticket classification.
 
 Toil reduction hierarchy (from most to least impactful):
-1. **Eliminate** — remove the toil-inducing process entirely
-2. **Automate** — replace human steps with software
-3. **Simplify** — reduce complexity of the process
-4. **Document** — provide runbooks so anyone can do it
-5. **Accept** — consciously accept necessary toil with known cost
+1. **Eliminate** â€” remove the toil-inducing process entirely
+2. **Automate** â€” replace human steps with software
+3. **Simplify** â€” reduce complexity of the process
+4. **Document** â€” provide runbooks so anyone can do it
+5. **Accept** â€” consciously accept necessary toil with known cost
 
 Toil measurement in practice:
 - Tag every ops ticket with a toil score (1-5)
@@ -144,7 +144,7 @@ Blameless culture indicators:
 Production mindset means treating production as the most important environment and designing all systems, processes, and behaviors around production reliability.
 
 Production mindset behaviors:
-- Changes are rolled out progressively (canary ? staging ? prod — never directly to prod)
+- Changes are rolled out progressively (canary ? staging ? prod â€” never directly to prod)
 - Every change has a rollback plan tested before deployment
 - Monitoring and alerting are verified before any deployment
 - Dashboards are validated against synthetic traffic before relying on them
@@ -224,7 +224,7 @@ The USE method is a performance analysis methodology for every resource in a sys
 
 **CPU:**
 - Utilization: % CPU busy (user + system + iowait). Warn at 70%, alert at 90%.
-- Saturation: run queue length / load average — sustained value > (vCPU count * 2) is saturation.
+- Saturation: run queue length / load average â€” sustained value > (vCPU count * 2) is saturation.
 - Errors: machine check exceptions, CPU thermal throttling events. Any non-zero is critical.
 
 **Memory:**
@@ -323,7 +323,7 @@ The four golden signals are the foundational metrics for monitoring distributed 
 **Signal 1: Latency**
 - The time it takes to service a request
 - Distinguish between: successful request latency vs failed request latency
-- Failed requests can be fast (fail-fast) — this masks real problems
+- Failed requests can be fast (fail-fast) â€” this masks real problems
 - Measure: p50, p95, p99, p99.9 across all requests (including failed)
 - Measure: only success latency (separate from failure latency)
 - Alert on: p99 exceeding SLO threshold for 5% of the compliance window
@@ -405,14 +405,14 @@ The Customer Reliability Engineering (CRE) lifecycle is a framework for engaging
 
 **CRE Lifecycle phases:**
 
-**Phase 1 — Assess:**
+**Phase 1 â€” Assess:**
 - Evaluate current service reliability posture
 - Inventory existing SLOs, monitoring, alerting, and incident management
 - Identify gaps against production readiness criteria
 - Score service maturity (see P6 Service Maturity Model)
 - Produce: assessment report, gap analysis, recommendations
 
-**Phase 2 — Plan:**
+**Phase 2 â€” Plan:**
 - Define target reliability posture with stakeholder input
 - Set SLO targets and error budget policy
 - Design monitoring and alerting improvements
@@ -420,7 +420,7 @@ The Customer Reliability Engineering (CRE) lifecycle is a framework for engaging
 - Create implementation roadmap with milestones
 - Produce: SRE engagement plan, roadmap, SLO charter
 
-**Phase 3 — Implement:**
+**Phase 3 â€” Implement:**
 - Instrument SLIs, configure SLO tracking
 - Set up burn rate alerting
 - Establish incident management processes
@@ -428,7 +428,7 @@ The Customer Reliability Engineering (CRE) lifecycle is a framework for engaging
 - Implement chaos engineering experiments
 - Produce: SLO dashboards, alert rules, automation code
 
-**Phase 4 — Review:**
+**Phase 4 â€” Review:**
 - Monthly SLO compliance review
 - Error budget consumption trending
 - Incident postmortem analysis
@@ -436,7 +436,7 @@ The Customer Reliability Engineering (CRE) lifecycle is a framework for engaging
 - Automation ROI calculation
 - Produce: monthly SRE report, quarterly business review
 
-**Phase 5 — Iterate:**
+**Phase 5 â€” Iterate:**
 - Adjust SLO targets based on business needs
 - Tune alert thresholds based on SNR analysis
 - Expand automation scope
@@ -542,12 +542,12 @@ The service maturity model assesses how well a service applies SRE principles. I
 **Maturity scorecard:**
 | Level | Total Score (out of 50) | Classification |
 |-------|------------------------|----------------|
-| 0 | 10-15 | Ad Hoc — needs immediate SRE engagement |
-| 1 | 16-25 | Foundational — basic hygiene in place |
-| 2 | 26-35 | Defined — formal processes, measurable |
-| 3 | 36-40 | Measured — quantitative management |
-| 4 | 41-45 | Optimized — continuous improvement |
-| 5 | 46-50 | Autonomous — reliability managed by system |
+| 0 | 10-15 | Ad Hoc â€” needs immediate SRE engagement |
+| 1 | 16-25 | Foundational â€” basic hygiene in place |
+| 2 | 26-35 | Defined â€” formal processes, measurable |
+| 3 | 36-40 | Measured â€” quantitative management |
+| 4 | 41-45 | Optimized â€” continuous improvement |
+| 5 | 46-50 | Autonomous â€” reliability managed by system |
 
 **Improvement roadmap for each level:**
 - 0 ? 1: Implement basic monitoring, define on-call rotation, create incident response document
@@ -562,7 +562,7 @@ A standardized severity taxonomy ensures consistent incident classification and 
 
 **Severity levels:**
 
-**SEV0 — Critical (Complete outage or data loss):**
+**SEV0 â€” Critical (Complete outage or data loss):**
 - Definition: Complete service unavailability for all users, or confirmed data loss/corruption
 - Impact: All users cannot use the service; revenue critically impacted; data integrity compromised
 - Response: Immediate page to primary and secondary on-call; incident commander activated; executive notification within 15 minutes
@@ -570,7 +570,7 @@ A standardized severity taxonomy ensures consistent incident classification and 
 - Postmortem: Required within 48 hours
 - Examples: Checkout API completely down, database corruption, major security breach
 
-**SEV1 — Major (Significant degradation):**
+**SEV1 â€” Major (Significant degradation):**
 - Definition: Service partially unavailable, or severely degraded performance for a significant subset of users
 - Impact: > 20% of users affected; significant feature degradation; data access issues for many users
 - Response: Page to primary on-call; incident commander activated if needed; team lead notification within 30 minutes
@@ -578,7 +578,7 @@ A standardized severity taxonomy ensures consistent incident classification and 
 - Postmortem: Required within 72 hours
 - Examples: Search results unavailable, payment processing delayed > 30 minutes, login failures for > 20% of users
 
-**SEV2 — Moderate (Degradation for subset):**
+**SEV2 â€” Moderate (Degradation for subset):**
 - Definition: Service degraded for some users, or a minor feature is unavailable
 - Impact: 5-20% of users affected; non-critical feature unavailable; performance degradation but service usable
 - Response: Page to primary on-call during business hours; ticket created; team notified within 1 hour
@@ -586,14 +586,14 @@ A standardized severity taxonomy ensures consistent incident classification and 
 - Postmortem: Required if > 1% of users affected or duration > 4 hours
 - Examples: Admin dashboard slow, report generation delayed, image upload failing for 10% of users
 
-**SEV3 — Minor (Limited impact):**
+**SEV3 â€” Minor (Limited impact):**
 - Definition: Minor issue affecting few users or non-critical functionality
 - Impact: < 5% of users affected; cosmetic issues; non-functional features that do not block core workflow
 - Response: Ticket created; investigated during normal business hours
 - Target resolution: < 1 week
 - Postmortem: Optional, bug tracking entry sufficient
 
-**SEV4 — Low (Question or non-urgent):**
+**SEV4 â€” Low (Question or non-urgent):**
 - Definition: Question, documentation issue, or minor feature request
 - Impact: No user-facing impact; internal process issue
 - Response: Ticket created; tacked in normal backlog
@@ -659,7 +659,7 @@ The postmortem process ensures every significant incident results in learning an
 ## Impact
 - Users affected: [count or percentage]
 - Revenue impact: [$ amount]
-- Data loss: [yes/no — if yes, extent]
+- Data loss: [yes/no â€” if yes, extent]
 - Downstream services affected: [list]
 - Customer-facing impact description
 
@@ -967,7 +967,7 @@ The following events do not consume error budget:
 
 ## 7. Budget Adjustments
 7.1. SLO target changes take effect at next budget period boundary
-7.2. Budget does not refill early — compliance window is fixed at 30 days
+7.2. Budget does not refill early â€” compliance window is fixed at 30 days
 7.3. Budget is not transferable between services
 7.4. Budget is not cumulative across periods
 
@@ -1217,7 +1217,7 @@ When a user journey spans multiple services, the composite SLO must account for 
 - If A fails OR B fails OR C fails, the user-facing request fails
 - Composite availability = A_avail * B_avail * C_avail
 - For 99.9% SLO per service: 0.999 * 0.999 * 0.999 = 0.997 = 99.7% composite
-- To achieve 99.9% composite: each service must be 99.97% (0.9997^3 ˜ 0.999)
+- To achieve 99.9% composite: each service must be 99.97% (0.9997^3 Ëœ 0.999)
 
 **Model 2: Parallel Dependency (A calls B and C independently)**
 - If B fails, A can still succeed (if B is non-critical)
@@ -1263,7 +1263,7 @@ def calculate_composite_slo(services, topology):
 | Payment Gateway | 99.99% | 4.32 min | 0.9999 |
 | Inventory Service | 99.95% | 21.6 min | 0.9995 |
 | Notification | 99.9% | 43.2 min | 0.999 |
-| Composite (serial) | 99.74% | — | 0.9995^3 * 0.9999^2 * 0.999 = 0.9974 |
+| Composite (serial) | 99.74% | â€” | 0.9995^3 * 0.9999^2 * 0.999 = 0.9974 |
 
 **Multi-Service SLA Budget Sharing:**
 - External SLA: 99.9% for the entire checkout flow
@@ -1281,75 +1281,75 @@ Real-time tracking of error budgets is essential for operational decision-making
 **Service-Level Dashboard:**
 `
 +---------------------------------------------+
-¦  Service: checkout-api                       ¦
-¦  SLO: Availability 99.9% (30d rolling)      ¦
-¦  Window: 2026-05-01 ? 2026-05-30            ¦
-¦                                              ¦
-¦  Current Compliance: 99.92%  ?              ¦
-¦  Error Budget Remaining: 87%                 ¦
-¦  Error Budget Used: 13%                      ¦
-¦  Burn Rate (1h): 0.3  (6h: 0.4 24h: 0.5)   ¦
-¦                                              ¦
-¦  +--- Budget Remaining -------------------+  ¦
-¦  ¦ ¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦  87%  ¦  ¦
-¦  ¦ Warning: 25% ¦ Critical: 10%          ¦  ¦
-¦  +---------------------------------------+  ¦
-¦                                              ¦
-¦  Budget Consumption Rate                      ¦
-¦  +-----------------------------------------+  ¦
-¦  ¦ ??    ??    ??                         ¦  ¦
-¦  ¦?  ?  ?  ?  ?  ?    ??                 ¦  ¦
-¦  ¦    ??    ??    ?  ?  ?                ¦  ¦
-¦  ¦                 ??    ?                ¦  ¦
-¦  +-----------------------------------------+  ¦
-¦  Apr 27    May 4    May 11   May 18   May 25  ¦
+Â¦  Service: checkout-api                       Â¦
+Â¦  SLO: Availability 99.9% (30d rolling)      Â¦
+Â¦  Window: 2026-05-01 ? 2026-05-30            Â¦
+Â¦                                              Â¦
+Â¦  Current Compliance: 99.92%  ?              Â¦
+Â¦  Error Budget Remaining: 87%                 Â¦
+Â¦  Error Budget Used: 13%                      Â¦
+Â¦  Burn Rate (1h): 0.3  (6h: 0.4 24h: 0.5)   Â¦
+Â¦                                              Â¦
+Â¦  +--- Budget Remaining -------------------+  Â¦
+Â¦  Â¦ Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦  87%  Â¦  Â¦
+Â¦  Â¦ Warning: 25% Â¦ Critical: 10%          Â¦  Â¦
+Â¦  +---------------------------------------+  Â¦
+Â¦                                              Â¦
+Â¦  Budget Consumption Rate                      Â¦
+Â¦  +-----------------------------------------+  Â¦
+Â¦  Â¦ ??    ??    ??                         Â¦  Â¦
+Â¦  Â¦?  ?  ?  ?  ?  ?    ??                 Â¦  Â¦
+Â¦  Â¦    ??    ??    ?  ?  ?                Â¦  Â¦
+Â¦  Â¦                 ??    ?                Â¦  Â¦
+Â¦  +-----------------------------------------+  Â¦
+Â¦  Apr 27    May 4    May 11   May 18   May 25  Â¦
 +---------------------------------------------+
 `
 
 **Burn Rate Dashboard:**
 `
 +---------------------------------------------+
-¦  Burn Rate Analysis                          ¦
-¦                                              ¦
-¦  Current: 0.3      (1h avg)     ¦¦¦¦¦¦¦¦¦¦  ¦
-¦  6h avg:  0.4                   ¦¦¦¦¦¦¦¦¦¦  ¦
-¦  24h avg: 0.5                   ¦¦¦¦¦¦¦¦¦¦  ¦
-¦  5d avg:  0.6                   ¦¦¦¦¦¦¦¦¦¦  ¦
-¦  30d avg: 0.8                   ¦¦¦¦¦¦¦¦¦¦  ¦
-¦                                              ¦
-¦  Alert thresholds:                           ¦
-¦  Burn = 14 for 5m  ----  Page threshold      ¦
-¦  Burn = 2.5 for 30m ---- Page threshold      ¦
-¦  Burn = 2 for 1h   ----  Warning threshold   ¦
-¦                                              ¦
-¦  Last 24 hours:                              ¦
-¦  +-----------------------------------------+  ¦
-¦  ¦    ??         ??                       ¦  ¦
-¦  ¦   ?  ?       ?  ?                      ¦  ¦
-¦  ¦  ?    ?     ?    ?   ??               ¦  ¦
-¦  ¦ ?      ?   ?      ? ?  ?             ¦  ¦
-¦  ¦?        ???        ??    ?            ¦  ¦
-¦  +-----------------------------------------+  ¦
-¦  00:00   04:00   08:00   12:00   16:00   20:00¦
+Â¦  Burn Rate Analysis                          Â¦
+Â¦                                              Â¦
+Â¦  Current: 0.3      (1h avg)     Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦  Â¦
+Â¦  6h avg:  0.4                   Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦  Â¦
+Â¦  24h avg: 0.5                   Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦  Â¦
+Â¦  5d avg:  0.6                   Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦  Â¦
+Â¦  30d avg: 0.8                   Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦  Â¦
+Â¦                                              Â¦
+Â¦  Alert thresholds:                           Â¦
+Â¦  Burn = 14 for 5m  ----  Page threshold      Â¦
+Â¦  Burn = 2.5 for 30m ---- Page threshold      Â¦
+Â¦  Burn = 2 for 1h   ----  Warning threshold   Â¦
+Â¦                                              Â¦
+Â¦  Last 24 hours:                              Â¦
+Â¦  +-----------------------------------------+  Â¦
+Â¦  Â¦    ??         ??                       Â¦  Â¦
+Â¦  Â¦   ?  ?       ?  ?                      Â¦  Â¦
+Â¦  Â¦  ?    ?     ?    ?   ??               Â¦  Â¦
+Â¦  Â¦ ?      ?   ?      ? ?  ?             Â¦  Â¦
+Â¦  Â¦?        ???        ??    ?            Â¦  Â¦
+Â¦  +-----------------------------------------+  Â¦
+Â¦  00:00   04:00   08:00   12:00   16:00   20:00Â¦
 +---------------------------------------------+
 `
 
 **Multi-Service Budget Dashboard:**
 `
 +---------------------------------------------+
-¦  Service Health Overview                      ¦
-¦                                              ¦
-¦  Service          SLO     Budget   Status    ¦
-¦  -----------------------------------------     ¦
-¦  checkout-api     99.9%   87%      ? HEALTHY ¦
-¦  auth-service     99.99%  95%      ? HEALTHY ¦
-¦  cart-service     99.95%  72%      ? HEALTHY ¦
-¦  payment-gateway  99.99%  45%      ? WARNING ¦
-¦  inventory-svc    99.95%  12%      ?? CRIT  ¦
-¦  notification     99.9%   98%      ? HEALTHY ¦
-¦                                              ¦
-¦  Services in Warning/Critical: 2              ¦
-¦  Composite Checkout SLO: 99.74% ? 99.71% ?   ¦
+Â¦  Service Health Overview                      Â¦
+Â¦                                              Â¦
+Â¦  Service          SLO     Budget   Status    Â¦
+Â¦  -----------------------------------------     Â¦
+Â¦  checkout-api     99.9%   87%      ? HEALTHY Â¦
+Â¦  auth-service     99.99%  95%      ? HEALTHY Â¦
+Â¦  cart-service     99.95%  72%      ? HEALTHY Â¦
+Â¦  payment-gateway  99.99%  45%      ? WARNING Â¦
+Â¦  inventory-svc    99.95%  12%      ?? CRIT  Â¦
+Â¦  notification     99.9%   98%      ? HEALTHY Â¦
+Â¦                                              Â¦
+Â¦  Services in Warning/Critical: 2              Â¦
+Â¦  Composite Checkout SLO: 99.74% ? 99.71% ?   Â¦
 +---------------------------------------------+
 `
 
@@ -1454,9 +1454,9 @@ Key wins, key misses, top action items.
 - Total error budget consumed by incidents: 8%
 
 ### Top Action Items
-1. [SVC] Fix database connection pool exhaustion — due [date] — [owner]
-2. [SVC] Implement cache fallback for checkout — due [date] — [owner]
-3. [ALL] Review burn rate thresholds — due [date] — [owner]
+1. [SVC] Fix database connection pool exhaustion â€” due [date] â€” [owner]
+2. [SVC] Implement cache fallback for checkout â€” due [date] â€” [owner]
+3. [ALL] Review burn rate thresholds â€” due [date] â€” [owner]
 
 ### Key Metrics Trends
 [Chart: SLO compliance trend over 12 months]
@@ -1545,10 +1545,10 @@ stages:
 RELEASE EXCEPTIONS
 
 Emergency fixes that bypass release gates:
-1. Rollback to known-good version — always allowed
-2. Hotfix for the specific cause of budget consumption — allowed with SRE lead approval
-3. Security vulnerability fix — allowed with security team lead approval
-4. Configuration change to restore SLO compliance — allowed with on-call approval
+1. Rollback to known-good version â€” always allowed
+2. Hotfix for the specific cause of budget consumption â€” allowed with SRE lead approval
+3. Security vulnerability fix â€” allowed with security team lead approval
+4. Configuration change to restore SLO compliance â€” allowed with on-call approval
 
 All exception releases must:
 - Be documented in the release system with exception reason
@@ -1636,20 +1636,20 @@ HANDOFF PROTOCOL
 **On-Call Schedule:**
 `
 +----------------------------------------------------------------+
-¦ Week    ¦ Mon      ¦ Tue-Wed  ¦ Thu-Fri  ¦ Sat-Sun  ¦ Notes    ¦
-+---------+----------+----------+----------+----------+----------¦
-¦ Week 1  ¦ Alice P  ¦ Alice P  ¦ Alice P  ¦ Alice P  ¦          ¦
-¦         ¦ Bob S    ¦ Bob S    ¦ Bob S    ¦ Bob S    ¦          ¦
-¦ Week 2  ¦ Bob P    ¦ Bob P    ¦ Bob P    ¦ Bob P    ¦          ¦
-¦         ¦ Carol S  ¦ Carol S  ¦ Carol S  ¦ Carol S  ¦          ¦
-¦ Week 3  ¦ Carol P  ¦ Carol P  ¦ Carol P  ¦ Carol P  ¦          ¦
-¦         ¦ Dave S   ¦ Dave S   ¦ Dave S   ¦ Dave S   ¦          ¦
-¦ Week 4  ¦ Dave P   ¦ Dave P   ¦ Dave P   ¦ Dave P   ¦          ¦
-¦         ¦ Eve S    ¦ Eve S    ¦ Eve S    ¦ Eve S    ¦          ¦
-¦ Week 5  ¦ Eve P    ¦ Eve P    ¦ Eve P    ¦ Eve P    ¦          ¦
-¦         ¦ Frank S  ¦ Frank S  ¦ Frank S  ¦ Frank S  ¦          ¦
-¦ Week 6  ¦ Frank P  ¦ Frank P  ¦ Frank P  ¦ Frank P  ¦          ¦
-¦         ¦ Alice S  ¦ Alice S  ¦ Alice S  ¦ Alice S  ¦          ¦
+Â¦ Week    Â¦ Mon      Â¦ Tue-Wed  Â¦ Thu-Fri  Â¦ Sat-Sun  Â¦ Notes    Â¦
++---------+----------+----------+----------+----------+----------Â¦
+Â¦ Week 1  Â¦ Alice P  Â¦ Alice P  Â¦ Alice P  Â¦ Alice P  Â¦          Â¦
+Â¦         Â¦ Bob S    Â¦ Bob S    Â¦ Bob S    Â¦ Bob S    Â¦          Â¦
+Â¦ Week 2  Â¦ Bob P    Â¦ Bob P    Â¦ Bob P    Â¦ Bob P    Â¦          Â¦
+Â¦         Â¦ Carol S  Â¦ Carol S  Â¦ Carol S  Â¦ Carol S  Â¦          Â¦
+Â¦ Week 3  Â¦ Carol P  Â¦ Carol P  Â¦ Carol P  Â¦ Carol P  Â¦          Â¦
+Â¦         Â¦ Dave S   Â¦ Dave S   Â¦ Dave S   Â¦ Dave S   Â¦          Â¦
+Â¦ Week 4  Â¦ Dave P   Â¦ Dave P   Â¦ Dave P   Â¦ Dave P   Â¦          Â¦
+Â¦         Â¦ Eve S    Â¦ Eve S    Â¦ Eve S    Â¦ Eve S    Â¦          Â¦
+Â¦ Week 5  Â¦ Eve P    Â¦ Eve P    Â¦ Eve P    Â¦ Eve P    Â¦          Â¦
+Â¦         Â¦ Frank S  Â¦ Frank S  Â¦ Frank S  Â¦ Frank S  Â¦          Â¦
+Â¦ Week 6  Â¦ Frank P  Â¦ Frank P  Â¦ Frank P  Â¦ Frank P  Â¦          Â¦
+Â¦         Â¦ Alice S  Â¦ Alice S  Â¦ Alice S  Â¦ Alice S  Â¦          Â¦
 +----------------------------------------------------------------+
 P = Primary, S = Secondary
 Ratio: 1 week on-call (primary or secondary) per 3 weeks
@@ -1955,7 +1955,7 @@ Beyond the basics, postmortem excellence means action items actually close and r
 **Postmortem Maturity:**
 | Level | Characteristics | Action Item Closure Rate | Improvement |
 |-------|----------------|------------------------|-------------|
-| 0 | No postmortems | 0% | — |
+| 0 | No postmortems | 0% | â€” |
 | 1 | Postmortems written but not tracked | < 30% | Low |
 | 2 | Postmortems tracked, some action items closed | 30-60% | Medium |
 | 3 | Postmortems drive change, > 60% closure | 60-80% | High |
@@ -2484,8 +2484,8 @@ Key Achievements:
 - Automated certificate rotation implemented
 
 Key Risks:
-- inventory-svc at 18% error budget (critical) — DB migration in progress
-- payment-gateway at 42% (warning) — upstream provider latency issues
+- inventory-svc at 18% error budget (critical) â€” DB migration in progress
+- payment-gateway at 42% (warning) â€” upstream provider latency issues
 
 Incident Summary:
 - SEV0: 0 | SEV1: 3 | SEV2: 8 | SEV3: 15
@@ -2511,8 +2511,8 @@ def linear_growth_model(current_usage, daily_growth_rate, days):
 
 Example: 10,000 req/s current, 2% daily growth, 30 day forecast
 Day 0: 10,000 req/s (50% of 20,000 capacity)
-Day 22: 15,476 req/s (77% of capacity) — schedule capacity add
-Day 30: 18,114 req/s (91% of capacity) — CRITICAL
+Day 22: 15,476 req/s (77% of capacity) â€” schedule capacity add
+Day 30: 18,114 req/s (91% of capacity) â€” CRITICAL
 
 **Holt-Winters Forecast Model:**
 
@@ -3141,18 +3141,18 @@ Progressive delivery is the practice of rolling out changes gradually with autom
 
 ```
 +----------+   +----------+   +----------+   +----------+   +----------+
-¦  Build   ¦   ¦  Deploy  ¦   ¦  Canary  ¦   ¦  Canary  ¦   ¦  Canary  ¦
-¦  & Test  ¦--?¦ Staging  ¦--?¦   1%     ¦--?¦   5%     ¦--?¦   25%    ¦
+Â¦  Build   Â¦   Â¦  Deploy  Â¦   Â¦  Canary  Â¦   Â¦  Canary  Â¦   Â¦  Canary  Â¦
+Â¦  & Test  Â¦--?Â¦ Staging  Â¦--?Â¦   1%     Â¦--?Â¦   5%     Â¦--?Â¦   25%    Â¦
 +----------+   +----------+   +----------+   +----------+   +----------+
-                                                              ¦
-                                                  +----------+¦
-                                                  ¦  Canary  ¦¦
-                                                  ¦   100%   ¦?+
+                                                              Â¦
+                                                  +----------+Â¦
+                                                  Â¦  Canary  Â¦Â¦
+                                                  Â¦   100%   Â¦?+
                                                   +----------+
-                                                      ¦
+                                                      Â¦
                                                   +----------+
-                                                  ¦ Monitor  ¦
-                                                  ¦  4 hours ¦
+                                                  Â¦ Monitor  Â¦
+                                                  Â¦  4 hours Â¦
                                                   +----------+
 ```
 
@@ -3160,8 +3160,8 @@ Progressive delivery is the practice of rolling out changes gradually with autom
 
 | Stage | Duration | Verification | Gate Decision | Rollback Action |
 |-------|----------|-------------|---------------|-----------------|
-| Build | — | Tests pass, security scan | Pass/Fail | Fix and rebuild |
-| Staging | — | Smoke tests, integration tests | Pass/Fail | Fix and redeploy |
+| Build | â€” | Tests pass, security scan | Pass/Fail | Fix and rebuild |
+| Staging | â€” | Smoke tests, integration tests | Pass/Fail | Fix and redeploy |
 | Canary 1% | 5 min | Error rate < baseline * 1.5x, p99 < SLO | Approve/Reject | Set weight = 0 |
 | Canary 5% | 10 min | Error rate, p99, CPU, memory all < 1.3x baseline | Approve/Reject | Set weight = 0 |
 | Canary 25% | 15 min | All metrics + downstream + business metrics | Approve/Reject | Set weight = 0 |
@@ -3499,46 +3499,46 @@ deployment_freeze:
 
 ```
 +-------------------------------------------------------------+
-¦ ROW 1: SERVICE HEALTH (4 Single Stat Panels)                 ¦
-+---------------------------------------------------------------¦
-¦ SLO          ¦ Error Budget ¦ Current      ¦ Active           ¦
-¦ Compliance   ¦ Remaining    ¦ Burn Rate    ¦ Incidents        ¦
-¦ 99.92%       ¦ 87%          ¦ 0.3 (1h)     ¦ 0                ¦
-¦ Target:99.9% ¦              ¦ 0.5 (6h)     ¦                  ¦
+Â¦ ROW 1: SERVICE HEALTH (4 Single Stat Panels)                 Â¦
++---------------------------------------------------------------Â¦
+Â¦ SLO          Â¦ Error Budget Â¦ Current      Â¦ Active           Â¦
+Â¦ Compliance   Â¦ Remaining    Â¦ Burn Rate    Â¦ Incidents        Â¦
+Â¦ 99.92%       Â¦ 87%          Â¦ 0.3 (1h)     Â¦ 0                Â¦
+Â¦ Target:99.9% Â¦              Â¦ 0.5 (6h)     Â¦                  Â¦
 +---------------------------------------------------------------+
 
 +-------------------------------------------------------------+
-¦ ROW 2: RED METRICS (3 Time Series Panels)                    ¦
-+--------------------------------------------------------------¦
-¦ Rate (req/s)         ¦ Errors (%)           ¦ Duration (ms)  ¦
-¦ ??    ??             ¦    ??                ¦ ??     ??      ¦
-¦?  ?  ?  ?           ¦  ?  ?  ??           ¦?  ?  ?  ?     ¦
-¦    ??    ?           ¦ ?    ??  ?          ¦    ??    ?     ¦
-¦ -------------?        ¦ -------------?       ¦ -------------?  ¦
+Â¦ ROW 2: RED METRICS (3 Time Series Panels)                    Â¦
++--------------------------------------------------------------Â¦
+Â¦ Rate (req/s)         Â¦ Errors (%)           Â¦ Duration (ms)  Â¦
+Â¦ ??    ??             Â¦    ??                Â¦ ??     ??      Â¦
+Â¦?  ?  ?  ?           Â¦  ?  ?  ??           Â¦?  ?  ?  ?     Â¦
+Â¦    ??    ?           Â¦ ?    ??  ?          Â¦    ??    ?     Â¦
+Â¦ -------------?        Â¦ -------------?       Â¦ -------------?  Â¦
 +--------------------------------------------------------------+
 
 +-------------------------------------------------------------+
-¦ ROW 3: RESOURCE SATURATION (USE Method - 4 Panels)           ¦
-+---------------------------------------------------------------¦
-¦ CPU          ¦ Memory       ¦ Network      ¦ Disk             ¦
-¦ Utilization  ¦ Utilization  ¦ Utilization  ¦ I/O Wait        ¦
-¦ ¦¦¦¦¦¦¦¦ 45% ¦ ¦¦¦¦¦¦¦¦ 60% ¦ ¦¦¦¦ 25%     ¦ ¦¦ 2ms           ¦
+Â¦ ROW 3: RESOURCE SATURATION (USE Method - 4 Panels)           Â¦
++---------------------------------------------------------------Â¦
+Â¦ CPU          Â¦ Memory       Â¦ Network      Â¦ Disk             Â¦
+Â¦ Utilization  Â¦ Utilization  Â¦ Utilization  Â¦ I/O Wait        Â¦
+Â¦ Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦ 45% Â¦ Â¦Â¦Â¦Â¦Â¦Â¦Â¦Â¦ 60% Â¦ Â¦Â¦Â¦Â¦ 25%     Â¦ Â¦Â¦ 2ms           Â¦
 +---------------------------------------------------------------+
 
 +-------------------------------------------------------------+
-¦ ROW 4: DEPENDENCIES (Circuit Breaker State)                  ¦
-+---------------------------------------------------------------¦
-¦ DB: CLOSED   ¦ Cache:CLOSED ¦ Payment:OPEN ¦ Inventory:CLOSED ¦
-¦ 450 req/s    ¦ 2000 req/s   ¦ FALLBACK     ¦ 300 req/s        ¦
+Â¦ ROW 4: DEPENDENCIES (Circuit Breaker State)                  Â¦
++---------------------------------------------------------------Â¦
+Â¦ DB: CLOSED   Â¦ Cache:CLOSED Â¦ Payment:OPEN Â¦ Inventory:CLOSED Â¦
+Â¦ 450 req/s    Â¦ 2000 req/s   Â¦ FALLBACK     Â¦ 300 req/s        Â¦
 +---------------------------------------------------------------+
 
 +-------------------------------------------------------------+
-¦ ROW 5: RECENT EVENTS (Log Panel)                             ¦
-+---------------------------------------------------------------¦
-¦ [12:34] Deployment v2.3.1 started - 0% canary                 ¦
-¦ [12:35] Deployment v2.3.1 at 1% canary - metrics stable       ¦
-¦ [12:40] Deployment v2.3.1 at 5% canary - metrics stable       ¦
-¦ [12:45] Deployment v2.3.1 at 25% canary - monitoring          ¦
+Â¦ ROW 5: RECENT EVENTS (Log Panel)                             Â¦
++---------------------------------------------------------------Â¦
+Â¦ [12:34] Deployment v2.3.1 started - 0% canary                 Â¦
+Â¦ [12:35] Deployment v2.3.1 at 1% canary - metrics stable       Â¦
+Â¦ [12:40] Deployment v2.3.1 at 5% canary - metrics stable       Â¦
+Â¦ [12:45] Deployment v2.3.1 at 25% canary - monitoring          Â¦
 +---------------------------------------------------------------+
 ```
 
@@ -3546,46 +3546,46 @@ deployment_freeze:
 
 ```
 +-------------------------------------------------------------+
-¦ ROW 1: PLATFORM HEALTH OVERVIEW                              ¦
-+---------------------------------------------------------------¦
-¦ Overall      ¦ Total        ¦ Active        ¦ MTTR (30d)      ¦
-¦ SLO: 99.91%  ¦ Incidents: 3 ¦ SEV0: 0       ¦ 18 min           ¦
-¦ Target:99.9% ¦ (this week)  ¦ SEV1: 1       ¦ Target: < 30 min ¦
+Â¦ ROW 1: PLATFORM HEALTH OVERVIEW                              Â¦
++---------------------------------------------------------------Â¦
+Â¦ Overall      Â¦ Total        Â¦ Active        Â¦ MTTR (30d)      Â¦
+Â¦ SLO: 99.91%  Â¦ Incidents: 3 Â¦ SEV0: 0       Â¦ 18 min           Â¦
+Â¦ Target:99.9% Â¦ (this week)  Â¦ SEV1: 1       Â¦ Target: < 30 min Â¦
 +---------------------------------------------------------------+
 
 +-------------------------------------------------------------+
-¦ ROW 2: SERVICE HEALTH TABLE                                   ¦
-+---------------------------------------------------------------¦
-¦ Service        Tier    SLO     Budget   Burn    Status        ¦
-¦ checkout-api   T1      99.9%   87%      0.3     ? Healthy     ¦
-¦ payment-gate   T1      99.99%  42%      1.2     ? Warning     ¦
-¦ auth-service   T0      99.99%  95%      0.1     ? Healthy     ¦
-¦ search-api     T1      99.95%  72%      0.5     ? Healthy     ¦
-¦ inventory-svc  T1      99.95%  18%      2.1     ?? Critical   ¦
+Â¦ ROW 2: SERVICE HEALTH TABLE                                   Â¦
++---------------------------------------------------------------Â¦
+Â¦ Service        Tier    SLO     Budget   Burn    Status        Â¦
+Â¦ checkout-api   T1      99.9%   87%      0.3     ? Healthy     Â¦
+Â¦ payment-gate   T1      99.99%  42%      1.2     ? Warning     Â¦
+Â¦ auth-service   T0      99.99%  95%      0.1     ? Healthy     Â¦
+Â¦ search-api     T1      99.95%  72%      0.5     ? Healthy     Â¦
+Â¦ inventory-svc  T1      99.95%  18%      2.1     ?? Critical   Â¦
 +---------------------------------------------------------------+
 
 +-------------------------------------------------------------+
-¦ ROW 3: TRENDS (12 months)                                    ¦
-+--------------------------------------------------------------¦
-¦ SLO Compliance Trend ¦ Incident Count       ¦ Toil Ratio     ¦
-¦     ??    ??        ¦      ??    ??        ¦   ??    ??     ¦
-¦   ?  ?  ?  ?       ¦    ?  ?  ?  ?       ¦ ?  ?  ?  ?    ¦
-¦  ?    ??    ?      ¦   ?    ??    ?      ¦?    ??    ?   ¦
-¦ ------------------   ¦ ------------------   ¦ -----------------¦
-¦  J F M A M J J A    ¦  J F M A M J J A     ¦  J F M A M J J A ¦
+Â¦ ROW 3: TRENDS (12 months)                                    Â¦
++--------------------------------------------------------------Â¦
+Â¦ SLO Compliance Trend Â¦ Incident Count       Â¦ Toil Ratio     Â¦
+Â¦     ??    ??        Â¦      ??    ??        Â¦   ??    ??     Â¦
+Â¦   ?  ?  ?  ?       Â¦    ?  ?  ?  ?       Â¦ ?  ?  ?  ?    Â¦
+Â¦  ?    ??    ?      Â¦   ?    ??    ?      Â¦?    ??    ?   Â¦
+Â¦ ------------------   Â¦ ------------------   Â¦ -----------------Â¦
+Â¦  J F M A M J J A    Â¦  J F M A M J J A     Â¦  J F M A M J J A Â¦
 +--------------------------------------------------------------+
 
 +-------------------------------------------------------------+
-¦ ROW 4: BUDGET & RELEASES                                     ¦
-+--------------------------------------------------------------¦
-¦ Error Budget Overview     ¦ Release Velocity                 ¦
-¦ (pie chart by category)   ¦ (bar chart weekly)               ¦
-¦ +--------------------+    ¦ +--------------------+          ¦
-¦ ¦ Incidents: 45%     ¦    ¦ ¦ ¦¦ ¦¦ ¦¦ ¦¦ ¦¦    ¦          ¦
-¦ ¦ Deployments: 15%   ¦    ¦ ¦ ¦¦ ¦¦ ¦¦ ¦¦ ¦¦    ¦          ¦
-¦ ¦ Known issues: 20%  ¦    ¦ ¦ ¦¦ ¦¦ ¦¦ ¦¦ ¦¦    ¦          ¦
-¦ ¦ Maintenance: 10%   ¦    ¦ ¦ W1 W2 W3 W4 W5    ¦          ¦
-¦ +--------------------+    ¦ Rollback rate: 3%    ¦          ¦
+Â¦ ROW 4: BUDGET & RELEASES                                     Â¦
++--------------------------------------------------------------Â¦
+Â¦ Error Budget Overview     Â¦ Release Velocity                 Â¦
+Â¦ (pie chart by category)   Â¦ (bar chart weekly)               Â¦
+Â¦ +--------------------+    Â¦ +--------------------+          Â¦
+Â¦ Â¦ Incidents: 45%     Â¦    Â¦ Â¦ Â¦Â¦ Â¦Â¦ Â¦Â¦ Â¦Â¦ Â¦Â¦    Â¦          Â¦
+Â¦ Â¦ Deployments: 15%   Â¦    Â¦ Â¦ Â¦Â¦ Â¦Â¦ Â¦Â¦ Â¦Â¦ Â¦Â¦    Â¦          Â¦
+Â¦ Â¦ Known issues: 20%  Â¦    Â¦ Â¦ Â¦Â¦ Â¦Â¦ Â¦Â¦ Â¦Â¦ Â¦Â¦    Â¦          Â¦
+Â¦ Â¦ Maintenance: 10%   Â¦    Â¦ Â¦ W1 W2 W3 W4 W5    Â¦          Â¦
+Â¦ +--------------------+    Â¦ Rollback rate: 3%    Â¦          Â¦
 +--------------------------------------------------------------+
 ```
 
@@ -3593,36 +3593,36 @@ deployment_freeze:
 
 ```
 +-------------------------------------------------------------+
-¦ ROW 1: ON-CALL STATUS                                        ¦
-+---------------------------------------------------------------¦
-¦ Primary: Bob ¦ Secondary:   ¦ Shift: May   ¦ Time on-call:    ¦
-¦              ¦ Alice        ¦ 27 - Jun 2   ¦ 2 days 4 hours   ¦
-+--------------+--------------+--------------+------------------¦
-¦ Pages Today: ¦ Acknowledged:¦ MTTA: 2.1min ¦ Next Handoff:    ¦
-¦ 3            ¦ 100%         ¦              ¦ Jun 2 09:00 UTC  ¦
+Â¦ ROW 1: ON-CALL STATUS                                        Â¦
++---------------------------------------------------------------Â¦
+Â¦ Primary: Bob Â¦ Secondary:   Â¦ Shift: May   Â¦ Time on-call:    Â¦
+Â¦              Â¦ Alice        Â¦ 27 - Jun 2   Â¦ 2 days 4 hours   Â¦
++--------------+--------------+--------------+------------------Â¦
+Â¦ Pages Today: Â¦ Acknowledged:Â¦ MTTA: 2.1min Â¦ Next Handoff:    Â¦
+Â¦ 3            Â¦ 100%         Â¦              Â¦ Jun 2 09:00 UTC  Â¦
 +---------------------------------------------------------------+
 
 +-------------------------------------------------------------+
-¦ ROW 2: ACTIVE INCIDENTS                                       ¦
-+---------------------------------------------------------------¦
-¦ ID      Sev    Service     Duration  Status   Action          ¦
-¦ INC-027 SEV2   Inventory   4h 12m    Monitoring No action     ¦
-¦ INC-028 SEV3   Payment     1h 30m    Investigating In progress¦
+Â¦ ROW 2: ACTIVE INCIDENTS                                       Â¦
++---------------------------------------------------------------Â¦
+Â¦ ID      Sev    Service     Duration  Status   Action          Â¦
+Â¦ INC-027 SEV2   Inventory   4h 12m    Monitoring No action     Â¦
+Â¦ INC-028 SEV3   Payment     1h 30m    Investigating In progressÂ¦
 +---------------------------------------------------------------+
 
 +-------------------------------------------------------------+
-¦ ROW 3: RECENT PAGES (Last 24h)                               ¦
-+---------------------------------------------------------------¦
-¦ Time    Alert               Action            Outcome         ¦
-¦ 08:15   CPU high checkout   Scaled up         Resolved        ¦
-¦ 11:30   Error rate payment  Circuit breaker   Monitoring      ¦
-¦ 14:45   Latency search      Verified not SLO  False positive  ¦
+Â¦ ROW 3: RECENT PAGES (Last 24h)                               Â¦
++---------------------------------------------------------------Â¦
+Â¦ Time    Alert               Action            Outcome         Â¦
+Â¦ 08:15   CPU high checkout   Scaled up         Resolved        Â¦
+Â¦ 11:30   Error rate payment  Circuit breaker   Monitoring      Â¦
+Â¦ 14:45   Latency search      Verified not SLO  False positive  Â¦
 +---------------------------------------------------------------+
 
 +-------------------------------------------------------------+
-¦ ROW 4: QUICK ACTIONS (Buttons)                               ¦
-+---------------------------------------------------------------¦
-¦ [? Escalate]  [?? Handoff]  [?? Page secondary]  [?? IC]   ¦
+Â¦ ROW 4: QUICK ACTIONS (Buttons)                               Â¦
++---------------------------------------------------------------Â¦
+Â¦ [? Escalate]  [?? Handoff]  [?? Page secondary]  [?? IC]   Â¦
 +---------------------------------------------------------------+
 ```
 
@@ -4837,29 +4837,29 @@ if __name__ == "__main__":
 
 ```
 +-----------------------------------------------------+
-¦            SHOULD I DEPLOY?                          ¦
-+-----------------------------------------------------¦
-¦                                                      ¦
-¦  1. Is error budget remaining > 50%?                 ¦
-¦     YES ? Deploy freely                              ¦
-¦     NO ? Continue                                    ¦
-¦                                                      ¦
-¦  2. Is error budget remaining 25-50%?                ¦
-¦     YES ? Need SRE approval, document justification  ¦
-¦     NO ? Continue                                    ¦
-¦                                                      ¦
-¦  3. Is error budget remaining 10-25%?                ¦
-¦     YES ? Only critical fixes and rollbacks          ¦
-¦     NO ? Continue                                    ¦
-¦                                                      ¦
-¦  4. Is error budget remaining < 10%?                 ¦
-¦     YES ? DO NOT DEPLOY (emergency mode)             ¦
-¦                                                      ¦
-¦  EXCEPTIONS:                                         ¦
-¦  - Rollback to known-good version: ALWAYS ALLOWED    ¦
-¦  - Hotfix for budget consumption cause: SRE APPROVAL ¦
-¦  - Security patch: SECURITY + SRE APPROVAL           ¦
-¦  - Configuration change to restore SLO: ON-CALL APPR¦
+Â¦            SHOULD I DEPLOY?                          Â¦
++-----------------------------------------------------Â¦
+Â¦                                                      Â¦
+Â¦  1. Is error budget remaining > 50%?                 Â¦
+Â¦     YES ? Deploy freely                              Â¦
+Â¦     NO ? Continue                                    Â¦
+Â¦                                                      Â¦
+Â¦  2. Is error budget remaining 25-50%?                Â¦
+Â¦     YES ? Need SRE approval, document justification  Â¦
+Â¦     NO ? Continue                                    Â¦
+Â¦                                                      Â¦
+Â¦  3. Is error budget remaining 10-25%?                Â¦
+Â¦     YES ? Only critical fixes and rollbacks          Â¦
+Â¦     NO ? Continue                                    Â¦
+Â¦                                                      Â¦
+Â¦  4. Is error budget remaining < 10%?                 Â¦
+Â¦     YES ? DO NOT DEPLOY (emergency mode)             Â¦
+Â¦                                                      Â¦
+Â¦  EXCEPTIONS:                                         Â¦
+Â¦  - Rollback to known-good version: ALWAYS ALLOWED    Â¦
+Â¦  - Hotfix for budget consumption cause: SRE APPROVAL Â¦
+Â¦  - Security patch: SECURITY + SRE APPROVAL           Â¦
+Â¦  - Configuration change to restore SLO: ON-CALL APPRÂ¦
 +-----------------------------------------------------+
 ```
 
@@ -4867,32 +4867,32 @@ if __name__ == "__main__":
 
 ```
 +-----------------------------------------------------+
-¦          WHAT SEVERITY IS THIS INCIDENT?             ¦
-+-----------------------------------------------------¦
-¦                                                      ¦
-¦  Is service completely unavailable for all users?    ¦
-¦  YES ? SEV0                                          ¦
-¦  NO ? Continue                                       ¦
-¦                                                      ¦
-¦  Is data loss confirmed?                             ¦
-¦  YES ? SEV0                                          ¦
-¦  NO ? Continue                                       ¦
-¦                                                      ¦
-¦  Is revenue impact > $100K/hr?                       ¦
-¦  YES ? SEV0                                          ¦
-¦  NO ? Continue                                       ¦
-¦                                                      ¦
-¦  Are > 20% of users affected?                        ¦
-¦  YES ? SEV1                                          ¦
-¦  NO ? Continue                                       ¦
-¦                                                      ¦
-¦  Is revenue impact $10K-$100K/hr?                    ¦
-¦  YES ? SEV1                                          ¦
-¦  NO ? Continue                                       ¦
-¦                                                      ¦
-¦  Are 5-20% of users affected?                        ¦
-¦  YES ? SEV2                                          ¦
-¦  NO ? SEV3 (minor impact)                            ¦
+Â¦          WHAT SEVERITY IS THIS INCIDENT?             Â¦
++-----------------------------------------------------Â¦
+Â¦                                                      Â¦
+Â¦  Is service completely unavailable for all users?    Â¦
+Â¦  YES ? SEV0                                          Â¦
+Â¦  NO ? Continue                                       Â¦
+Â¦                                                      Â¦
+Â¦  Is data loss confirmed?                             Â¦
+Â¦  YES ? SEV0                                          Â¦
+Â¦  NO ? Continue                                       Â¦
+Â¦                                                      Â¦
+Â¦  Is revenue impact > $100K/hr?                       Â¦
+Â¦  YES ? SEV0                                          Â¦
+Â¦  NO ? Continue                                       Â¦
+Â¦                                                      Â¦
+Â¦  Are > 20% of users affected?                        Â¦
+Â¦  YES ? SEV1                                          Â¦
+Â¦  NO ? Continue                                       Â¦
+Â¦                                                      Â¦
+Â¦  Is revenue impact $10K-$100K/hr?                    Â¦
+Â¦  YES ? SEV1                                          Â¦
+Â¦  NO ? Continue                                       Â¦
+Â¦                                                      Â¦
+Â¦  Are 5-20% of users affected?                        Â¦
+Â¦  YES ? SEV2                                          Â¦
+Â¦  NO ? SEV3 (minor impact)                            Â¦
 +-----------------------------------------------------+
 ```
 
@@ -4900,26 +4900,26 @@ if __name__ == "__main__":
 
 ```
 +-----------------------------------------------------+
-¦           SHOULD I ROLLBACK?                         ¦
-+-----------------------------------------------------¦
-¦                                                      ¦
-¦  Has error rate increased > 2x since deployment?     ¦
-¦  YES ? ROLLBACK IMMEDIATELY                          ¦
-¦  NO ? Continue                                       ¦
-¦                                                      ¦
-¦  Has p99 latency increased > 20%?                    ¦
-¦  YES ? ROLLBACK (investigate performance regression) ¦
-¦  NO ? Continue                                       ¦
-¦                                                      ¦
-¦  Is error budget burn rate > 2x normal?              ¦
-¦  YES ? ROLLBACK (monitor after rollback)             ¦
-¦  NO ? Continue                                       ¦
-¦                                                      ¦
-¦  Are downstream services degrading?                  ¦
-¦  YES ? ROLLBACK (check dependency compatibility)     ¦
-¦  NO ? Continue monitoring, inform team               ¦
-¦                                                      ¦
-¦  All checks passed? ? Keep monitoring for 4 hours    ¦
+Â¦           SHOULD I ROLLBACK?                         Â¦
++-----------------------------------------------------Â¦
+Â¦                                                      Â¦
+Â¦  Has error rate increased > 2x since deployment?     Â¦
+Â¦  YES ? ROLLBACK IMMEDIATELY                          Â¦
+Â¦  NO ? Continue                                       Â¦
+Â¦                                                      Â¦
+Â¦  Has p99 latency increased > 20%?                    Â¦
+Â¦  YES ? ROLLBACK (investigate performance regression) Â¦
+Â¦  NO ? Continue                                       Â¦
+Â¦                                                      Â¦
+Â¦  Is error budget burn rate > 2x normal?              Â¦
+Â¦  YES ? ROLLBACK (monitor after rollback)             Â¦
+Â¦  NO ? Continue                                       Â¦
+Â¦                                                      Â¦
+Â¦  Are downstream services degrading?                  Â¦
+Â¦  YES ? ROLLBACK (check dependency compatibility)     Â¦
+Â¦  NO ? Continue monitoring, inform team               Â¦
+Â¦                                                      Â¦
+Â¦  All checks passed? ? Keep monitoring for 4 hours    Â¦
 +-----------------------------------------------------+
 ```
 
@@ -4927,27 +4927,27 @@ if __name__ == "__main__":
 
 ```
 +-----------------------------------------------------+
-¦           BURN RATE ALERT TUNING                     ¦
-+-----------------------------------------------------¦
-¦                                                      ¦
-¦  Too many false positives?                           ¦
-¦  ? Increase burn rate threshold                      ¦
-¦  ? Extend minimum duration                           ¦
-¦  ? Widen the short window                            ¦
-¦                                                      ¦
-¦  Missing real incidents?                             ¦
-¦  ? Decrease burn rate threshold                      ¦
-¦  ? Shorten minimum duration                          ¦
-¦  ? Narrow the long window                            ¦
-¦                                                      ¦
-¦  Standard tuning parameters:                         ¦
-¦  SLO 99.9%:  fast=14/5min,  slow=2.5/30min          ¦
-¦  SLO 99.99%: fast=20/5min, slow=3.5/30min           ¦
-¦  SLO 99.5%:  fast=10/5min, slow=2.0/30min           ¦
-¦                                                      ¦
-¦  SNR target: > 0.5 (at least 1 actionable per 2)     ¦
-¦  False positive target: < 50% of all pages           ¦
-¦  Page target: < 5 pages per shift per person         ¦
+Â¦           BURN RATE ALERT TUNING                     Â¦
++-----------------------------------------------------Â¦
+Â¦                                                      Â¦
+Â¦  Too many false positives?                           Â¦
+Â¦  ? Increase burn rate threshold                      Â¦
+Â¦  ? Extend minimum duration                           Â¦
+Â¦  ? Widen the short window                            Â¦
+Â¦                                                      Â¦
+Â¦  Missing real incidents?                             Â¦
+Â¦  ? Decrease burn rate threshold                      Â¦
+Â¦  ? Shorten minimum duration                          Â¦
+Â¦  ? Narrow the long window                            Â¦
+Â¦                                                      Â¦
+Â¦  Standard tuning parameters:                         Â¦
+Â¦  SLO 99.9%:  fast=14/5min,  slow=2.5/30min          Â¦
+Â¦  SLO 99.99%: fast=20/5min, slow=3.5/30min           Â¦
+Â¦  SLO 99.5%:  fast=10/5min, slow=2.0/30min           Â¦
+Â¦                                                      Â¦
+Â¦  SNR target: > 0.5 (at least 1 actionable per 2)     Â¦
+Â¦  False positive target: < 50% of all pages           Â¦
+Â¦  Page target: < 5 pages per shift per person         Â¦
 +-----------------------------------------------------+
 ```
 
@@ -4955,41 +4955,41 @@ if __name__ == "__main__":
 
 ```
 +-----------------------------------------------------+
-¦              SRE DAILY CHECKLIST                     ¦
-+-----------------------------------------------------¦
-¦                                                      ¦
-¦  ? Check SLO compliance for critical services        ¦
-¦  ? Review error budget consumption                   ¦
-¦  ? Check burn rates (1h, 6h, 24h)                    ¦
-¦  ? Review active incidents                           ¦
-¦  ? Check pending deployments                         ¦
-¦  ? Verify capacity headroom                          ¦
-¦  ? Review postmortem action items                    ¦
-¦  ? Check on-call handoff notes                       ¦
-¦  ? Review alert SNR (false positive rate)            ¦
-¦  ? Check chaos experiment results (if applicable)    ¦
-¦                                                      ¦
-¦  Weekly:                                             ¦
-¦  ? SLO compliance trend (7-day)                      ¦
-¦  ? Toil ratio measurement                            ¦
-¦  ? Automation progress review                        ¦
-¦  ? Incident trend analysis                           ¦
-¦  ? Capacity forecast update                          ¦
-¦                                                      ¦
-¦  Monthly:                                            ¦
-¦  ? SLO report to stakeholders                        ¦
-¦  ? Error budget consumption report                   ¦
-¦  ? Postmortem action item closure review             ¦
-¦  ? Alert threshold review and tuning                 ¦
-¦  ? On-call load review                               ¦
-¦                                                      ¦
-¦  Quarterly:                                          ¦
-¦  ? SLO target review with product                    ¦
-¦  ? Capacity plan for next quarter                    ¦
-¦  ? Service maturity reassessment                     ¦
-¦  ? Chaos engineering program review                  ¦
-¦  ? DR test or tabletop exercise                      ¦
-¦  ? On-call satisfaction survey                       ¦
+Â¦              SRE DAILY CHECKLIST                     Â¦
++-----------------------------------------------------Â¦
+Â¦                                                      Â¦
+Â¦  ? Check SLO compliance for critical services        Â¦
+Â¦  ? Review error budget consumption                   Â¦
+Â¦  ? Check burn rates (1h, 6h, 24h)                    Â¦
+Â¦  ? Review active incidents                           Â¦
+Â¦  ? Check pending deployments                         Â¦
+Â¦  ? Verify capacity headroom                          Â¦
+Â¦  ? Review postmortem action items                    Â¦
+Â¦  ? Check on-call handoff notes                       Â¦
+Â¦  ? Review alert SNR (false positive rate)            Â¦
+Â¦  ? Check chaos experiment results (if applicable)    Â¦
+Â¦                                                      Â¦
+Â¦  Weekly:                                             Â¦
+Â¦  ? SLO compliance trend (7-day)                      Â¦
+Â¦  ? Toil ratio measurement                            Â¦
+Â¦  ? Automation progress review                        Â¦
+Â¦  ? Incident trend analysis                           Â¦
+Â¦  ? Capacity forecast update                          Â¦
+Â¦                                                      Â¦
+Â¦  Monthly:                                            Â¦
+Â¦  ? SLO report to stakeholders                        Â¦
+Â¦  ? Error budget consumption report                   Â¦
+Â¦  ? Postmortem action item closure review             Â¦
+Â¦  ? Alert threshold review and tuning                 Â¦
+Â¦  ? On-call load review                               Â¦
+Â¦                                                      Â¦
+Â¦  Quarterly:                                          Â¦
+Â¦  ? SLO target review with product                    Â¦
+Â¦  ? Capacity plan for next quarter                    Â¦
+Â¦  ? Service maturity reassessment                     Â¦
+Â¦  ? Chaos engineering program review                  Â¦
+Â¦  ? DR test or tabletop exercise                      Â¦
+Â¦  ? On-call satisfaction survey                       Â¦
 +-----------------------------------------------------+
 ```
 

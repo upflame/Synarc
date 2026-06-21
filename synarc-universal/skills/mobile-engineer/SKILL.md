@@ -1,13 +1,13 @@
 ---
 name: mobile-engineer
-description: Mobile Engineer — Mobile-First Architecture & Offline-First Patterns
+description: Mobile Engineer â€” Mobile-First Architecture & Offline-First Patterns
 version: "2.0.0"
 schema: skill-pack/v1
 dependencies:
   synarc-core: ">=5.0.0"
 ---
 
-# Mobile Engineer — Mobile-First Architecture & Offline-First Patterns
+# Mobile Engineer â€” Mobile-First Architecture & Offline-First Patterns
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
@@ -15,16 +15,16 @@ Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-
 Mobile engineering builds applications that run on battery-powered, network-constrained, touch-first devices with limited memory and processing power. Every decision affects user experience, app performance, data usage, and battery life.
 
 
-## P2 — METHODOLOGY: Mobile Architecture
+## P2 â€” METHODOLOGY: Mobile Architecture
 
-### P2.1 — App Architecture Patterns
+### P2.1 â€” App Architecture Patterns
 
 Mobile app architecture defines how code is organized, how data flows between layers, and how testability is achieved. The choice of pattern depends on team expertise, platform, app complexity, and testing requirements.
 
 ```
 MVC (Model-View-Controller):
   Model:       Data and business logic
-  View:        UI components (passive — displays data, forwards events)
+  View:        UI components (passive â€” displays data, forwards events)
   Controller:  Mediates between Model and View, handles user input
   Platform:    Default iOS pattern (UIKit), default Android pattern (Activity as controller)
   Problems:    Massive View Controllers (iOS), untestable logic in controllers,
@@ -102,7 +102,7 @@ Team:
   Cross-platform shared logic -> Clean Architecture with shared domain module (KMM)
 ```
 
-### P2.2 — Navigation and Routing
+### P2.2 â€” Navigation and Routing
 
 ```
 NAVIGATION PATTERNS:
@@ -111,10 +111,10 @@ STACK NAVIGATION (push/pop):
   Screens: List -> Detail -> Edit
   Back navigation: pop to previous screen
   Deep link: push to specific screen in stack
-  Memory: maintains stack of screens — watch for deep stacks (N > 10)
+  Memory: maintains stack of screens â€” watch for deep stacks (N > 10)
   iOS: UINavigationController push/pop, NavigationStack programmatic navigation
   Android: NavController.navigate() with back stack management
-  Pitfall: Deep stacks (>10) increase memory pressure — consider replacing top instead of pushing
+  Pitfall: Deep stacks (>10) increase memory pressure â€” consider replacing top instead of pushing
 
 TAB NAVIGATION:
   Screens: Bottom tab bar with 3-5 tabs
@@ -122,7 +122,7 @@ TAB NAVIGATION:
   Deep link: can open to any tab + specific screen within tab
   iOS: UITabBarController, TabView with selection binding
   Android: BottomNavigationView + NavHost per tab
-  Pitfall: Tab state loss on re-selection — preserve tab stacks on tab switch
+  Pitfall: Tab state loss on re-selection â€” preserve tab stacks on tab switch
 
 MODAL PRESENTATION:
   Full screen or sheet-based modal
@@ -130,7 +130,7 @@ MODAL PRESENTATION:
   Cancel/dismiss: explicit close button or swipe-down gesture
   iOS: .sheet, .fullScreenCover, UIModalPresentationStyle
   Android: DialogFragment, BottomSheetDialogFragment, Compose ModalBottomSheet
-  Pitfall: Nested modals (modal on top of modal) confuse users — limit to 1 level
+  Pitfall: Nested modals (modal on top of modal) confuse users â€” limit to 1 level
 
 DRAWER NAVIGATION:
   Side drawer for navigation options
@@ -142,7 +142,7 @@ COMPLEX NAVIGATION (multi-module apps):
   Coordinator pattern: centralized navigation logic
   Each module registers routes with the coordinator
   Deep links resolved at coordinator level, not in individual screens
-  Feature modules are navigation-independent — do not import other screens
+  Feature modules are navigation-independent â€” do not import other screens
 ```
 
 **Navigation state management:**
@@ -150,7 +150,7 @@ COMPLEX NAVIGATION (multi-module apps):
 Navigation state should be in a centralized navigator/coordinator, not in individual screens.
 Each screen has a unique route identifier.
 Deep links are resolved to routes at a single entry point.
-Back navigation pops the route — state of previous screen is preserved (or restored).
+Back navigation pops the route â€” state of previous screen is preserved (or restored).
 
 State preservation:
   Save: current route, back stack, scroll position of each stack element
@@ -163,7 +163,7 @@ Cross-platform navigation patterns:
   Both: route-based navigation with parameterized routes
 ```
 
-### P2.3 — Platform-Specific Decision Patterns
+### P2.3 â€” Platform-Specific Decision Patterns
 
 ```
 iOS-SPECIFIC:
@@ -171,12 +171,12 @@ iOS-SPECIFIC:
   UI: SwiftUI for new features, UIKit for complex custom UI, hybrid where needed
   Navigation: NavigationStack / NavigationSplitView (SwiftUI), UINavigationController (UIKit)
   State management: @State, @StateObject, @ObservableObject, @Published, Combine framework
-  Lifecycle: UISceneDelegate — scenePhase (active, inactive, background), state restoration
-  Background: limited background execution — use BGTaskScheduler for critical work
+  Lifecycle: UISceneDelegate â€” scenePhase (active, inactive, background), state restoration
+  Background: limited background execution â€” use BGTaskScheduler for critical work
   Storage: UserDefaults (small preferences), CoreData (complex data), FileManager (documents)
   Concurrency: Swift async/await, MainActor for UI thread, Task for background work
   Distribution: App Store review, TestFlight beta, enterprise distribution
-  Memory: ARC (automatic reference counting) — weak/unowned for reference cycles
+  Memory: ARC (automatic reference counting) â€” weak/unowned for reference cycles
   Debugging: Instruments (Allocations, Leaks, Energy Log, Time Profiler), Xcode Organizer
   Networking: URLSession with async/await, background URLSession for downloads
   Notifications: UNUserNotificationCenter for local, APNS for remote
@@ -190,12 +190,12 @@ Android-SPECIFIC:
   UI: Jetpack Compose for new features, XML Layouts for legacy, hybrid
   Navigation: Jetpack Navigation Component (NavHost, NavController)
   State management: StateFlow, SharedFlow, MutableState in Compose, ViewModel + LiveData
-  Lifecycle: Activity + Fragment lifecycle — onCreate/onStart/onResume/onPause/onStop/onDestroy
+  Lifecycle: Activity + Fragment lifecycle â€” onCreate/onStart/onResume/onPause/onStop/onDestroy
   Background: WorkManager for deferrable work, Foreground Service for user-visible work
   Storage: DataStore (preferences), Room (complex data), Internal/External storage
-  Concurrency: Kotlin coroutines — viewModelScope, lifecycleScope
+  Concurrency: Kotlin coroutines â€” viewModelScope, lifecycleScope
   Distribution: Google Play Store, Firebase App Distribution, side-loading APK
-  Memory: Garbage collection (ART) — watch for GC pauses, leak canary for detection
+  Memory: Garbage collection (ART) â€” watch for GC pauses, leak canary for detection
   Debugging: Android Profiler (CPU, Memory, Network, Energy), Perfetto, ADB
   Networking: OkHttp + Retrofit, Ktor client, WorkManager for upload/download
   Notifications: NotificationCompat, NotificationChannel, FCM
@@ -222,19 +222,19 @@ CROSS-PLATFORM (when choosing between native and cross-platform):
     - UI is relatively standard (forms, lists, navigation, content browsing)
     - Acceptable to wait for platform API support in framework
     - App is content-driven with limited hardware integration
-    - MVP/Prototype stage — prove product fit before native investment
+    - MVP/Prototype stage â€” prove product fit before native investment
 ```
 
-### P2.4 — Offline-First Architecture
+### P2.4 â€” Offline-First Architecture
 
 ```
 PRINCIPLES:
-  [1] Local data is SOT for reads — render from local DB, sync in background
-  [2] Writes go to local first — queue sync operation, execute when online
-  [3] Sync engine manages reconciliation — last-write-wins, conflict resolution
-  [4] Network awareness drives UI — online: real-time sync, offline: stale data + queued writes
-  [5] Users must never see a blank screen — always show cached data
-  [6] Sync is incremental — only transfer what changed, not full dataset
+  [1] Local data is SOT for reads â€” render from local DB, sync in background
+  [2] Writes go to local first â€” queue sync operation, execute when online
+  [3] Sync engine manages reconciliation â€” last-write-wins, conflict resolution
+  [4] Network awareness drives UI â€” online: real-time sync, offline: stale data + queued writes
+  [5] Users must never see a blank screen â€” always show cached data
+  [6] Sync is incremental â€” only transfer what changed, not full dataset
   [7] Optimistic updates: show result immediately, reconcile when server responds
 
 DATA FLOW:
@@ -244,11 +244,11 @@ DATA FLOW:
 
 Read path:
   [1] Repository exposes Flow/Observable/AsyncSequence from local DB
-  [2] UI subscribes to repository — renders immediately from local cache
+  [2] UI subscribes to repository â€” renders immediately from local cache
   [3] Repository triggers remote fetch in background
   [4] Remote response updates local DB
   [5] UI automatically updates from local DB observation
-  [6] No loading spinners for cached data — only for initial fetch
+  [6] No loading spinners for cached data â€” only for initial fetch
 
 Write path:
   [1] User action -> ViewModel calls repository.write()
@@ -260,14 +260,14 @@ Write path:
   [7] On failure (server error) -> retry with backoff -> dead letter after max retries
 
 CONFLICT STRATEGIES:
-  Last-write-wins (default): keep latest updated_at — safe for preferences, risk of data loss
-  CRDT: convergence without coordination — safe for counters/sets, append-only lists
-  Manual: present both versions to user — safe for critical data (documents, orders)
-  Custom merge: app-specific logic — safe for data with clear merge semantics (e.g., merge tags)
+  Last-write-wins (default): keep latest updated_at â€” safe for preferences, risk of data loss
+  CRDT: convergence without coordination â€” safe for counters/sets, append-only lists
+  Manual: present both versions to user â€” safe for critical data (documents, orders)
+  Custom merge: app-specific logic â€” safe for data with clear merge semantics (e.g., merge tags)
 
   Conflict detection:
     Version vector: increment version on each write, compare versions on sync
-    Timestamp: compare updated_at fields (requires clock sync — NTP)
+    Timestamp: compare updated_at fields (requires clock sync â€” NTP)
     Hash-based: compare content hashes, conflict only if hashes differ
     Field-level: detect conflict per field, not per record (more granular, more complex)
 
@@ -277,15 +277,15 @@ CONFLICT STRATEGIES:
     Undo: store previous version in shadow table for manual resolution undo
 ```
 
-### P2.5 — Memory Management
+### P2.5 â€” Memory Management
 
 ```
-ARC (iOS — Automatic Reference Counting):
+ARC (iOS â€” Automatic Reference Counting):
 
   Reference types (classes) are reference-counted at compile time
-  Strong reference: default — increments retain count
-  Weak reference: does not increment retain count — auto-nil when deallocated
-  Unowned reference: does not increment retain count — must outlive reference (crash if deallocated)
+  Strong reference: default â€” increments retain count
+  Weak reference: does not increment retain count â€” auto-nil when deallocated
+  Unowned reference: does not increment retain count â€” must outlive reference (crash if deallocated)
 
   Common retain cycles:
     Closure capturing self strongly:
@@ -311,7 +311,7 @@ ARC (iOS — Automatic Reference Counting):
     VM Tracker: track virtual memory regions (expanded image buffers, GL resources)
     Zombies: detect over-released objects (EXC_BAD_ACCESS)
 
-ANDROID MEMORY MANAGEMENT (ART — Android Runtime):
+ANDROID MEMORY MANAGEMENT (ART â€” Android Runtime):
 
   Garbage collection in ART:
     Concurrent mark-sweep (CMS): most common, runs on background thread
@@ -343,7 +343,7 @@ GENERAL MEMORY PATTERNS (both platforms):
     Cancel image loads when view is recycled (collection cells)
 
   List memory:
-    Virtualized recycling (UICollectionView, RecyclerView) — reuse views
+    Virtualized recycling (UICollectionView, RecyclerView) â€” reuse views
     DiffUtil / CollectionView diffable data source: calculate minimal updates
     Stable IDs: avoid unnecessary re-creation of views
     Lazy loading: load only visible items + preload buffer (1-2 screens)
@@ -363,7 +363,7 @@ GENERAL MEMORY PATTERNS (both platforms):
     Investigate any increase >5% in peak heap after feature addition
 ```
 
-### P2.6 — Battery Optimization
+### P2.6 â€” Battery Optimization
 
 ```
 BATTERY COST HIERARCHY (most expensive to least):
@@ -403,10 +403,10 @@ NETWORK OPTIMIZATION:
 LOCATION OPTIMIZATION:
 
   Accuracy hierarchy (most to least battery drain):
-    [1] GPS (fine location): ~50-100mA — for navigation, running tracking
-    [2] WiFi scanning: ~5-20mA — for city-level accuracy
-    [3] Cell tower triangulation: ~1-5mA — for coarse location
-    [4] Significant change: ~0.5-1mA — for region monitoring
+    [1] GPS (fine location): ~50-100mA â€” for navigation, running tracking
+    [2] WiFi scanning: ~5-20mA â€” for city-level accuracy
+    [3] Cell tower triangulation: ~1-5mA â€” for coarse location
+    [4] Significant change: ~0.5-1mA â€” for region monitoring
 
   Strategy:
     Use minimum accuracy required for the feature:
@@ -447,7 +447,7 @@ CPU OPTIMIZATION:
                 skip non-critical background work, use simpler UI transitions
 ```
 
-### P2.7 — App Lifecycle and State Management
+### P2.7 â€” App Lifecycle and State Management
 
 ```
 APP STATES: not running -> foreground active -> foreground inactive -> background -> suspended -> terminated
@@ -462,27 +462,27 @@ FOREGROUND INACTIVE:
   Transitional state (incoming call, notification center, control center, app switcher)
   App is visible but not receiving user input
   What to do: minimize work, prepare for background suspension
-  iOS: scenePhase == .inactive — save drafts, pause animations, release shared resources
-  Android: onPause() called — lightweight save, stop UI updates, release camera
-  Duration: seconds (transient) — do not do heavy work here
+  iOS: scenePhase == .inactive â€” save drafts, pause animations, release shared resources
+  Android: onPause() called â€” lightweight save, stop UI updates, release camera
+  Duration: seconds (transient) â€” do not do heavy work here
 
 BACKGROUND:
   App is not visible, limited execution time
   iOS: ~30 seconds of execution (extendable with expiring background task)
   Android: varies (regular Activity ~few seconds, WorkManager/Service more)
   What to do: save critical state, release exclusive resources, schedule background work
-  iOS: scenePhase == .background — try to finish pending work, save state
+  iOS: scenePhase == .background â€” try to finish pending work, save state
   Android: onStop() called -> save persistent state, stop running processes
 
 SUSPENDED:
-  App in memory but not executing — can be terminated at any time
+  App in memory but not executing â€” can be terminated at any time
   Must have saved state before suspension (happens in background handler)
   No code runs while suspended
 
 TERMINATED:
   Process ended, all memory freed
   Launch fresh or restore saved state
-  Cannot detect termination (no callback) — save in background handler
+  Cannot detect termination (no callback) â€” save in background handler
 
 TRANSITION HANDLING:
 
@@ -516,12 +516,12 @@ PLATFORM-SPECIFIC LIFECYCLE:
 
   iOS Scene-based lifecycle (iOS 13+):
     UISceneDelegate methods:
-      scene(_:willConnectTo:options:) — scene setup
-      sceneDidDisconnect(_:) — scene removed (not termination), clean up
-      sceneDidBecomeActive(_:) — scene is active
-      sceneWillResignActive(_:) — scene about to become inactive
-      sceneWillEnterForeground(_:) — scene about to enter foreground
-      sceneDidEnterBackground(_:) — scene entered background, save state
+      scene(_:willConnectTo:options:) â€” scene setup
+      sceneDidDisconnect(_:) â€” scene removed (not termination), clean up
+      sceneDidBecomeActive(_:) â€” scene is active
+      sceneWillResignActive(_:) â€” scene about to become inactive
+      sceneWillEnterForeground(_:) â€” scene about to enter foreground
+      sceneDidEnterBackground(_:) â€” scene entered background, save state
     State restoration: NSUserActivity, stateRestorationActivity, encodeRestorableState
     Multiple scenes: iPad multi-window, each scene has independent lifecycle
 
@@ -529,11 +529,11 @@ PLATFORM-SPECIFIC LIFECYCLE:
     onCreate: create views, restore saved state (savedInstanceState)
     onStart: activity becomes visible
     onResume: activity is in foreground with user focus
-    onPause: activity going to background — lightweight save
-    onStop: activity no longer visible — heavy save, release resources
-    onDestroy: activity being destroyed — final cleanup
+    onPause: activity going to background â€” lightweight save
+    onStop: activity no longer visible â€” heavy save, release resources
+    onDestroy: activity being destroyed â€” final cleanup
     onRestart: activity coming back from stopped state
-    onSaveInstanceState: called before potential destruction — save transient state
+    onSaveInstanceState: called before potential destruction â€” save transient state
     ViewModel survives configuration changes (rotation, locale change)
     Process death: ViewModels can use SavedStateHandle to survive process death
 
@@ -553,27 +553,27 @@ STATE PERSISTENCE STRATEGY:
     Rationale: user likely does not remember context, state may be inconsistent
 ```
 
-### P2.8 — UI Rendering Performance
+### P2.8 â€” UI Rendering Performance
 
 ```
 RENDERING PIPELINE:
 
   Mobile rendering follows a 3-stage pipeline per frame:
-    [1] Layout:   Measure and position views — CPU-bound
-    [2] Draw:     Generate display lists — CPU-bound
-    [3] Render:   GPU composites and renders — GPU-bound
+    [1] Layout:   Measure and position views â€” CPU-bound
+    [2] Draw:     Generate display lists â€” CPU-bound
+    [3] Render:   GPU composites and renders â€” GPU-bound
 
   Frame budget:
     60fps -> 16.67ms per frame (standard display)
     120fps -> 8.33ms per frame (ProMotion, high-refresh Android)
     90fps -> 11.11ms per frame (mid-range)
 
-  Pipeline time must fit within budget — if any stage overruns, frame is dropped (jank)
+  Pipeline time must fit within budget â€” if any stage overruns, frame is dropped (jank)
 
 LAYOUT OPTIMIZATION:
 
   iOS (UIKit):
-    Auto Layout: constraint resolution is O(n^2) worst case — deep hierarchies hurt
+    Auto Layout: constraint resolution is O(n^2) worst case â€” deep hierarchies hurt
     Use simpler layout: manual frames, UIStackView for linear layouts, UICollectionViewLayout
     Async: pre-calculate cell sizes (auto-sizing cells with estimated sizes)
     Cache: cache layout attributes for collection view (prepare after batch update)
@@ -605,9 +605,9 @@ VIEW RECYCLING:
   iOS (UICollectionView):
     DequeueReusableCell: reuse cells from the reuse pool
     prepareForReuse: reset cell state, cancel pending image loads, clear selections
-    Cell registration: iOS 14+ — configureCell registration handler (better encapsulation)
+    Cell registration: iOS 14+ â€” configureCell registration handler (better encapsulation)
     Diffable Data Source: automatic diffing and animated updates
-    Prefetching: UICollectionViewDataSourcePrefetching — load data before display
+    Prefetching: UICollectionViewDataSourcePrefetching â€” load data before display
     Invalidating layout: batch updates with performBatchUpdates
 
   Android (RecyclerView):
@@ -642,7 +642,7 @@ LAZY LOADING:
   Screen level:
     Deferred screen initialization: create screens lazily in tab navigation
     Lazy VStack in tab content: do not render all tabs at startup
-    ViewPager: offscreen page limit (default 1 — balance memory vs smoothness)
+    ViewPager: offscreen page limit (default 1 â€” balance memory vs smoothness)
     Focus-driven loading: load heavy content only when user is likely to view it
 
 SCROLL PERFORMANCE TUNING:
@@ -661,7 +661,7 @@ SCROLL PERFORMANCE TUNING:
     Expensive drawRect/draw: cache results, reduce dirty region
 ```
 
-### P2.9 — Network Layer Design
+### P2.9 â€” Network Layer Design
 
 ```
 NETWORK LAYER ARCHITECTURE:
@@ -675,8 +675,8 @@ NETWORK LAYER ARCHITECTURE:
 
 CONNECTIVITY MONITOR:
 
-  iOS: NWPathMonitor (Network framework) — more reliable than Reachability
-  Android: ConnectivityManager.registerDefaultNetworkCallback — listen to network changes
+  iOS: NWPathMonitor (Network framework) â€” more reliable than Reachability
+  Android: ConnectivityManager.registerDefaultNetworkCallback â€” listen to network changes
   State: connected (WiFi), connected (cellular), connected (metered WiFi), no connection
   Reactivity: expose as Combine publisher (iOS), StateFlow (Android), AsyncSequence (Swift)
   Degradation: estimate bandwidth from previous request timing, adjust behavior
@@ -685,9 +685,9 @@ RETRY STRATEGIES:
 
   Retry classification:
     Transient errors: network timeout, 503 Service Unavailable, 429 Too Many Requests
-    Retry: yes — with backoff
+    Retry: yes â€” with backoff
     Persistent errors: 400 Bad Request, 401 Unauthorized, 404 Not Found, 500 Internal Server Error
-    Retry: no — surface to user or dead letter queue
+    Retry: no â€” surface to user or dead letter queue
 
   Backoff algorithms:
     Fixed: retry after N seconds (simple, but thundering herd problem)
@@ -699,8 +699,8 @@ RETRY STRATEGIES:
     Max retries: 3 for user-initiated operations, 5 for background sync
     Max backoff: 60 seconds (do not keep retrying indefinitely)
     Total retry window: 5 minutes max for user-initiated, 1 hour for background
-    Reset retry count on successful request (not on app restart — might cause repeated retries)
-    Dead letter after max retries exceeded — flag for manual resolution
+    Reset retry count on successful request (not on app restart â€” might cause repeated retries)
+    Dead letter after max retries exceeded â€” flag for manual resolution
 
 CACHING STRATEGIES:
 
@@ -720,7 +720,7 @@ CACHING STRATEGIES:
     Static content (app config, feature flags): 1 hour
     Semi-static (catalog, product list): 5 minutes
     Dynamic but bounded (user profile, preferences): 30 seconds
-    Real-time (messages, feed): no cache — push or poll fresh
+    Real-time (messages, feed): no cache â€” push or poll fresh
     Images: cache with LRU eviction, 7-day disk TTL
 
 OFFLINE QUEUE:
@@ -731,12 +731,12 @@ OFFLINE QUEUE:
     Status: pending, in_progress, failed, dead_letter
 
   Queue execution:
-    FIFO by default — respect operation creation order
+    FIFO by default â€” respect operation creation order
     Priority boost for user-initiated operations over background sync
     Dependency ordering: create parent before child (e.g., create conversation before sending message)
 
   Queue semantics:
-    Idempotency key: server-provided or client-generated UUID — retry-safe
+    Idempotency key: server-provided or client-generated UUID â€” retry-safe
     Operation deduplication: if same operation already in queue (same key), merge or skip
     Stale queue pruning: remove operations older than 7 days (unlikely to succeed)
 
@@ -768,7 +768,7 @@ NETWORK QUALITY ADAPTATION:
     High quality: full images, additional metadata fields
 ```
 
-### P2.10 — Push Notification Architecture
+### P2.10 â€” Push Notification Architecture
 
 ```
 REMOTE NOTIFICATION FLOW:
@@ -792,7 +792,7 @@ REMOTE NOTIFICATION FLOW:
     - Terminated -> launched: notification payload available in launch options
 
 REGISTRATION:
-    [1] Request notification permission (system dialog — explain why)
+    [1] Request notification permission (system dialog â€” explain why)
     [2] Register for remote notifications (APNS token / FCM token)
     [3] Send token to your server (associated with user account)
     [4] Store token in local database for offline access
@@ -808,9 +808,9 @@ NOTIFICATION TYPES:
     Android: heads-up notification (high priority), notification channel
 
   Silent notifications (content-available: 1):
-    No visible alert — wakes app for background processing
+    No visible alert â€” wakes app for background processing
     Use for: data sync, cache warming, content pre-fetch
-    Rate-limited by OS (iOS: do not use for periodic sync — use BGTaskScheduler)
+    Rate-limited by OS (iOS: do not use for periodic sync â€” use BGTaskScheduler)
     Must complete work in ~30 seconds on iOS
 
   Rich notifications:
@@ -841,15 +841,15 @@ ACTIONABLE NOTIFICATIONS:
       - Dismiss action: mark as read, archive
 
 BADGE MANAGEMENT:
-    iOS: badge count reflects unread items — update via:
+    iOS: badge count reflects unread items â€” update via:
       - Push payload: "badge": number
       - Local update: UIApplication.shared.applicationIconBadgeNumber
       - Server maintains badge count, sends updated count in each notification
-    Android: notification badges per channel — no global badge
+    Android: notification badges per channel â€” no global badge
     Both: decrement badge when user reads content, not when app opens
 ```
 
-### P2.11 — App Testing
+### P2.11 â€” App Testing
 
 ```
 TEST PYRAMID FOR MOBILE:
@@ -931,7 +931,7 @@ UI TESTS:
   What not to UI test:
     Animations (disable for tests or increase timeouts)
     Third-party UI components (test through integration)
-    System dialogs (permissions, notifications — handle via automation)
+    System dialogs (permissions, notifications â€” handle via automation)
 
 SNAPSHOT TESTS:
 
@@ -974,10 +974,10 @@ PERFORMANCE TESTS:
 TEST INFRASTRUCTURE:
 
   CI pipeline:
-    [PR] Unit + integration tests (< 5 min) — gate for merge
-    [PR] Snapshot tests — visual review required
-    [Nightly] UI tests (full suite) — flakiness analysis
-    [Nightly] Performance tests — regression comparison
+    [PR] Unit + integration tests (< 5 min) â€” gate for merge
+    [PR] Snapshot tests â€” visual review required
+    [Nightly] UI tests (full suite) â€” flakiness analysis
+    [Nightly] Performance tests â€” regression comparison
     [Release] Full test suite on reference devices
 
   Test doubles:
@@ -987,7 +987,7 @@ TEST INFRASTRUCTURE:
     Avoid mocking what you do not own (third-party libs, platform classes)
 ```
 
-### P2.12 — App Distribution
+### P2.12 â€” App Distribution
 
 ```
 BUILD TYPES:
@@ -1010,11 +1010,11 @@ iOS SIGNING AND DISTRIBUTION:
     Automatic signing: Xcode manages certificates (recommended for most projects)
 
   Distribution methods:
-    Xcode Run: direct device deployment — 100 device limit
-    TestFlight: App Store Connect — internal (up to 100 testers), external (up to 10,000)
-    Ad Hoc: IPA distribution — limited to registered devices
-    Enterprise: in-house distribution (MDM or web) — no device limit, requires Enterprise account
-    App Store: public distribution — App Review required
+    Xcode Run: direct device deployment â€” 100 device limit
+    TestFlight: App Store Connect â€” internal (up to 100 testers), external (up to 10,000)
+    Ad Hoc: IPA distribution â€” limited to registered devices
+    Enterprise: in-house distribution (MDM or web) â€” no device limit, requires Enterprise account
+    App Store: public distribution â€” App Review required
 
   App thinning:
     App Slicing: device-specific variant (device family, GPU, screen resolution)
@@ -1027,16 +1027,16 @@ ANDROID SIGNING AND DISTRIBUTION:
 
   Signing:
     Debug keystore: auto-generated, used for debug builds
-    Release keystore: generated by developer/team — keep secure, never commit
+    Release keystore: generated by developer/team â€” keep secure, never commit
     App signing by Google Play: upload key for Google, Google manages signing key
-    Key expiration: 25+ years for release keys — store securely with backup
+    Key expiration: 25+ years for release keys â€” store securely with backup
 
   Distribution methods:
     Debug: ADB install, APK file
-    Internal testing: Google Play Console — up to 100 testers (fast track)
-    Closed testing: invite by email or link — up to 100 testers per track
-    Open testing: public sign-up — unlimited testers, no review required
-    Production: public distribution — review required (faster than iOS)
+    Internal testing: Google Play Console â€” up to 100 testers (fast track)
+    Closed testing: invite by email or link â€” up to 100 testers per track
+    Open testing: public sign-up â€” unlimited testers, no review required
+    Production: public distribution â€” review required (faster than iOS)
     Firebase App Distribution: direct APK/AAB distribution to testers
 
   App bundle (AAB):
@@ -1057,7 +1057,7 @@ ANDROID SIGNING AND DISTRIBUTION:
   Minification build time:
     Enable R8 in release builds (default for AGP 8+)
     Keep rules with -keepattributes Signature, *Annotation* (for Retrofit, Moshi, Room)
-    Test release build before distribution — obfuscation can cause runtime crashes
+    Test release build before distribution â€” obfuscation can cause runtime crashes
 
 RELEASE PROCESS:
 
@@ -1081,16 +1081,16 @@ RELEASE PROCESS:
     App Store / Play Store reviews: monitor for regressions
     API error rate: 4xx/5xx from new client version
     Feature usage: verify new features are being used as expected
-    Rollback plan: version in stores cannot be removed — only new version can fix
+    Rollback plan: version in stores cannot be removed â€” only new version can fix
 
   Staged rollout:
-    iOS: phased release (7 days, 1% -> 100% — configurable in App Store Connect)
-    Android: staged rollout (5% -> 15% -> 50% -> 100% — halt rollout on crash spike)
+    iOS: phased release (7 days, 1% -> 100% â€” configurable in App Store Connect)
+    Android: staged rollout (5% -> 15% -> 50% -> 100% â€” halt rollout on crash spike)
     Monitor: crash rate, ANR rate, API errors, store ratings per rollout stage
     Increment: move to next stage only if metrics are within thresholds
 ```
 
-### P2.13 — Deep Linking and Universal Links
+### P2.13 â€” Deep Linking and Universal Links
 
 ```
 DEEP LINK TYPES:
@@ -1100,8 +1100,8 @@ DEEP LINK TYPES:
     iOS: registered in Info.plist (CFBundleURLTypes)
     Android: intent-filter in AndroidManifest.xml
     Pros: simple to implement, works everywhere
-    Cons: no fallback if app not installed — shows error (iOS) / chooser (Android)
-    Security: any app can register same scheme — verify source via package name / team ID
+    Cons: no fallback if app not installed â€” shows error (iOS) / chooser (Android)
+    Security: any app can register same scheme â€” verify source via package name / team ID
 
   Universal Links (iOS):
     Format: https://example.com/path/to/resource
@@ -1164,14 +1164,14 @@ DEEP LINK ROUTING:
     [1] Parse URL into path components + query parameters
     [2] Match against registered route patterns (trie for O(n) matching)
     [3] Extract parameters from path segments and query string
-    [4] Validate required parameters — fail gracefully with error state
+    [4] Validate required parameters â€” fail gracefully with error state
     [5] Build navigation argument bundle
     [6] Navigate: push onto existing stack or build new stack for cold start
 
   Deep link app states:
     Cold start (app not running):
       - Launch app -> parse deep link from launch options -> build navigation stack
-      - No back stack from prior session — deep link screen is root of new stack
+      - No back stack from prior session â€” deep link screen is root of new stack
       - Restore deep link if app launched via notification
     Warm start (app in background):
       - App resumes -> parse deep link -> push onto existing navigation stack
@@ -1186,10 +1186,10 @@ DEEP LINK ROUTING:
     Authentication required: deep link to login screen, continue after auth
     Expired content: navigate to screen and show expired data, refresh in background
     Multiple deep links: queue if app is initializing, handle sequentially
-    Version migration: deep link may reference content from older version — handle gracefully
+    Version migration: deep link may reference content from older version â€” handle gracefully
 ```
 
-### P2.14 — Biometric Authentication
+### P2.14 â€” Biometric Authentication
 
 ```
 BIOMETRIC TYPES:
@@ -1202,7 +1202,7 @@ BIOMETRIC TYPES:
 
   Android:
     Fingerprint: capacitive (most common), ultrasonic, optical
-    Face recognition: varying security levels (Class 1, 2, 3 — Class 3 = highest)
+    Face recognition: varying security levels (Class 1, 2, 3 â€” Class 3 = highest)
     Iris: limited devices
     Device PIN/pattern/password: fallback
 
@@ -1223,7 +1223,7 @@ IMPLEMENTATION:
     context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
                            localizedReason: "Authenticate to access your account") { success, error in
       if success {
-        // Biometric verified — user is authenticated
+        // Biometric verified â€” user is authenticated
       } else {
         // Authentication failed or cancelled
       }
@@ -1307,13 +1307,13 @@ SECURITY CONSIDERATIONS:
       Decision: use true for financial apps, false for convenience login
 ```
 
-### P2.15 — Accessibility on Mobile
+### P2.15 â€” Accessibility on Mobile
 
 ```
 PLATFORM SCREEN READERS:
 
-  iOS: VoiceOver — three-finger gestures, rotor navigation, item-by-item reading
-  Android: TalkBack — single-finger gestures, linear navigation, contextual actions
+  iOS: VoiceOver â€” three-finger gestures, rotor navigation, item-by-item reading
+  Android: TalkBack â€” single-finger gestures, linear navigation, contextual actions
   Both: screen reader reads element content in order of accessibility hierarchy
 
   Implementation:
@@ -1394,7 +1394,7 @@ REDUCED MOTION:
     Check: Settings.Global.getFloat(contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f)
     Android 13+: AccessibilityManager.getRecommendedTimeoutMillis()
     Implementation:
-      Check system animation scale — if 0, disable animations
+      Check system animation scale â€” if 0, disable animations
       Replace animated transitions with instant transitions
       Compose: check via isAnimationEnabled() utility
 
@@ -1465,7 +1465,7 @@ ACCESSIBILITY TESTING:
     Forms without grouping (field + label not associated)
 ```
 
-### P2.16 — App Size Optimization
+### P2.16 â€” App Size Optimization
 
 ```
 IPA/APK COMPOSITION:
@@ -1489,31 +1489,31 @@ IMAGE OPTIMIZATION:
   Vector graphics:
     Use vector drawables for icons, illustrations, simple graphics
     iOS: SF Symbols (system symbols), PDF vector assets in asset catalog
-    Android: VectorDrawable (SVG-based) — supports tinting, scaling
+    Android: VectorDrawable (SVG-based) â€” supports tinting, scaling
     Size savings: 50-80% vs raster images
 
   Raster optimization:
-    Lossy compression: WebP (both platforms) — 25-35% smaller than PNG
+    Lossy compression: WebP (both platforms) â€” 25-35% smaller than PNG
     JPEG: 80-85% quality for photos (minimal visible quality loss)
     PNG: use PNGQuant or similar tool for lossy PNG compression
     Remove unused image assets: audit with LSUnusedResources / Android Resource Usage
 
   Asset catalogs (iOS):
-    Group images by device (iPhone, iPad, Mac, watch) — only download needed
-    Preserve vector data for PDF assets — scale at runtime, no @2x/@3x variants
+    Group images by device (iPhone, iPad, Mac, watch) â€” only download needed
+    Preserve vector data for PDF assets â€” scale at runtime, no @2x/@3x variants
     Lossless and lossy compression options (Xcode 15+)
-    Remove unused asset slices — Xcode reports unused assets
+    Remove unused asset slices â€” Xcode reports unused assets
 
   Android drawable optimization:
     WebP over PNG for all new assets (Android 4.0+ support)
     Remove unused resources: R8 resource shrinking (shrinkResources true)
     Use tinted drawables: single asset tinted at runtime instead of multiple colored variants
-    MDC icons: use Material icons library — share icons across components
+    MDC icons: use Material icons library â€” share icons across components
 
 CODE SHRINKING:
 
   iOS:
-    Swift dead code stripping: Link-Time Optimization (LTO) — enabled in release builds
+    Swift dead code stripping: Link-Time Optimization (LTO) â€” enabled in release builds
     Whole module optimization: faster execution, slightly larger binary
     Remove unused symbols: strip all symbols from release builds
     Swift package dependencies: audit for unused transitive dependencies
@@ -1548,7 +1548,7 @@ APP THINNING:
       Prefetched: downloaded after install (before first launch)
       On-demand: downloaded when user reaches specific content
     Use for: level data in games, language packs, tutorial content
-    Storage: managed by OS — purged under storage pressure, re-downloaded on demand
+    Storage: managed by OS â€” purged under storage pressure, re-downloaded on demand
     Tag assignment: categorized in asset catalog or via resource bundle
 
   Android Dynamic Delivery:
@@ -1559,7 +1559,7 @@ APP THINNING:
       Install-time: downloaded at install time (like base)
       On-demand: downloaded when feature is first accessed
       Conditional: installed based on device conditions (country, SDK, feature flag)
-    Play Asset Delivery: large assets (up to 2GB) — install-time, fast-follow, on-demand
+    Play Asset Delivery: large assets (up to 2GB) â€” install-time, fast-follow, on-demand
 
   Android APK split:
     split by ABI: separate APK per CPU architecture (arm64-v8a, armeabi-v7a, x86_64)
@@ -1583,10 +1583,10 @@ OTHER SIZE REDUCTION:
     If using NDK: compile with size optimization flags
 
   Fonts:
-    Custom fonts can be large (especially CJK — CJK can be 15MB+)
+    Custom fonts can be large (especially CJK â€” CJK can be 15MB+)
     iOS: variable fonts for weight/style variations (single file instead of 10+)
     iOS: subset fonts to only used characters
-    Android: Downloadable Fonts (Google Play services) — no APK size impact
+    Android: Downloadable Fonts (Google Play services) â€” no APK size impact
     Both: use system fonts when possible (SF Pro, Roboto/Noto)
 
   Large asset alternatives:
@@ -1596,12 +1596,12 @@ OTHER SIZE REDUCTION:
 
   Size budgets:
     Set per-feature size budget in architecture spec
-    Monitor app size on CI for every build — alert on increase
+    Monitor app size on CI for every build â€” alert on increase
     Target:
       < 30MB: utility apps, content readers
       < 60MB: standard social / shopping apps
       < 100MB: media-heavy apps (music, streaming)
-      < 150MB: complex apps (games, editors) — consider on-demand resources
+      < 150MB: complex apps (games, editors) â€” consider on-demand resources
     Alarm: any build >30% increase from baseline
 
 SIZE MONITORING:
@@ -1619,29 +1619,29 @@ SIZE MONITORING:
 
   CI automation:
     Extract and report app binary size (DWARF dump for iOS, classes.dex size for Android)
-    Compare against baseline — fail CI on size regressions above threshold
+    Compare against baseline â€” fail CI on size regressions above threshold
     Dependency analysis: detect pull request that caused size increase
 ```
 
 
-## P4 — OUTPUT FORMATS
+## P4 â€” OUTPUT FORMATS
 
-### P4.1 — Mobile Feature Specification
+### P4.1 â€” Mobile Feature Specification
 
 ```
 FEATURE:      [name]
 PLATFORMS:    [iOS / Android / both]
-OFFLINE-CAPABLE: [yes / no — sync strategy]
+OFFLINE-CAPABLE: [yes / no â€” sync strategy]
 
 UI SPECIFICATION:
-  Screen:       [screen name — composition of components]
+  Screen:       [screen name â€” composition of components]
   States:       loading, empty, data, error, offline, syncing
   Navigation:   [how user reaches this screen, where they go next]
-  Gestures:     [swipe, tap, long-press, pinch — what each does]
+  Gestures:     [swipe, tap, long-press, pinch â€” what each does]
   Inputs:       [text fields, buttons, pickers, toggles]
 
 DATA FLOW:
-  Repository:   [data source coordination — local first? sync strategy?]
+  Repository:   [data source coordination â€” local first? sync strategy?]
   Remote:       [API endpoints, request/response schemas]
   Local:        [database tables, cache keys, file storage]
   Sync:         [when does sync happen, conflict resolution strategy]
@@ -1659,24 +1659,24 @@ PERFORMANCE:
 
 ACCESSIBILITY:
   Screen reader: [labels, hints, traits for each interactive element]
-  Dynamic type:  [font scaling support — placeholder/fixed/automatic]
+  Dynamic type:  [font scaling support â€” placeholder/fixed/automatic]
   Reduced motion: [animation alternatives when reduce motion is enabled]
   Color contrast: [minimum 4.5:1 for text, 3:1 for large text]
 ```
 
-### P4.2 — Offline Sync Specification
+### P4.2 â€” Offline Sync Specification
 
 ```
 FEATURE:      [name]
 SYNC STRATEGY:[local-first / remote-first / manual-only]
 
 LOCAL STORAGE:
-  Table/Entity:  [name] — [columns, primary key, indexes]
-  Conflict key:  [field used for conflict detection — updated_at / version]
+  Table/Entity:  [name] â€” [columns, primary key, indexes]
+  Conflict key:  [field used for conflict detection â€” updated_at / version]
   Cache policy:  [TTL per record type, cache eviction strategy]
 
 SYNC QUEUE:
-  Operations:   [create, update, delete — each with payload schema]
+  Operations:   [create, update, delete â€” each with payload schema]
   Ordering:     [FIFO / priority-based / dependency-based]
   Retry:        [max retries, backoff strategy, exponential/jittered]
   Dead letter:  [handling for permanently failed operations]
@@ -1687,13 +1687,13 @@ CONFLICT RESOLUTION:
   UI:           [conflict dialog, resolution preview, undo option]
 
 NETWORK HANDLING:
-  Online:       [sync triggers — immediate / debounced / periodic]
+  Online:       [sync triggers â€” immediate / debounced / periodic]
   Offline:      [queue operations, show offline indicator, stale data TTL]
   Reconnecting: [sync pending operations, resolve conflicts, update UI]
   Poor connection:[batch operations, reduce payload size, throttle sync]
 ```
 
-### P4.3 — App Lifecycle and State Map
+### P4.3 â€” App Lifecycle and State Map
 
 ```
 SCREEN:       [name]
@@ -1709,7 +1709,7 @@ STATE PERSISTED ON BACKGROUND:
   [ ] navigation stack
 
 STATE RESTORED ON FOREGROUND:
-  [ ] check data freshness — refresh if stale
+  [ ] check data freshness â€” refresh if stale
   [ ] resume sync queue
   [ ] update connectivity indicator
 
@@ -1718,12 +1718,12 @@ STATE SAVED ON TERMINATION:
   [ ] current screen route for deep link restoration
 
 BACKGROUND TASKS:
-  [ ] data sync — schedule via BGTaskScheduler / WorkManager
-  [ ] content download — for offline reading
-  [ ] location update — if feature requires
+  [ ] data sync â€” schedule via BGTaskScheduler / WorkManager
+  [ ] content download â€” for offline reading
+  [ ] location update â€” if feature requires
 ```
 
-### P4.4 — Performance Test Specification
+### P4.4 â€” Performance Test Specification
 
 ```
 FEATURE:       [name]
@@ -1735,8 +1735,8 @@ TEST SCENARIO:
   Measure:      [metric to capture, tool to use]
 
 TARGETS:
-  P0 (critical): [hard limit — failure blocks release]
-  P1 (standard): [soft limit — warning, investigate if exceeded]
+  P0 (critical): [hard limit â€” failure blocks release]
+  P1 (standard): [soft limit â€” warning, investigate if exceeded]
   P2 (stretch):  [goal for optimization sprint]
 
 MONITORING:
@@ -1746,41 +1746,41 @@ MONITORING:
 ```
 
 
-## P6 — ANTI-PATTERNS
+## P6 â€” ANTI-PATTERNS
 
 | Anti-Pattern | Problem | Correct |
 |---|---|---|
 | Treating mobile like web | Designing for infinite screen, hover states, unlimited network | Mobile is constrained: touch, limited bandwidth, battery, small screen |
-| Blocking main thread | Network calls, image decoding, JSON parsing on main thread | All heavy work on background threads — main thread for UI only |
-| No offline handling | App shows blank screen when offline — "no internet" with no recourse | Offline-first: local data is source of truth, sync when online |
+| Blocking main thread | Network calls, image decoding, JSON parsing on main thread | All heavy work on background threads â€” main thread for UI only |
+| No offline handling | App shows blank screen when offline â€” "no internet" with no recourse | Offline-first: local data is source of truth, sync when online |
 | Ignoring lifecycle | Losing form data when app goes to background or gets killed | Save state on lifecycle transitions, restore on return |
 | Large app bundles | 150MB APK/IPA with unused resources, architectures, and code | App thinning: split APK, asset catalog, on-demand resources |
 | Over-fetching location | Continuous GPS updates when user is not moving | Adaptive location: significant change when idle, precise when active |
-| No image optimization | Loading 4000x3000px images into 200x200 thumbnails | Downsample to display size before decoding — memory is precious |
-| Unbounded cache | Cached data grows indefinitely — app storage balloons | Cache eviction: LRU, TTL, or disk size limits |
-| Platform dogmatism | Forcing iOS patterns on Android or vice versa — feels foreign | Platform conventions respected per platform |
+| No image optimization | Loading 4000x3000px images into 200x200 thumbnails | Downsample to display size before decoding â€” memory is precious |
+| Unbounded cache | Cached data grows indefinitely â€” app storage balloons | Cache eviction: LRU, TTL, or disk size limits |
+| Platform dogmatism | Forcing iOS patterns on Android or vice versa â€” feels foreign | Platform conventions respected per platform |
 | Toast/snackbar overuse | Overlapping notifications, covering content, no action available | In-app banners, badge counts, contextual inline messages |
 | Synchronous async | Using async tasks in synchronous contexts (Task.run blocking) | Structured concurrency: async/await all the way down |
 | Shared mutable state | Global singletons, static mutable state across screens | DI-injected state, ViewModel-per-screen, unidirectional data flow |
-| Ignoring configuration changes (Android) | Not handling rotation, locale change — data loss, reset UI | ViewModel + SavedStateHandle survives configuration changes |
+| Ignoring configuration changes (Android) | Not handling rotation, locale change â€” data loss, reset UI | ViewModel + SavedStateHandle survives configuration changes |
 | Over-engineering | VIPER/Clean Architecture for a 3-screen app | Choose architecture proportional to app complexity |
-| Silent failure | Swallowing errors in catch blocks — no user feedback | Surface user-facing errors, log detailed errors for debugging |
+| Silent failure | Swallowing errors in catch blocks â€” no user feedback | Surface user-facing errors, log detailed errors for debugging |
 | Tight coupling to platform | Embedded platform APIs in business logic | Repository pattern: inject platform wrappers, test with mocks |
 | Hardcoded constants | Magic numbers for layout, timing, animation values | Named constants, defined in resource/config files |
 | Ignoring accessibility | VoiceOver/TalkBack users cannot navigate app | Accessible from start: every interactive element has label/hint/trait |
 | Deep nesting | >5 levels of nesting in layout or navigation hierarchy | Flatten layout hierarchy, use Coordinator for navigation |
 | No memory profiling | Releasing without verifying memory usage under pressure | Include memory benchmarks in CI, profile under memory warning |
-| Global notification observer | Not unregistering observers — leaks, stale callbacks | Lifecycle-aware observation (iOS: auto-cancel, Android: lifecycleScope) |
+| Global notification observer | Not unregistering observers â€” leaks, stale callbacks | Lifecycle-aware observation (iOS: auto-cancel, Android: lifecycleScope) |
 | Force unwrapping (Swift) / !! usage (Kotlin) | Runtime crashes from nil/null values | Optional chaining, safe casts, nullable types handled explicitly |
 | Massive ViewModel | All business logic in ViewModel with no domain layer | Separate domain logic into use cases, ViewModel only manages UI state |
 | Polling when push is available | Periodic API calls for updates that could be pushed | Use push notifications or WebSocket for real-time updates |
 | Ignoring Doze/App Standby | Background sync stops working on Android 6+ | Use WorkManager with doze-compatible constraints |
-| Relying on app termination callback | No guaranteed callback before termination — state not saved | Save state proactively in background handler, not on termination |
+| Relying on app termination callback | No guaranteed callback before termination â€” state not saved | Save state proactively in background handler, not on termination |
 
 
-## P8 — MOBILE ENGINEERING CHECKLISTS
+## P8 â€” MOBILE ENGINEERING CHECKLISTS
 
-### P8.1 — New Feature Checklist
+### P8.1 â€” New Feature Checklist
 
 ```
 [ ] Feature specification written (P4.1 format)
@@ -1801,7 +1801,7 @@ MONITORING:
 [ ] Telemetry/analytics events defined
 ```
 
-### P8.2 — Code Review Checklist (Mobile-Specific)
+### P8.2 â€” Code Review Checklist (Mobile-Specific)
 
 ```
 [ ] No main thread blocking (I/O, decode, parse on background)
@@ -1824,7 +1824,7 @@ MONITORING:
 [ ] Analytics events defined for key user actions
 ```
 
-### P8.3 — Pre-Release Checklist
+### P8.3 â€” Pre-Release Checklist
 
 ```
 [ ] Version and build number incremented
@@ -1844,7 +1844,7 @@ MONITORING:
 [ ] Staged rollout configured (monitor first 24 hours)
 ```
 
-### P8.4 — Incident Response Checklist (Mobile)
+### P8.4 â€” Incident Response Checklist (Mobile)
 
 ```
 [ ] Identify affected OS version(s) and device models
@@ -1860,7 +1860,7 @@ MONITORING:
 [ ] Communicate to users via app release notes or status page
 ```
 
-### P8.5 — Performance Budget Table
+### P8.5 â€” Performance Budget Table
 
 ```
 METRIC                  | P0 (Blocking) | P1 (Warning) | P2 (Stretch) | Tool
@@ -1911,7 +1911,7 @@ Watch companion         | watchOS + WatchConnectivity   | Wear OS + MessageClien
 ```
 
 
-## S17 ZERO-TOLERANCE — Mobile-Specific
+## S17 ZERO-TOLERANCE â€” Mobile-Specific
 
 - Violation if app state persistence not handled for in-progress user data
 - Violation if main thread blocked by I/O or heavy computation

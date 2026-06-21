@@ -2,9 +2,9 @@
 title: api-designer Changelog
 ---
 
-# Changelog â€” api-designer
+# Changelog — api-designer
 
-## "1.0.0" â€” 2026-06-02
+## "1.0.0" — 2026-06-02
 
 ### Universalized Release
 

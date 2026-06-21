@@ -7,6 +7,27 @@ schema: skill-pack/v1
 
 # Architecture Overview — Synarc Universal Skill Pack
 
+## On this page
+
+- [Universal Agent Skill Architecture](#universal-agent-skill-architecture)
+- [7-Layer Design](#7-layer-design)
+  - [Layer 1 — Schema](#layer-1-schema)
+  - [Layer 2 — Authoring](#layer-2-authoring)
+  - [Layer 3 — Validation](#layer-3-validation)
+  - [Layer 4 — Resolution](#layer-4-resolution)
+  - [Layer 5 — Compilation](#layer-5-compilation)
+  - [Layer 6 — Testing](#layer-6-testing)
+  - [Layer 7 — Distribution](#layer-7-distribution)
+- [Compiler Pattern](#compiler-pattern)
+- [Fallback Tier System](#fallback-tier-system)
+- [Dependency Resolution Model](#dependency-resolution-model)
+- [Security Model — Constitutional Guardrails](#security-model-constitutional-guardrails)
+  - [Layers of Defense](#layers-of-defense)
+  - [Guardrail Types](#guardrail-types)
+  - [Source Files](#source-files)
+  - [Key Security Principles](#key-security-principles)
+- [Directory Structure Reference](#directory-structure-reference)
+
 ## Universal Agent Skill Architecture
 
 The Synarc Universal Skill Pack defines a **write-once, deploy-anywhere** architecture for AI coding agent skills. A single SKILL.md authored in the universal format can be deployed to any of 8 active runtimes without modification (Roo Code shut down 2026-05-15; migrate to Cline).
@@ -364,3 +385,10 @@ synarc-universal/
 └── scripts/
     └── convert-child-plugins.ps1      # Legacy plugin conversion utility
 ```
+
+## See also
+
+- [Installation Guide](installation.md)
+- [Usage Guide](usage.md)
+- [Enterprise Deployment](enterprise-deployment.md)
+

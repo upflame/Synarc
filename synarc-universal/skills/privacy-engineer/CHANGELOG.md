@@ -2,9 +2,9 @@
 title: privacy-engineer Changelog
 ---
 
-# Changelog â€” privacy-engineer
+# Changelog — privacy-engineer
 
-## 1.0.0 â€” 2026-06-02
+## 1.0.0 — 2026-06-02
 
 ### Universalized Release
 

@@ -602,7 +602,7 @@ Scenario: workflow cloud-security penetration test findings. Finding: XSS in wor
 Scenario: audit incident-response compliance review. Regulation: SOC2 + GDPR + PCI-DSS for audit module. Data classification: customer PII (GDPR), payment data (PCI-DSS), authentication data (SOC2). Controls: encryption at rest (AES-256-GCM), encryption in transit (TLS 1.3), access logging with immutable audit trail, data retention policy (delete PII after 90 days of account closure), breach notification within 72 hours, annual penetration test, quarterly access review. Evidence: automated compliance report generated weekly, stored for auditor access. Gap: encryption key rotation not automated — manual process with 90-day rotation.
 
 
-## P99 � EXPANDED SECURITY CONTENT
+## P99 — EXPANDED SECURITY CONTENT
 
 
 Review: payment Python code — XSS. Attack: unvalidated input reaches query — data exfiltration of 50k records. Likelihood: HIGH. Severity: CRITICAL. Fix: parameterized queries with Python ORM, input validation with allowlist patterns, context-aware output encoding. Verification: SAST (Semgrep rule for XSS), DAST (OWASP ZAP), manual code review of all database access paths, unit test for injection resistance. Regression: add to security test suite, CI gate on SAST findings.

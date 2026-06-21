@@ -24,7 +24,6 @@
     "sync": "powershell -ExecutionPolicy Bypass -File ./scripts/sync-v6.ps1",
     "validate": "powershell -ExecutionPolicy Bypass -File ./scripts/validate-skills.ps1",
     "test-fallbacks": "powershell -ExecutionPolicy Bypass -File ./scripts/test-fallbacks.ps1",
-    "generate-manifest": "powershell -ExecutionPolicy Bypass -File ./scripts/sync-v6.ps1",
     "measure": "powershell -ExecutionPolicy Bypass -File ./scripts/measure-skills.ps1",
     "check-vendor-lockin": "powershell -ExecutionPolicy Bypass -File ./scripts/check-vendor-lockin.ps1",
     "check-refs": "powershell -ExecutionPolicy Bypass -File ./scripts/check-refs.ps1",

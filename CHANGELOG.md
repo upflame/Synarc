@@ -9,8 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > **Note:** This release is published on the release/v6.1.0-cognition-mesh branch
 > and tagged v6.1.0-cognition-mesh. It is an **alternate release line** alongside
-> the cache-rewrite v6.0.0 on main (commit 5a083eb, tag v6.0.0). See
-> [RELEASES.md](RELEASES.md) for the full picture.
+> the cache-rewrite v6.0.0 on main (commit 5a083eb, tag v6.0.0). See the release history for the full picture.
 
 ### Added
 
@@ -123,7 +122,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Migration
 
-See [docs/MIGRATION_v5_to_v6.md](docs/MIGRATION_v5_to_v6.md) for the full upgrade guide. TL;DR: pull the new version, restart your agent, opt into new features when ready.
+See [Migration Guide](synarc-universal/docs/migration-guide.md) for the full upgrade guide. TL;DR: pull the new version, restart your agent, opt into new features when ready.
 
 ### Known Issues
 

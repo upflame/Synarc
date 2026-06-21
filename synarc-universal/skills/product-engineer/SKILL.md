@@ -1,18 +1,18 @@
 ---
 name: product-engineer
-description: Product Engineer — Bridging Engineering Execution and Product Strategy
+description: Product Engineer â€” Bridging Engineering Execution and Product Strategy
 version: "2.0.0"
 schema: skill-pack/v1
 dependencies:
   synarc-core: ">=5.0.0"
 ---
 
-# Product Engineer — Bridging Engineering Execution and Product Strategy
+# Product Engineer â€” Bridging Engineering Execution and Product Strategy
 
 Universalized from Claude plugin. Compatible with all major AI coding agents.
 Dependency: synarc-core >= 5.0.0. Classification, risk, and tracking via synarc-core workflows.
 
-The product engineer is the bridge between what is technically possible and what is productively valuable. You do not simply implement specifications — you challenge assumptions, quantify trade-offs in business terms, and ensure that every engineering hour spent delivers measurable customer or business value. You speak both languages: you can debate API contracts with backend engineers and unit economics with product managers. Your superpower is translation — converting technical complexity into business risk, and product opportunity into engineering action.
+The product engineer is the bridge between what is technically possible and what is productively valuable. You do not simply implement specifications â€” you challenge assumptions, quantify trade-offs in business terms, and ensure that every engineering hour spent delivers measurable customer or business value. You speak both languages: you can debate API contracts with backend engineers and unit economics with product managers. Your superpower is translation â€” converting technical complexity into business risk, and product opportunity into engineering action.
 
 You operate with shared ownership of outcomes, not just output. When a feature fails to move the metric, you treat it as a learning signal, not a delivery completion. When technical debt slows the team, you quantify its product impact rather than simply declaring it painful. You understand that the best technical decision depends on business context, and the best product decision depends on technical awareness.
 
@@ -20,17 +20,17 @@ This skill covers the full product engineering stack: philosophical foundations,
 
 
 
-## P0 — INTELLIGENCE AUGMENTATION
+## P0 â€” INTELLIGENCE AUGMENTATION
 
-### P0.1 — Token Optimization Defaults
+### P0.1 â€” Token Optimization Defaults
 
-**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process — output the result.
+**Token Budget:** COMPACT by default. Every interaction assumes MINIMAL tokens for maximum output. Do not narrate process â€” output the result.
 
 **COMPACT Mode:** When working with this domain, the default injection is COMPACT. Internal reasoning uses only: current file, relevant imports, specific diff. No preamble, no narration. Execute directly.
 
 **Prompt Caching:** Cache file analysis permanently. Cache decisions for 24h. Cache error patterns permanently. When context matches cache: load cache, update delta only.
 
-### P0.2 — Adaptive Learning Triggers
+### P0.2 â€” Adaptive Learning Triggers
 
 **Learning Triggers:**
 - New pattern discovered in this domain ? store in brain/error_patterns/ or brain/decisions/
@@ -43,7 +43,7 @@ This skill covers the full product engineering stack: philosophical foundations,
 - Domain conventions: stored in brain/ (update on every discovery)
 - Error patterns: stored in brain/error_patterns/ (permanent, with confidence score)
 
-### P0.3 — Smart Auto-Prompt Rules
+### P0.3 â€” Smart Auto-Prompt Rules
 
 **Optimistic Action Threshold:** > 80% confidence ? act immediately. 60-80% ? brief confirmation. < 60% ? clarify first.
 
@@ -57,9 +57,9 @@ This skill covers the full product engineering stack: philosophical foundations,
 **Reduced Round-Trips:** Every task MUST complete in = 2 round-trips. If you don't understand: ask one clarifying question with pre-computed options. Never ask more than one.
 
 
-## P2 — PHILOSOPHY: Product Engineering
+## P2 â€” PHILOSOPHY: Product Engineering
 
-### P2.1 — The Engineering-Product Partnership
+### P2.1 â€” The Engineering-Product Partnership
 
 The engineering-product partnership is the most critical relationship in any technology organization. When it works well, the organization ships the right things quickly and with high quality. When it breaks down, the organization builds the wrong things slowly, or builds the right things poorly.
 
@@ -96,25 +96,25 @@ Engineers who excel at product partnership do the following:
 - Hoarding technical context instead of sharing it proactively
 - Prioritizing technical elegance over customer value delivery
 
-### P2.2 — Shared Ownership of Outcomes
+### P2.2 â€” Shared Ownership of Outcomes
 
 Shared ownership is the defining characteristic of a product engineering culture. It means that engineers feel responsible for whether a feature achieves its intended business outcome, not just whether it was shipped on time and within budget.
 
 **The ownership spectrum:**
 
-Level 1 — Task completion: "I finished my tickets"
-Level 2 — Feature delivery: "We shipped the feature on time"
-Level 3 — Quality ownership: "The feature has minimal bugs and performs well"
-Level 4 — Outcome awareness: "I know what metric this feature is supposed to move"
-Level 5 — Outcome partnership: "I track whether the feature moved the metric and propose iterations"
-Level 6 — Outcome ownership: "I feel responsible for the business impact of what I build"
+Level 1 â€” Task completion: "I finished my tickets"
+Level 2 â€” Feature delivery: "We shipped the feature on time"
+Level 3 â€” Quality ownership: "The feature has minimal bugs and performs well"
+Level 4 â€” Outcome awareness: "I know what metric this feature is supposed to move"
+Level 5 â€” Outcome partnership: "I track whether the feature moved the metric and propose iterations"
+Level 6 â€” Outcome ownership: "I feel responsible for the business impact of what I build"
 
-Product engineers operate at levels 5 and 6. They ship the feature, then they watch the dashboards. If the metric does not move, they treat it as a bug — not a code bug, but a product bug. They ask: "What did we get wrong about the problem? What assumption was invalid? What should we try next?"
+Product engineers operate at levels 5 and 6. They ship the feature, then they watch the dashboards. If the metric does not move, they treat it as a bug â€” not a code bug, but a product bug. They ask: "What did we get wrong about the problem? What assumption was invalid? What should we try next?"
 
 **Implementing shared ownership:**
 
 To build shared ownership in a team, engineers need three things:
-1. Access to data. Engineers must be able to see product metrics, analytics dashboards, and business performance data. Without data, they cannot take ownership of outcomes — they can only take ownership of output.
+1. Access to data. Engineers must be able to see product metrics, analytics dashboards, and business performance data. Without data, they cannot take ownership of outcomes â€” they can only take ownership of output.
 2. Context about why. Engineers need to understand the business context behind a feature. Why is this important now? What metric does it target? What is the cost of delay? What is the opportunity cost of building this instead of something else?
 3. Authority to iterate. Engineers need the autonomy to propose and implement changes based on what they learn from the data. If every product change requires a ticket, a sprint planning slot, and a PM's approval, the feedback loop is too long.
 
@@ -122,11 +122,11 @@ To build shared ownership in a team, engineers need three things:
 
 A product engineer ships a new onboarding flow. Before the feature, 30% of sign-ups complete the activation milestone. After the feature, the rate is 32%. The engineer does not say "we shipped it, it is done." The engineer says: "We moved activation by 2 points. Our hypothesis was that simplifying the onboarding would help, but the data suggests that the step count was not the main barrier. I think we should try personalizing the onboarding based on the user's role. Here is a proposal for the next experiment."
 
-This is shared ownership. The engineer feels the 2-point movement as both a success (it moved) and a disappointment (it did not move enough). The engineer is already thinking about the next iteration. The feature is not done — the learning cycle continues.
+This is shared ownership. The engineer feels the 2-point movement as both a success (it moved) and a disappointment (it did not move enough). The engineer is already thinking about the next iteration. The feature is not done â€” the learning cycle continues.
 
-### P2.3 — Technical Empathy
+### P2.3 â€” Technical Empathy
 
-Technical empathy is the ability to understand and appreciate the constraints, pressures, and perspectives of non-technical stakeholders. It is not about dumbing down technical concepts — it is about translating them into the language of business value and customer impact.
+Technical empathy is the ability to understand and appreciate the constraints, pressures, and perspectives of non-technical stakeholders. It is not about dumbing down technical concepts â€” it is about translating them into the language of business value and customer impact.
 
 **Why technical empathy matters:**
 
@@ -154,9 +154,9 @@ When you communicate with these stakeholders in purely technical terms, you crea
 4. Educate incrementally. Use each conversation as an opportunity to build your stakeholder's technical understanding. Over time, they will make better requests because they understand the implications.
 5. Acknowledge their constraints. "I understand you need this by the end of the quarter. Let me show you what we can deliver by then and what would have to slip."
 
-### P2.4 — Business Impact as a First-Class Concern
+### P2.4 â€” Business Impact as a First-Class Concern
 
-For a product engineer, business impact is not something that happens after the code is written — it is a design constraint that shapes every decision from the start.
+For a product engineer, business impact is not something that happens after the code is written â€” it is a design constraint that shapes every decision from the start.
 
 **The impact hierarchy:**
 
@@ -181,7 +181,7 @@ Before starting any significant piece of work, estimate:
 
 This framework helps prioritize work that has high expected impact, high confidence, and fast time to impact.
 
-### P2.5 — The Build-Measure-Learn Loop for Engineers
+### P2.5 â€” The Build-Measure-Learn Loop for Engineers
 
 The Build-Measure-Learn loop is typically associated with startups and lean methodology. Product engineers apply it to everything they build, regardless of company stage.
 
@@ -206,7 +206,7 @@ LEARN: Did the metric move? What did we learn about our customers?
 - Spending more time measuring than building
 - Failing to kill features that do not work
 
-### P2.6 — The Cost of Delay Mindset
+### P2.6 â€” The Cost of Delay Mindset
 
 Cost of delay is the single most important concept in product prioritization. It is the economic value of shipping a feature sooner versus later. Every engineering decision should be filtered through the question: "What is the cost of delaying this?"
 
@@ -218,11 +218,11 @@ Cost of delay is the single most important concept in product prioritization. It
 
 **Using cost of delay in engineering decisions:**
 
-When a PM asks you to estimate a feature, and you realize it will take twice as long as they expected, do not just deliver the bad news — quantify the trade-off. "This feature has a cost of delay of $10K per week. The full version would take 8 weeks. A simpler version that covers the core use case would take 3 weeks and captures 80% of the value. The cost of delay for the extra 5 weeks of the full version is $50K. Is the additional 20% of value worth $50K?"
+When a PM asks you to estimate a feature, and you realize it will take twice as long as they expected, do not just deliver the bad news â€” quantify the trade-off. "This feature has a cost of delay of $10K per week. The full version would take 8 weeks. A simpler version that covers the core use case would take 3 weeks and captures 80% of the value. The cost of delay for the extra 5 weeks of the full version is $50K. Is the additional 20% of value worth $50K?"
 
-### P2.7 — Technical Decision Making Under Uncertainty
+### P2.7 â€” Technical Decision Making Under Uncertainty
 
-Product engineers constantly make decisions with incomplete information. The skill is not in finding the perfect answer — it is in making good decisions with the information available and adapting as new information emerges.
+Product engineers constantly make decisions with incomplete information. The skill is not in finding the perfect answer â€” it is in making good decisions with the information available and adapting as new information emerges.
 
 **The decision framework:**
 
@@ -243,9 +243,9 @@ Examples of Type 2 (reversible) decisions: choosing a frontend framework, naming
 Examples of Type 1 (irreversible) decisions: choosing a primary data store, selecting a cloud provider, committing to a API contract that external customers will depend on, deciding the architecture of a core domain service.
 
 
-## P4 — BUILD VS BUY VS PARTNER
+## P4 â€” BUILD VS BUY VS PARTNER
 
-### P4.1 — The Build vs Buy Decision Framework
+### P4.1 â€” The Build vs Buy Decision Framework
 
 One of the most consequential decisions a product engineer faces is whether to build a capability in-house, buy an existing solution, or partner with a third party.
 
@@ -261,7 +261,7 @@ One of the most consequential decisions a product engineer faces is whether to b
 3. Does the solution meet 80%+ of our needs? YES -> Buy. NO -> next.
 4. Can we adapt our process to the tool? YES -> Buy. NO -> Build or Partner.
 
-### P4.2 — Build Analysis
+### P4.2 â€” Build Analysis
 
 **When to build:**
 1. Core differentiation: central to your product's value proposition
@@ -286,7 +286,7 @@ One of the most consequential decisions a product engineer faces is whether to b
 - Building too general a solution
 - Hiring and retaining specialized talent
 
-### P4.3 — Buy Analysis
+### P4.3 â€” Buy Analysis
 
 **When to buy:**
 1. Commodity capability (email delivery, cloud hosting, authentication, payment processing)
@@ -315,7 +315,7 @@ One of the most consequential decisions a product engineer faces is whether to b
 - Data security with third-party access
 - SLA limitations
 
-### P4.4 — Partner Analysis
+### P4.4 â€” Partner Analysis
 
 **When to partner:**
 1. Shared specialization
@@ -332,7 +332,7 @@ One of the most consequential decisions a product engineer faces is whether to b
 - Competitive risk (partner becomes competitor)
 - Cultural mismatch
 
-### P4.5 — TCO Analysis (Total Cost of Ownership)
+### P4.5 â€” TCO Analysis (Total Cost of Ownership)
 
 TCO compares full cost of each option over a defined time horizon (typically 3-5 years).
 
@@ -346,7 +346,7 @@ Total = Year 0 + Sum(Years 1-3).
 - Buy: add 10-15% for integration complexity
 - Partner: add 15-25% for coordination
 
-### P4.6 — Vendor Evaluation Methodology
+### P4.6 â€” Vendor Evaluation Methodology
 
 **Evaluation criteria (weighted):**
 1. Functional fit (30%): core requirements met, configurability, quality
@@ -364,7 +364,7 @@ Total = Year 0 + Sum(Years 1-3).
 6. Commercial negotiation
 7. Decision
 
-### P4.7 — Integration Cost Estimation
+### P4.7 â€” Integration Cost Estimation
 
 Integration is one of the most underestimated costs in buy decisions.
 
@@ -379,7 +379,7 @@ Integration is one of the most underestimated costs in buy decisions.
 - Deployment: 1-2 weeks
 - Training: 1-2 weeks
 
-### P4.8 — The Buy-to-Build Transition
+### P4.8 â€” The Buy-to-Build Transition
 
 A common pattern: buy initially for speed, then build for cost/control/differentiation.
 
@@ -390,7 +390,7 @@ A common pattern: buy initially for speed, then build for cost/control/different
 4. Parallel run (run both until replacement is validated)
 5. Cut over cleanly (do not maintain parallel systems indefinitely)
 
-### P4.9 — Common Build vs Buy Mistakes
+### P4.9 â€” Common Build vs Buy Mistakes
 
 1. Not-invented-here syndrome
 2. Underestimating maintenance burden
@@ -404,9 +404,9 @@ A common pattern: buy initially for speed, then build for cost/control/different
 10. Not planning for vendor failure or acquisition
 
 
-## P6 — CUSTOMER DEVELOPMENT FOR ENGINEERS
+## P6 â€” CUSTOMER DEVELOPMENT FOR ENGINEERS
 
-### P6.1 — Why Engineers Should Talk to Customers
+### P6.1 â€” Why Engineers Should Talk to Customers
 
 1. Context builds better solutions. Understanding the user's workflow leads to better technical decisions.
 2. Empathy improves quality. Engineers who understand user struggles write better error messages and design more intuitive interfaces.
@@ -414,7 +414,7 @@ A common pattern: buy initially for speed, then build for cost/control/different
 4. Motivation and purpose. Seeing real impact of your work is deeply motivating.
 5. Relationship building. Engineers who talk to customers build trust and reduce burden on product partners.
 
-### P6.2 — User Interview Methodology
+### P6.2 â€” User Interview Methodology
 
 **Interview types:**
 1. Problem interviews: before building, understand current workflow and pain points.
@@ -444,7 +444,7 @@ A common pattern: buy initially for speed, then build for cost/control/different
 - User represents a unique edge case
 - User was cherry-picked to confirm beliefs
 
-### P6.3 — Problem Validation
+### P6.3 â€” Problem Validation
 
 Before building any solution, validate the problem:
 1. Observe and document: what is the user trying to accomplish?
@@ -455,7 +455,7 @@ Before building any solution, validate the problem:
 
 If you cannot answer these with confidence, you are not ready to build. Invest in learning first.
 
-### P6.4 — Solution Validation
+### P6.4 â€” Solution Validation
 
 **Techniques:**
 1. Concept test: describe solution, ask "would this solve your problem?"
@@ -472,7 +472,7 @@ If you cannot answer these with confidence, you are not ready to build. Invest i
 - Technically feasible within constraints
 - Economics work (value > cost)
 
-### P6.5 — Usability Testing Methodology
+### P6.5 â€” Usability Testing Methodology
 
 **Test structure:**
 1. Define the specific task
@@ -491,7 +491,7 @@ If you cannot answer these with confidence, you are not ready to build. Invest i
 
 **Sample size:** 5 users per test finds ~85% of usability issues (Nielsen's research).
 
-### P6.6 — Continuous Customer Development
+### P6.6 â€” Continuous Customer Development
 
 Practices for ongoing customer contact:
 - Support rotation (few hours per month)
@@ -501,11 +501,11 @@ Practices for ongoing customer contact:
 - User advisory board participation
 
 
-## P8 — TECHNICAL DEBT COMMUNICATION
+## P8 â€” TECHNICAL DEBT COMMUNICATION
 
-### P8.1 — What Technical Debt Means in Product Terms
+### P8.1 â€” What Technical Debt Means in Product Terms
 
-Technical debt is not an engineering problem — it is a product problem that manifests in engineering.
+Technical debt is not an engineering problem â€” it is a product problem that manifests in engineering.
 
 **Translations:**
 - "Code is poorly structured" -> "Features in this area take 2x longer"
@@ -514,7 +514,7 @@ Technical debt is not an engineering problem — it is a product problem that mani
 - "Outdated library" -> "Known security vulnerability exposure"
 - "Monolithic architecture" -> "Deploy once per week, one team's change can break everything"
 
-### P8.2 — Quantifying Technical Debt in Product Terms
+### P8.2 â€” Quantifying Technical Debt in Product Terms
 
 **Quantification dimensions:**
 1. Velocity impact: slower feature delivery
@@ -528,7 +528,7 @@ Technical debt is not an engineering problem — it is a product problem that mani
 
 Cost to fix: 6 weeks senior engineer time. Annual cost of debt: ~$165K engineering + credits. ROI: 6-week investment to save $165K/year and enable $200K/year feature."
 
-### P8.3 — Prioritizing Technical Debt with Features
+### P8.3 â€” Prioritizing Technical Debt with Features
 
 Compare technical debt against features using the same prioritization framework (RICE example).
 
@@ -538,7 +538,7 @@ Compare technical debt against features using the same prioritization framework 
 - Medium: moderately affecting velocity or quality -> This quarter
 - Low: minor improvement, speculative benefit -> Backlog
 
-### P8.4 — Refactoring Justification with Data
+### P8.4 â€” Refactoring Justification with Data
 
 **Refactoring proposal template:**
 Problem Statement, Evidence of Impact (velocity, quality, risk, opportunity cost), Proposed Solution, Investment Required, Expected Return (velocity improvement, quality improvement, risk reduction), ROI Calculation, Success Metrics.
@@ -551,7 +551,7 @@ Investment: 4 weeks senior engineer ($20K).
 Return: reduce failures from 15/month to <1, reduce engineering time from 6h/week to 1h, enable $500K enterprise pipeline.
 Payback: ~6 weeks."
 
-### P8.5 — Technical Debt Governance
+### P8.5 â€” Technical Debt Governance
 
 **Components:**
 1. Tracking: visible technical debt register
@@ -561,9 +561,9 @@ Payback: ~6 weeks."
 5. Retirement: celebrate and document when paid down
 
 
-## P10 — PRODUCT STRATEGY FOR ENGINEERS
+## P10 â€” PRODUCT STRATEGY FOR ENGINEERS
 
-### P10.1 — Platform vs Product Thinking
+### P10.1 â€” Platform vs Product Thinking
 
 **Product thinking:** Complete, opinionated experience for a specific user problem.
 **Platform thinking:** Building blocks that enable others to solve their own problems.
@@ -572,7 +572,7 @@ Payback: ~6 weeks."
 
 **When to think like a platform:** Diverse use cases, technical users, ecosystem ambitions, need to scale through others.
 
-### P10.2 — API-First Design
+### P10.2 â€” API-First Design
 
 Design the API contract before building the implementation. Forces thinking about developer experience and use cases.
 
@@ -586,7 +586,7 @@ Design the API contract before building the implementation. Forces thinking abou
 
 **API as product:** Developer experience matters. Time to first "hello world", documentation quality, error messages, reliability.
 
-### P10.3 — Extensibility as a Product Feature
+### P10.3 â€” Extensibility as a Product Feature
 
 **Models:**
 1. Plugins/Extensions: high flexibility, high security risk
@@ -594,7 +594,7 @@ Design the API contract before building the implementation. Forces thinking abou
 3. Custom Scripts: user-written logic
 4. Configuration/Workflows: no-code customization
 
-### P10.4 — Product-Led Growth (PLG)
+### P10.4 â€” Product-Led Growth (PLG)
 
 **PLG principles:**
 1. Free tier or trial: self-service, rapid time-to-value
@@ -610,7 +610,7 @@ Design the API contract before building the implementation. Forces thinking abou
 - Freemium scalability
 - Viral loops in core experience
 
-### P10.5 — Technical Moats
+### P10.5 â€” Technical Moats
 
 **Types:**
 1. Data network effects: more users = better product
@@ -620,16 +620,16 @@ Design the API contract before building the implementation. Forces thinking abou
 5. Brand and trust: reliability builds trust
 
 
-## P12 — PRODUCT METRICS
+## P12 â€” PRODUCT METRICS
 
-### P12.1 — The Metric Hierarchy
+### P12.1 â€” The Metric Hierarchy
 
-Level 1 — Business outcomes: Revenue, profit, market share, LTV
-Level 2 — Product health: Activation, retention, engagement, referral, satisfaction
-Level 3 — Feature performance: Adoption, engagement, impact on level 2
-Level 4 — Operational performance: Performance, reliability, error rate
+Level 1 â€” Business outcomes: Revenue, profit, market share, LTV
+Level 2 â€” Product health: Activation, retention, engagement, referral, satisfaction
+Level 3 â€” Feature performance: Adoption, engagement, impact on level 2
+Level 4 â€” Operational performance: Performance, reliability, error rate
 
-### P12.2 — AARRR Framework (Pirate Metrics)
+### P12.2 â€” AARRR Framework (Pirate Metrics)
 
 **Acquisition:** How users find you. Metrics: traffic sources, CPA, visitor-to-signup conversion.
 Engineering impact: SEO, landing page performance, signup flow, SSO integration.
@@ -646,7 +646,7 @@ Engineering impact: invite flows, sharing features, referral infrastructure.
 **Revenue:** Users paying. Metrics: MRR, ARPU, LTV, free-to-paid conversion, expansion revenue.
 Engineering impact: payment flow, pricing page, usage metering, self-service upgrades.
 
-### P12.3 — North Star Metric
+### P12.3 â€” North Star Metric
 
 **Characteristics:** Leading (not lagging), actionable, customer-centric, understandable, long-term oriented.
 
@@ -659,7 +659,7 @@ Engineering impact: payment flow, pricing page, usage metering, self-service upg
 
 **Engineering contribution:** Evaluate every decision against the North Star.
 
-### P12.4 — Metric Trees
+### P12.4 â€” Metric Trees
 
 A metric tree decomposes a high-level metric into component parts showing how different activities contribute.
 
@@ -669,7 +669,7 @@ A metric tree decomposes a high-level metric into component parts showing how di
 3. Track progress quarterly
 4. Find leading indicators
 
-### P12.5 — LTV Calculation
+### P12.5 â€” LTV Calculation
 
 LTV = ARPU x Average Customer Lifespan x Gross Margin
 Average Customer Lifespan = 1 / Churn Rate
@@ -683,7 +683,7 @@ Average Customer Lifespan = 1 / Churn Rate
 - Reduce churn: quality, onboarding, ongoing value
 - Improve margin: infrastructure optimization, support reduction
 
-### P12.6 — CAC Calculation
+### P12.6 â€” CAC Calculation
 
 CAC = (Marketing + Sales + Onboarding) / New Customers
 
@@ -693,7 +693,7 @@ CAC = (Marketing + Sales + Onboarding) / New Customers
 - Onboarding automation (reduce manual onboarding)
 - Referral features (low-cost acquisition)
 
-### P12.7 — Instrumentation Strategy
+### P12.7 â€” Instrumentation Strategy
 
 **What to instrument:**
 1. User actions: page views, clicks, form submissions, feature usage, errors
@@ -710,7 +710,7 @@ CAC = (Marketing + Sales + Onboarding) / New Customers
 5. Version events when schemas change
 6. Privacy by design (no PII unless necessary)
 
-### P12.8 — Product Analytics Tools Comparison
+### P12.8 â€” Product Analytics Tools Comparison
 
 | Tool | Best For |
 |---|---|
@@ -723,9 +723,9 @@ CAC = (Marketing + Sales + Onboarding) / New Customers
 | RudderStack | Segment alternative, self-hostable |
 
 
-## P14 — REQUIREMENTS ENGINEERING
+## P14 â€” REQUIREMENTS ENGINEERING
 
-### P14.1 — User Stories
+### P14.1 â€” User Stories
 
 User stories capture requirements from the user's perspective. Product engineers write and refine user stories with product partners.
 
@@ -747,7 +747,7 @@ User stories capture requirements from the user's perspective. Product engineers
 - Identify edge cases the story does not cover
 - Estimate effort with confidence ranges
 
-### P14.2 — Acceptance Criteria
+### P14.2 â€” Acceptance Criteria
 
 Acceptance criteria define when a user story is complete. They should be specific, testable, and unambiguous.
 
@@ -770,7 +770,7 @@ Then I see an error message 'Project name is required' and the form is not submi
 - Make criteria testable (automated or manual)
 - Review criteria with QA before development
 
-### P14.3 — Technical Requirements
+### P14.3 â€” Technical Requirements
 
 Technical requirements describe constraints or capabilities that are invisible to users but essential for the system.
 
@@ -789,7 +789,7 @@ Technical requirements describe constraints or capabilities that are invisible t
 "All API endpoints shall require authentication via OAuth 2.0."
 "Database backups shall complete within 4 hours and be stored for 90 days."
 
-### P14.4 — Specification Writing
+### P14.4 â€” Specification Writing
 
 Product engineers write technical specifications that serve as the bridge between product requirements and implementation.
 
@@ -804,7 +804,7 @@ Product engineers write technical specifications that serve as the bridge betwee
 8. Rollout plan: feature flags, phased rollout, monitoring
 9. Rollback plan: how to revert if issues are discovered
 
-### P14.5 — Edge Cases
+### P14.5 â€” Edge Cases
 
 Product engineers identify and document edge cases that could cause failures or poor user experiences.
 
@@ -824,7 +824,7 @@ Current behavior (if known): [What currently happens]
 Severity: [Critical/Major/Minor]
 Likelihood: [High/Medium/Low]"
 
-### P14.6 — Refining Requirements with Product Partners
+### P14.6 â€” Refining Requirements with Product Partners
 
 **The requirement refinement process:**
 1. Read the user story and acceptance criteria
@@ -842,9 +842,9 @@ Likelihood: [High/Medium/Low]"
 - "What existing behavior should remain unchanged?"
 
 
-## P16 — MVP METHODOLOGY
+## P16 â€” MVP METHODOLOGY
 
-### P16.1 — Scope Definition
+### P16.1 â€” Scope Definition
 
 **Defining MVP scope:**
 1. Identify the core value proposition: what is the essential value?
@@ -859,7 +859,7 @@ Likelihood: [High/Medium/Low]"
 - Revisit scope decisions when new information emerges
 - Be prepared to cut scope to maintain timeline
 
-### P16.2 — Iterative Delivery
+### P16.2 â€” Iterative Delivery
 
 **Principles:**
 1. Ship small, learn fast: smaller iterations = faster learning
@@ -873,7 +873,7 @@ Likelihood: [High/Medium/Low]"
 - Monthly: major feature releases, significant changes
 - Quarterly: strategic pivots, platform changes
 
-### P16.3 — Build-Measure-Learn Cycle
+### P16.3 â€” Build-Measure-Learn Cycle
 
 **Build:** Ship the smallest thing that tests the riskiest assumption.
 **Measure:** Instrument and track usage, engagement, outcomes.
@@ -886,7 +886,7 @@ Likelihood: [High/Medium/Low]"
 3. What metrics define success?
 4. What will we do based on results?
 
-### P16.4 — Pivots
+### P16.4 â€” Pivots
 
 **Types of pivots:**
 - Customer segment pivot: different users need the solution
@@ -903,22 +903,22 @@ Likelihood: [High/Medium/Low]"
 - Growth stalls despite acquisition efforts
 - Market feedback consistently points in a different direction
 
-### P16.5 — Incremental Delivery Patterns
+### P16.5 â€” Incremental Delivery Patterns
 
-**Pattern 1 — Vertical slice:** Deliver a complete end-to-end feature (thin slice through all layers). Delivers value on day one and can be expanded incrementally.
+**Pattern 1 â€” Vertical slice:** Deliver a complete end-to-end feature (thin slice through all layers). Delivers value on day one and can be expanded incrementally.
 
-**Pattern 2 — Horizontal slice:** Deliver a layer completely (e.g., all backend APIs) before moving to the next layer. Delays user-facing value but reduces rework.
+**Pattern 2 â€” Horizontal slice:** Deliver a layer completely (e.g., all backend APIs) before moving to the next layer. Delays user-facing value but reduces rework.
 
-**Pattern 3 — Feature flag incremental:** Build behind feature flags, turn on for increasing percentages of users. Enables gradual rollout and immediate rollback.
+**Pattern 3 â€” Feature flag incremental:** Build behind feature flags, turn on for increasing percentages of users. Enables gradual rollout and immediate rollback.
 
-**Pattern 4 — Canary release:** Release to a small subset of users first, monitor, then expand. Reduces risk of widespread issues.
+**Pattern 4 â€” Canary release:** Release to a small subset of users first, monitor, then expand. Reduces risk of widespread issues.
 
-**Pattern 5 — Dark launch:** Deploy code that runs in production but is invisible to users. Validates performance and stability before user exposure.
+**Pattern 5 â€” Dark launch:** Deploy code that runs in production but is invisible to users. Validates performance and stability before user exposure.
 
 
-## P18 — INCIDENT IMPACT ON PRODUCT
+## P18 â€” INCIDENT IMPACT ON PRODUCT
 
-### P18.1 — Customer Communication During Incidents
+### P18.1 â€” Customer Communication During Incidents
 
 When incidents occur, communication is as important as technical resolution.
 
@@ -936,7 +936,7 @@ When incidents occur, communication is as important as technical resolution.
 - Social media (for widespread incidents)
 - Direct communication for critical accounts
 
-### P18.2 — SLA Impact
+### P18.2 â€” SLA Impact
 
 Service Level Agreements (SLAs) define the level of service customers can expect. Incidents that breach SLAs have contractual and financial implications.
 
@@ -952,7 +952,7 @@ Service Level Agreements (SLAs) define the level of service customers can expect
 - Reputation damage: public trust erodes
 - Churn: customers may leave after repeated breaches
 
-### P18.3 — Compensation and Trust Restoration
+### P18.3 â€” Compensation and Trust Restoration
 
 **Compensation approaches:**
 1. Service credits: automatic or requested credits applied to future invoices
@@ -968,7 +968,7 @@ Service Level Agreements (SLAs) define the level of service customers can expect
 4. Offer compensation: appropriate to the severity and duration
 5. Follow up: check in after the incident to ensure satisfaction
 
-### P18.4 — Post-Incident Product Changes
+### P18.4 â€” Post-Incident Product Changes
 
 Every significant incident should lead to product improvements.
 
@@ -986,7 +986,7 @@ Every significant incident should lead to product improvements.
 - Process changes: deployment procedures, testing requirements
 - Architecture changes: removing single points of failure
 
-### P18.5 — Incident-Driven Feature Prioritization
+### P18.5 â€” Incident-Driven Feature Prioritization
 
 Incidents often reveal product improvements that should be prioritized.
 
@@ -1006,13 +1006,13 @@ Incidents often reveal product improvements that should be prioritized.
 - Long-term: redesign payment architecture for idempotency (quarter)"
 
 
-## P20 — WORKED EXAMPLES
+## P20 â€” WORKED EXAMPLES
 
 ### Example 1: Prioritizing Technical Debt vs Feature Work
 
 **Context:** The team has capacity for one major initiative this quarter. The product manager wants to build a new reporting dashboard. The engineering team wants to refactor the authentication system, which has become a bottleneck.
 
-**Step 1 — Quantify both options:**
+**Step 1 â€” Quantify both options:**
 
 Reporting Dashboard:
 - Reach: 500 paying customers (all active users)
@@ -1028,12 +1028,12 @@ Auth Refactoring:
 - Effort: 3 weeks
 - RICE Score: (2,000 x 2 x 0.9) / 3 = 1,200
 
-**Step 2 — Add additional context:**
+**Step 2 â€” Add additional context:**
 - Auth outages have caused 3 incidents in the past quarter, affecting 100% of users
 - The reporting dashboard has a cost of delay: a competitor is launching analytics next quarter
 - The refactoring would enable SSO, the second most requested feature
 
-**Step 3 — Present to product partner:**
+**Step 3 â€” Present to product partner:**
 
 "The analytics dashboard is the most requested feature and has competitive urgency. However, the auth system causes outages that affect all users and blocks SSO, the second most requested feature. Here is the trade-off:
 
@@ -1043,19 +1043,19 @@ Option B: Auth refactoring first (3 weeks). Analytics dashboard starts week 4, s
 
 Option C: Reduce analytics scope to core charts (4 weeks), ship alongside auth (3 weeks), total 7 weeks of parallel work. Benefit: both ship in the same quarter.
 
-I recommend Option B — the auth refactoring has higher confidence and enables more value downstream. The 3-week delay on analytics is manageable and we can mitigate by sharing our analytics roadmap with customers."
+I recommend Option B â€” the auth refactoring has higher confidence and enables more value downstream. The 3-week delay on analytics is manageable and we can mitigate by sharing our analytics roadmap with customers."
 
 ### Example 2: Build vs Buy for a Payment System
 
 **Context:** The company is expanding to a new country and needs to handle local payment methods. The current payment system only supports credit cards.
 
-**Step 1 — Understand requirements:**
+**Step 1 â€” Understand requirements:**
 - Must support: credit cards, bank transfers, digital wallets (specific to the country)
 - Must handle: multi-currency, local tax compliance, refunds
 - Users: 50,000 existing customers in the new market (projected)
 - Timeline: must launch in 4 months
 
-**Step 2 — Evaluate options:**
+**Step 2 â€” Evaluate options:**
 
 Build:
 - Estimated development: 4-6 months (payment integration, compliance, testing)
@@ -1077,7 +1077,7 @@ Partner (local payment gateway):
 - Local expertise: includes tax handling, regulatory compliance
 - Total year 1 cost: variable
 
-**Step 3 — Recommend:**
+**Step 3 â€” Recommend:**
 
 "I recommend buying Stripe for the initial launch. The integration cost is low, Stripe handles compliance for 135+ currencies, and we can launch in 4-6 weeks instead of 4-6 months. The transaction fees at our projected volume are $174K/year, which is less than building internally ($400K + ongoing).
 
@@ -1089,7 +1089,7 @@ The build decision should be re-evaluated when we reach $3M/month in transaction
 
 **Context:** The team needs to migrate from MongoDB to PostgreSQL for the user service. The migration will take 4 weeks and requires downtime during the cutover.
 
-**Step 1 — Frame in product terms:**
+**Step 1 â€” Frame in product terms:**
 
 "Product team, I need to discuss the user service database. Currently, using MongoDB is causing three problems that affect your roadmap:
 
@@ -1101,7 +1101,7 @@ The build decision should be re-evaluated when we reach $3M/month in transaction
 
 We propose migrating the user service to PostgreSQL. This requires 4 weeks of engineering work and approximately 2 hours of planned downtime during the cutover."
 
-**Step 2 — Present options:**
+**Step 2 â€” Present options:**
 
 "Option A: Full migration, 4 weeks. This delays the reporting dashboard by 4 weeks but enables it without additional database work. Solves data inconsistency permanently. Reduces future development time on user-related features by ~40%.
 
@@ -1115,11 +1115,11 @@ I recommend Option A. The 4-week investment pays for itself within 2 quarters th
 
 **Context:** The team wants to test whether changing from monthly-only pricing to annual/monthly mixed pricing increases LTV.
 
-**Step 1 — Define the hypothesis:**
+**Step 1 â€” Define the hypothesis:**
 
 "We believe that offering an annual pricing option (20% discount vs monthly) will increase 12-month LTV because annual subscribers have lower churn and prepay 10 months of revenue upfront. We will know this is true when we see a 15%+ increase in 12-month LTV with 95% statistical significance."
 
-**Step 2 — Design the experiment:**
+**Step 2 â€” Design the experiment:**
 
 Independent variable: Pricing page with annual option vs monthly-only (control)
 Primary metric: 12-month LTV per user
@@ -1130,7 +1130,7 @@ Sample size: Baseline LTV $600, minimum detectable effect 10% ($60), significanc
 Duration: 12 months (to measure full LTV impact) with interim checks at 1, 3, 6 months
 Methodology: 50/50 A/B test, users assigned by user_id hash, stable assignment
 
-**Step 3 — Preregister analysis plan:**
+**Step 3 â€” Preregister analysis plan:**
 
 "We will analyze results using a two-sample t-test comparing mean 12-month LTV between control and variant. We will also analyze secondary metrics using appropriate tests. We will not stop the experiment early unless:
 - The variant causes a statistically significant decrease in conversion rate at p < 0.01 (safety)
@@ -1141,7 +1141,7 @@ Methodology: 50/50 A/B test, users assigned by user_id hash, stable assignment
 
 **Context:** The CI/CD pipeline takes 45 minutes per build and fails 20% of the time. The team wants to refactor it.
 
-**Step 1 — Quantify the problem:**
+**Step 1 â€” Quantify the problem:**
 
 Current state:
 - Average build time: 45 minutes
@@ -1159,7 +1159,7 @@ Proposed refactoring:
 - Add retry logic for flaky tests
 - Estimated effort: 2 weeks for one engineer ($8,000)
 
-**Step 2 — ROI calculation:**
+**Step 2 â€” ROI calculation:**
 
 Investment: $8,000 (2 weeks of one engineer)
 Expected return:
@@ -1170,7 +1170,7 @@ Expected return:
 
 ROI: 12.5x in first year. Payback period: < 2 weeks.
 
-**Step 3 — Present to product partner:**
+**Step 3 â€” Present to product partner:**
 
 "Two weeks of engineering time to save $100K/year in developer productivity. Every sprint without this refactoring costs us $2K in wasted time. The only reason not to do this is if we have a $2K/week priority that is more urgent. Do we?"
 
@@ -1178,7 +1178,7 @@ ROI: 12.5x in first year. Payback period: < 2 weeks.
 
 **Context:** The team has been building a project management app. The PM wants to add Gantt charts. The engineer conducts user interviews.
 
-**Step 1 — Interview findings:**
+**Step 1 â€” Interview findings:**
 
 The engineer interviews 8 project managers over 2 weeks.
 
@@ -1189,22 +1189,22 @@ Key findings:
 - 4 said they manually export data to Excel for reporting because the app's reports are insufficient
 - 3 said they have abandoned other project management tools because of poor resource management
 
-**Step 2 — Re-frame the problem:**
+**Step 2 â€” Re-frame the problem:**
 
 The problem is not "users need Gantt charts." The problem is "users cannot visualize resource allocation and timeline dependencies, so they use spreadsheets."
 
-**Step 3 — Propose alternative:**
+**Step 3 â€” Propose alternative:**
 
-"Based on user interviews, I believe the Gantt chart is solving the wrong problem. Users need resource allocation visibility and better reporting exports — not Gantt charts specifically. Let me propose:
+"Based on user interviews, I believe the Gantt chart is solving the wrong problem. Users need resource allocation visibility and better reporting exports â€” not Gantt charts specifically. Let me propose:
 
 Instead of a Gantt chart (effort: 6 weeks), we should build:
-1. Resource allocation dashboard (3 weeks) — who is working on what, capacity
-2. Enhanced report exports to CSV/Excel (1 week) — include timeline data users can manipulate in their spreadsheet
-3. Simple timeline view (2 weeks) — basic start/end dates per task, dependencies
+1. Resource allocation dashboard (3 weeks) â€” who is working on what, capacity
+2. Enhanced report exports to CSV/Excel (1 week) â€” include timeline data users can manipulate in their spreadsheet
+3. Simple timeline view (2 weeks) â€” basic start/end dates per task, dependencies
 
 Total: 6 weeks (same as the Gantt chart alone), but addressing the actual user needs validated through interviews."
 
-**Step 4 — Outcome:**
+**Step 4 â€” Outcome:**
 
 The team builds the resource allocation dashboard and enhanced exports first. Timeline view is added in the next quarter. Feature adoption is 3x higher than the previous quarter's features, and support tickets about "lack of reporting" drop by 40%.
 
@@ -1212,7 +1212,7 @@ The team builds the resource allocation dashboard and enhanced exports first. Ti
 
 **Context:** A competitor is launching a mobile app next quarter. Your product is web-only. The team needs to decide whether to build a mobile app.
 
-**Step 1 — Estimate cost of delay:**
+**Step 1 â€” Estimate cost of delay:**
 
 Mobile app:
 - Time to build: 4 months
@@ -1225,7 +1225,7 @@ Cost of delay calculation:
 - Market cost: shipping after competitor reduces market share from 30% to 15%
 - Market share impact: 15% of a $10M/year market = $1.5M/year difference
 
-**Step 2 — Quantify urgency:**
+**Step 2 â€” Quantify urgency:**
 
 "If we ship the mobile app before the competitor, we capture an estimated 30% market share. If we ship 3 months after them, we capture an estimated 15%. At current market size, that is a $1.5M/year difference.
 
@@ -1237,7 +1237,7 @@ The economics clearly favor accelerating. We should drop or defer lower-urgency 
 
 **Context:** The billing system is accruing technical debt. The product team does not see why refactoring is important.
 
-**Step 1 — Quantify debt impact:**
+**Step 1 â€” Quantify debt impact:**
 
 Billing system debt:
 - Average time to add a new pricing tier: 4 weeks (should be 1 week)
@@ -1254,7 +1254,7 @@ Total annual cost of billing debt:
 - Deferred revenue: $200K (enabled by refactoring)
 - Support cost: 30 tickets/month x $15/ticket x 12 = $5.4K
 
-**Step 2 — Propose fix:**
+**Step 2 â€” Propose fix:**
 
 "I propose a 4-week refactoring of the billing system. The investment is $16K (4 weeks x $4K/week for one senior engineer).
 
@@ -1281,23 +1281,23 @@ Would you like me to write a detailed refactoring proposal with the timeline and
 - Sample size: 5,000 per variant
 - Duration: 2 weeks (includes a full weekend)
 
-**Step 1 — Verify experiment validity:**
+**Step 1 â€” Verify experiment validity:**
 
 - Sample ratio: 5,012 vs 4,988 (close to 50/50, no mismatch)
 - No novelty effect: daily activation rates were stable across the 2 weeks
 - No primacy effect concern: all users were new signups
 - No interference with other experiments: confirmed no overlapping experiments
-- Guardrail metrics checked: support tickets, error rate, session duration — no significant changes
+- Guardrail metrics checked: support tickets, error rate, session duration â€” no significant changes
 
-**Step 2 — Interpret results:**
+**Step 2 â€” Interpret results:**
 
 "The A/B test shows a statistically significant 3 percentage point improvement in activation rate (p = 0.03). The 95% confidence interval suggests the true improvement is between 0.5% and 5.5%.
 
-Given 5,000 users per variant, this is a reliable result. The effect is both statistically significant and practically meaningful — 3 points on activation at our scale means approximately 300 additional activated users per month.
+Given 5,000 users per variant, this is a reliable result. The effect is both statistically significant and practically meaningful â€” 3 points on activation at our scale means approximately 300 additional activated users per month.
 
 Recommendation: Ship the new onboarding to 100% of users. Monitor activation rate for 2 more weeks to confirm the improvement persists. Plan follow-up experiments to iterate on onboarding further."
 
-**Step 3 — Plan next steps:**
+**Step 3 â€” Plan next steps:**
 
 "The experiment validated that the new onboarding improves activation. However, we are still at 27% activation, which means 73% of users do not reach the activation milestone. There is room for significant improvement.
 
@@ -1312,7 +1312,7 @@ Our goal for the quarter: 40% activation rate. We have 3 more experiments to run
 
 **Context:** The company has 5 teams building their own monitoring dashboards. Each team's dashboard is different, but they all need similar capabilities.
 
-**Step 1 — Quantify the problem:**
+**Step 1 â€” Quantify the problem:**
 
 Current state:
 - 5 custom monitoring dashboards
@@ -1322,7 +1322,7 @@ Current state:
 - A new team would need to build from scratch: 4 weeks ($16K)
 - Each team uses different technologies and conventions
 
-**Step 2 — Propose platform approach:**
+**Step 2 â€” Propose platform approach:**
 
 "We spend $100K/year building and maintaining custom monitoring dashboards. Every new team adds more cost.
 
@@ -1348,33 +1348,33 @@ Recommendation: Build the monitoring platform. Assign 2 engineers for 6 weeks. M
 
 **Context:** The team is launching a completely redesigned checkout flow. The risk of bugs is high because the checkout handles payments.
 
-**Step 1 — Design the rollout strategy:**
+**Step 1 â€” Design the rollout strategy:**
 
-Phase 1 — Internal testing (1 week):
+Phase 1 â€” Internal testing (1 week):
 - Feature flag: "checkout-v2-internal"
 - Population: internal accounts and test accounts only
 - Goals: validate basic functionality, catch obvious bugs
 - Monitoring: error rate, payment failures, conversion rate
 
-Phase 2 — Beta testing (1 week):
+Phase 2 â€” Beta testing (1 week):
 - Feature flag: "checkout-v2-beta"
 - Population: 5% of users, opt-in via invitation
 - Goals: gather real-world feedback, validate performance
 - Monitoring: conversion rate compared to control, support tickets
 - Decision criteria: if conversion rate drops >5%, pause and fix
 
-Phase 3 — Gradual rollout (2 weeks):
+Phase 3 â€” Gradual rollout (2 weeks):
 - Feature flag: "checkout-v2" with percentage rollout
 - Week 1: 25% of users
 - Week 2: 50% of users
 - Decision criteria for 100%: conversion rate not worse than control, error rate < 0.1%, support tickets not increased
 
-Phase 4 — Full rollout:
+Phase 4 â€” Full rollout:
 - Feature flag: "checkout-v2" at 100% for all users
 - Old checkout flag: "checkout-v1" kept for rollback capability
 - Duration: flag maintained for 2 weeks, then removed
 
-**Step 2 — Establish kill switch criteria:**
+**Step 2 â€” Establish kill switch criteria:**
 
 "The checkout-v2 flag will be turned off immediately if any of these conditions are met:
 1. Payment error rate exceeds 1% (current: 0.1%)
@@ -1382,9 +1382,9 @@ Phase 4 — Full rollout:
 3. Any user reports being charged incorrectly
 4. P95 response time exceeds 2 seconds (current: 800ms)
 
-The kill switch is designed to be fast — within 2 minutes of detection."
+The kill switch is designed to be fast â€” within 2 minutes of detection."
 
-**Step 3 — Monitoring plan:**
+**Step 3 â€” Monitoring plan:**
 
 "We need the following monitoring in place before the rollout:
 1. Payment success rate (by payment method)
@@ -1400,30 +1400,30 @@ All metrics will be visible on a real-time dashboard accessible to the team and 
 
 **Context:** The company has a B2B SaaS product for project management. The CEO wants to define a North Star Metric.
 
-**Step 1 — Evaluate candidates:**
+**Step 1 â€” Evaluate candidates:**
 
 Monthly Active Users: Easy to measure, but does not capture depth of engagement. A user who logs in once is as "active" as a user who manages 50 projects.
 
-Nights Booked (Airbnb model): N/A — not a transactional product.
+Nights Booked (Airbnb model): N/A â€” not a transactional product.
 
 Projects Created: Captures value creation, but a project that is created and abandoned does not represent value.
 
-Tasks Completed: Captures productive use. A user who completes tasks is getting value. But "completed" is ambiguous — some tasks are "completed" just by checking a box.
+Tasks Completed: Captures productive use. A user who completes tasks is getting value. But "completed" is ambiguous â€” some tasks are "completed" just by checking a box.
 
 Weekly Active Workspaces: For team products, the workspace (company/team account) is the unit of value. If the workspace is active, the team is getting value.
 
-**Step 2 — Propose: Weekly Active Workspaces (WAW)**
+**Step 2 â€” Propose: Weekly Active Workspaces (WAW)**
 
 "Based on our analysis, I propose Weekly Active Workspaces as our North Star Metric.
 
 Rationale:
 1. Leading indicator: Workspaces that are active weekly are highly retained (90%+ 6-month retention). WAW predicts revenue retention better than any other metric we measured.
 2. Actionable: The team can directly influence WAW through onboarding (get workspaces active faster), feature adoption (keep workspaces coming back), and engagement depth (more users per workspace).
-3. Customer-centric: WAW measures value delivered — a workspace is active because team members are getting value from the product.
+3. Customer-centric: WAW measures value delivered â€” a workspace is active because team members are getting value from the product.
 4. Understandable: Everyone in the company can understand "are teams using our product every week?"
 5. Long-term oriented: Increasing WAW is always good. There is no way to game WAW that harms the business.
 
-**Step 3 — Define the metric tree:**
+**Step 3 â€” Define the metric tree:**
 
 Weekly Active Workspaces (WAW)
 - New workspace activation: percentage of new signups that become WAW within 14 days
@@ -1439,11 +1439,11 @@ Weekly Active Workspaces (WAW)
   - Re-engagement campaign effectiveness
 
 
-## P22 — QUALITY GATES
+## P22 â€” QUALITY GATES
 
 Quality gates are checkpoints that ensure product engineering practices are followed. They are organized into three tiers based on criticality.
 
-### P22.1 — Tier 1: Must-Pass Gates (Release Blocking)
+### P22.1 â€” Tier 1: Must-Pass Gates (Release Blocking)
 
 These gates must be passed before any feature is released to production. Failure at any Tier 1 gate blocks the release.
 
@@ -1495,7 +1495,7 @@ These gates must be passed before any feature is released to production. Failure
 - [ ] Rollback plan is documented
 - [ ] Monitoring is in place for guardrail metrics
 
-### P22.2 — Tier 2: Should-Pass Gates (Quality Indicators)
+### P22.2 â€” Tier 2: Should-Pass Gates (Quality Indicators)
 
 These gates should be passed for high-quality releases. Failure at Tier 2 does not block release but requires documented exceptions.
 
@@ -1543,7 +1543,7 @@ These gates should be passed for high-quality releases. Failure at Tier 2 does n
 - [ ] Runbook is updated for operational procedures
 - [ ] API documentation is updated (if applicable)
 
-### P22.3 — Tier 3: Nice-to-Pass Gates (Maturity Indicators)
+### P22.3 â€” Tier 3: Nice-to-Pass Gates (Maturity Indicators)
 
 These gates indicate mature product engineering practices. Passing Tier 3 gates distinguishes high-performing teams.
 
@@ -1581,9 +1581,9 @@ These gates indicate mature product engineering practices. Passing Tier 3 gates 
 - [ ] Next steps will be decided (invest, iterate, kill)
 
 
-## P21 — ANTI-PATTERNS
+## P21 â€” ANTI-PATTERNS
 
-### P21.11 — Anti-Patterns in Engineering Communication
+### P21.11 â€” Anti-Patterns in Engineering Communication
 
 **Anti-Pattern 46: The Jargon Shield**
 Indicator: Engineers use technical jargon to avoid explaining trade-offs or to end discussions.
@@ -1601,7 +1601,7 @@ Correction: Share ownership. Pair on complex work. Document decisions. Rotate re
 Indicator: Engineers commit to optimistic timelines that they know are unrealistic, hoping to figure it out.
 Correction: Always communicate realistic timelines. If you are uncertain, communicate the range. Over-promising destroys trust when reality inevitably differs.
 
-### P21.12 — Anti-Patterns in Product Discovery
+### P21.12 â€” Anti-Patterns in Product Discovery
 
 **Anti-Pattern 50: The Solution in Search of a Problem**
 Indicator: The team builds a feature because the technology is cool, not because users need it.
@@ -1635,7 +1635,7 @@ Correction: A true pivot changes the core hypothesis. If your assumptions remain
 Indicator: The team pivots to chase a trend without evidence that the new direction is more promising.
 Correction: A pivot should be based on learning from experiments, not on what is trendy. Challenge the team to articulate what specific learning prompted the pivot.
 
-### P21.13 — Anti-Patterns in Data and Analytics
+### P21.13 â€” Anti-Patterns in Data and Analytics
 
 **Anti-Pattern 58: The Dashboard of Broken Promises**
 Indicator: The team spends more time building dashboards than acting on insights from them.
@@ -1669,7 +1669,7 @@ Correction: Anecdotes generate hypotheses; data validates them. Use anecdotes to
 Indicator: Metrics are shown from a timeframe that makes the trend look favorable, hiding negative longer-term trends.
 Correction: Always show the full available history. If you are using a specific timeframe, document why.
 
-### P21.14 — Anti-Patterns in Stakeholder Management
+### P21.14 â€” Anti-Patterns in Stakeholder Management
 
 **Anti-Pattern 66: The Silent Sprint**
 Indicator: The team works for weeks without communicating progress to stakeholders, then surprises them at the sprint review.
@@ -1699,7 +1699,7 @@ Correction: Communicate potential delays as soon as they are identified. Early w
 Indicator: The team assumes stakeholders agree because no one objected, but stakeholders have unexpressed concerns.
 Correction: Explicitly ask for dissent. "Does anyone see a problem with this approach?" Use anonymous feedback channels for sensitive concerns.
 
-### P21.15 — Anti-Patterns in Career and Growth
+### P21.15 â€” Anti-Patterns in Career and Growth
 
 **Anti-Pattern 73: The Code-Only Focus**
 Indicator: An engineer focuses exclusively on writing code and avoids product discussions, customer contact, and strategic thinking.
@@ -1724,11 +1724,11 @@ Correction: Sustainable pace is more productive than heroics over the long term.
 
 ### P20 Expansion: More Worked Examples
 
-### Example 21: SaaS Metrics Deep Dive — Diagnosing a Retention Problem
+### Example 21: SaaS Metrics Deep Dive â€” Diagnosing a Retention Problem
 
 **Context:** The product's 30-day retention has dropped from 45% to 38% over the last 3 months. The team needs to diagnose and fix this.
 
-**Step 1 — Analyze the data:**
+**Step 1 â€” Analyze the data:**
 
 Cohort analysis shows:
 - Retention drop is concentrated in the first 7 days (not later periods)
@@ -1736,13 +1736,13 @@ Cohort analysis shows:
 - New users are affected more than existing users
 - The activation rate (users who complete the core action) is unchanged at 60%
 
-**Step 2 — Form hypotheses:**
+**Step 2 â€” Form hypotheses:**
 
 Hypothesis 1: The new UI is harder to navigate, causing new users to give up before experiencing value.
 Hypothesis 2: A performance regression introduced in March makes the product feel slow.
 Hypothesis 3: The onboarding flow changed to accommodate the new UI, reducing its effectiveness.
 
-**Step 3 — Test with data:**
+**Step 3 â€” Test with data:**
 
 "We analyzed session recordings and found:
 - Time-to-first-action increased from 45 seconds to 2 minutes (supports Hypothesis 1)
@@ -1751,12 +1751,12 @@ Hypothesis 3: The onboarding flow changed to accommodate the new UI, reducing it
 
 The root cause appears to be the onboarding flow changes that accompanied the UI redesign. Users are getting stuck on step 3 (data import) because the new UI hides the import button.
 
-**Step 4 — Propose fix:**
+**Step 4 â€” Propose fix:**
 
 "We need to restore onboarding effectiveness. Three options:
-1. Revert onboarding to pre-March version (1 week) — fast but loses UI improvements
-2. Fix the import button visibility issue (3 days) — addresses the specific problem
-3. Redesign onboarding for the new UI (3 weeks) — ideal but slow
+1. Revert onboarding to pre-March version (1 week) â€” fast but loses UI improvements
+2. Fix the import button visibility issue (3 days) â€” addresses the specific problem
+3. Redesign onboarding for the new UI (3 weeks) â€” ideal but slow
 
 I recommend Option 2 immediately (stops the bleeding) followed by Option 3 (long-term fix)."
 
@@ -1764,7 +1764,7 @@ I recommend Option 2 immediately (stops the bleeding) followed by Option 3 (long
 
 **Context:** The startup has grown from 10 to 50 engineers in a year. Technical debt is accumulating. Feature velocity is slowing.
 
-**Step 1 — Assess the situation:**
+**Step 1 â€” Assess the situation:**
 
 Symptoms of growing pains:
 - Deployment frequency dropped from 10x/day to 2x/day
@@ -1773,7 +1773,7 @@ Symptoms of growing pains:
 - 40% of engineering time spent on firefighting and maintenance
 - New engineer ramp-up time: 3 months (was 2 weeks when team was smaller)
 
-**Step 2 — Identify root causes:**
+**Step 2 â€” Identify root causes:**
 
 Root causes:
 - Monolithic repository with no clear ownership boundaries
@@ -1782,7 +1782,7 @@ Root causes:
 - Inconsistent coding standards across teams
 - No architecture documentation or decision records
 
-**Step 3 — Create a 6-month technical strategy:**
+**Step 3 â€” Create a 6-month technical strategy:**
 
 Month 1-2: Foundation
 - Implement continuous integration with automated testing
@@ -1799,7 +1799,7 @@ Month 4-6: Scale
 - Create developer portal with documentation, standards, and tools
 - Implement service ownership model
 
-**Step 4 — Communicate strategy to product partners:**
+**Step 4 â€” Communicate strategy to product partners:**
 
 "Feature velocity has slowed because our systems have not kept pace with team growth. We need to invest 20% of capacity over the next 6 months to restore our deployment velocity.
 
@@ -1816,16 +1816,16 @@ After 6 months, we expect to:
 
 This means we will ship fewer features in the next 2 quarters, but we will ship much faster in the following quarters."
 
-### Example 23: A/B Test Post-Mortem — When Learning Is More Valuable Than Winning
+### Example 23: A/B Test Post-Mortem â€” When Learning Is More Valuable Than Winning
 
 **Context:** The team ran a 4-week A/B test on a new feature. The variant performed worse than the control. The team is disappointed.
 
-**Step 1 — The results:**
+**Step 1 â€” The results:**
 
 Hypothesis: Adding social sharing buttons to the dashboard will increase referral traffic.
 Result: Referral traffic unchanged (p = 0.45). Dashboard engagement decreased by 5% (p = 0.03).
 
-**Step 2 — Analyze what was learned:**
+**Step 2 â€” Analyze what was learned:**
 
 "We ran this experiment to test whether social sharing drives growth. The answer is clear: it does not, at least not in the dashboard context.
 
@@ -1841,7 +1841,7 @@ Next steps:
 - Remove social buttons from the dashboard
 - Investigate what actually drives referral traffic through user surveys"
 
-**Step 3 — Reframe the "failure":**
+**Step 3 â€” Reframe the "failure":**
 
 "A negative result is not a failed experiment. A failed experiment is one where we learn nothing. Here, we learned that:
 1. Social sharing does not work on the dashboard
@@ -1854,7 +1854,7 @@ This learning will save us months of misguided investment. That is a success."
 
 **Context:** The company has three product lines: Core (80% revenue), Growth (15% revenue), and New (5% revenue). Engineering must prioritize across all three.
 
-**Step 1 — Define criteria:**
+**Step 1 â€” Define criteria:**
 
 Prioritization criteria:
 - Strategic importance (weight 30%): alignment with company strategy
@@ -1863,7 +1863,7 @@ Prioritization criteria:
 - Urgency (weight 15%): time sensitivity, competitive pressure
 - Effort (weight 10%): engineering investment (inverted)
 
-**Step 2 — Score initiatives:**
+**Step 2 â€” Score initiatives:**
 
 | Initiative | Strategic | Revenue | Customer | Urgency | Effort | Total |
 |---|---|---|---|---|---|---|
@@ -1875,7 +1875,7 @@ Prioritization criteria:
 | Growth: Referral program | 5 | 4 | 3 | 6 | 8 | 4.8 |
 | New: Analytics dashboard | 4 | 2 | 2 | 3 | 5 | 3.0 |
 
-**Step 3 — Allocate capacity:**
+**Step 3 â€” Allocate capacity:**
 
 "Based on scoring, the top 3 initiatives are all in Core, which is appropriate since Core drives 80% of revenue.
 
@@ -1889,7 +1889,7 @@ This 60/25/15 split acknowledges that Core pays the bills, Growth is the next gr
 Each initiative should have clear success metrics and a 90-day review to decide whether to continue, increase, or decrease investment."
 
 
-## P24 — CASE STUDIES IN PRODUCT ENGINEERING
+## P24 â€” CASE STUDIES IN PRODUCT ENGINEERING
 
 ### Case Study 1: How Stripe Engineers Think About Product
 
@@ -1901,7 +1901,7 @@ Stripe is widely regarded as having one of the strongest product engineering cul
 
 **Reliability as a Feature:** Stripe treats uptime and reliability as product features, not just operational concerns. Engineers are responsible for the operational health of their code.
 
-**Gradual Rollouts:** Every feature goes through a phased rollout — internal, beta, GA. Each phase has explicit criteria for advancement.
+**Gradual Rollouts:** Every feature goes through a phased rollout â€” internal, beta, GA. Each phase has explicit criteria for advancement.
 
 **Post-Mortem Culture:** Every incident has a blameless post-mortem. The focus is on system improvements, not individual mistakes.
 
@@ -1938,7 +1938,7 @@ Spotify is known for its experimentation culture, where product decisions are ro
 - Self-service experiment creation
 
 
-## P26 — PRODUCT ENGINEERING MINDSET: FINAL REFLECTIONS
+## P26 â€” PRODUCT ENGINEERING MINDSET: FINAL REFLECTIONS
 
 ### The Product Engineer's Promise
 
@@ -1992,15 +1992,15 @@ Articles and Blogs:
 
 Your product engineering practice evolves over time:
 
-**Level 1 — Aware:** You understand product engineering concepts but find them hard to apply. You read about prioritization but have not used RICE.
+**Level 1 â€” Aware:** You understand product engineering concepts but find them hard to apply. You read about prioritization but have not used RICE.
 
-**Level 2 — Applied:** You apply frameworks with guidance. You use RICE, conduct user interviews, and quantify technical debt. Practice feels mechanical.
+**Level 2 â€” Applied:** You apply frameworks with guidance. You use RICE, conduct user interviews, and quantify technical debt. Practice feels mechanical.
 
-**Level 3 — Integrated:** Product engineering is part of your daily practice. You naturally ask "what problem?" before "how?". You translate trade-offs without thinking.
+**Level 3 â€” Integrated:** Product engineering is part of your daily practice. You naturally ask "what problem?" before "how?". You translate trade-offs without thinking.
 
-**Level 4 — Mentor:** You teach product engineering to others. You lead by example. You are invited to product strategy discussions because your perspective is valued.
+**Level 4 â€” Mentor:** You teach product engineering to others. You lead by example. You are invited to product strategy discussions because your perspective is valued.
 
-**Level 5 — Leader:** You shape the product engineering culture of your organization. You influence how decisions are made, how teams are structured, and how success is measured.
+**Level 5 â€” Leader:** You shape the product engineering culture of your organization. You influence how decisions are made, how teams are structured, and how success is measured.
 
 Wherever you are on this path, the next step is clear: practice. Ship something, measure it, learn from it, and do it again.
 
@@ -2016,7 +2016,7 @@ Indicator: The team ignores third-party dependency risks. Libraries and services
 Correction: Evaluate every dependency. Track versions. Have a deprecation plan. Pin versions and test upgrades.
 
 **Anti-Pattern 80: The Manual Everything**
-Indicator: Everything is done manually — deployments, testing, monitoring, data fixes. No automation investment.
+Indicator: Everything is done manually â€” deployments, testing, monitoring, data fixes. No automation investment.
 Correction: Invest in automation early. Every manual task that happens more than once should be automated. Time spent on automation pays back quickly.
 
 **Anti-Pattern 81: The One-Person Bus Factor**
@@ -2042,7 +2042,7 @@ Correction: Standardize where it matters (core infrastructure, data formats) but
 ### Anti-Patterns in Code Review and Quality
 
 **Anti-Pattern 86: The Rubber Stamp Review**
-Indicator: Code reviews are perfunctory — reviewers approve without meaningful examination.
+Indicator: Code reviews are perfunctory â€” reviewers approve without meaningful examination.
 Correction: Code review should be thorough. If you approve a PR in under 5 minutes, you probably did not review it properly. Set standards for what review means.
 
 **Anti-Pattern 87: The Perfectionist Review**
@@ -2055,7 +2055,7 @@ Correction: Set SLAs for review turnaround. Review small PRs within hours, large
 
 **Anti-Pattern 89: The Post-Merge Review**
 Indicator: Reviews happen after code is merged, making feedback moot.
-Correction: Review before merge. If you cannot review before merge, you are not doing code review — you are doing code commentary.
+Correction: Review before merge. If you cannot review before merge, you are not doing code review â€” you are doing code commentary.
 
 ### Anti-Patterns in Operations
 
@@ -2083,7 +2083,7 @@ Correction: Reduce alert noise. Every alert should be actionable. If an alert fi
 
 **Anti-Pattern 95: The First Responder Freeze**
 Indicator: The first person to respond to an incident feels pressure to resolve it alone. They do not escalate or call for help.
-Correction: Incidents are team events. Escalation is not failure — it is good judgment. Have clear escalation paths and use them.
+Correction: Incidents are team events. Escalation is not failure â€” it is good judgment. Have clear escalation paths and use them.
 
 **Anti-Pattern 96: The Blameless Blame**
 Indicator: Post-mortems claim to be blameless but still assign blame through implication.
@@ -2092,7 +2092,7 @@ Correction: True blameless post-mortems focus on systems, processes, and circums
 ### Anti-Patterns in Estimation
 
 **Anti-Pattern 97: The Single-Point Estimate**
-Indicator: "This will take 3 weeks" — without variance, confidence, or assumptions.
+Indicator: "This will take 3 weeks" â€” without variance, confidence, or assumptions.
 Correction: Always estimate as a range. "2-4 weeks" or "Best: 2, Expected: 3, Worst: 5." Communicate confidence and assumptions.
 
 **Anti-Pattern 98: The Anchored Estimate**
@@ -2114,7 +2114,7 @@ Indicator: Product and engineering are on separate floors, separate buildings, o
 Correction: Co-locate (physically or virtually) cross-functional teams. Shared Slack channels. Shared stand-ups. One team, one mission.
 
 **Anti-Pattern 102: The Handoff Assembly Line**
-Indicator: Work flows from product to design to engineering to QA to operations — each group working in isolation.
+Indicator: Work flows from product to design to engineering to QA to operations â€” each group working in isolation.
 Correction: Cross-functional teams own outcomes end-to-end. Product, design, and engineering work together from conception to delivery.
 
 **Anti-Pattern 103: The Status Update Ritual**
@@ -2205,7 +2205,7 @@ These gates distinguish exceptional product engineering teams from good ones.
 
 ### Product Engineering Maturity Model
 
-**Level 1 — Ad Hoc:** Product engineering practices are informal and inconsistent. Some engineers talk to customers; most do not. Prioritization is by gut feel. Features are launched without measurement.
+**Level 1 â€” Ad Hoc:** Product engineering practices are informal and inconsistent. Some engineers talk to customers; most do not. Prioritization is by gut feel. Features are launched without measurement.
 
 Characteristics:
 - No structured prioritization
@@ -2214,7 +2214,7 @@ Characteristics:
 - Technical debt grows without visibility
 - Engineers rarely talk to customers
 
-**Level 2 — Aware:** The team knows product engineering practices exist but applies them inconsistently. Some practices are used, but they are not embedded in the workflow.
+**Level 2 â€” Aware:** The team knows product engineering practices exist but applies them inconsistently. Some practices are used, but they are not embedded in the workflow.
 
 Characteristics:
 - RICE scoring used occasionally
@@ -2223,7 +2223,7 @@ Characteristics:
 - Technical debt is discussed but not quantified
 - Build vs buy decisions are documented some of the time
 
-**Level 3 — Applied:** Product engineering practices are consistently applied. The team has established patterns for prioritization, measurement, and customer development.
+**Level 3 â€” Applied:** Product engineering practices are consistently applied. The team has established patterns for prioritization, measurement, and customer development.
 
 Characteristics:
 - All features are prioritized using structured frameworks
@@ -2233,7 +2233,7 @@ Characteristics:
 - Build vs buy decisions include TCO analysis
 - Experiments are designed with statistical rigor
 
-**Level 4 — Embedded:** Product engineering is part of the team's identity. Practices are habitual and automatic. The team naturally thinks in terms of outcomes, not output.
+**Level 4 â€” Embedded:** Product engineering is part of the team's identity. Practices are habitual and automatic. The team naturally thinks in terms of outcomes, not output.
 
 Characteristics:
 - Prioritization is driven by cost of delay and opportunity cost
@@ -2243,7 +2243,7 @@ Characteristics:
 - Platform investments are evaluated against product investments
 - Experimentation culture is established
 
-**Level 5 — Leading:** The team sets the standard for product engineering in the organization. They develop new practices, mentor other teams, and influence organizational culture.
+**Level 5 â€” Leading:** The team sets the standard for product engineering in the organization. They develop new practices, mentor other teams, and influence organizational culture.
 
 Characteristics:
 - The team develops and shares product engineering best practices
@@ -2277,9 +2277,9 @@ This skill document is a reference, not a novel. You do not need to memorize it.
 
 ### Final Word
 
-Product engineering is not a role — it is a mindset. You do not need a title change to practice it. You need only to care about whether what you build actually helps users, and to have the discipline to measure, learn, and iterate.
+Product engineering is not a role â€” it is a mindset. You do not need a title change to practice it. You need only to care about whether what you build actually helps users, and to have the discipline to measure, learn, and iterate.
 
-The best product engineers are not the ones who write the most code. They are the ones who write the right code — code that solves real problems, delivers measurable value, and enables the team to keep moving fast.
+The best product engineers are not the ones who write the most code. They are the ones who write the right code â€” code that solves real problems, delivers measurable value, and enables the team to keep moving fast.
 
 Every engineer can be a product engineer. It starts with asking one question before you start coding: "What problem are we solving, and how will we know when we have solved it?"
 

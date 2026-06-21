@@ -2,9 +2,9 @@
 title: change-intelligence Changelog
 ---
 
-# Changelog â€” change-intelligence
+# Changelog — change-intelligence
 
-## 4.0.0 â€” 2026-06-02
+## 4.0.0 — 2026-06-02
 
 ### Universalized Release
 

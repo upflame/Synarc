@@ -2,9 +2,9 @@
 title: ethics-engineer Changelog
 ---
 
-# Changelog â€” ethics-engineer
+# Changelog — ethics-engineer
 
-## 1.0.0 â€” 2026-06-02
+## 1.0.0 — 2026-06-02
 
 ### Universalized Release
 

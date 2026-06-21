@@ -2,9 +2,9 @@
 title: ux-engineer Changelog
 ---
 
-# Changelog â€” ux-engineer
+# Changelog — ux-engineer
 
-## 1.0.0 â€” 2026-06-02
+## 1.0.0 — 2026-06-02
 
 ### Universalized Release
 

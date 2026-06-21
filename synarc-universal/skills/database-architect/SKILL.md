@@ -1229,7 +1229,7 @@ ORDER BY timer_wait DESC;
 
 **Oracle ASH:**
 ```
--- Active Session History (ASH) — sampled every 10 seconds
+-- Active Session History (ASH) â€” sampled every 10 seconds
 -- V$ACTIVE_SESSION_HISTORY
 -- DBA_HIST_ACTIVE_SESS_HISTORY (AWR)
 ```

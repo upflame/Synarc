@@ -2,9 +2,9 @@
 title: decision-engineer Changelog
 ---
 
-# Changelog â€” decision-engineer
+# Changelog — decision-engineer
 
-## 2.0.0 â€” 2026-06-02
+## 2.0.0 — 2026-06-02
 
 ### Universalized Release
 

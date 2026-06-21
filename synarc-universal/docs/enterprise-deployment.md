@@ -9,6 +9,43 @@ schema: skill-pack/v1
 
 ---
 
+## On this page
+
+- [Org-Scale Installation](#org-scale-installation)
+  - [Centralized Pack Repository](#centralized-pack-repository)
+  - [Distribution Methods](#distribution-methods)
+  - [Git Submodule Setup](#git-submodule-setup)
+  - [Automated Deployment Script](#automated-deployment-script)
+- [Skill Version Management](#skill-version-management)
+  - [Semantic Versioning](#semantic-versioning)
+  - [Version Pinning](#version-pinning)
+  - [Release Channels](#release-channels)
+  - [Changelog Requirements](#changelog-requirements)
+- [[2.0.0] — 2026-06-02](#200-2026-06-02)
+  - [Added](#added)
+  - [Changed](#changed)
+  - [Fixed](#fixed)
+- [Dependency Resolution for Large Skill Packs](#dependency-resolution-for-large-skill-packs)
+  - [Resolution Algorithm](#resolution-algorithm)
+  - [Common Resolutions](#common-resolutions)
+  - [Enterprise Lock File](#enterprise-lock-file)
+- [CI/CD Integration](#cicd-integration)
+  - [Pre-Commit Validation](#pre-commit-validation)
+  - [CI Pipeline Stages](#ci-pipeline-stages)
+  - [Validation Conformance Levels](#validation-conformance-levels)
+- [Compliance and Audit Considerations](#compliance-and-audit-considerations)
+  - [Audit Trail](#audit-trail)
+  - [Regulatory Compliance](#regulatory-compliance)
+  - [Compliance Checklist](#compliance-checklist)
+  - [Retention Policy](#retention-policy)
+- [Multi-Team Skill Distribution](#multi-team-skill-distribution)
+  - [Team-Specific Skill Sets](#team-specific-skill-sets)
+  - [Skill Namespacing](#skill-namespacing)
+  - [Centralized Manifest for Orgs](#centralized-manifest-for-orgs)
+  - [Governance Workflow](#governance-workflow)
+  - [Conflict Resolution](#conflict-resolution)
+  - [Air-Gapped Deployment](#air-gapped-deployment)
+
 ## Org-Scale Installation
 
 ### Centralized Pack Repository
@@ -378,4 +415,11 @@ For environments without internet access:
 4. Extract to shared network location
 5. Each project references the shared location via config
 6. CI runs validation against local copy
+
+## See also
+
+- [Installation Guide](installation.md)
+- [Architecture Overview](architecture.md)
+- [Compatibility Matrix](compatibility.md)
+- [Migration Guide](migration-guide.md)
 

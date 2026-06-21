@@ -2,9 +2,9 @@
 title: risk-analyst Changelog
 ---
 
-# Changelog â€” risk-analyst
+# Changelog — risk-analyst
 
-## 2.0.0 â€” 2026-06-02
+## 2.0.0 — 2026-06-02
 
 ### Universalized Release
 
