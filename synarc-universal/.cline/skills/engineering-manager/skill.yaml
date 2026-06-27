@@ -1,0 +1,29 @@
+﻿id: engineering-manager
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  People leadership, technical decision-making, career development, project planning, stakeholder management, incident leadership, hiring decisions, balancing people needs with technical requirements, engineering culture building. version: 1.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

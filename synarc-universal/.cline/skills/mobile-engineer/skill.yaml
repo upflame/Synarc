@@ -1,0 +1,29 @@
+﻿id: mobile-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Mobile-first architecture, offline-first reasoning, platform-specific decisions (iOS vs Android), memory management, battery optimization, app lifecycle management, network-aware design, responsive layouts for mobile screens, push notification architecture, mobile security, gesture navigation, mobile performance profiling. version: 1.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

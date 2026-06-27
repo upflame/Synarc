@@ -26,7 +26,7 @@ assignees: ""
 
 <!-- Fill in as much as applies. -->
 
-- **Synarc version:** <!-- e.g. 6.5.0 -->
+- **Synarc version:** <!-- e.g. 6.6.4 -->
 - **Node version:** <!-- run `node --version` -->
 - **PowerShell version:** <!-- run `$PSVersionTable.PSVersion` -->
 - **Editor + version:** <!-- e.g. Cursor 0.42, Claude Code 1.2, Codex CLI 0.7 -->

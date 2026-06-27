@@ -1,47 +1,50 @@
 ---
-title: Migration Guide — v5 to v6 (Universal)
-description: Migration guide for transitioning from Synarc v5 (per-editor plugins) to v6.5.0 (unified Cognition Mesh with per-editor install.js pipeline and 56 skills).
-version: 6.5.0
+title: Migration Guide — v5 to v6.6.4
+description: Migration guide for transitioning from Synarc v5 (per-editor plugins) to v6.6.4 (unified Cognition Mesh with per-editor CLI and 56 skills).
+version: 6.6.4
 schema: skill-pack/v1
 ---
 
-# Migration Guide — v5 (Per-Editor Plugins) to v6 (Universal + Cognition Mesh)
+# Migration Guide — v5 (Per-Editor Plugins) to v6.6.4 (Universal + Cognition Mesh)
 
 ## Overview
 
-Synarc v6.5.0 is a **universal skill pack** compatible with 8 active AI coding agents (Roo Code shut down 2026-05-15; migrate to Cline). It replaces the per-editor plugin model with a single source of truth — `synarc-universal/` — and a per-editor installer that writes the right file format for each editor.
+Synarc v6.6.4 is a **universal skill pack** compatible with 8 active AI coding agents (Roo Code shut down 2026-05-15; migrate to Cline). It replaces the per-editor plugin model with a single source of truth — `synarc-universal/` — and a per-editor installer that writes the right file format for each editor.
 
-| Aspect | v5 (Per-Editor Plugins) | v6.5.0 (Universal) |
-|--------|------------------------|---------------------|
+> **The new CLI is `synarc`.** Run `synarc --help` for the full surface. See [CLI reference](./cli-reference.md).
+
+| Aspect | v5 (Per-Editor Plugins) | v6.6.4 (Universal) |
+|---|---|---|
 | Pack location | `plugins/<editor>/` per editor | Single `synarc-universal/` |
-| Distribution | One plugin per editor | One pack, 8 runtime adapters |
+| Distribution | One plugin per editor | npm (`synarc-universal`) + git + tarball |
 | Skills | 40 (v5 set) | 56 (40 v5 + 16 v6 P0) |
-| Install method | Manual file copy per editor | `node install.js [--target <editor>]` |
+| Install method | Manual file copy per editor | `synarc fresh [--target <editor>]` |
 | Lock file | None | `synarc.lock.json` records install state |
 | Mesh collaboration | Not available | Multi-role Cognition Mesh |
 | Intent Contracts | Not available | Formal agent commitments + verification |
-| Verification | Manual | `--verify` flag checks all 8 editors |
+| Verification | Manual | `synarc verify` checks all 8 editors |
 | Source of truth | Plugin manifest per editor | One `manifest.yaml` + 8 runtime adapters |
 | Fallback tiers | Implicit | Explicit Tier 1-4 in every capability |
 | Guardrails | Implicit (scattered) | Explicit `guardrails.yaml` per skill |
 | Validation | None built-in | Schema validation + CI pipeline (`npm run validate`) |
+| CLI | None | `synarc` bin with 8 verbs, 11 flags, JSON output |
 
 ## What Changed
 
 ### 1. Pack layout
 
 - v5: `plugins/<editor>/skills/SKILL.md` per editor
-- v6: `synarc-universal/skills/<skill>/SKILL.md` for all 56 skills, with `synarc-universal/shared/runtime-adapters/<editor>.md` defining per-editor compilation rules
+- v6.6.4: `synarc-universal/skills/<skill>/SKILL.md` for all 56 skills, with `synarc-universal/shared/runtime-adapters/<editor>.md` defining per-editor compilation rules
 
 ### 2. Install method
 
 - v5: copy plugin files manually per editor (Claude marketplace, Cursor copy, etc.)
-- v6: `node synarc-universal/scripts/install.js` — auto-detects editor markers, writes the right file for each, supports `--target <editor>` and `--target all`
+- v6.6.4: `synarc fresh` — auto-detects editor markers, writes the right file for each, supports `--target <editor>` and `--target all`. Also available via `npm install --save-dev synarc-universal` and `npx synarc install`.
 
 ### 3. Per-editor files
 
-| Editor | v5 | v6.5.0 |
-|--------|-----|--------|
+| Editor | v5 | v6.6.4 |
+|---|---|---|
 | Claude Code | `plugins/synarc/` | `.claude-plugin/plugin.json` (written by installer) |
 | Codex | `plugins/codex/skills/SKILL.md` | `AGENTS.md` (written by installer) |
 | OpenCode | `plugins/opencode/skills/SKILL.md` | `AGENTS.md` (written by installer) |
@@ -59,80 +62,78 @@ Synarc v6.5.0 is a **universal skill pack** compatible with 8 active AI coding a
 - **Design (3):** `product-designer`, `content-designer`, `design-systems-engineer`
 - **Quality (4):** `sdet-engineer`, `performance-engineer`, `release-engineer`, `accessibility-engineer`
 
-### 5. New runtime capabilities
+### 5. New runtime capabilities (v6.0.0 → v6.6.4)
 
 - **Cognition Mesh** — multi-role collaboration engine in `synarc-core`
 - **Intent Contracts** — formal agent commitments, per-WorkType templates, post-execution verification
 - **Verification Engine** — post-execution promise checking, scope checking, risk delta
-- **Audit & Compliance** — immutable audit trail, rollback-to-intent, EU AI Act / SOC2 / HIPAA export
-- **Structured ledger queries** — JSON-style queries over the Markdown ledger
+- **Audit & Compliance** — immutable audit trail, rollback-to-intent, EU AI Act / SOC2 / HIPAA / ISO 27001 export
+- **Structured ledger queries** — `synarc ledger query` over the Markdown ledger
 - **MCP integration (planned v6.0.0-beta)** — `synarc-mcp` server exposing mesh, ledger, and skill tools
+- **CLI surface** — `synarc` bin with 8 verbs (`fresh`, `add`, `remove`, `verify`, `status`, `doctor`, `migrate-v5`, `list`)
+- **Programmatic API** — `import { install, verify, detect, doctor } from "synarc-universal"`
+- **npm distribution** — `npm install --save-dev synarc-universal`, lock file per project
+- **JSON output** — every verb supports `--json` for CI pipelines
 
 ## Migration Steps
 
-### Step 1: Pull v6.5.0
+### Step 1: Install v6.6.4
 
 ```bash
+# Option A — use the npm package (recommended)
+npm install --save-dev synarc-universal
+
+# Option B — pull the v6.6.4 line
 git pull origin main
+git checkout release/v6.6.4
 ```
 
-If you were on a v5 branch, switch to the v6 line:
-
-```bash
-git checkout main   # v6.0.0 cache-rewrite line
-# or
-git checkout release/v6.1.0-cognition-mesh   # v6.1.0 cognition-mesh line
-```
-
-The current pack on `main` carries the v6.5.0 schema, 56 skills, and the per-editor `install.js` pipeline.
+The current pack on `main` carries the v6.6.4 schema, 56 skills, and the per-editor `synarc` CLI.
 
 ### Step 2: Run the installer
 
-From the project you want to add Synarc to:
-
 ```bash
-node synarc-universal/scripts/install.js
+synarc fresh
 ```
 
-The installer auto-detects editor markers (`.cursor/`, `.claude/`, `.github/`, etc.) and writes the right per-editor file. If nothing is detected, it installs the `AGENTS.md` fallback for Codex / OpenCode.
-
-To install for every supported editor in one shot:
+The installer auto-detects editor markers and writes the right per-editor file. To install for every supported editor in one shot:
 
 ```bash
-node synarc-universal/scripts/install.js --target all
+synarc --target all
 ```
 
 To install for a specific editor:
 
 ```bash
-node synarc-universal/scripts/install.js --target cursor
-node synarc-universal/scripts/install.js --target windsurf
+synarc fresh --target cursor
+synarc add windsurf
 ```
 
 ### Step 3: Verify
 
 ```bash
-node synarc-universal/scripts/install.js --verify
+synarc verify
 ```
 
 Expected output (8 PASS):
 
+```text
+  ✔ Claude Code   .claude-plugin/plugin.json        1.3 KB
+  ✔ Cursor        .cursor/rules/synarc-core.mdc     1.4 KB
+  ✔ Windsurf      .windsurfrules                    1.8 KB
+  ✔ GitHub Copilot .github/copilot-instructions.md  1.8 KB
+  ✔ Gemini CLI    GEMINI.md                         12  KB
+  ✔ Codex CLI     AGENTS.md                         10  KB
+  ✔ OpenCode      AGENTS.md                         10  KB
+  ✔ Cline         .cline/skills/*/SKILL.md          56 skills
+
+  ✔ synarc.lock.json written
+  ✔ 8/8 editors verified
 ```
-  [+] PASS  Claude Code          .claude-plugin/plugin.json (1317 bytes)
-  [+] PASS  Codex CLI            AGENTS.md (10174 bytes)
-  [+] PASS  OpenCode             AGENTS.md (project) or ~/.config/opencode/AGENTS.md (global) (10174 bytes)
-  [+] PASS  Cursor               .cursor/rules/synarc-core.mdc (1429 bytes)
-  [+] PASS  Windsurf             .windsurfrules (1784 bytes)
-  [+] PASS  GitHub Copilot       .github/copilot-instructions.md (1823 bytes)
-  [+] PASS  Gemini CLI           GEMINI.md (12170 bytes)
-  [+] PASS  Cline                .cline/skills/<skill>/SKILL.md (56 skills)
 
-Verification: 8 pass, 0 fail of 8 editors.
-```
+### Step 4: Remove old v5 plugin files
 
-### Step 4: Remove old per-editor plugin files
-
-After the new install is verified, you can delete the old v5 per-editor plugin files:
+After the new install is verified, delete the old v5 per-editor plugin files:
 
 ```bash
 # Remove old v5 plugin directories
@@ -145,6 +146,12 @@ rm -rf .cline/skills/   # if migrating from old Cline layout
 ```
 
 **Do not delete `.claude-plugin/`** — the new installer uses it.
+
+Or use the auto-migrator:
+
+```bash
+synarc migrate-v5
+```
 
 ### Step 5: Validate
 
@@ -164,6 +171,81 @@ npm run lint
 
 This runs `check-vendor-lockin` and `check-refs` to verify the pack is vendor-neutral and all markdown references resolve.
 
+## Upgrading from v6.6.4 (Sleek SDK)
+
+The v6.6.4 "Sleek SDK" release renames the npm package to `synarc` (the name users actually type) and adds a real programmatic SDK, config file, hooks system, branded welcome screen, and async postinstall. **No code change is required** to upgrade.
+
+### What changed
+
+| Aspect | v6.6.4 | v6.6.4 |
+|--------|--------|--------|
+| npm package name | `synarc-universal` | `synarc` |
+| Back-compat bin | n/a | `synarc-universal` is a `bin` alias (still works) |
+| Programmatic API | `require("synarc-universal")` | `require("synarc")` (same surface) |
+| Config file | none | `synarc.config.js` (optional) |
+| Hooks | none | `synarc.hooks.on(event, fn)` for 5 events |
+| CLI verbs | 9 | 17 (added: init, info, upgrade, uninstall, audit verify/export, ledger tail/query/show) |
+| Postinstall | tiny hint message | async, auto-detects markers, auto-installs, branded welcome |
+| Lock file schema | `synarc-lock/v1` | `synarc-lock/v1` (unchanged) |
+
+### Steps
+
+```bash
+# 1. Update the package
+npm uninstall synarc-universal
+npm install synarc
+
+# 2. (Optional) scaffold a config file
+npx synarc init
+
+# 3. (Optional) use the programmatic SDK in a build script or CI
+#    const synarc = require("synarc");
+#    const r = await synarc.install({ targets: ["cursor"] });
+```
+
+### What still works
+
+- The `synarc-universal` package name still works (kept as a bin alias).
+- The `require("synarc-universal")` import still works (the alias points to the same lib).
+- All 9 v6.6.4 CLI verbs (`fresh`, `add`, `remove`, `verify`, `status`, `doctor`, `migrate-v5`, `list`, plus the v6.6.4 `upgrade`) still work identically.
+- `synarc.lock.json` schema is unchanged.
+- `manifest.yaml`, `AGENTS.md`, and the per-editor install outputs are byte-for-byte identical.
+
+### What to migrate
+
+Only one thing: rename the import. Replace:
+
+```js
+const { install, verify } = require("synarc-universal");
+```
+
+with:
+
+```js
+const synarc = require("synarc");
+// synarc.install, synarc.verify, synarc.detect, synarc.doctor, synarc.status,
+// synarc.add, synarc.remove, synarc.migrateV5, synarc.upgrade,
+// synarc.info, synarc.init, synarc.audit, synarc.ledger,
+// synarc.hooks, synarc.ui, synarc.config, synarc.list
+```
+
+Or, if you prefer the named-export form, both are supported:
+
+```js
+const { install, verify, hooks, ui } = require("synarc");
+```
+
+### Rollback
+
+If you need to roll back to v6.6.4 for any reason:
+
+```bash
+npm uninstall synarc
+npm install synarc-universal@6.6.4
+```
+
+No data is lost: the lock file, the config file, and the per-editor install outputs are all forward- and backward-compatible.
+
 ## Roo Code → Cline (Migration)
 
 **Roo Code shut down on May 15, 2026.** Its user base migrated to Cline. The SKILL.md format is identical, so the migration is a one-step rename.
@@ -177,7 +259,7 @@ mv .roo/skills .cline/skills
 ### If you are installing fresh:
 
 ```bash
-node synarc-universal/scripts/install.js --target cline
+synarc fresh --target cline
 ```
 
 No additional configuration needed. Cline loads SKILL.md files from `.cline/skills/` on startup.
@@ -185,19 +267,24 @@ No additional configuration needed. Cline loads SKILL.md files from `.cline/skil
 ## Troubleshooting
 
 | Symptom | Cause | Resolution |
-|---------|-------|------------|
-| `node install.js` errors out | Missing Node.js 18+ | Install Node 18 LTS: `winget install OpenJS.NodeJS.LTS` (Windows) or `brew install node@18` (macOS) |
-| Per-editor file not created | Editor not detected | Use `--target <editor>` to force install |
-| `--verify` shows FAIL | File missing or too small | Re-run the installer with `--target <editor>` |
+|---|---|---|
+| `synarc` command not found | npm package not installed | `npm install --save-dev synarc-universal` |
+| `synarc` errors out | Missing Node.js 18+ | Install Node 18 LTS: `winget install OpenJS.NodeJS.LTS` (Windows) or `brew install node@18` (macOS) |
+| Per-editor file not created | Editor not detected | Use `synarc add <editor>` to force install |
+| `verify` shows FAIL | File missing or too small | Re-run with `synarc add <editor>` |
 | Cursor rule not picking up | Wrong YAML frontmatter | Check `.cursor/rules/synarc-core.mdc` has `description`, `globs`, `alwaysApply: true` |
 | Skills not activating | `skills/` directory not in project tree | Run the installer in the project root, not a subdirectory |
 | `npm run validate` fails | SKILL.md missing required frontmatter | See `synarc-universal/SCHEMA.md` for the spec |
 | `npm run lint` reports vendor lock-in | A skill references a vendor-specific runtime | See `synarc-universal/scripts/check-vendor-lockin.ps1` for the banned patterns |
+| `synarc doctor` reports issues | Environment, permissions, or pack integrity | Run `synarc doctor` to see all checks at once |
 
 ## Need Help?
 
-- [Installation Guide](installation.md) — full per-editor deep dive
-- [Architecture](architecture.md) — how the pack is organized
-- [Usage Guide](usage.md) — how to write and use skills
-- [Compatibility Matrix](compatibility.md) — capability × runtime matrix
-- [Enterprise Deployment](enterprise-deployment.md) — org-scale install + CI/CD
+- [CLI Reference](./cli-reference.md) — every command, flag, exit code
+- [Installation Guide](./installation.md) — full per-editor deep dive
+- [Architecture](./architecture.md) — how the pack is organized
+- [Usage Guide](./usage.md) — how to write and use skills
+- [Compatibility Matrix](./compatibility.md) — capability x runtime matrix
+- [Enterprise Deployment](./enterprise-deployment.md) — org-scale install + CI/CD
+- [Schemas Reference](./schemas.md) — all 9 JSON Schemas
+- [Advanced Topics](./advanced/) — deep dives

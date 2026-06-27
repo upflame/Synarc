@@ -100,4 +100,4 @@ The active product is `synarc-universal/`. Everything outside that directory is 
     |__ skills/                        # 56 domain skills, one directory each
 ```
 
-Older layout (v5 plugins/ at the repo root, v6.0.0 docs/ at the repo root, examples/, brain/, RELEASES.md) was removed in v6.5.0. The full history is reachable via `git log`.
+Older layout (v5 plugins/ at the repo root, v6.0.0 docs/ at the repo root, examples/, brain/, RELEASES.md) was removed in v6.6.4. The full history is reachable via `git log`.

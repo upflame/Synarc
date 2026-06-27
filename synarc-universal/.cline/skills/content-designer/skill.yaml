@@ -1,0 +1,35 @@
+---
+id: content-designer
+version: 1.0.0
+schema: skill-pack/v1
+category: design
+description: >
+  Content design — microcopy, error messages, button labels, empty
+  states, onboarding copy, voice and tone, plain language, i18n.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: >
+    Activates on intent signals: microcopy, error message, button
+    label, empty state, UX writing, voice and tone, plain
+    language, i18n, onboarding copy.
+
+dependencies:
+  synarc-core: ">=6.0.0"
+  product-designer: ">=1.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

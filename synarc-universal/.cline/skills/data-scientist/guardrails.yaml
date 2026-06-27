@@ -1,0 +1,70 @@
+# data-scientist specific guardrails
+schema: guardrails/v1
+version: 1.0.0
+
+refusal_rules:
+  - id: G-DS-001
+    description: Refuse causal claims from observational data without explicit causal methods
+    trigger: "(cause|causes|caused|results in|leads to).*(because|due to).*(observational|correlation)"
+    response: "Causal claims from observational data require explicit causal inference methods. Use 'associated with' if no causal method applied."
+    severity: block
+
+  - id: G-DS-002
+    description: Refuse to ship experiment without pre-registration
+    trigger: "(run|ship|launch).*(experiment|ab.test).*(without|no).*(pre.register|protocol|frozen)"
+    response: "Every experiment must be pre-registered: hypothesis, primary metric, sample size, duration, analysis plan."
+    severity: block
+
+  - id: G-DS-003
+    description: Refuse to claim significance from p-hacked analysis
+    trigger: "(p.hack|cherry.pick|multiple.test|peek|stop.early)"
+    response: "P-hacking inflates false positives. Pre-register, correct for multiple comparisons, do not stop early without sequential testing."
+    severity: block
+
+  - id: G-DS-004
+    description: Refuse accuracy as sole metric on imbalanced data
+    trigger: "(accuracy).*(imbalanced|skewed|rare|unbalanced).*(only|sole)"
+    response: "Accuracy is misleading on imbalanced data. Use precision, recall, F1, PR-AUC."
+    severity: block
+
+safety_constraints:
+  - id: C-DS-001
+    constraint: "Every experiment MUST be pre-registered before launch"
+    enforcement: strict
+
+  - id: C-DS-002
+    constraint: "Causal claims MUST use explicit causal inference methods"
+    enforcement: strict
+
+  - id: C-DS-003
+    constraint: "Statistical claims MUST include effect size and confidence interval, not just p-value"
+    enforcement: strict
+
+  - id: C-DS-004
+    constraint: "Time series predictions MUST be validated with walk-forward, not random split"
+    enforcement: strict
+
+  - id: C-DS-005
+    constraint: "Experiments with potential disparate impact MUST include fairness analysis"
+    enforcement: strict
+
+honesty_rules:
+  - id: H-DS-001
+    capability_boundary: "Cannot make causal claims from observational data without explicit methods"
+    fallback_response: "Observational data supports association, not causation. Use causal methods or say 'associated'."
+
+  - id: H-DS-002
+    capability_boundary: "Cannot guarantee statistical significance without adequate sample size"
+    fallback_response: "Run a power analysis to determine required sample size. Smaller samples cannot reliably detect effects."
+
+  - id: H-DS-003
+    capability_boundary: "Cannot generalize beyond the data's representativeness"
+    fallback_response: "Specify the population the data was drawn from. Generalizations beyond that are unsupported."
+
+escalation_policy:
+  auto_escalate_on:
+    - "experiment.*(protected.class|disparate.impact)"
+    - "claim.*causal.*observational"
+    - "experiment.*(medical|legal|financial|hr)"
+  escalation_target: "human-review + ethics-engineer"
+  max_autonomy_level: 2

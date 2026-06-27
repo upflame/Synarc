@@ -1,33 +1,33 @@
 ---
-title: Usage Guide — Synarc Universal Skill Pack (v6.5.0)
-description: Comprehensive usage guide for Synarc Universal v6.5.0 (56 skills, 8 active runtimes). Covers skill activation, writing new skills, referencing shared workflows, fallback tier usage, runtime compilation, and common workflow examples for change classification, risk assessment, and session tracking.
-version: 6.5.0
+title: Usage Guide — Synarc Universal Skill Pack
+description: Comprehensive usage guide for Synarc Universal v6.6.4 (56 skills, 8 active runtimes, Cognition Mesh, Intent Contracts). Skill activation, writing new skills, referencing shared workflows, fallback tier usage, runtime compilation, and example workflows.
+version: 6.6.4
 schema: skill-pack/v1
 ---
 
-# Usage Guide — Synarc Universal Skill Pack (v6.5.0)
+# Usage Guide — Synarc Universal Skill Pack (v6.6.4)
 
 ## Installation
 
 Install Synarc into your project with one command:
 
 ```bash
-node synarc-universal/scripts/install.js
+npm i -g synarc
 ```
 
-The installer auto-detects your editor markers (`.cursor/`, `.claude/`, `.github/`, etc.) and writes the right per-editor file. To install for every supported editor in one shot:
+The installer auto-detects your editor markers and writes the right per-editor file. To install for every supported editor in one shot:
 
 ```bash
-node synarc-universal/scripts/install.js --target all
+synarc --target all
 ```
 
 Verify the install:
 
 ```bash
-node synarc-universal/scripts/install.js --verify
+synarc verify
 ```
 
-See [Installation Guide](installation.md) for the full per-editor deep dive, and the [Migration Guide](migration-guide.md) if you're upgrading from v5.
+See [Installation Guide](./installation.md) for the full per-editor deep dive, and the [Migration Guide](./migration-guide.md) if you are upgrading from v5.
 
 ---
 
@@ -37,19 +37,27 @@ Skills use **intent-based activation**. When you describe a task, the agent matc
 
 ### Activation Flow
 
-```
+```text
 Your intent (e.g., "Add user authentication")
-  → Agent detects intent pattern
-  → Matches against skill activation conditions
-  → Loads matching SKILL.md(s)
-  → Classification & risk assessment run
-  → Skill behavior is applied
+  -> Agent detects intent pattern
+  -> Matches against skill activation conditions
+  -> Loads matching SKILL.md(s)
+  -> Classification and risk assessment run
+  -> Skill behavior is applied
 ```
 
-### Intent-to-Skill Mapping
+### Activation Precision
 
-| Your Intent | Skill Activated |
-|-------------|----------------|
+- **Always-on**: `synarc-core` and `negative-prompts` are loaded on every session
+- **Intent-based**: Domain skills activate only when matching intent is detected
+- **Priority**: Critical skills (core, negative-prompts) load before normal-priority skills
+- **Composite**: Multiple skills can be active simultaneously for cross-domain tasks
+- **Mesh**: 3+ matching intents trigger the [Cognition Mesh](./advanced/mesh.md)
+
+### Intent-to-Skill Mapping (selected)
+
+| Your intent | Skill activated |
+|---|---|
 | Debug, fix error, root cause analysis | `skills/debug-engineer/SKILL.md` |
 | Architecture design, system review | `skills/architect/SKILL.md` |
 | Security audit, vulnerability fix | `skills/security-engineer/SKILL.md` |
@@ -62,12 +70,7 @@ Your intent (e.g., "Add user authentication")
 | Session tracking, context continuity | `skills/synarc-core/SKILL.md` |
 | Any engineering task | `skills/synarc-core/SKILL.md` (always active) |
 
-### Activation Precision
-
-- **Always-on**: `synarc-core` and `negative-prompts` are loaded on every session
-- **Intent-based**: Domain skills activate only when matching intent is detected
-- **Priority**: Critical skills (core, negative-prompts) load before normal-priority skills
-- **Composite**: Multiple skills can be active simultaneously for cross-domain tasks
+For the full 56-skill mapping, see the [README](./README.md#-the-56-skills).
 
 ---
 
@@ -75,18 +78,18 @@ Your intent (e.g., "Add user authentication")
 
 ### 1. Create the skill directory
 
-```
+```bash
 mkdir -p skills/my-domain-skill/
 ```
 
-### 2. Write SKILL.md
+### 2. Write `SKILL.md`
 
 ```markdown
 ---
 name: my-domain-skill
 title: My Domain Skill
 description: Handles intent-matching for my specific domain
-version: 6.5.0
+version: 6.6.4
 schema: skill-pack/v1
 category:
   - development
@@ -101,10 +104,9 @@ compatible_agents:
   - copilot
   - windsurf
   - cline
-  - roo-code
 priority: normal
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=6.0.0"
 ---
 
 # My Domain Skill
@@ -162,17 +164,13 @@ Edge cases and recovery procedures.
 ## Security Checklist
 
 - [ ] Security check 1
-
-## Performance Checklist
-
-- [ ] Performance check 1
 ```
 
-### 3. Create skill.yaml
+### 3. Create `skill.yaml`
 
 ```yaml
 id: my-domain-skill
-version: 6.5.0
+version: 6.6.4
 schema: skill-pack/v1
 description: Handles intent-matching for my specific domain
 compatible_agents:
@@ -184,217 +182,105 @@ compatible_agents:
   - copilot
   - windsurf
   - cline
-  - roo-code
 activation:
   type: intent-based
 dependencies:
-  synarc-core: ">=5.0.0"
+  synarc-core: ">=6.0.0"
 ```
 
-### 4. Register in manifest.yaml
+### 4. Create `guardrails.yaml`
 
-Add the skill entry to `manifest.yaml` under the `skills:` list with its path, version, dependencies, and metadata.
+```yaml
+guardrails:
+  - id: my-skill-001
+    category: scope_absorption
+    severity: warn
+    match:
+      intent_pattern: "do something unrelated"
+    action: warn
+    message: "This skill is scoped to my-domain tasks."
+    references: []
+```
 
----
-
-## How to Reference Shared Workflows
-
-Shared workflows live in `shared/workflows/`. Skills reference them by relative path.
-
-### From a SKILL.md
+### 5. Create `CHANGELOG.md`
 
 ```markdown
-See [change-classification workflow](../shared/workflows/change-classification.md) for the full WorkType taxonomy.
+# Changelog
+
+## [1.0.0] - 2026-06-22
+
+### Added
+- Initial release
 ```
 
-### Reference Resolution
+### 6. Register in `manifest.yaml`
 
-- Relative paths resolve from the SKILL.md file's directory
-- The `shared/` prefix resolves from the skill pack root
-- Broken references are detected by L2 validation
+Add the skill entry to `manifest.yaml`:
 
-### Available Shared Workflows
+```yaml
+- id: my-domain-skill
+  path: skills/my-domain-skill/SKILL.md
+  version: 6.6.4
+  description: Handles intent-matching for my specific domain
+  category: development
+  tags: [my-domain]
+  activation: intent-based
+  priority: normal
+  skill_type: [workflow, capability]
+  dependencies:
+    synarc-core: ">=6.0.0"
+```
 
-| File | Purpose |
-|------|---------|
-| `shared/workflows/change-classification.md` | 12 WorkTypes, sub-types, ambiguity resolution |
-| `shared/workflows/risk-assessment.md` | 6-level risk ladder, domain hard floors, composite scoring |
-| `shared/workflows/session-tracking.md` | Immutable ledger, checkpoint protocol, handoff |
-| `shared/workflows/quality-gates.md` | Per-WorkType verification, zero-tolerance violations |
-| `shared/workflows/error-intelligence.md` | 6-step error protocol, persistent error memory |
-| `shared/workflows/context-injection.md` | COMPACT/STANDARD/FULL injection levels |
+### 7. Validate
+
+```bash
+cd synarc-universal
+npm run validate
+```
+
+The validator parses every `SKILL.md`, checks required fields, banned fields, `compatible_agents`, capability tier structure, reference link resolution, and existence of companion files.
 
 ---
 
-## How Fallback Tiers Work
+## Core Workflows
 
-Every capability defines a 4-tier fallback chain. The agent automatically selects the highest available tier.
-
-### Tier Selection at Runtime
-
-```
-Tier 1 — Native Execution (always preferred)
-  ↓ (if unavailable)
-Tier 2 — External Integration (via MCP, APIs)
-  ↓ (if unavailable)
-Tier 3 — Manual Workflow (text-based instructions)
-  ↓ (if unavailable)
-Tier 4 — Human-Assisted (structured output for review)
-```
-
-### Example: File Operations
-
-| Tier | Behavior | Available On |
-|------|----------|-------------|
-| 1 | Agent uses built-in Read/Write tools | All agents |
-| 2 | Agent uses external file service API | Claude Code, Gemini CLI, Cline |
-| 3 | Agent outputs file contents for manual copy | All agents |
-| 4 | Agent describes changes for human implementation | All agents |
-
-### Example: Risk Assessment
-
-| Tier | Behavior | Available On |
-|------|----------|-------------|
-| 1 | Agent computes risk natively via prompt rules | All agents |
-| 2 | Agent calls external risk scoring API | Claude Code, Gemini CLI, Cline |
-| 3 | Agent follows manual risk matrix from SKILL.md | All agents |
-| 4 | Agent formats risk data for human evaluation | All agents |
-
----
-
-## How to Compile for Different Runtimes
-
-Compilation transforms universal SKILL.md into the format each agent expects.
-
-### Compilation Flow
-
-1. **Input**: Universal SKILL.md + skill.yaml + runtime adapter
-2. **Parse**: Extract frontmatter, sections, activation model
-3. **Transform**: Apply adapter-specific rules (section filtering, format conversion)
-4. **Output**: Runtime-native file
-
-### Output Formats by Agent
-
-| Agent | Output File | Format |
-|-------|-------------|--------|
-| Codex CLI | `AGENTS.md` section | ASCII markdown, no Unicode |
-| OpenCode | `AGENTS.md` section | Unicode markdown, full paths |
-| Cursor | `.cursor/rules/*.mdc` | YAML frontmatter + markdown body |
-| Gemini CLI | `AGENTS.md` section | ASCII markdown |
-| Claude Code | Native `SKILL.md` | Full format, no transformation needed |
-| Copilot | `.github/copilot-instructions.md` | Compact markdown sections |
-| Windsurf | `.windsurfrules` | Compact markdown |
-| Cline | `.clinerules/` | Full skill markdown |
-
-### Running the Compiler
-
-Compilation is handled by the `convert-child-plugins.ps1` script in `scripts/`:
-
-```powershell
-.\scripts\convert-child-plugins.ps1 -TargetAgent cursor
-```
-
-This compiles all skills to the specified runtime format.
-
----
-
-## Common Workflows
+Synarc ships canonical workflow definitions in `shared/workflows/`. Each is a deterministic procedure an agent can run. The major workflows:
 
 ### Change Classification
 
-Classifies every engineering interaction before execution.
-
-**When it runs:** Every interaction that modifies code or configuration.
-
-**Steps:**
-1. Determine primary WorkType (FEATURE, FIX, REFACTOR, SCHEMA, CONTRACT, CONFIG, INFRA, EXPERIMENT, DOCS, ANALYSIS, PLAN, INCIDENT)
-2. Determine Planned vs Unplanned sub-classification
-3. Apply sub-type classification (e.g., FIX:BUG, FIX:SECURITY)
-4. Assign classification confidence (CERTAIN, LIKELY, UNCERTAIN, CONTRADICTED)
-5. Record in session ledger
-
-**Example output:**
-```
-FEATURE:PLANNED | Risk: MEDIUM | Scope: IN_SCOPE | Confidence: CERTAIN
-```
+Classifies every change into one of 12 WorkTypes (FEATURE, FIX, REFACTOR, INCIDENT, ANALYSIS, DOCS, CONFIG, TEST, INFRA, DATA, MIGRATION, EXPERIMENT) with 7 dimension scores. See [advanced/work-types.md](./advanced/work-types.md).
 
 ### Risk Assessment
 
-Assesses risk of every change using deterministic hard floors.
+Produces a 6-level risk (INFO, LOW, MEDIUM, HIGH, CRITICAL, BLAST) using base risk + hard floors + dimension modifiers + session aggregate. See [advanced/risk-assessment.md](./advanced/risk-assessment.md).
 
-**When it runs:** After classification, before execution.
+### Intent Contracts
 
-**Steps:**
-1. Determine base risk from WorkType
-2. Apply domain hard floors (auth=CRITICAL, payment=CRITICAL, etc.)
-3. Apply dimension modifiers (file breadth, reversibility, scope alignment)
-4. Compute composite risk
-5. Check escalation level
-6. Emit risk assessment
+Agents commit to scope + promises + risk cap before execution. See [advanced/intent-contracts.md](./advanced/intent-contracts.md).
 
-**Example output:**
-```
-Risk: HIGH | Domain: AUTH | Breadth: SINGLE_FILE | Reversibility: REVERTIBLE
-Floor: CRITICAL | Composite: 4 | Escalation: WARNING
-Rollback: Revert token validation change
-```
+### Verification Engine
+
+Post-execution promise check, scope diff, risk delta, composite verdict. See [advanced/verification.md](./advanced/verification.md).
+
+### Audit & Compliance
+
+Hash-chained audit trail with EU AI Act, SOC2, HIPAA, ISO 27001 export. See [advanced/audit.md](./advanced/audit.md).
+
+### Context Injection
+
+3 injection levels (COMPACT, STANDARD, FULL) tuned for prompt-cache friendliness. See [advanced/performance.md](./advanced/performance.md).
 
 ### Session Tracking
 
-Maintains an immutable ledger of all changes across sessions.
-
-**When it runs:** On every file modification, session start/resume, and handoff.
-
-**Steps:**
-1. Initialize session with ID and timestamp
-2. Create immutable ledger entry for every change
-3. Update aggregate risk after each entry
-4. Create checkpoint when risk crosses HIGH
-5. Enable session continuity and handoff
-
-**Example ledger entry:**
-```
-2026-06-02T10:30:00Z | FEATURE:PLANNED | Risk: MEDIUM | Scope: IN_SCOPE | Breaking: false
-  → src/auth/login.ts (+45, -12)
-  → contract: [AuthAPI.login]
-  → Aggregate risk: MEDIUM (trend: stable)
-```
+Append-only ledger of every mutation, with `synarc ledger query` for structured queries. See [advanced/session-tracking.md](./advanced/session-tracking.md).
 
 ### Quality Gates
 
-Enforces quality standards on every engineering change.
-
-**When it runs:** Before and after every file modification.
-
-**Pre-write checks:**
-- Classify the specific tool call
-- Check for contract/schema/auth impact
-- Verify within declared scope
-- Confirm rollback path for HIGH+ risk
-- Read current state before destructive operations
-- Check aggregate risk threshold
-
-**Post-write verification:**
-- Record in session ledger
-- Update session state
-- Check auto-emit rules
-- Stop on breaking changes
-- Verify file integrity
-- Run tests for affected module
+Zero-tolerance enforcement per work type, no bypass via prompt. See [advanced/guardrails.md](./advanced/guardrails.md).
 
 ### Error Intelligence
 
-Systematically resolves errors using a 6-step protocol.
-
-**When it runs:** On errors, exceptions, test failures, or crash reports.
-
-**Steps:**
-1. **Classify** — Type, category, reproducibility, scope, severity
-2. **Locate** — Stack trace analysis, pattern matching, blame analysis, bisect
-3. **Assess** — Determine fix strategy from error type
-4. **Apply** — Read affected file, apply minimal fix, add regression test
-5. **Verify** — Run reproduction case, existing tests, lint, type check
-6. **Track** — Record in persistent error intelligence database
+Systematic 6-step error resolution protocol (classify, locate, assess, apply, verify, track).
 
 ---
 
@@ -402,71 +288,122 @@ Systematically resolves errors using a 6-step protocol.
 
 ### Example 1: Full Feature Implementation
 
-```
+```text
 Context: Node.js 20 REST API with Express + PostgreSQL
 Task: Add user authentication
 Scale: MEDIUM — team of 4, ~15k LOC, 6 modules
 ```
 
 **What happens:**
+
 1. `backend-engineer` activates for API design
 2. `security-engineer` activates for auth implementation
 3. `database-architect` activates for user schema design
-4. Change classified as FEATURE:PLANNED, MEDIUM risk
-5. Hard floor applied: auth domain → CRITICAL minimum
-6. Quality gates require unit tests, contract tests, type check, lint
-7. Session ledger tracks all file modifications
-8. Error intelligence handles any issues during implementation
+4. 3+ skill matches -> [Cognition Mesh](./advanced/mesh.md) activates
+5. Change classified as `FEATURE:PLANNED`, `MEDIUM` risk
+6. Hard floor applied: auth domain -> `CRITICAL` minimum
+7. Intent Contract created with auth-scoped promises
+8. Quality gates require unit tests, contract tests, type check, lint
+9. Session ledger tracks all file modifications
+10. Verification Engine emits `pass` verdict post-execution
 
 ### Example 2: Production Incident Response
 
-```
+```text
 Context: Production outage — payment API returning 500s
 Task: Investigate and fix
 Scale: LARGE — 8 teams, ~500k LOC, 40+ services
 ```
 
 **What happens:**
+
 1. `incident-commander` activates with ICS framework
 2. `debug-engineer` activates for systematic root cause analysis
 3. `sre-engineer` activates for SLO impact assessment
-4. Change classified as INCIDENT, CRITICAL risk
-5. Hard floor applied: payment domain → CRITICAL
+4. Change classified as `INCIDENT`, `CRITICAL` risk
+5. Hard floor applied: payment domain -> `CRITICAL`
 6. Error intelligence runs 6-step protocol
-7. Quality gates require RCA, monitoring gap review
-8. Session checkpoint created at every risk boundary
-9. Handoff protocol enables team shift changes
+7. Intent Contract created with `risk_cap: CRITICAL`
+8. Quality gates require RCA, monitoring gap review
+9. Session checkpoint created at every risk boundary
+10. Verification Engine emits verdict; if `partial`, follow-up contract created
+11. Audit record appended to the chain
 
 ### Example 3: Cross-Boundary Refactoring
 
-```
+```text
 Context: Extract shared auth logic into a common module
 Task: Refactor auth middleware used by 5 services
 Scale: MEDIUM — 2 teams, ~80k LOC, 3 services affected
 ```
 
 **What happens:**
+
 1. `architect` activates for system decomposition
-2. `refactor` WorkType assigned with HIGH risk (public API)
-3. Hard floor: auth domain → CRITICAL
-4. UNPLANNED sub-checks run if scope expands
+2. `refactor` WorkType assigned with `HIGH` risk (public API)
+3. Hard floor: auth domain -> `CRITICAL`
+4. `UNPLANNED` sub-checks run if scope expands
 5. Quality gates verify: same tests pass before and after
 6. Contract impact assessed for all 5 consuming services
 7. Session ledger tracks cross-service changes
 8. Risk escalation on multi-file breadth modifier
+9. Verification Engine diffs actual files touched vs `in_scope` list
 
 ### Example 4: Quick Documentation Update
 
-```
+```text
 Context: Update README with new API endpoint documentation
 Task: Document the /api/v2/users endpoint
 Scale: SMALL — solo project, ~5k LOC
 ```
 
 **What happens:**
-1. Minimal classification (DOCS, LOW risk)
-2. No quality gates triggered (DOCS has no mandatory gates)
-3. No hard floors (documentation is not a protected domain)
-4. No ledger tracking needed (ANALYSIS and DOCS have light tracking)
-5. Session overhead: ~45ms + ~130 tokens
 
+1. Minimal classification (`DOCS`, `LOW` risk)
+2. No quality gates triggered (`DOCS` has no mandatory gates)
+3. No hard floors (documentation is not a protected domain)
+4. No ledger tracking needed (`ANALYSIS` and `DOCS` have light tracking)
+5. Session overhead: ~45ms + ~130 tokens
+6. No Intent Contract required (risk below `MEDIUM`)
+
+---
+
+## Programmatic API
+
+For tool authors embedding Synarc into their own CLI/IDE/agent framework:
+
+```js
+import {
+  install, verify, detect, doctor, list, ledger
+} from "synarc-universal";
+
+const detected = await detect(process.cwd());
+console.log("Detected editors:", detected);
+
+const result = await install({
+  targets: ["cursor", "claude-code"],
+  cwd: process.cwd(),
+  dryRun: false,
+  yes: true,
+});
+
+const v = await verify({ targets: ["cursor", "claude-code"] });
+if (!v.ok) process.exit(1);
+
+const recent = await ledger.query({ since: "7d", minRisk: "HIGH" });
+console.log("High-risk changes:", recent);
+```
+
+See the [CLI reference](./cli-reference.md) for the full surface and the [Schemas reference](./schemas.md) for the formal data contracts.
+
+---
+
+## See also
+
+- [README](./README.md) — landing page
+- [CLI Reference](./cli-reference.md) — every command and flag
+- [Installation Guide](./installation.md) — per-editor deep dive
+- [Architecture](./architecture.md) — 7-layer design
+- [Compatibility](./compatibility.md) — runtime capability matrix
+- [Schemas](./schemas.md) — JSON Schemas reference
+- [Advanced Topics](./advanced/) — deep dives on each subsystem

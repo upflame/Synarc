@@ -1,0 +1,36 @@
+---
+id: prompt-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: ai-era
+description: >
+  Prompt engineering reasoning — system/agent prompt design, prompt
+  decomposition, few-shot curation, chain-of-thought, structured
+  output, prompt evals, versioning, library management, and
+  injection resistance.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: >
+    Activates on intent signals: write a prompt, system prompt,
+    few-shot, prompt eval, prompt library, prompt version,
+    prompt injection, structured output, JSON prompt.
+
+dependencies:
+  synarc-core: ">=6.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

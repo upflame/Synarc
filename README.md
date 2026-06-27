@@ -2,7 +2,7 @@
 
 ![Synarc Banner](https://res.cloudinary.com/dufzctlaj/image/upload/v1779790150/synarc-banner_lytvq5.png)
 
-[![Version](https://img.shields.io/badge/version-6.5.0-blue)](https://github.com/upflame-labs/synarc/releases)
+[![Version](https://img.shields.io/badge/version-6.6.4-blue)](https://github.com/upflame-labs/synarc/releases)
 [![Stage](https://img.shields.io/badge/stage-production-success)](https://github.com/upflame-labs/synarc)
 [![License](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)
 [![Runtime](https://img.shields.io/badge/runtime-cross--platform-purple)](https://github.com/upflame-labs/synarc)
@@ -18,7 +18,7 @@ Engineering intelligence runtime for AI coding agents. Structured change classif
 ## Key Features
 
 - **Intent Contracts** — every change opens with a formal commitment (scope, promises, risk cap) and closes with a post-execution verification. No silent edits.
-- **8 active runtimes, one install** — one `node install.js` writes the right file format for each editor. No rewrites when you switch tools.
+- **8 active runtimes, one install** — `npm i -g synarc` writes the right file format for each editor. No rewrites when you switch tools.
 - **56 specialized skills** — engineering, AI-era, product, design, quality, security, data, ML, leadership, and industry verticals. Loaded by intent, not by file.
 - **Cognition Mesh** — multi-role team collaboration: /mesh triggers a coordinator that picks roles, shares working memory, and orchestrates the conversation between them.
 - **Zero executables, zero network** — the pack is pure Markdown + YAML. Audit trails are local files. No data leaves your machine.
@@ -74,114 +74,36 @@ Same intent. Different discipline. The agent proposes a contract, you accept, it
 
 ### Prerequisites
 
-Any AI coding runtime: Claude Code, Codex CLI, OpenCode, Cursor, Windsurf, GitHub Copilot, Gemini CLI, or Cline. Node.js 18+ if you want to run the installer (the installed pack itself is pure Markdown + YAML).
+Any AI coding runtime: Claude Code, Codex CLI, OpenCode, Cursor, Windsurf, GitHub Copilot, Gemini CLI, or Cline. Node.js 18+ is required.
 
 ### Install
 
-From inside the project you want to add Synarc to:
-
 ```bash
-git clone https://github.com/upflame-labs/synarc.git
-cd synarc
-node synarc-universal/scripts/install.js
+npm i -g synarc
 ```
 
-The installer auto-detects your editor markers (.cursor/, .claude/, .github/, etc.) and writes the right file for each one. If nothing is detected, it asks which editors to install for.
-
-Or, once published, via npx:
-
-```bash
-npx synarc-universal
-```
-
-### Quick install for specific editors
-
-Copy-paste the block for the editor you use. Each block assumes you have the repo cloned and want Synarc installed for one editor in the current project.
-
-#### Claude Code
-
-```bash
-# 1. Clone (if you haven't)
-git clone https://github.com/upflame-labs/synarc.git
-cd synarc
-
-# 2. Copy the plugin manifest into your project
-node synarc-universal/scripts/install.js add claude-code
-
-# 3. Trust the plugin in Claude Code
-claude plugin trust synarc
-claude plugin enable synarc
-```
-
-Or use the native marketplace (faster, no clone):
-
-```bash
-claude plugin marketplace add upflame-labs/synarc
-claude plugin install synarc
-```
-
-#### Codex CLI
-
-```bash
-# 1. Clone into the project you want Synarc in
-git clone https://github.com/upflame-labs/synarc.git
-cd <your-project>
-
-# 2. Drop the AGENTS.md at your project root
-node synarc-universal/scripts/install.js add codex
-
-# 3. Start a Codex session — it auto-discovers AGENTS.md
-codex
-```
-
-Global install (every project on this machine):
-
-```bash
-git clone https://github.com/upflame-labs/synarc.git ~/synarc
-node ~/synarc/synarc-universal/scripts/install.js add codex --global
-```
-
-#### OpenCode
-
-```bash
-# 1. Clone into the project you want Synarc in
-git clone https://github.com/upflame-labs/synarc.git
-cd <your-project>
-
-# 2. Drop the AGENTS.md at your project root
-node synarc-universal/scripts/install.js add opencode
-
-# 3. Start an OpenCode session — it auto-discovers AGENTS.md
-opencode
-```
-
-Global install (every project on this machine):
-
-```bash
-git clone https://github.com/upflame-labs/synarc.git ~/synarc
-node ~/synarc/synarc-universal/scripts/install.js add opencode --global
-```
+That's it. The installer auto-detects your editor markers (`.cursor/`, `.claude/`, `.github/`, etc.) and writes the right file for each one. If nothing is detected, it asks which editors to install for.
 
 ### Choose your scenario
 
 | Your situation | Command | What happens |
 |---|---|---|
-| Brand new project, no editor configured | `node install.js` | Interactive picker asks which editors to install |
-| Already have one editor, want to add Synarc | `node install.js add <editor>` | Installs Synarc for that editor, leaves the rest alone |
-| Project with multiple editors | `node install.js add <editor>` | Installs the missing editor only |
-| Want everything everywhere | `node install.js --target all` | Installs Synarc for all 8 supported editors |
-| Remove Synarc from one editor | `node install.js remove <editor>` | Deletes only that editor's config file |
-| Migrate from v5 plugin files | `node install.js migrate-v5` | Backs up v5 files, installs v6.5.0 |
-| Just check the install | `node install.js verify` | Reports PASS/FAIL per editor |
-| Read the lock file | `node install.js status` | Prints installed editors, no writes |
-| Full diagnostics | `node install.js doctor` | verify + Node version + git version |
+| Brand new project, no editor configured | `synarc` | Interactive picker asks which editors to install |
+| Already have one editor, want to add Synarc | `synarc add <editor>` | Installs Synarc for that editor, leaves the rest alone |
+| Project with multiple editors | `synarc add <editor>` | Installs the missing editor only |
+| Want everything everywhere | `synarc --target all` | Installs Synarc for all 8 supported editors |
+| Remove Synarc from one editor | `synarc remove <editor>` | Deletes only that editor's config file |
+| Migrate from v5 plugin files | `synarc migrate-v5` | Backs up v5 files, installs v6.6.4 |
+| Just check the install | `synarc verify` | Reports PASS/FAIL per editor |
+| Read the lock file | `synarc status` | Prints installed editors, no writes |
+| Full diagnostics | `synarc doctor` | verify + Node version + git version |
 
 `<editor>` is one of: claude-code, codex, opencode, cursor, windsurf, copilot, gemini-cli, cline.
 
 ### Verify
 
 ```bash
-node synarc-universal/scripts/install.js verify
+synarc verify
 ```
 
 Expected output on a full install:
@@ -229,7 +151,7 @@ For multi-role collaboration, use /mesh (or any phrase like `"as a team"`, `"hav
 | [Architecture](synarc-universal/docs/architecture.md) | Universal agent skill architecture, 7-layer design |
 | [Usage](synarc-universal/docs/usage.md) | Skill activation, writing new skills, fallback tier usage |
 | [Compatibility](synarc-universal/docs/compatibility.md) | Capability – runtime matrix for the 8 active editors |
-| [Migration](synarc-universal/docs/migration-guide.md) | Migrating from v5 (per-editor plugins) to v6.5.0 (universal) |
+| [Migration](synarc-universal/docs/migration-guide.md) | Migrating from v5 (per-editor plugins) to v6.6.4 (universal) |
 | [Enterprise Deployment](synarc-universal/docs/enterprise-deployment.md) | Org-scale install, CI/CD, compliance, multi-team distribution |
 | [Security](synarc-universal/security/OWASP-LLM-mapping.md) | OWASP LLM mapping, prompt-injection matrix, capability boundaries |
 | [CHANGELOG](CHANGELOG.md) | Release history |
@@ -290,11 +212,11 @@ All scripts run from inside `synarc-universal/`. PowerShell 5.1+ is required.
 
 | Symptom | Cause | Fix |
 |---------|-------|-----|
-| Classification headers not appearing in agent responses | Editor can't find the rule / AGENTS.md | Run `node install.js verify` — the FAIL row tells you which file is missing or too small |
+| Classification headers not appearing in agent responses | Editor can't find the rule / AGENTS.md | Run `synarc verify` — the FAIL row tells you which file is missing or too small |
 | Mesh not triggering | No multi-intent phrase, no /mesh command | Try /mesh explicitly, or write a 3+ intent prompt (e.g., `"build a checkout flow"` matches PM, designer, frontend, backend, accessibility, performance, SDET, release, security) |
-| "Source not found" error | Partial checkout or `synarc-universal/` not intact | Re-clone the full repo; do not use `git archive` or partial clone |
-| Want a clean re-install for one editor | Stale config or version drift | Delete the editor's file (e.g. `rm` `.windsurfrules`) and run `node install.js --target <editor>` again |
-| `node install.js` opens an interactive picker in CI | Stdin is a TTY in the CI runner | Add `--yes` (or `-y`) to skip prompts and use the AGENTS.md fallback |
+| "Source not found" error | Synarc package not installed or corrupted | Run `npm i -g synarc` to reinstall |
+| Want a clean re-install for one editor | Stale config or version drift | Delete the editor's file (e.g. `rm` `.windsurfrules`) and run `synarc add <editor>` again |
+| `synarc` opens an interactive picker in CI | Stdin is a TTY in the CI runner | Add `--yes` (or `-y`) to skip prompts and use the AGENTS.md fallback |
 
 For the full failure-mode matrix, see [Installation Guide — Troubleshooting](synarc-universal/docs/installation.md#troubleshooting).
 

@@ -1,0 +1,29 @@
+﻿id: testing-strategy
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Risk-based testing strategy â€” test pyramid by change risk, test type selection guide, test double strategy, per-WorkType test requirements, test data management, flaky test remediation, contract testing, CI/CD test execution, and coverage quality. version: 1.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

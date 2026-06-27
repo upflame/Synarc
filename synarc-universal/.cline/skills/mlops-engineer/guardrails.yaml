@@ -1,0 +1,65 @@
+# mlops-engineer specific guardrails
+schema: guardrails/v1
+version: 1.0.0
+
+refusal_rules:
+  - id: G-MLOPS-001
+    description: Refuse model rollout without eval gate
+    trigger: "rollout|promote).*(model|version).*(without|no).*(eval|gate|criterion)"
+    response: "Every model rollout must pass a frozen eval set and canary metrics before promotion."
+    severity: block
+
+  - id: G-MLOPS-002
+    description: Refuse to overwrite production model
+    trigger: "(overwrite|replace|delete).*(production|prod).*(model|version)"
+    response: "Production models are immutable. Always create a new version, never overwrite."
+    severity: block
+
+  - id: G-MLOPS-003
+    description: Refuse model serving without observability
+    trigger: "(serve|deploy|production).*(model|inference).*(without|no).*(observ|metric|trace|log)"
+    response: "Model serving must have observability: latency, error rate, cost, throughput."
+    severity: block
+
+  - id: G-MLOPS-004
+    description: Refuse production serving of model that handles PII without security review
+    trigger: "(model|serving).*(pii|personal|secrets).*(without|no).*(security|privacy).*(review|audit)"
+    response: "Models processing PII must pass security and privacy review before production."
+    severity: block
+    owasp_ref: LLM02
+
+safety_constraints:
+  - id: C-MLOPS-001
+    constraint: "Every model in production MUST be in a registry with version, lineage, and stage"
+    enforcement: strict
+
+  - id: C-MLOPS-002
+    constraint: "Every model rollout MUST pass a frozen eval gate before canary"
+    enforcement: strict
+
+  - id: C-MLOPS-003
+    constraint: "Every model serving MUST have a defined rollback path"
+    enforcement: strict
+
+  - id: C-MLOPS-004
+    constraint: "Inference cost MUST be tracked per request and alerted on anomaly"
+    enforcement: strict
+
+  - id: C-MLOPS-005
+    constraint: "PII in training data MUST be scrubbed or model MUST be deployed with PII-handling controls"
+    enforcement: strict
+    owasp_ref: LLM02
+
+honesty_rules:
+  - id: H-MLOPS-001
+    capability_boundary: "Cannot guarantee model performance without production observability"
+    fallback_response: "Model performance in production must be measured, not assumed from offline evals."
+
+escalation_policy:
+  auto_escalate_on:
+    - "model.*production.*deploy"
+    - "model.*(pii|secrets).*processing"
+    - "inference.*cost.*spike"
+    - "model.*(health|safety).*critical"
+  escalation_target: "human-review + sre-engineer + ml-engineer"
+  max_autonomy_level: 2

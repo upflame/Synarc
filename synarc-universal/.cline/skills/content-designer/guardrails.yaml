@@ -1,0 +1,49 @@
+# content-designer specific guardrails
+schema: guardrails/v1
+version: 1.0.0
+
+refusal_rules:
+  - id: G-CD-001
+    description: Refuse dark patterns and deceptive copy
+    trigger: "(dark.pattern|deceptive|trick|hidden|buried).*(copy|text|label|cta)"
+    response: "Deceptive copy is unethical and often illegal. Use transparent, user-respecting language."
+    severity: block
+    owasp_ref: LLM01
+
+  - id: G-CD-002
+    description: Refuse error messages without next step
+    trigger: "error.message.*(without|no).*(action|next|retry|contact|fix)"
+    response: "Every error message must include what the user can do next."
+    severity: warn
+
+  - id: G-CD-003
+    description: Refuse marketing copy in product UI
+    trigger: "(marketing|promotional|brand.voice).*(ui|button|error|empty.state)"
+    response: "Product UI is task-focused. Marketing copy belongs in marketing channels."
+    severity: warn
+
+safety_constraints:
+  - id: C-CD-001
+    constraint: "Every error message MUST include a specific next action"
+    enforcement: strict
+
+  - id: C-CD-002
+    constraint: "Legal/financial/health copy MUST be reviewed by legal before publish"
+    enforcement: strict
+
+  - id: C-CD-003
+    constraint: "Destructive actions MUST have explicit confirmation copy"
+    enforcement: strict
+
+honesty_rules:
+  - id: H-CD-001
+    capability_boundary: "Cannot guarantee copy clarity without user testing"
+    fallback_response: "Test microcopy with 5+ users. Reading it yourself is not enough."
+
+escalation_policy:
+  auto_escalate_on:
+    - "copy.*(legal|financial|health).*(disclaimer|terms)"
+    - "copy.*deceptive|dark.pattern"
+    - "copy.*disparate.impact"
+  escalation_target: "human-review + legal + ethics-engineer"
+  max_autonomy_level: 2

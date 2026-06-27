@@ -1,0 +1,42 @@
+---
+id: synarc-core
+version: 6.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Core engineering intelligence runtime providing change classification,
+  risk assessment, context injection, session tracking, quality gates,
+  error intelligence, agent execution governance, and Cognition Mesh
+  multi-role team coordination for all AI coding agents.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: always-on
+  description: >
+    Automatically activates on any engineering interaction.
+    Provides foundational cognition for all other skills.
+
+dependencies: {}
+
+performance:
+  context_overhead:
+    compact: ~50 tokens
+    standard: ~200 tokens
+    full: ~500 tokens
+  activation_latency: ~50ms
+  classification_overhead: ~15 tokens
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

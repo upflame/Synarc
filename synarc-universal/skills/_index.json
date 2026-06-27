@@ -1,0 +1,404 @@
+{
+  "schema": "skill-catalog/v1",
+  "generated": "2026-06-22T07:23:47.315Z",
+  "ref": "main",
+  "owner": "upflame-labs",
+  "repo": "synarc",
+  "baseUrl": "https://raw.githubusercontent.com/upflame-labs/synarc/main",
+  "count": 56,
+  "totalBytes": 2999465,
+  "skills": [
+    {
+      "id": "accessibility-engineer",
+      "hash": "5ca134c5e3ecb6afc8fe601d2d00f0e60a7ee97f78d7932f98c68ee35a99b0fa",
+      "bytes": 19173,
+      "ref": "main",
+      "path": "synarc-universal/skills/accessibility-engineer/SKILL.md"
+    },
+    {
+      "id": "agent-architect",
+      "hash": "b43b460c63bfae632dfe0bb42596776331fcbbc5138267e9bf8684ba0c217456",
+      "bytes": 13152,
+      "ref": "main",
+      "path": "synarc-universal/skills/agent-architect/SKILL.md"
+    },
+    {
+      "id": "agentic-ai-engineer",
+      "hash": "95c576d1f64a076152882459b69ff1a6504793f4570dd469fe65859d2b2e0a08",
+      "bytes": 19775,
+      "ref": "main",
+      "path": "synarc-universal/skills/agentic-ai-engineer/SKILL.md"
+    },
+    {
+      "id": "ai-product-manager",
+      "hash": "1592867fb3334302851533e473df56075d6dbf938f43303565ebfe84519214ae",
+      "bytes": 13313,
+      "ref": "main",
+      "path": "synarc-universal/skills/ai-product-manager/SKILL.md"
+    },
+    {
+      "id": "ai-safety-eval-engineer",
+      "hash": "bb253f3990f8a1456dddd49a83f7ed3efc1df74341b62a9df9169899147fc53d",
+      "bytes": 15356,
+      "ref": "main",
+      "path": "synarc-universal/skills/ai-safety-eval-engineer/SKILL.md"
+    },
+    {
+      "id": "api-designer",
+      "hash": "2320cff8d783a81c8867cca663f6f03e0fa44fd33291aeb881ab2c7421ab9702",
+      "bytes": 63905,
+      "ref": "main",
+      "path": "synarc-universal/skills/api-designer/SKILL.md"
+    },
+    {
+      "id": "architect",
+      "hash": "cc7d18057b5c43ec70e592aad72cfccc5ad252a10045302cff68b361fa542494",
+      "bytes": 35384,
+      "ref": "main",
+      "path": "synarc-universal/skills/architect/SKILL.md"
+    },
+    {
+      "id": "backend-engineer",
+      "hash": "3d57e91f05dc8f36915af957a479912b286a33bb0eedd74116fe5315b7805f9f",
+      "bytes": 97937,
+      "ref": "main",
+      "path": "synarc-universal/skills/backend-engineer/SKILL.md"
+    },
+    {
+      "id": "change-intelligence",
+      "hash": "3fb7b6b8c297e61e557c8136e6b162830bf5f6b5487ce8c7596f84c3b302488f",
+      "bytes": 82803,
+      "ref": "main",
+      "path": "synarc-universal/skills/change-intelligence/SKILL.md"
+    },
+    {
+      "id": "chaos-engineer",
+      "hash": "f906b5332dbdc2cba37f99aec7cf8aa1101d46c8f5ce3a57cf7d1986651fc02c",
+      "bytes": 73563,
+      "ref": "main",
+      "path": "synarc-universal/skills/chaos-engineer/SKILL.md"
+    },
+    {
+      "id": "coding-agent",
+      "hash": "9772365dacf9512a3d6588ac765373980b76f189443b419414afcee659682f34",
+      "bytes": 48493,
+      "ref": "main",
+      "path": "synarc-universal/skills/coding-agent/SKILL.md"
+    },
+    {
+      "id": "cognition-layer",
+      "hash": "03d629aae28dae3dd535baed8f0e1834721fda9b0d18935ca068dae9568ff3a5",
+      "bytes": 33500,
+      "ref": "main",
+      "path": "synarc-universal/skills/cognition-layer/SKILL.md"
+    },
+    {
+      "id": "content-designer",
+      "hash": "ef1a36e45ba84d19cf97e7ed77093a006e9e7bf0ba8f50eb001fd9ad5c458c82",
+      "bytes": 12005,
+      "ref": "main",
+      "path": "synarc-universal/skills/content-designer/SKILL.md"
+    },
+    {
+      "id": "cto",
+      "hash": "2607443a60b4bfbec22b4d26a2dd24efcf7f6ba32575728efb5a22996c02efc7",
+      "bytes": 58486,
+      "ref": "main",
+      "path": "synarc-universal/skills/cto/SKILL.md"
+    },
+    {
+      "id": "data-engineer",
+      "hash": "b6a8a1f645061ff16b0e81ef102570e4fe9e5792b180bdb5c3a90c659ed1a725",
+      "bytes": 94737,
+      "ref": "main",
+      "path": "synarc-universal/skills/data-engineer/SKILL.md"
+    },
+    {
+      "id": "data-scientist",
+      "hash": "64a6db2c95bc5cef2cce346a12c267b9b24317a014ff94ce9802f642a80e1bd1",
+      "bytes": 13163,
+      "ref": "main",
+      "path": "synarc-universal/skills/data-scientist/SKILL.md"
+    },
+    {
+      "id": "database-architect",
+      "hash": "ef181450bb5dc695c2beccf27cb142c159201984e62804c411a9324b78620aad",
+      "bytes": 57124,
+      "ref": "main",
+      "path": "synarc-universal/skills/database-architect/SKILL.md"
+    },
+    {
+      "id": "debug-engineer",
+      "hash": "517022218f18d4e2240d5f0e21288facaf0c346b50b2290684c08bfbfab1f589",
+      "bytes": 54944,
+      "ref": "main",
+      "path": "synarc-universal/skills/debug-engineer/SKILL.md"
+    },
+    {
+      "id": "decision-engineer",
+      "hash": "ef8b8824e1be9ee113f033921ca64d92753eb6970df72527575666802877bd96",
+      "bytes": 36379,
+      "ref": "main",
+      "path": "synarc-universal/skills/decision-engineer/SKILL.md"
+    },
+    {
+      "id": "design-systems-engineer",
+      "hash": "c86a938b98acc76d4e89be26771ba7db092d0ee235c103180a5e820d560a1f1f",
+      "bytes": 13573,
+      "ref": "main",
+      "path": "synarc-universal/skills/design-systems-engineer/SKILL.md"
+    },
+    {
+      "id": "devops-engineer",
+      "hash": "5f9902c2b84533ccd058e32fe0afb23df5d213261d7fcfa04fdcc42b6e7831aa",
+      "bytes": 41593,
+      "ref": "main",
+      "path": "synarc-universal/skills/devops-engineer/SKILL.md"
+    },
+    {
+      "id": "engineering-manager",
+      "hash": "53d06a1d95f709c3f88ae7d0019ececa41ce91d55568b48c75b1fa1c6e12b11b",
+      "bytes": 85397,
+      "ref": "main",
+      "path": "synarc-universal/skills/engineering-manager/SKILL.md"
+    },
+    {
+      "id": "ethics-engineer",
+      "hash": "6f68cfce8e7ea26036d7fb2fde11f50c57c9954f7a35dd1bc32b0fa2dbdc15ab",
+      "bytes": 31212,
+      "ref": "main",
+      "path": "synarc-universal/skills/ethics-engineer/SKILL.md"
+    },
+    {
+      "id": "finops-engineer",
+      "hash": "c9ba7483414ac0f540c3e5e27634b0aff744ebc1f58567a4faf40d0c859d14fc",
+      "bytes": 28686,
+      "ref": "main",
+      "path": "synarc-universal/skills/finops-engineer/SKILL.md"
+    },
+    {
+      "id": "foundational-reasoning",
+      "hash": "447002010c0898e541d0b425c5d2573f9be3bbcf15308bddcff3e1034d501a1b",
+      "bytes": 48718,
+      "ref": "main",
+      "path": "synarc-universal/skills/foundational-reasoning/SKILL.md"
+    },
+    {
+      "id": "frontend-engineer",
+      "hash": "778e1bbeccf3fe444d7a1bc2be2580527d26668d96ebb181b0170d0ba70ff444",
+      "bytes": 39815,
+      "ref": "main",
+      "path": "synarc-universal/skills/frontend-engineer/SKILL.md"
+    },
+    {
+      "id": "fullstack-engineer",
+      "hash": "fabc4d7a7f6c0f28acb8606f58c271967548950fc687086537a5d742216120d0",
+      "bytes": 50474,
+      "ref": "main",
+      "path": "synarc-universal/skills/fullstack-engineer/SKILL.md"
+    },
+    {
+      "id": "incident-commander",
+      "hash": "4fe5de59a78eb397f6600bf28a6e85f09030153c7959e98aa2f90edfe4ad00ef",
+      "bytes": 42008,
+      "ref": "main",
+      "path": "synarc-universal/skills/incident-commander/SKILL.md"
+    },
+    {
+      "id": "infrastructure-engineer",
+      "hash": "c1a8a980546c4a91433bb27a4b6aa110a846aa6a1a44eae9473499b793bba1fa",
+      "bytes": 53930,
+      "ref": "main",
+      "path": "synarc-universal/skills/infrastructure-engineer/SKILL.md"
+    },
+    {
+      "id": "ml-engineer",
+      "hash": "af75e4863aab9caf54dd4e2bd07a99dc392c9531b623b7c5f84a6445edd73a7d",
+      "bytes": 94361,
+      "ref": "main",
+      "path": "synarc-universal/skills/ml-engineer/SKILL.md"
+    },
+    {
+      "id": "mlops-engineer",
+      "hash": "bee4c15ab93a8a47b2134af329c573b7e900598d68b531d016ed2d506f5f4f96",
+      "bytes": 13585,
+      "ref": "main",
+      "path": "synarc-universal/skills/mlops-engineer/SKILL.md"
+    },
+    {
+      "id": "mobile-engineer",
+      "hash": "aa5eab8439144237d71edf6f372550e3d243e38e8a5154716f7205187a2cf45d",
+      "bytes": 90378,
+      "ref": "main",
+      "path": "synarc-universal/skills/mobile-engineer/SKILL.md"
+    },
+    {
+      "id": "negative-prompts",
+      "hash": "80da2668947e57f7d317329e866e3a2fc28456540c4445e9ff371ff7c3943718",
+      "bytes": 64644,
+      "ref": "main",
+      "path": "synarc-universal/skills/negative-prompts/SKILL.md"
+    },
+    {
+      "id": "observability-engineer",
+      "hash": "99920da150cfb398acfadbfc63329e972ce017100a46de52cecdd5cf8ad50b61",
+      "bytes": 209537,
+      "ref": "main",
+      "path": "synarc-universal/skills/observability-engineer/SKILL.md"
+    },
+    {
+      "id": "performance-engineer",
+      "hash": "5777c90958d3b5da3ac046ba73fa55a5f9ae5ef047c173e461d995b7bc83c881",
+      "bytes": 15517,
+      "ref": "main",
+      "path": "synarc-universal/skills/performance-engineer/SKILL.md"
+    },
+    {
+      "id": "performance-thinker",
+      "hash": "91c8625e8df151f1c6b92d08bb998f14dd833c8ecbcfd615863229bd8ee857f5",
+      "bytes": 50883,
+      "ref": "main",
+      "path": "synarc-universal/skills/performance-thinker/SKILL.md"
+    },
+    {
+      "id": "platform-engineer",
+      "hash": "9e747e2c5a0e9b26af81b462faeba4de65b322b0fb33ad2c873699866c7e42f1",
+      "bytes": 113152,
+      "ref": "main",
+      "path": "synarc-universal/skills/platform-engineer/SKILL.md"
+    },
+    {
+      "id": "privacy-engineer",
+      "hash": "916c924f17b6a3e850abbf16a2f21d7248fc85817d1ecb4a65bc78e58080bc03",
+      "bytes": 136281,
+      "ref": "main",
+      "path": "synarc-universal/skills/privacy-engineer/SKILL.md"
+    },
+    {
+      "id": "problem-solver",
+      "hash": "15b4fdc5f62fb4f9e2a7b3661250d3de583547f88e91accb991d22953a440e3f",
+      "bytes": 47795,
+      "ref": "main",
+      "path": "synarc-universal/skills/problem-solver/SKILL.md"
+    },
+    {
+      "id": "product-designer",
+      "hash": "f5ccb79a12deabec087bad8ac8e22e486a21686f3b70e05b07ec700af302e97a",
+      "bytes": 11679,
+      "ref": "main",
+      "path": "synarc-universal/skills/product-designer/SKILL.md"
+    },
+    {
+      "id": "product-engineer",
+      "hash": "44996414e9d373dd08b4c1059290a60d390a999810c751eab1b62acea5a3bec2",
+      "bytes": 116249,
+      "ref": "main",
+      "path": "synarc-universal/skills/product-engineer/SKILL.md"
+    },
+    {
+      "id": "product-manager",
+      "hash": "5d3e8bf93eb3acd8f12eea29cba9e9111634d1a1e14dfa3c32d135c63f486517",
+      "bytes": 10544,
+      "ref": "main",
+      "path": "synarc-universal/skills/product-manager/SKILL.md"
+    },
+    {
+      "id": "project-scales",
+      "hash": "5a19ebf4787b60e8e81fde499dccb0a1c219e0c06b13a76ab160819eee423dcc",
+      "bytes": 48468,
+      "ref": "main",
+      "path": "synarc-universal/skills/project-scales/SKILL.md"
+    },
+    {
+      "id": "prompt-engineer",
+      "hash": "074cd544dd313e4df9352a867fbdb105bdfa03f2b1213b159984593c55fbbaef",
+      "bytes": 14930,
+      "ref": "main",
+      "path": "synarc-universal/skills/prompt-engineer/SKILL.md"
+    },
+    {
+      "id": "rag-engineer",
+      "hash": "7d14e62df6f1d8923c3697942a3a97e48f00d03a629d5d73d700e5c464b8a3a0",
+      "bytes": 15745,
+      "ref": "main",
+      "path": "synarc-universal/skills/rag-engineer/SKILL.md"
+    },
+    {
+      "id": "release-engineer",
+      "hash": "31928da063ca189ec0e95e464451d50f55aaa076da822c1bb70f2c2cb1ad19be",
+      "bytes": 15762,
+      "ref": "main",
+      "path": "synarc-universal/skills/release-engineer/SKILL.md"
+    },
+    {
+      "id": "risk-analyst",
+      "hash": "680f9639b30d0b9fd654367be4163bd90d38d8cd9160873fa9efa5a70d352ce8",
+      "bytes": 57382,
+      "ref": "main",
+      "path": "synarc-universal/skills/risk-analyst/SKILL.md"
+    },
+    {
+      "id": "schemas",
+      "hash": "ab939afda112ff35328a4e436ec7016df68042dc6346d3e11380b12c1a351f14",
+      "bytes": 37119,
+      "ref": "main",
+      "path": "synarc-universal/skills/schemas/SKILL.md"
+    },
+    {
+      "id": "sdet-engineer",
+      "hash": "e0359ebc60dbaebc883df6acd3562d4ff3d52cc6915df8a41c0c5101530fa6ec",
+      "bytes": 12272,
+      "ref": "main",
+      "path": "synarc-universal/skills/sdet-engineer/SKILL.md"
+    },
+    {
+      "id": "security-engineer",
+      "hash": "6c2b90eafed73af6813bcd27259743ff28f6bae97a8ef24df32b8084b3a985e4",
+      "bytes": 81896,
+      "ref": "main",
+      "path": "synarc-universal/skills/security-engineer/SKILL.md"
+    },
+    {
+      "id": "sre-engineer",
+      "hash": "15ba3a42177429134dbd3d63de6cd8a99dad52b0f8fa131108e35d53f3c7ac32",
+      "bytes": 199224,
+      "ref": "main",
+      "path": "synarc-universal/skills/sre-engineer/SKILL.md"
+    },
+    {
+      "id": "staff-engineer",
+      "hash": "009730c38f789f41661e7b12411c5814eefec2e33591f6bcd8156b799e1f9558",
+      "bytes": 80993,
+      "ref": "main",
+      "path": "synarc-universal/skills/staff-engineer/SKILL.md"
+    },
+    {
+      "id": "synarc-core",
+      "hash": "11c8945f6250bc6c426c8714ddfe3942cb733aaea6587400f047932b00d6aaa6",
+      "bytes": 94152,
+      "ref": "main",
+      "path": "synarc-universal/skills/synarc-core/SKILL.md"
+    },
+    {
+      "id": "testing-strategy",
+      "hash": "79a17c42ebd06c8f280662c33f5f92b5a63b64298651808ce0712247fa88609c",
+      "bytes": 45395,
+      "ref": "main",
+      "path": "synarc-universal/skills/testing-strategy/SKILL.md"
+    },
+    {
+      "id": "ui-engineer",
+      "hash": "9e9c3a61883a375dab83a4b16dfb35c834505627945fe4a508e64c475a5c2a00",
+      "bytes": 22472,
+      "ref": "main",
+      "path": "synarc-universal/skills/ui-engineer/SKILL.md"
+    },
+    {
+      "id": "ux-engineer",
+      "hash": "184f723193d3c7b25d539280b973b0150c07c732e433ced5cbcc8fb4326e67c2",
+      "bytes": 20452,
+      "ref": "main",
+      "path": "synarc-universal/skills/ux-engineer/SKILL.md"
+    }
+  ]
+}

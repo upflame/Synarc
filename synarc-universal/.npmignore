@@ -1,0 +1,48 @@
+﻿# Files that are NOT in `files` but shouldn't end up in the tarball anyway
+.git/
+.gitignore
+.github/
+.idea/
+.vscode/
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+node_modules/
+coverage/
+.nyc_output/
+*.tgz
+.cache/
+
+# Test runner output
+test-results/
+junit.xml
+lcov.info
+
+# Editor scratch
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Test artifacts (in case tests run install/verify in-place)
+.cline/
+.cursor/
+.windsurfrules
+.windsurf/
+.aider*
+.continue/
+.github/copilot/
+.gemini/
+.codex/
+.claude/
+.opencode/
+.roo/
+synarc.lock.json
+.synarc/
+
+# Internal scratch
+.strip-bom.js
+
+.stripped/

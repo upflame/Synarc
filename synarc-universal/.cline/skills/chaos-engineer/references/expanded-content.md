@@ -1,0 +1,8107 @@
+## P3 Experiment Design Methodology (Expanded)
+
+
+### Steady State Hypothesis Formulation
+
+Formulating a precise steady state hypothesis is the most critical step in experiment design. The hypothesis must be specific enough to be falsifiable and measurable enough to be validated with data.
+
+**Criteria for Good Hypotheses**:
+  - Falsifiable: The hypothesis can be proven wrong by experimental data
+  - Specific: Includes exact metrics, thresholds, and timeframes
+  - Measurable: All claims can be quantified with available telemetry
+  - Relevant: Tests behavior that matters to system reliability
+  - Scoped: Limited to a specific failure mode and blast radius
+
+**Hypothesis Refinement Process**:
+1. Initial claim: "The system is resilient to payment service failures"
+2. First refinement: "When payment service fails, checkout service degrades gracefully"
+3. Second refinement: "When payment service returns HTTP 503, checkout service returns a cached response within 200ms for 95% of requests"
+4. Final hypothesis: "When payment service returns HTTP 503 for 50% of requests, checkout service p99 latency increases by less than 500ms from baseline of 250ms, and error rate remains below 2%"
+
+**Common Hypothesis Pitfalls**:
+  - Vague claims: "The system will handle the failure well" - not testable
+  - Circular reasoning: "The experiment will verify resilience" - not specific
+  - Unmeasurable outcomes: "Users will be satisfied" - cannot measure in experiment
+  - Missing timeframes: "Latency increases" - by how much and for how long?
+  - Overly narrow: Tests only one very specific scenario with limited learning value
+
+### Steady State Baseline Collection
+
+Baseline collection is the process of establishing normal system behavior before introducing chaos. The quality of the baseline directly affects the validity of experiment conclusions.
+
+**Baseline Collection Requirements**:
+  - Minimum 24 hours of continuous metric data
+  - Recommended 7 days to capture weekly patterns
+  - Include peak and off-peak traffic periods
+  - Exclude known anomalies, incidents, or maintenance windows
+  - Account for day-of-week and seasonal variations
+  - Document the collection methodology and any data transformations
+
+**Baseline Statistics to Compute**:
+  - Mean, median, and mode for each metric
+  - Standard deviation and variance
+  - Percentiles: p50, p75, p90, p95, p99, p99.9
+  - Minimum and maximum values
+  - Rate of change (derivative) for trend detection
+  - Autocorrelation to identify periodic patterns
+
+**Statistical Methods for Baseline Validation**:
+```python
+import numpy as np
+from scipy import stats
+
+def validate_baseline(baseline_data, confidence=0.95):
+    results = {}
+    for metric, values in baseline_data.items():
+        # Normality test
+        stat, p_value = stats.normaltest(values)
+        is_normal = p_value > 0.05
+        
+        # Confidence intervals
+        mean = np.mean(values)
+        sem = stats.sem(values)
+        ci = stats.t.interval(confidence, len(values)-1, loc=mean, scale=sem)
+        
+        # Outlier detection (IQR method)
+        q1, q3 = np.percentile(values, [25, 75])
+        iqr = q3 - q1
+        outliers = values[(values < q1 - 1.5*iqr) | (values > q3 + 1.5*iqr)]
+        
+        results[metric] = {
+            "mean": mean,
+            "std": np.std(values),
+            "is_normal": is_normal,
+            "confidence_interval": ci,
+            "outlier_count": len(outliers),
+            "outlier_percentage": len(outliers) / len(values) * 100
+        }
+    return results
+```
+
+### Blast Radius Calculation and Enforcement
+
+Blast radius must be calculated before every experiment and enforced programmatically during execution.
+
+**Blast Radius Dimensions**:
+  - Instance count: Maximum number of instances/pods affected
+  - Traffic percentage: Maximum percentage of traffic affected
+  - Service count: Maximum number of services affected
+  - Geographic scope: Single AZ, multiple AZs, single region, multiple regions
+  - User percentage: Maximum percentage of users affected
+  - Data scope: Which data partitions or shards are affected
+  - Duration: Maximum experiment duration in seconds
+
+**Blast Radius Calculation Formula**:
+```text
+Blast Radius Score = (instance_count / total_instances) * 0.3
+                    + (traffic_percentage / 100) * 0.3
+                    + (service_count / total_services) * 0.2
+                    + (geo_scope_weight) * 0.2
+
+Where geo_scope_weight = 0.25 for single pod,
+                          0.50 for multiple pods,
+                          0.75 for single AZ,
+                          1.00 for multiple AZs
+```
+
+**Enforcement Mechanisms**:
+  - Kubernetes: PodDisruptionBudget, NetworkPolicy, ResourceQuota
+  - AWS: IAM policies, Security Groups, Service Control Policies
+  - Chaos tooling: ChaosEngine blast radius limits, selector constraints
+  - Monitoring: Automated rollback triggers when blast radius exceeds limits
+
+### Rollback Criteria Design
+
+Rollback criteria define the conditions under which an experiment must be stopped immediately. These are safety boundaries that protect production systems.
+
+**Types of Rollback Criteria**:
+  - Metric-based: Error rate exceeds threshold for sustained duration
+  - Latency-based: p99 latency exceeds threshold for sustained duration
+  - Budget-based: Error budget exhaustion rate exceeds threshold
+  - Alert-based: Any PagerDuty alert fires during experiment
+  - Manual: Human operator can trigger rollback at any time
+  - Timer-based: Experiment exceeds maximum duration
+
+**Rollback Criteria Template**:
+```yaml
+rollback_criteria:
+  metric_conditions:
+    - metric: "error_rate"
+      source: "prometheus"
+      query: "sum(rate(http_requests_total{status=~"5.."}[1m])) / sum(rate(http_requests_total[1m]))"
+      threshold: 0.05
+      operator: ">"
+      duration_seconds: 10
+
+    - metric: "latency_p99"
+      source: "datadog"
+      query: "p99:trace.servlet.request.duration{service:checkout-service}"
+      threshold_ms: 2000
+      operator: ">"
+      duration_seconds: 15
+
+  error_budget_condition:
+    budget_consumption_rate: 0.1
+    window_minutes: 5
+
+  timer_condition:
+    max_duration_seconds: 300
+
+  manual_condition:
+    abort_endpoint: "/api/experiments/{id}/abort"
+    abort_channel: "#chaos-engineering"
+```
+
+### Experiment Documentation Standards
+
+Every experiment must be documented to a standard that allows reproduction and learning by other engineers.
+
+**Required Documentation**:
+  - Experiment ID and unique identifier
+  - Experiment name and description
+  - Owner and team responsible
+  - Hypothesis with measurable criteria
+  - Steady state definition with baselines
+  - Experiment parameters (failure type, target, duration, severity)
+  - Blast radius calculation and limits
+  - Rollback criteria and procedures
+  - Timeline of experiment execution
+  - Results and analysis
+  - Findings with severity classification
+  - Remediation items with owners and deadlines
+
+**Documentation Template**:
+```markdown
+# Experiment Report: [ID]
+
+## Overview
+- Name:
+- Date:
+- Owner:
+- Duration:
+- Status: [Passed/Failed/Partially Passed]
+
+## Hypothesis
+[One paragraph describing expected behavior]
+
+## Steady State
+| Metric | Baseline | Acceptable Range | Source |
+|--------|----------|-----------------|--------|
+| p99 latency | 250ms | 200-600ms | Prometheus |
+| Error rate | 0.3% | 0-2% | Datadog |
+
+## Experiment Parameters
+- Failure type:
+- Target:
+- Duration:
+- Blast radius:
+
+## Timeline
+| Time | Event |
+|------|-------|
+| T+0s | Injection started |
+| T+5s | First timeout |
+
+## Results
+[Analysis of results against hypothesis]
+
+## Findings
+| Severity | Finding | Remediation | Owner |
+|----------|---------|-------------|-------|
+| CRITICAL | ... | ... | ... |
+
+## Key Learnings
+- [Learning 1]
+- [Learning 2]
+```
+
+
+## P5 Failure Injection Techniques (Expanded)
+
+
+### Advanced Network Failure Injection
+
+**Correlated Packet Loss**: Real network failures often exhibit correlation in packet loss. Use correlated loss patterns for more realistic experiments.
+```bash
+# Correlated loss with 25% correlation
+tc qdisc add dev eth0 root netem loss 10% 25% 50%
+# Where: 10% = loss rate, 25% = correlation, 50% = gap correlation
+```
+
+**Packet Corruption**: Simulate data corruption in transit.
+```bash
+# 5% packet corruption
+tc qdisc add dev eth0 root netem corrupt 5%
+```
+
+**Packet Duplication**: Simulate network retransmissions.
+```bash
+# 2% packet duplication
+tc qdisc add dev eth0 root netem duplicate 2%
+```
+
+**Reordering**: Simulate out-of-order packet delivery.
+```bash
+# 5% packet reordering with 50ms delay
+tc qdisc add dev eth0 root netem delay 50ms reorder 5% 50%
+```
+
+### Advanced Resource Exhaustion Techniques
+
+**Memory Pressure with Specific Allocation Patterns**:
+```bash
+# Allocate and hold memory in chunks
+stress-ng --vm 2 --vm-bytes 256M --vm-keep --timeout 120s
+
+# Memory pressure with malloc failures
+stress-ng --vm 2 --vm-bytes 256M --vm-method all --timeout 120s
+```
+
+**Disk I/O Stress**:
+```bash
+# Sequential I/O stress
+stress-ng --hdd 4 --hdd-bytes 4G --timeout 120s
+
+# Random I/O stress (more realistic)
+stress-ng --aio 4 --aio-requests 64 --timeout 120s
+
+# I/O latency injection using blktrace/blkprobe
+# Requires kernel support for block layer tracing
+```
+
+### Container-Specific Failure Injection
+
+**Container Exec Failure**: Kubernetes probes can fail even when containers are running.
+```yaml
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: container-kill
+spec:
+  engineState: active
+  appinfo:
+    appns: production
+    applabel: app=payment-service
+  experiments:
+    - name: container-kill
+      spec:
+        components:
+          env:
+            - name: TARGET_CONTAINER
+              value: "payment-service"
+            - name: TOTAL_CHAOS_DURATION
+              value: "60"
+            - name: CHAOS_INTERVAL
+              value: "5"
+            - name: PODS_AFFECTED_PERC
+              value: "25"
+            - name: SEQUENCE
+              value: "parallel"
+```
+
+**Readiness Probe Failure**: Simulate application being alive but not ready for traffic.
+```yaml
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: probe-failure
+spec:
+  appinfo:
+    appns: production
+    applabel: app=payment-service
+  experiments:
+    - name: pod-http-modify-response
+      spec:
+        components:
+          env:
+            - name: TARGET_SERVICE_PORT
+              value: "8080"
+            - name: RESPONSE_CODE
+              value: "503"
+            - name: TOTAL_CHAOS_DURATION
+              value: "120"
+```
+
+
+## P7 Application Chaos (Expanded)
+
+
+### Application-Level Chaos Patterns
+
+**Exception Injection**: Force application code to throw specific exceptions.
+```java
+// Using Byteman for Java exception injection
+RULE Force SQLException
+CLASS com.payment.service.PaymentRepository
+METHOD findById
+AT ENTRY
+IF true
+DO throw new java.sql.SQLException("Connection pool exhausted")
+ENDRULE
+```
+
+**Feature Flag Toggling**: Test feature flag behavior under load.
+```yaml
+experiment:
+  name: feature-flag-toggle
+  hypothesis: |
+    When the new-payment-flow feature flag is toggled on:
+    - 50% of traffic uses the new payment flow
+    - Error rate increases by less than 1%
+    - p99 latency increases by less than 200ms
+    - Rollback can be completed within 30 seconds
+  experiment_parameters:
+    feature_flag: "new-payment-flow"
+    flag_type: "boolean"
+    rollout_percentage: 50
+    duration_minutes: 15
+```
+
+### Graceful Shutdown Testing
+
+Purpose: Verify that applications handle SIGTERM correctly during pod termination.
+
+```python
+class GracefulShutdownTest:
+    def __init__(self, namespace, app_label):
+        self.namespace = namespace
+        self.app_label = app_label
+        self.api = kubernetes.client.CoreV1Api()
+
+    def test_sigterm_handling(self):
+        results = []
+        pods = self.api.list_namespaced_pod(
+            namespace=self.namespace,
+            label_selector=f"app={self.app_label}"
+        )
+        for pod in pods.items[:3]:
+### Experiment Scenario Catalog
+
+The following experiment scenarios cover common failure modes across the technology stack. Each scenario includes a hypothesis, parameters, and expected behaviors.
+
+**Scenario 1: Node Latency #1**
+  - Target: checkout-service
+  - Failure type: network_latency
+  - Duration: 40 seconds
+  - Blast radius: 6% of instances
+  - Expected p99 latency increase: 75ms
+  - Expected error rate increase: 0.15000000000000002%
+
+**Scenario 2: Network Crash #1**
+  - Target: api-gateway
+  - Failure type: dns_failure
+  - Duration: 50 seconds
+  - Blast radius: 7% of instances
+  - Expected p99 latency increase: 100ms
+  - Expected error rate increase: 0.2%
+
+**Scenario 3: DNS Timeout #1**
+  - Target: user-service
+  - Failure type: disk_fill
+  - Duration: 60 seconds
+  - Blast radius: 8% of instances
+  - Expected p99 latency increase: 125ms
+  - Expected error rate increase: 0.25%
+
+**Scenario 4: Storage Exhaustion #1**
+  - Target: inventory-service
+  - Failure type: cpu_stress
+  - Duration: 70 seconds
+  - Blast radius: 9% of instances
+  - Expected p99 latency increase: 150ms
+  - Expected error rate increase: 0.30000000000000004%
+
+**Scenario 5: Database Corruption #1**
+  - Target: notification-service
+  - Failure type: memory_stress
+  - Duration: 80 seconds
+  - Blast radius: 10% of instances
+  - Expected p99 latency increase: 175ms
+  - Expected error rate increase: 0.35%
+
+**Scenario 6: Cache Deletion #1**
+  - Target: search-service
+  - Failure type: process_kill
+  - Duration: 90 seconds
+  - Blast radius: 11% of instances
+  - Expected p99 latency increase: 200ms
+  - Expected error rate increase: 0.4%
+
+**Scenario 7: Queue Misconfiguration #1**
+  - Target: analytics-service
+  - Failure type: time_skew
+  - Duration: 100 seconds
+  - Blast radius: 12% of instances
+  - Expected p99 latency increase: 225ms
+  - Expected error rate increase: 0.45000000000000007%
+
+**Scenario 8: Certificate Expiry #1**
+  - Target: auth-service
+  - Failure type: az_failure
+  - Duration: 110 seconds
+  - Blast radius: 13% of instances
+  - Expected p99 latency increase: 250ms
+  - Expected error rate increase: 0.5%
+
+**Scenario 9: Config Saturation #1**
+  - Target: order-service
+  - Failure type: region_failure
+  - Duration: 120 seconds
+  - Blast radius: 14% of instances
+  - Expected p99 latency increase: 275ms
+  - Expected error rate increase: 0.55%
+
+**Scenario 10: Pod Failure #2**
+  - Target: payment-service
+  - Failure type: pod_kill
+  - Duration: 130 seconds
+  - Blast radius: 15% of instances
+  - Expected p99 latency increase: 300ms
+  - Expected error rate increase: 0.6%
+
+**Scenario 11: Node Latency #2**
+  - Target: checkout-service
+  - Failure type: network_latency
+  - Duration: 140 seconds
+  - Blast radius: 16% of instances
+  - Expected p99 latency increase: 325ms
+  - Expected error rate increase: 0.65%
+
+**Scenario 12: Network Crash #2**
+  - Target: api-gateway
+  - Failure type: dns_failure
+  - Duration: 150 seconds
+  - Blast radius: 17% of instances
+  - Expected p99 latency increase: 350ms
+  - Expected error rate increase: 0.7000000000000001%
+
+**Scenario 13: DNS Timeout #2**
+  - Target: user-service
+  - Failure type: disk_fill
+  - Duration: 160 seconds
+  - Blast radius: 18% of instances
+  - Expected p99 latency increase: 375ms
+  - Expected error rate increase: 0.75%
+
+**Scenario 14: Storage Exhaustion #2**
+  - Target: inventory-service
+  - Failure type: cpu_stress
+  - Duration: 170 seconds
+  - Blast radius: 19% of instances
+  - Expected p99 latency increase: 400ms
+  - Expected error rate increase: 0.8%
+
+**Scenario 15: Database Corruption #2**
+  - Target: notification-service
+  - Failure type: memory_stress
+  - Duration: 180 seconds
+  - Blast radius: 20% of instances
+  - Expected p99 latency increase: 425ms
+  - Expected error rate increase: 0.85%
+
+**Scenario 16: Cache Deletion #2**
+  - Target: search-service
+  - Failure type: process_kill
+  - Duration: 190 seconds
+  - Blast radius: 21% of instances
+  - Expected p99 latency increase: 450ms
+  - Expected error rate increase: 0.9%
+
+**Scenario 17: Queue Misconfiguration #2**
+  - Target: analytics-service
+  - Failure type: time_skew
+  - Duration: 200 seconds
+  - Blast radius: 22% of instances
+  - Expected p99 latency increase: 475ms
+  - Expected error rate increase: 0.9500000000000001%
+
+**Scenario 18: Certificate Expiry #2**
+  - Target: auth-service
+  - Failure type: az_failure
+  - Duration: 210 seconds
+  - Blast radius: 23% of instances
+  - Expected p99 latency increase: 500ms
+  - Expected error rate increase: 1.0%
+
+**Scenario 19: Config Saturation #2**
+  - Target: order-service
+  - Failure type: region_failure
+  - Duration: 220 seconds
+  - Blast radius: 24% of instances
+  - Expected p99 latency increase: 525ms
+  - Expected error rate increase: 1.05%
+
+**Scenario 20: Pod Failure #3**
+  - Target: payment-service
+  - Failure type: pod_kill
+  - Duration: 230 seconds
+  - Blast radius: 25% of instances
+  - Expected p99 latency increase: 550ms
+  - Expected error rate increase: 1.1%
+
+**Scenario 21: Node Latency #3**
+  - Target: checkout-service
+  - Failure type: network_latency
+  - Duration: 240 seconds
+  - Blast radius: 25% of instances
+  - Expected p99 latency increase: 575ms
+  - Expected error rate increase: 1.1500000000000001%
+
+**Scenario 22: Network Crash #3**
+  - Target: api-gateway
+  - Failure type: dns_failure
+  - Duration: 250 seconds
+  - Blast radius: 25% of instances
+  - Expected p99 latency increase: 600ms
+  - Expected error rate increase: 1.2000000000000002%
+
+**Scenario 23: DNS Timeout #3**
+  - Target: user-service
+  - Failure type: disk_fill
+  - Duration: 260 seconds
+  - Blast radius: 25% of instances
+  - Expected p99 latency increase: 625ms
+  - Expected error rate increase: 1.2500000000000002%
+
+**Scenario 24: Storage Exhaustion #3**
+  - Target: inventory-service
+  - Failure type: cpu_stress
+  - Duration: 270 seconds
+  - Blast radius: 25% of instances
+  - Expected p99 latency increase: 650ms
+  - Expected error rate increase: 1.3000000000000003%
+
+**Scenario 25: Database Corruption #3**
+  - Target: notification-service
+  - Failure type: memory_stress
+  - Duration: 280 seconds
+  - Blast radius: 25% of instances
+  - Expected p99 latency increase: 675ms
+  - Expected error rate increase: 1.35%
+
+**Scenario 26: Cache Deletion #3**
+  - Target: search-service
+  - Failure type: process_kill
+  - Duration: 290 seconds
+  - Blast radius: 25% of instances
+  - Expected p99 latency increase: 700ms
+  - Expected error rate increase: 1.4000000000000001%
+
+**Scenario 27: Queue Misconfiguration #3**
+  - Target: analytics-service
+  - Failure type: time_skew
+  - Duration: 300 seconds
+  - Blast radius: 25% of instances
+  - Expected p99 latency increase: 725ms
+  - Expected error rate increase: 1.4500000000000002%
+
+**Scenario 28: Certificate Expiry #3**
+  - Target: auth-service
+  - Failure type: az_failure
+  - Duration: 310 seconds
+  - Blast radius: 25% of instances
+  - Expected p99 latency increase: 750ms
+  - Expected error rate increase: 1.5000000000000002%
+
+**Scenario 29: Config Saturation #3**
+  - Target: order-service
+  - Failure type: region_failure
+  - Duration: 320 seconds
+  - Blast radius: 25% of instances
+  - Expected p99 latency increase: 775ms
+  - Expected error rate increase: 1.5500000000000003%
+
+**Scenario 30: Pod Failure #4**
+  - Target: payment-service
+  - Failure type: pod_kill
+  - Duration: 330 seconds
+  - Blast radius: 25% of instances
+  - Expected p99 latency increase: 800ms
+  - Expected error rate increase: 1.6%
+
+
+### Detailed Metric Definitions for Experiment Monitoring
+
+Each experiment must define the metrics that will be monitored before, during, and after the experiment. Below are detailed metric definitions for common experiment types.
+
+
+| Metric Name | Type | Description | Labels |
+|------------|------|-------------|--------|
+| http_request_duration_seconds | Histogram | Request duration in seconds | Service, method, status_code, experiment_id |
+| http_requests_total | Counter | Total HTTP requests | Service, method, status_code, experiment_id |
+| http_errors_total | Counter | Total HTTP errors | Service, error_type, experiment_id |
+| grpc_server_handling_seconds | Histogram | gRPC handling time | Service, method, grpc_status, experiment_id |
+| db_query_duration_seconds | Histogram | Database query duration | Database, query_type, table, experiment_id |
+| db_connections_active | Gauge | Active database connections | Database, host, experiment_id |
+| db_connections_idle | Gauge | Idle database connections | Database, host, experiment_id |
+| db_replication_lag_seconds | Gauge | Database replication lag | Database, replica_id, experiment_id |
+| cache_hit_ratio | Gauge | Cache hit ratio | Cache, experiment_id |
+| cache_operations_seconds | Histogram | Cache operation duration | Cache, operation, experiment_id |
+| circuit_breaker_state | Gauge | Circuit breaker state (0=closed, 1=open, 2=half-open) | Service, circuit_name, experiment_id |
+| circuit_breaker_failure_count | Gauge | Circuit breaker failure count | Service, circuit_name, experiment_id |
+| queue_depth | Gauge | Message queue depth | Queue, topic, experiment_id |
+| queue_lag_seconds | Gauge | Consumer lag in seconds | Queue, consumer_group, experiment_id |
+| thread_pool_active | Gauge | Active thread pool threads | Service, pool_name, experiment_id |
+| thread_pool_queue | Gauge | Thread pool queue size | Service, pool_name, experiment_id |
+| cpu_utilization | Gauge | CPU utilization percentage | Pod, node, experiment_id |
+| memory_usage_bytes | Gauge | Memory usage in bytes | Pod, node, experiment_id |
+| disk_usage_bytes | Gauge | Disk usage in bytes | Pod, volume, experiment_id |
+| network_received_bytes | Gauge | Network bytes received | Pod, interface, experiment_id |
+| network_transmitted_bytes | Gauge | Network bytes transmitted | Pod, interface, experiment_id |
+| pod_ready | Gauge | Pod ready state (0=not ready, 1=ready) | Pod, experiment_id |
+| pod_restart_count | Gauge | Pod restart count | Pod, experiment_id |
+| connection_pool_active | Gauge | Active connection pool connections | Service, pool_name, experiment_id |
+| connection_pool_idle | Gauge | Idle connection pool connections | Service, pool_name, experiment_id |
+| connection_pool_pending | Gauge | Pending connection pool requests | Service, pool_name, experiment_id |
+| rate_limit_remaining | Gauge | Remaining rate limit capacity | Service, limit_name, experiment_id |
+| retry_count | Counter | Retry count | Service, operation, experiment_id |
+| fallback_triggered | Counter | Fallback triggered count | Service, operation, experiment_id |
+| degraded_requests | Counter | Degraded mode requests | Service, feature, experiment_id |
+
+### Expanded GameDay Scenario Catalog
+
+
+**GameDay Scenario 1: The Phantom Traffic**
+  Description: Traffic spike scenario testing autoscaling limits
+  - Duration: 75 minutes
+  - Participants: 3 engineers
+  - Key learning: Autoscaling
+  - Difficulty: Easy
+
+**GameDay Scenario 2: The Silent Database**
+  Description: Database replication lag detection and remediation
+  - Duration: 90 minutes
+  - Participants: 4 engineers
+  - Key learning: Replication monitoring
+  - Difficulty: Medium
+
+**GameDay Scenario 3: The Certificate Massacre**
+  Description: Multiple TLS certificate expiry simultaneously
+  - Duration: 105 minutes
+  - Participants: 5 engineers
+  - Key learning: Certificate automation
+  - Difficulty: Hard
+
+**GameDay Scenario 4: The Configuration Drift**
+  Description: Configuration drift across service instances
+  - Duration: 120 minutes
+  - Participants: 6 engineers
+  - Key learning: Config validation
+  - Difficulty: Expert
+
+**GameDay Scenario 5: The Dependency Cascade**
+  Description: Cascading failure through service dependencies
+  - Duration: 135 minutes
+  - Participants: 2 engineers
+  - Key learning: Circuit breakers
+  - Difficulty: Medium
+
+**GameDay Scenario 6: The Region Fade**
+  Description: Multi-region failover with data consistency validation
+  - Duration: 150 minutes
+  - Participants: 3 engineers
+  - Key learning: Disaster recovery
+  - Difficulty: Hard
+
+**GameDay Scenario 7: The Data Corruption**
+  Description: Data corruption detection and recovery procedures
+  - Duration: 165 minutes
+  - Participants: 4 engineers
+  - Key learning: Backup testing
+  - Difficulty: Expert
+
+**GameDay Scenario 8: The Queue Overflow**
+  Description: Message queue backpressure and consumer lag handling
+  - Duration: 180 minutes
+  - Participants: 5 engineers
+  - Key learning: Consumer monitoring
+  - Difficulty: Medium
+
+**GameDay Scenario 9: The Scale Surge**
+  Description: Unexpected traffic surge overwhelming capacity
+  - Duration: 195 minutes
+  - Participants: 6 engineers
+  - Key learning: Capacity planning
+  - Difficulty: Easy
+
+**GameDay Scenario 10: The Auth Failure**
+  Description: Authentication service failure impacting all services
+  - Duration: 210 minutes
+  - Participants: 2 engineers
+  - Key learning: Auth resilience
+  - Difficulty: Hard
+
+**GameDay Scenario 11: The DNS Hijack**
+  Description: DNS poisoning redirecting internal traffic
+  - Duration: 225 minutes
+  - Participants: 3 engineers
+  - Key learning: DNSSEC
+  - Difficulty: Expert
+
+**GameDay Scenario 12: The Backup Failure**
+  Description: Backup restoration failure testing recovery procedures
+  - Duration: 240 minutes
+  - Participants: 4 engineers
+  - Key learning: Backup automation
+  - Difficulty: Hard
+
+**GameDay Scenario 13: The Secret Rotation**
+  Description: Secret rotation failure blocking service-to-service auth
+  - Duration: 255 minutes
+  - Participants: 5 engineers
+  - Key learning: Secret management
+  - Difficulty: Medium
+
+**GameDay Scenario 14: The Deployment Gone Wrong**
+  Description: Bad deployment with gradual symptom onset
+  - Duration: 270 minutes
+  - Participants: 6 engineers
+  - Key learning: Deployment safety
+  - Difficulty: Easy
+
+**GameDay Scenario 15: The Monitoring Blind Spot**
+  Description: Monitoring system failure blinding operations team
+  - Duration: 285 minutes
+  - Participants: 2 engineers
+  - Key learning: Monitoring redundancy
+  - Difficulty: Expert
+
+**GameDay Scenario 16: The Capacity Crunch**
+  Description: Resource exhaustion from unexpected capacity needs
+  - Duration: 300 minutes
+  - Participants: 3 engineers
+  - Key learning: Resource limits
+  - Difficulty: Medium
+
+**GameDay Scenario 17: The Compliance Breach**
+  Description: Compliance audit finding requiring immediate remediation
+  - Duration: 315 minutes
+  - Participants: 4 engineers
+  - Key learning: Compliance automation
+  - Difficulty: Hard
+
+**GameDay Scenario 18: The Third-Party Sunset**
+  Description: Third-party API deprecation with short migration window
+  - Duration: 330 minutes
+  - Participants: 5 engineers
+  - Key learning: Vendor management
+  - Difficulty: Medium
+
+**GameDay Scenario 19: The Network Partition**
+  Description: Complete network isolation between critical services
+  - Duration: 345 minutes
+  - Participants: 6 engineers
+  - Key learning: Network design
+  - Difficulty: Expert
+
+**GameDay Scenario 20: The Recovery Test**
+  Description: Full recovery exercise after simulated disaster
+  - Duration: 360 minutes
+  - Participants: 2 engineers
+  - Key learning: Recovery procedures
+  - Difficulty: Hard
+
+
+### Failure Injection Implementation Details
+
+This section provides detailed implementation guidance for each failure injection technique.
+
+**Pod Delete** (Kubernetes)
+  - Description: Deletes pods gracefully or forcefully
+  - Tools: kubectl delete pod, litmuschaos pod-delete
+  - Purpose: Tests deployment resilience, PDB compliance, replica management
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**Container Kill** (Kubernetes)
+  - Description: Kills specific container within pod
+  - Tools: litmuschaos container-kill, chaos-mesh container-kill
+  - Purpose: Tests container restart policy, probe behavior
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**Node Drain** (Kubernetes)
+  - Description: Cordons and drains a node
+  - Tools: kubectl drain, litmuschaos node-drain
+  - Purpose: Tests pod rescheduling, PVC reattachment, cluster autoscaling
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**Network Latency** (Network)
+  - Description: Adds delay to network packets
+  - Tools: tc netem, chaos-mesh network-delay, envoy fault injection
+  - Purpose: Tests timeout handling, retry logic, circuit breakers
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**Network Loss** (Network)
+  - Description: Drops network packets
+  - Tools: tc netem loss, chaos-mesh network-loss
+  - Purpose: Tests retry logic, connection resilience, data integrity
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**Network Partition** (Network)
+  - Description: Isolates service from network
+  - Tools: iptables, chaos-mesh network-partition, AWS SG changes
+  - Purpose: Tests cluster resilience, leader election, failover
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**DNS Failure** (Network)
+  - Description: DNS resolution fails or returns wrong IP
+  - Tools: iptables DNS block, chaos-mesh dns-chaos, /etc/hosts
+  - Purpose: Tests DNS caching, fallback resolvers, connection resilience
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**TLS Failure** (Network)
+  - Description: TLS certificate issues
+  - Tools: Expired cert, wrong host, untrusted CA
+  - Purpose: Tests TLS validation, certificate pinning, mTLS behavior
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**CPU Stress** (Compute)
+  - Description: Consumes CPU resources
+  - Tools: stress-ng, litmuschaos pod-cpu-hog
+  - Purpose: Tests CPU throttling, autoscaling, request prioritization
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**Memory Stress** (Compute)
+  - Description: Consumes memory resources
+  - Tools: stress-ng --vm, litmuschaos pod-memory-hog
+  - Purpose: Tests OOM killer, memory limits, graceful degradation
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**Disk Fill** (Storage)
+  - Description: Fills disk space
+  - Tools: dd, fallocate, litmuschaos pod-disk-fill
+  - Purpose: Tests disk space monitoring, log rotation, graceful failure
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**Disk I/O Stress** (Storage)
+  - Description: Generates heavy disk I/O
+  - Tools: stress-ng --hdd, fio
+  - Purpose: Tests disk I/O throttling, query performance, backup impact
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**Process Kill** (Compute)
+  - Description: Kills application process
+  - Tools: pkill, kill, systemctl stop
+  - Purpose: Tests process supervisor, graceful shutdown, restart behavior
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**Time Skew** (Time)
+  - Description: Changes system clock
+  - Tools: date, chaos-mesh time-chaos
+  - Purpose: Tests token validation, scheduled jobs, TTL handling
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**AZ Failure** (Cloud)
+  - Description: Isolates/terminates all resources in an AZ
+  - Tools: AWS AZ isolation, chaos-mesh zone failure
+  - Purpose: Tests multi-AZ architecture, failover, data replication
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+**Region Failure** (Cloud)
+  - Description: Simulates complete region outage
+  - Tools: DNS failover, region isolation
+  - Purpose: Tests multi-region DR, global load balancing, data sync
+  - Implementation considerations: Environment preparation, safety controls, rollback procedures, monitoring configuration
+
+
+### Advanced Resilience Pattern Implementations
+
+
+**Bulkhead Isolation** (Resource)
+  - Description: Isolates resources per dependency to prevent cascading failures
+  - Tools/Technologies: Thread pool per dependency, connection pool per dependency, semaphore per dependency
+  - Implementation: Configure separate thread pools for each downstream service; set pool sizes based on expected concurrency; implement queue for overflow; monitor pool utilization
+  - Verification: Validate with chaos experiments that specifically test bulkhead isolation
+
+**Health Check API** (Observability)
+  - Description: Standardized health check endpoint for all services
+  - Tools/Technologies: /health, /ready, /live endpoints, Kubernetes probes
+  - Implementation: Implement three endpoints: /health (overall), /ready (ready for traffic), /live (process alive); include dependency status; return 200/503 appropriately
+  - Verification: Validate with chaos experiments that specifically test health check api
+
+**Graceful Shutdown** (Application)
+  - Description: Handle SIGTERM for clean pod termination
+  - Tools/Technologies: signal.Notify, preStop hook, draining connections
+  - Implementation: Catch SIGTERM; stop accepting new requests; drain in-flight requests; close connections; flush buffers; exit within terminationGracePeriodSeconds
+  - Verification: Validate with chaos experiments that specifically test graceful shutdown
+
+**Retry with Backoff** (Application)
+  - Description: Retry failed operations with exponential backoff and jitter
+  - Tools/Technologies: Exponential backoff, jitter, retry budgets, circuit breakers
+  - Implementation: Implement exponential backoff: delay = initialDelay * multiplier^attempt; add jitter: delay = delay * (0.5 + random); set max retries (3); use retry budgets
+  - Verification: Validate with chaos experiments that specifically test retry with backoff
+
+**Timeout Hierarchy** (Application)
+  - Description: Maintain consistent timeout hierarchy across service calls
+  - Tools/Technologies: Client timeout < service timeout < API gateway timeout
+  - Implementation: Ensure each layer has a shorter timeout than the calling layer; document timeout values; verify hierarchy in experiments
+  - Verification: Validate with chaos experiments that specifically test timeout hierarchy
+
+**Cache-Aside with Fallback** (Data)
+  - Description: Read from cache, fall back to database on cache miss
+  - Tools/Technologies: Redis, Memcached, database read replicas
+  - Implementation: Check cache; on hit return cached value; on miss query database; populate cache asynchronously; handle cache failure gracefully
+  - Verification: Validate with chaos experiments that specifically test cache-aside with fallback
+
+**Circuit Breaker** (Resilience)
+  - Description: Fail fast when downstream service is unhealthy
+  - Tools/Technologies: Hystrix, Resilience4j, pybreaker, istio
+  - Implementation: Configure failure threshold; set open state duration; implement half-open probe; provide fallback; monitor state changes
+  - Verification: Validate with chaos experiments that specifically test circuit breaker
+
+**Load Shedding** (Resilience)
+  - Description: Reject excess requests to protect system
+  - Tools/Technologies: Rate limiting, admission control, queue sizing
+  - Implementation: Define max capacity; implement sliding window rate limiter; return 429 with Retry-After; monitor rejection rate; adjust dynamically
+  - Verification: Validate with chaos experiments that specifically test load shedding
+
+**Request Deduplication** (Application)
+  - Description: Prevent duplicate processing of identical requests
+  - Tools/Technologies: Idempotency keys, request hashing, dedup cache
+  - Implementation: Generate idempotency key per request; check dedup cache before processing; store completed keys with TTL; handle collisions
+  - Verification: Validate with chaos experiments that specifically test request deduplication
+
+**Service Mesh** (Infrastructure)
+  - Description: Offload resilience concerns to sidecar proxy
+  - Tools/Technologies: Istio, Linkerd, Consul Connect, Envoy
+  - Implementation: Implement sidecar injection; configure retry/timeout policies; enable fault injection; use mTLS; monitor mesh telemetry
+  - Verification: Validate with chaos experiments that specifically test service mesh
+
+
+### Observability Integration Patterns
+
+
+**Structured Logging**
+  - Description: Emit JSON-structured logs with experiment context (experiment_id, hypothesis_id, failure_type)
+  - Configuration: All services should include experiment_id in log context when an experiment is active
+
+**Distributed Tracing**
+  - Description: Propagate experiment context via trace headers (x-chaos-experiment-id)
+  - Configuration: Enable trace sampling at 100% during experiments; compare traces against baseline
+
+**Metrics Export**
+  - Description: Export experiment-specific metrics to monitoring system
+  - Configuration: chaos_experiment_* metrics; steady state deviation metrics; circuit breaker metrics
+
+**Alert Integration**
+  - Description: Route experiment alerts to appropriate channels
+  - Configuration: Separate alert routing for experiment alerts vs production alerts
+
+**Dashboard Automation**
+  - Description: Auto-generate experiment dashboards on experiment start
+  - Configuration: Grafana API provisioning; pre-built dashboard templates per experiment type
+
+**Log Aggregation**
+  - Description: Aggregate logs across all affected services
+  - Configuration: Centralized logging with experiment_id filter; log correlation across services
+
+**Anomaly Detection**
+  - Description: Detect anomalies during experiment execution
+  - Configuration: Baseline comparison; statistical process control; ML-based anomaly detection
+
+**SLO Monitoring**
+  - Description: Track SLO compliance during experiments
+  - Configuration: Error budget consumption rate; burn rate alerts; SLO violation detection
+
+**Dependency Mapping**
+  - Description: Auto-discover service dependencies during experiments
+  - Configuration: Service graph; trace dependency analysis; connection tracking
+
+**Blast Radius Tracking**
+  - Description: Real-time blast radius monitoring
+  - Configuration: Count affected instances; track traffic percentage; monitor error propagation
+
+
+### Maturity Level Transition Paths
+
+
+**Level 1 to Level 2: Ad-Hoc to Repeatable**
+  - Transition steps: Implement experiment template; deploy basic tooling; document process; train engineers; schedule monthly experiments
+
+**Level 2 to Level 3: Repeatable to Automated**
+  - Transition steps: Automate top 10 experiments; implement auto-rollback; create dashboards; integrate with CI/CD for pre-deploy checks
+
+**Level 3 to Level 4: Automated to Continuous**
+  - Transition steps: Implement continuous experiment scheduling; risk-based experiment selection; GameDay automation; resilience scorecards
+
+**Level 4 to Level 5: Continuous to Proactive**
+  - Transition steps: ML-based failure prediction; auto-experiment generation; self-healing validation; organization-wide resilience culture
+
+
+### CI/CD Pipeline Experiment Templates
+
+
+**Pre-Deploy Safety Check**
+  - Tool: GitHub Actions
+  - Stage: pre-deploy
+  - Purpose: Verifies circuit breaker configs, timeout hierarchies, and health check endpoints before deployment approval
+
+**Post-Deploy Canary Validation**
+  - Tool: Argo Rollouts
+  - Stage: post-deploy
+  - Purpose: Injects failures on canary instances to validate new deployment handles failures correctly
+
+**Weekly Resilience Scan**
+  - Tool: CronJob
+  - Stage: scheduled
+  - Purpose: Runs full experiment suite across all services on weekly basis to catch regressions
+
+**Change-Risk Assessment**
+  - Tool: Custom Pipeline
+  - Stage: pre-deploy
+  - Purpose: Analyzes code changes and schedules targeted experiments based on changed components
+
+**Regression Experiment Suite**
+  - Tool: LitmusChaos + CI
+  - Stage: post-deploy
+  - Purpose: Runs predefined set of experiments that must pass before deployment is considered successful
+
+**GameDay Automation**
+  - Tool: Argo Workflows
+  - Stage: scheduled
+  - Purpose: Fully automated GameDay with scenario injection, monitoring, and retro data collection
+
+
+### Kubernetes Chaos Experiment Catalog
+
+
+**Pod Disruption Budget Compliance**
+  - Purpose: Verify PDB allows desired number of pods to be disrupted
+  - Kubernetes Resource: policy/v1 PodDisruptionBudget
+
+**Horizontal Pod Autoscaler Response**
+  - Purpose: Verify HPA scales up/down correctly under load
+  - Kubernetes Resource: autoscaling/v1 HorizontalPodAutoscaler
+
+**Cluster Autoscaler Scaling**
+  - Purpose: Verify cluster autoscaler adds/removes nodes
+  - Kubernetes Resource: Cluster Autoscaler configuration
+
+**Network Policy Enforcement**
+  - Purpose: Verify network policies correctly isolate services
+  - Kubernetes Resource: networking.k8s.io NetworkPolicy
+
+**Resource Quota Enforcement**
+  - Purpose: Verify resource quotas prevent over-allocation
+  - Kubernetes Resource: core/v1 ResourceQuota
+
+**Priority Class Preemption**
+  - Purpose: Verify high-priority pods preempt low-priority pods
+  - Kubernetes Resource: scheduling.k8s.io PriorityClass
+
+**Pod Topology Spread**
+  - Purpose: Verify pods are spread across topology domains
+  - Kubernetes Resource: core/v1 Pod topologySpreadConstraints
+
+**Volume Expansion**
+  - Purpose: Verify PVC expansion works correctly
+  - Kubernetes Resource: storage.k8s.io VolumeExpansion
+
+**Storage Class Default**
+  - Purpose: Verify default storage class is correctly configured
+  - Kubernetes Resource: storage.k8s.io StorageClass
+
+**Ingress Controller Failover**
+  - Purpose: Verify ingress controller handles failures
+  - Kubernetes Resource: networking.k8s.io Ingress
+
+**Service Mesh mTLS**
+  - Purpose: Verify service mesh mTLS between services
+  - Kubernetes Resource: Istio PeerAuthentication
+
+**Certificate Management**
+  - Purpose: Verify cert-manager auto-renews certificates
+  - Kubernetes Resource: cert-manager Certificate
+
+### Comprehensive Failure Mode Reference
+
+This reference catalog covers all failure modes that chaos experiments should address, organized by system layer.
+
+
+### Compute Layer
+
+  - **EC2 Instance Termination** - Terminate EC2 instances via AWS API
+  -   Focus: ASG replacement, connection draining
+  -   Scope: 20% instances
+  -   Duration: 120s
+  - **ECS Task Stop** - Stop ECS tasks
+  -   Focus: Service auto-recovery
+  -   Scope: 25% tasks
+  -   Duration: 60s
+  - **Lambda Throttle** - Throttle Lambda function invocations
+  -   Focus: Concurrent execution limit
+  -   Scope: 50% invocations
+  -   Duration: 300s
+  - **Container OOM** - Force container memory limit exceeded
+  -   Focus: OOM killer, restart policy
+  -   Scope: 1 container
+  -   Duration: 30s
+  - **Process Hang** - Suspend process with SIGSTOP
+  -   Focus: Process supervisor, timeout
+  -   Scope: 1 process
+  -   Duration: 60s
+  - **Process Zombie** - Create zombie processes
+  -   Focus: Process reaping
+  -   Scope: 5 processes
+  -   Duration: 120s
+  - **Thread Deadlock** - Induce thread deadlock
+  -   Focus: Deadlock detection
+  -   Scope: 1 service instance
+  -   Duration: 180s
+  - **File Descriptor Exhaustion** - Open files until FD limit reached
+  -   Focus: FD monitoring, graceful failure
+  -   Scope: 1 container
+  -   Duration: 60s
+  - **Connection Limit** - Reduce max connections below current usage
+  -   Focus: Connection pooling, queuing
+  -   Scope: 25% reduction
+  -   Duration: 300s
+  - **Worker Pool Exhaustion** - Occupy all worker threads
+  -   Focus: Queue growth, request rejection
+  -   Scope: 1 service instance
+  -   Duration: 120s
+
+
+### Network Layer (30)
+
+  - **Symmetric Latency** - Add equal latency to all traffic
+  -   Focus: Timeout handling
+  -   Scope: 50% instances
+  -   Duration: 180s
+  - **Asymmetric Latency** - Add different latency to different traffic directions
+  -   Focus: Timeout handling
+  -   Scope: 30% traffic
+  -   Duration: 180s
+  - **Burst Latency** - Add latency in bursts
+  -   Focus: Transient failure handling
+  -   Scope: 10% traffic
+  -   Duration: 300s
+  - **Random Packet Loss** - Drop random packets
+  -   Focus: Retry logic, data integrity
+  -   Scope: 5% packets
+  -   Duration: 180s
+  - **Burst Packet Loss** - Drop packets in bursts
+  -   Focus: Connection resilience
+  -   Scope: 25% packets
+  -   Duration: 60s
+  - **Correlated Packet Loss** - Drop correlated packets
+  -   Focus: TCP behavior, retransmission
+  -   Scope: 10% packets
+  -   Duration: 180s
+  - **Packet Corruption** - Corrupt packet data
+  -   Focus: Checksum validation
+  -   Scope: 1% packets
+  -   Duration: 120s
+  - **Packet Duplication** - Duplicate packets
+  -   Focus: Idempotency handling
+  -   Scope: 2% packets
+  -   Duration: 120s
+  - **Packet Reordering** - Reorder packets
+  -   Focus: Protocol handling
+  -   Scope: 5% packets
+  -   Duration: 120s
+  - **Bandwidth Limit** - Restrict network bandwidth
+  -   Focus: Streaming, large payloads
+  -   Scope: 1 Mbps limit
+  -   Duration: 300s
+  - **Connection Refused** - Refuse new TCP connections
+  -   Focus: Reconnection logic
+  -   Scope: 100% traffic
+  -   Duration: 120s
+  - **Connection Reset** - Reset established TCP connections
+  -   Focus: Connection handling
+  -   Scope: 50% traffic
+  -   Duration: 60s
+  - **Slow DNS Response** - Delay DNS responses
+  -   Focus: DNS caching, timeout
+  -   Scope: 2s delay
+  -   Duration: 300s
+  - **Wrong DNS Response** - Return incorrect DNS results
+  -   Focus: DNS validation
+  -   Scope: 100% queries
+  -   Duration: 180s
+  - **DNS Server Failure** - Make DNS servers unresponsive
+  -   Focus: Fallback resolvers
+  -   Scope: 100% queries
+  -   Duration: 120s
+  - **TLS Handshake Failure** - Fail TLS handshake
+  -   Focus: TLS error handling
+  -   Scope: 100% connections
+  -   Duration: 300s
+  - **TLS Version Mismatch** - Negotiate unsupported TLS version
+  -   Focus: TLS negotiation
+  -   Scope: 100% connections
+  -   Duration: 180s
+  - **Certificate Expired** - Present expired certificate
+  -   Focus: Certificate validation
+  -   Scope: 100% connections
+  -   Duration: 300s
+  - **Certificate Wrong Host** - Present cert for wrong hostname
+  -   Focus: Hostname validation
+  -   Scope: 100% connections
+  -   Duration: 180s
+  - **Untrusted CA** - Present cert from untrusted CA
+  -   Focus: CA validation, certificate pinning
+  -   Scope: 100% connections
+  -   Duration: 120s
+  - **mTLS Certificate Failure** - Fail client certificate presentation
+  -   Focus: mTLS validation
+  -   Scope: 100% requests
+  -   Duration: 180s
+  - **Load Balancer Deregistration** - Remove instance from LB target group
+  -   Focus: Connection draining
+  -   Scope: 25% instances
+  -   Duration: 120s
+  - **Health Check Failure** - Fail health check endpoint
+  -   Focus: Health check logic
+  -   Scope: 50% instances
+  -   Duration: 180s
+  - **Sticky Session Break** - Break session affinity
+  -   Focus: Session handling
+  -   Scope: 25% traffic
+  -   Duration: 300s
+  - **Reverse Proxy Failure** - NGINX/Envoy process crash
+  -   Focus: Proxy redundancy
+  -   Scope: 1 proxy instance
+  -   Duration: 120s
+  - **API Gateway Throttle** - Trigger API gateway throttling
+  -   Focus: Rate limit handling
+  -   Scope: 50% traffic
+  -   Duration: 300s
+  - **Network Policy Block** - Apply restrictive network policy
+  -   Focus: Network policy enforcement
+  -   Scope: 100% traffic to target
+  -   Duration: 180s
+  - **Service Mesh Sidecar Failure** - Sidecar proxy crash
+  -   Focus: Service mesh resilience
+  -   Scope: 25% sidecars
+  -   Duration: 120s
+  - **Load Balancer Saturation** - Saturate load balancer capacity
+  -   Focus: LB scaling
+  -   Scope: 100% capacity
+  -   Duration: 300s
+  - **Cross-Region Latency** - Add latency between regions
+  -   Focus: Cross-region communication
+  -   Scope: 100% cross-region traffic
+  -   Duration: 600s
+
+
+### Storage Layer (20)
+
+  - **Disk Read Latency** - Increase disk read latency
+  -   Focus: I/O timeout, retry
+  -   Scope: 50% reads
+  -   Duration: 180s
+  - **Disk Write Latency** - Increase disk write latency
+  -   Focus: Write timeout, buffer
+  -   Scope: 50% writes
+  -   Duration: 180s
+  - **Disk Read Error** - Return I/O errors on reads
+  -   Focus: Error handling, retry
+  -   Scope: 25% reads
+  -   Duration: 120s
+  - **Disk Write Error** - Return I/O errors on writes
+  -   Focus: Error handling, data integrity
+  -   Scope: 25% writes
+  -   Duration: 120s
+  - **Disk Full** - Fill disk to capacity
+  -   Focus: Space monitoring, log rotation
+  -   Scope: 100% disk
+  -   Duration: 60s
+  - **Inode Exhaustion** - Exhaust inode capacity
+  -   Focus: File creation limits
+  -   Scope: 100% inodes
+  -   Duration: 60s
+  - **Disk Slow** - Throttle disk I/O performance
+  -   Focus: Performance monitoring
+  -   Scope: 50% throughput
+  -   Duration: 180s
+  - **Mount Point Failure** - Unmount filesystem
+  -   Focus: Mount monitoring, failover
+  -   Scope: 1 mount point
+  -   Duration: 120s
+  - **NFS Server Failure** - NFS server becomes unavailable
+  -   Focus: NFS failover
+  -   Scope: 100% NFS operations
+  -   Duration: 180s
+  - **EBS Volume Detachment** - Detach EBS volume from EC2
+  -   Focus: Volume reattachment
+  -   Scope: 1 volume
+  -   Duration: 120s
+  - **S3 Bucket Inaccessible** - Block S3 bucket access
+  -   Focus: S3 error handling
+  -   Scope: 100% S3 operations
+  -   Duration: 180s
+  - **S3 Bucket Deletion** - Delete S3 bucket
+  -   Focus: Bucket recovery
+  -   Scope: 1 bucket
+  -   Duration: 300s
+  - **EFS Mount Failure** - EFS mount becomes unavailable
+  -   Focus: EFS failover
+  -   Scope: 100% EFS operations
+  -   Duration: 120s
+  - **File Permission Denied** - Change file permissions to deny access
+  -   Focus: Permission handling
+  -   Scope: 1 directory
+  -   Duration: 60s
+  - **Disk Quota Exceeded** - Exceed disk quota limit
+  -   Focus: Quota monitoring
+  -   Scope: 1 user/container
+  -   Duration: 60s
+  - **RAID Degradation** - Simulate RAID disk failure
+  -   Focus: RAID rebuild
+  -   Scope: 1 disk
+  -   Duration: 300s
+  - **Snapshot Failure** - Fail volume snapshot operation
+  -   Focus: Backup monitoring
+  -   Scope: 100% snapshots
+  -   Duration: 180s
+  - **Backup Corruption** - Corrupt backup files
+  -   Focus: Backup verification
+  -   Scope: 1 backup
+  -   Duration: 300s
+  - **Data Directory Corruption** - Corrupt data directory structure
+  -   Focus: Data integrity, recovery
+  -   Scope: 1 directory
+  -   Duration: 180s
+  - **Config File Deletion** - Delete application config files
+  -   Focus: Config management, defaults
+  -   Scope: 1 file
+  -   Duration: 60s
+
+
+### Detailed Experiment Parameter Sets
+
+This section provides detailed parameter configurations for common experiment types, covering all configurable options.
+
+**Pod Delete Parameters**:
+  - TOTAL_CHAOS_DURATION
+  - CHAOS_INTERVAL
+  - FORCE
+  - PODS_AFFECTED_PERC
+  - TARGET_PODS
+  - SEQUENCE
+  - RAMP_TIME
+  - DELETE_STS_PODS
+
+**Network Latency Parameters**:
+  - NETWORK_LATENCY
+  - JITTER
+  - LATENCY_DISTRIBUTION
+  - TOTAL_CHAOS_DURATION
+  - PODS_AFFECTED_PERC
+  - TARGET_SERVICE_PORT
+  - DESTINATION_IPS
+  - DESTINATION_HOSTS
+  - SOURCE_PORTS
+  - DESTINATION_PORTS
+
+**Network Loss Parameters**:
+  - NETWORK_PACKET_LOSS_PERCENTAGE
+  - LOSS_CORRELATION
+  - TOTAL_CHAOS_DURATION
+  - PODS_AFFECTED_PERC
+  - TARGET_SERVICE_PORT
+  - DESTINATION_IPS
+
+**CPU Stress Parameters**:
+  - CPU_CORES
+  - CPU_LOAD
+  - TOTAL_CHAOS_DURATION
+  - PODS_AFFECTED_PERC
+  - TARGET_CONTAINER
+
+**Memory Stress Parameters**:
+  - MEMORY_CONSUMPTION
+  - MEMORY_PERCENTAGE
+  - TOTAL_CHAOS_DURATION
+  - PODS_AFFECTED_PERC
+  - TARGET_CONTAINER
+
+**Disk Fill Parameters**:
+  - FILL_PERCENTAGE
+  - FILL_COUNT
+  - TOTAL_CHAOS_DURATION
+  - PODS_AFFECTED_PERC
+  - TARGET_CONTAINER
+  - DATA_BLOCK_SIZE
+  - DATA_BLOCK_COUNT
+
+**Disk Stress Parameters**:
+  - FILESYSTEM_UTILIZATION_PERCENTAGE
+  - FILESYSTEM_UTILIZATION_PATH
+  - TOTAL_CHAOS_DURATION
+  - PODS_AFFECTED_PERC
+
+**DNS Chaos Parameters**:
+  - DNS_SERVER
+  - DNS_DOMAIN_PATTERNS
+  - TOTAL_CHAOS_DURATION
+  - PODS_AFFECTED_PERC
+
+**HTTP Chaos Parameters**:
+  - TARGET_SERVICE_PORT
+  - TARGET_ENDPOINT
+  - RESPONSE_CODE
+  - CONTENT_TYPE
+  - HTTP_METHODS
+  - RESPONSE_DURATION
+  - BODY
+  - TOTAL_CHAOS_DURATION
+
+**Container Kill Parameters**:
+  - TARGET_CONTAINER
+  - TOTAL_CHAOS_DURATION
+  - CHAOS_INTERVAL
+  - PODS_AFFECTED_PERC
+  - SIGNAL
+  - GRACE_PERIOD
+
+**Node Drain Parameters**:
+  - NODE_NAME
+  - DRAIN_TIMEOUT
+  - IGNORE_DAEMONSETS
+  - DELETE_EMPTYDIR_DATA
+  - DISABLE_EVICTION
+
+**Node CPU Hog Parameters**:
+  - NODE_CPU_CORE
+  - NODE_CPU_PERCENTAGE
+  - TOTAL_CHAOS_DURATION
+  - NODE_LABEL
+
+**Node Memory Hog Parameters**:
+  - NODE_MEMORY_PERCENTAGE
+  - TOTAL_CHAOS_DURATION
+  - NODE_LABEL
+
+**Kubelet Service Kill Parameters**:
+  - TARGET_NODE
+  - SERVICE_RESTART
+  - TOTAL_CHAOS_DURATION
+
+**Docker Service Kill Parameters**:
+  - TARGET_NODE
+  - SERVICE_RESTART
+  - TOTAL_CHAOS_DURATION
+
+
+### Cloud Provider Chaos Experiment Configurations
+
+
+**Compute**:
+  - AWS: EC2 (Terminate, Stop, Reboot)
+  - Azure: VM (Deallocate, Restart)
+  - GCP: Compute Engine (Stop, Delete)
+
+**Database**:
+  - AWS: RDS (Failover, Stop, Snapshot)
+  - Azure: Azure SQL (Failover)
+  - GCP: Cloud SQL (Failover)
+
+**Kubernetes**:
+  - AWS: EKS (Pod Delete, Node Drain)
+  - Azure: AKS (Pod Delete, Node Drain)
+  - GCP: GKE (Pod Delete, Node Drain)
+
+**Network**:
+  - AWS: Load Balancer (Deregister)
+  - Azure: Load Balancer (Deregister)
+  - GCP: Load Balancer (Deregister)
+
+**Storage**:
+  - AWS: EBS (Detach, Snapshot)
+  - Azure: Managed Disk (Detach)
+  - GCP: Persistent Disk (Detach)
+
+**DNS**:
+  - AWS: Route53 (Failover)
+  - Azure: DNS Zone (Delete)
+  - GCP: Cloud DNS (Delete)
+
+**IAM**:
+  - AWS: Role (Detach Policy)
+  - Azure: Role (Detach)
+  - GCP: IAM (Revoke Access)
+
+**Queue**:
+  - AWS: SQS (Visibility Timeout)
+  - Azure: Service Bus (Disable)
+  - GCP: Pub/Sub (Detach Subscription)
+
+**Cache**:
+  - AWS: ElastiCache (Reboot)
+  - Azure: Redis Cache (Reboot)
+  - GCP: Memorystore (Failover)
+
+**CDN**:
+  - AWS: CloudFront (Disable)
+  - Azure: CDN Profile (Disable)
+  - GCP: Cloud CDN (Disable)
+
+### Steady State Baseline Collection Methodology
+
+This section provides a comprehensive guide to collecting and validating steady state baselines for chaos experiments.
+
+**Metric 1: p95 Latency (ms)**
+  - Source: Datadog
+  - Query: rate(http_requests_total{status="5xx"}[5m])
+  - Baseline (7d): 110 ms
+  - Acceptable Range: 85 - 135 ms
+  - Collection Window: 1m
+  - Aggregation: max
+
+**Metric 2: p50 Latency (ms)**
+  - Source: Grafana
+  - Query: avg(rate(cpu_usage[5m]))
+  - Baseline (7d): 120 ms
+  - Acceptable Range: 90 - 150 ms
+  - Collection Window: 10m
+  - Aggregation: min
+
+**Metric 3: Error Rate (%)**
+  - Source: CloudWatch
+  - Query: avg(redis_hit_ratio)
+  - Baseline (7d): 130 %
+  - Acceptable Range: 95 - 165 %
+  - Collection Window: 30m
+  - Aggregation: p99
+
+**Metric 4: Request Rate (req/s)**
+  - Source: New Relic
+  - Query: sum(rate(kafka_messages_in[5m]))
+  - Baseline (7d): 140 req/s
+  - Acceptable Range: 100 - 180 req/s
+  - Collection Window: 1h
+  - Aggregation: p95
+
+**Metric 5: CPU Utilization (%)**
+  - Source: Graphite
+  - Query: histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
+  - Baseline (7d): 150 %
+  - Acceptable Range: 105 - 195 %
+  - Collection Window: 5m
+  - Aggregation: p50
+
+**Metric 6: Memory Utilization (%)**
+  - Source: InfluxDB
+  - Query: rate(http_requests_total{status="5xx"}[5m])
+  - Baseline (7d): 160 %
+  - Acceptable Range: 110 - 210 %
+  - Collection Window: 1m
+  - Aggregation: sum
+
+**Metric 7: Disk I/O (MB/s)**
+  - Source: Elastic APM
+  - Query: avg(rate(cpu_usage[5m]))
+  - Baseline (7d): 170 MB/s
+  - Acceptable Range: 115 - 225 MB/s
+  - Collection Window: 10m
+  - Aggregation: count
+
+**Metric 8: Network Throughput (Mbps)**
+  - Source: Jaeger
+  - Query: avg(redis_hit_ratio)
+  - Baseline (7d): 180 Mbps
+  - Acceptable Range: 120 - 240 Mbps
+  - Collection Window: 30m
+  - Aggregation: rate
+
+**Metric 9: Connection Count (count)**
+  - Source: Zipkin
+  - Query: sum(rate(kafka_messages_in[5m]))
+  - Baseline (7d): 190 count
+  - Acceptable Range: 125 - 255 count
+  - Collection Window: 1h
+  - Aggregation: irate
+
+**Metric 10: Queue Depth (count)**
+  - Source: Prometheus
+  - Query: histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
+  - Baseline (7d): 200 count
+  - Acceptable Range: 130 - 270 count
+  - Collection Window: 5m
+  - Aggregation: avg
+
+**Metric 11: Cache Hit Ratio (ratio)**
+  - Source: Datadog
+  - Query: rate(http_requests_total{status="5xx"}[5m])
+  - Baseline (7d): 210 ratio
+  - Acceptable Range: 135 - 285 ratio
+  - Collection Window: 1m
+  - Aggregation: max
+
+**Metric 12: GC Pause Time (ms)**
+  - Source: Grafana
+  - Query: avg(rate(cpu_usage[5m]))
+  - Baseline (7d): 220 ms
+  - Acceptable Range: 140 - 300 ms
+  - Collection Window: 10m
+  - Aggregation: min
+
+**Metric 13: Thread Pool Active (count)**
+  - Source: CloudWatch
+  - Query: avg(redis_hit_ratio)
+  - Baseline (7d): 230 count
+  - Acceptable Range: 145 - 315 count
+  - Collection Window: 30m
+  - Aggregation: p99
+
+**Metric 14: Connection Pool Active (count)**
+  - Source: New Relic
+  - Query: sum(rate(kafka_messages_in[5m]))
+  - Baseline (7d): 240 count
+  - Acceptable Range: 150 - 330 count
+  - Collection Window: 1h
+  - Aggregation: p95
+
+**Metric 15: DNS Resolution Time (ms)**
+  - Source: Graphite
+  - Query: histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
+  - Baseline (7d): 250 ms
+  - Acceptable Range: 155 - 345 ms
+  - Collection Window: 5m
+  - Aggregation: p50
+
+**Metric 16: TLS Handshake Time (ms)**
+  - Source: InfluxDB
+  - Query: rate(http_requests_total{status="5xx"}[5m])
+  - Baseline (7d): 260 ms
+  - Acceptable Range: 160 - 360 ms
+  - Collection Window: 1m
+  - Aggregation: sum
+
+**Metric 17: Database Query Time (ms)**
+  - Source: Elastic APM
+  - Query: avg(rate(cpu_usage[5m]))
+  - Baseline (7d): 270 ms
+  - Acceptable Range: 165 - 375 ms
+  - Collection Window: 10m
+  - Aggregation: count
+
+**Metric 18: External API Latency (ms)**
+  - Source: Jaeger
+  - Query: avg(redis_hit_ratio)
+  - Baseline (7d): 280 ms
+  - Acceptable Range: 170 - 390 ms
+  - Collection Window: 30m
+  - Aggregation: rate
+
+**Metric 19: Message Processing Rate (msg/s)**
+  - Source: Zipkin
+  - Query: sum(rate(kafka_messages_in[5m]))
+  - Baseline (7d): 290 msg/s
+  - Acceptable Range: 175 - 405 msg/s
+  - Collection Window: 1h
+  - Aggregation: irate
+
+**Metric 20: p99 Latency (ms)**
+  - Source: Prometheus
+  - Query: histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
+  - Baseline (7d): 300 ms
+  - Acceptable Range: 180 - 420 ms
+  - Collection Window: 5m
+  - Aggregation: avg
+
+**Metric 21: p95 Latency (ms)**
+  - Source: Datadog
+  - Query: rate(http_requests_total{status="5xx"}[5m])
+  - Baseline (7d): 310 ms
+  - Acceptable Range: 185 - 435 ms
+  - Collection Window: 1m
+  - Aggregation: max
+
+**Metric 22: p50 Latency (ms)**
+  - Source: Grafana
+  - Query: avg(rate(cpu_usage[5m]))
+  - Baseline (7d): 320 ms
+  - Acceptable Range: 190 - 450 ms
+  - Collection Window: 10m
+  - Aggregation: min
+
+**Metric 23: Error Rate (%)**
+  - Source: CloudWatch
+  - Query: avg(redis_hit_ratio)
+  - Baseline (7d): 330 %
+  - Acceptable Range: 195 - 465 %
+  - Collection Window: 30m
+  - Aggregation: p99
+
+**Metric 24: Request Rate (req/s)**
+  - Source: New Relic
+  - Query: sum(rate(kafka_messages_in[5m]))
+  - Baseline (7d): 340 req/s
+  - Acceptable Range: 200 - 480 req/s
+  - Collection Window: 1h
+  - Aggregation: p95
+
+**Metric 25: CPU Utilization (%)**
+  - Source: Graphite
+  - Query: histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
+  - Baseline (7d): 350 %
+  - Acceptable Range: 205 - 495 %
+  - Collection Window: 5m
+  - Aggregation: p50
+
+**Metric 26: Memory Utilization (%)**
+  - Source: InfluxDB
+  - Query: rate(http_requests_total{status="5xx"}[5m])
+  - Baseline (7d): 360 %
+  - Acceptable Range: 210 - 510 %
+  - Collection Window: 1m
+  - Aggregation: sum
+
+**Metric 27: Disk I/O (MB/s)**
+  - Source: Elastic APM
+  - Query: avg(rate(cpu_usage[5m]))
+  - Baseline (7d): 370 MB/s
+  - Acceptable Range: 215 - 525 MB/s
+  - Collection Window: 10m
+  - Aggregation: count
+
+**Metric 28: Network Throughput (Mbps)**
+  - Source: Jaeger
+  - Query: avg(redis_hit_ratio)
+  - Baseline (7d): 380 Mbps
+  - Acceptable Range: 220 - 540 Mbps
+  - Collection Window: 30m
+  - Aggregation: rate
+
+**Metric 29: Connection Count (count)**
+  - Source: Zipkin
+  - Query: sum(rate(kafka_messages_in[5m]))
+  - Baseline (7d): 390 count
+  - Acceptable Range: 225 - 555 count
+  - Collection Window: 1h
+  - Aggregation: irate
+
+**Metric 30: Queue Depth (count)**
+  - Source: Prometheus
+  - Query: histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
+  - Baseline (7d): 400 count
+  - Acceptable Range: 230 - 570 count
+  - Collection Window: 5m
+  - Aggregation: avg
+
+**Metric 31: Cache Hit Ratio (ratio)**
+  - Source: Datadog
+  - Query: rate(http_requests_total{status="5xx"}[5m])
+  - Baseline (7d): 410 ratio
+  - Acceptable Range: 235 - 585 ratio
+  - Collection Window: 1m
+  - Aggregation: max
+
+**Metric 32: GC Pause Time (ms)**
+  - Source: Grafana
+  - Query: avg(rate(cpu_usage[5m]))
+  - Baseline (7d): 420 ms
+  - Acceptable Range: 240 - 600 ms
+  - Collection Window: 10m
+  - Aggregation: min
+
+**Metric 33: Thread Pool Active (count)**
+  - Source: CloudWatch
+  - Query: avg(redis_hit_ratio)
+  - Baseline (7d): 430 count
+  - Acceptable Range: 245 - 615 count
+  - Collection Window: 30m
+  - Aggregation: p99
+
+**Metric 34: Connection Pool Active (count)**
+  - Source: New Relic
+  - Query: sum(rate(kafka_messages_in[5m]))
+  - Baseline (7d): 440 count
+  - Acceptable Range: 250 - 630 count
+  - Collection Window: 1h
+  - Aggregation: p95
+
+**Metric 35: DNS Resolution Time (ms)**
+  - Source: Graphite
+  - Query: histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
+  - Baseline (7d): 450 ms
+  - Acceptable Range: 255 - 645 ms
+  - Collection Window: 5m
+  - Aggregation: p50
+
+**Metric 36: TLS Handshake Time (ms)**
+  - Source: InfluxDB
+  - Query: rate(http_requests_total{status="5xx"}[5m])
+  - Baseline (7d): 460 ms
+  - Acceptable Range: 260 - 660 ms
+  - Collection Window: 1m
+  - Aggregation: sum
+
+**Metric 37: Database Query Time (ms)**
+  - Source: Elastic APM
+  - Query: avg(rate(cpu_usage[5m]))
+  - Baseline (7d): 470 ms
+  - Acceptable Range: 265 - 675 ms
+  - Collection Window: 10m
+  - Aggregation: count
+
+**Metric 38: External API Latency (ms)**
+  - Source: Jaeger
+  - Query: avg(redis_hit_ratio)
+  - Baseline (7d): 480 ms
+  - Acceptable Range: 270 - 690 ms
+  - Collection Window: 30m
+  - Aggregation: rate
+
+**Metric 39: Message Processing Rate (msg/s)**
+  - Source: Zipkin
+  - Query: sum(rate(kafka_messages_in[5m]))
+  - Baseline (7d): 490 msg/s
+  - Acceptable Range: 275 - 705 msg/s
+  - Collection Window: 1h
+  - Aggregation: irate
+
+**Metric 40: p99 Latency (ms)**
+  - Source: Prometheus
+  - Query: histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))
+  - Baseline (7d): 500 ms
+  - Acceptable Range: 280 - 720 ms
+  - Collection Window: 5m
+  - Aggregation: avg
+
+
+### Safety Review Checklist (Expanded)
+
+This expanded checklist covers all safety considerations for chaos experiments.
+
+  - Steady State - Question 1: Are steady state metrics defined with acceptable ranges?
+  - Blast Radius - Question 2: Is the blast radius calculated and documented?
+  - Rollback - Question 3: Are rollback criteria specific and automated?
+  - Monitoring - Question 4: Are monitoring dashboards configured and verified?
+  - Communication - Question 5: Have all affected teams been notified?
+  - Compliance - Question 6: Have compliance requirements been reviewed?
+  - Dependencies - Question 7: Are dependency failure modes understood?
+  - Environment - Question 8: Is the experiment environment correctly configured?
+  - Documentation - Question 9: Is the experiment documented in the tracking system?
+  - Hypothesis - Question 10: Is the experiment hypothesis clearly documented?
+  - Steady State - Question 11: Are steady state metrics defined with acceptable ranges?
+  - Blast Radius - Question 12: Is the blast radius calculated and documented?
+  - Rollback - Question 13: Are rollback criteria specific and automated?
+  - Monitoring - Question 14: Are monitoring dashboards configured and verified?
+  - Communication - Question 15: Have all affected teams been notified?
+  - Compliance - Question 16: Have compliance requirements been reviewed?
+  - Dependencies - Question 17: Are dependency failure modes understood?
+  - Environment - Question 18: Is the experiment environment correctly configured?
+  - Documentation - Question 19: Is the experiment documented in the tracking system?
+  - Hypothesis - Question 20: Is the experiment hypothesis clearly documented?
+  - Steady State - Question 21: Are steady state metrics defined with acceptable ranges?
+  - Blast Radius - Question 22: Is the blast radius calculated and documented?
+  - Rollback - Question 23: Are rollback criteria specific and automated?
+  - Monitoring - Question 24: Are monitoring dashboards configured and verified?
+  - Communication - Question 25: Have all affected teams been notified?
+  - Compliance - Question 26: Have compliance requirements been reviewed?
+  - Dependencies - Question 27: Are dependency failure modes understood?
+  - Environment - Question 28: Is the experiment environment correctly configured?
+  - Documentation - Question 29: Is the experiment documented in the tracking system?
+  - Hypothesis - Question 30: Is the experiment hypothesis clearly documented?
+  - Steady State - Question 31: Are steady state metrics defined with acceptable ranges?
+  - Blast Radius - Question 32: Is the blast radius calculated and documented?
+  - Rollback - Question 33: Are rollback criteria specific and automated?
+  - Monitoring - Question 34: Are monitoring dashboards configured and verified?
+  - Communication - Question 35: Have all affected teams been notified?
+  - Compliance - Question 36: Have compliance requirements been reviewed?
+  - Dependencies - Question 37: Are dependency failure modes understood?
+  - Environment - Question 38: Is the experiment environment correctly configured?
+  - Documentation - Question 39: Is the experiment documented in the tracking system?
+  - Hypothesis - Question 40: Is the experiment hypothesis clearly documented?
+  - Steady State - Question 41: Are steady state metrics defined with acceptable ranges?
+  - Blast Radius - Question 42: Is the blast radius calculated and documented?
+  - Rollback - Question 43: Are rollback criteria specific and automated?
+  - Monitoring - Question 44: Are monitoring dashboards configured and verified?
+  - Communication - Question 45: Have all affected teams been notified?
+  - Compliance - Question 46: Have compliance requirements been reviewed?
+  - Dependencies - Question 47: Are dependency failure modes understood?
+  - Environment - Question 48: Is the experiment environment correctly configured?
+  - Documentation - Question 49: Is the experiment documented in the tracking system?
+  - Hypothesis - Question 50: Is the experiment hypothesis clearly documented?
+
+
+### GameDay Preparation Checklists
+
+
+  - Pre-GameDay (2 weeks): Design scenario timeline with injection points
+  - Pre-GameDay (1 week): Identify participants and assign roles
+  - Pre-GameDay (1 day): Prepare environment and verify injection scripts
+  - GameDay Day: Create communication channels and briefing materials
+  - Pre-GameDay (4 weeks): Set up monitoring dashboards for GameDay metrics
+  - Pre-GameDay (2 weeks): Brief observers on their role and expectations
+  - Pre-GameDay (1 week): Test rollback procedures and abort mechanisms
+  - Pre-GameDay (1 day): Prepare retrospective template and action item tracker
+  - GameDay Day: Document lessons learned from previous GameDays
+  - Pre-GameDay (4 weeks): Define learning objectives for GameDay scenario #10
+  - Pre-GameDay (2 weeks): Design scenario timeline with injection points
+  - Pre-GameDay (1 week): Identify participants and assign roles
+  - Pre-GameDay (1 day): Prepare environment and verify injection scripts
+  - GameDay Day: Create communication channels and briefing materials
+  - Pre-GameDay (4 weeks): Set up monitoring dashboards for GameDay metrics
+  - Pre-GameDay (2 weeks): Brief observers on their role and expectations
+  - Pre-GameDay (1 week): Test rollback procedures and abort mechanisms
+  - Pre-GameDay (1 day): Prepare retrospective template and action item tracker
+  - GameDay Day: Document lessons learned from previous GameDays
+  - Pre-GameDay (4 weeks): Define learning objectives for GameDay scenario #20
+  - Pre-GameDay (2 weeks): Design scenario timeline with injection points
+  - Pre-GameDay (1 week): Identify participants and assign roles
+  - Pre-GameDay (1 day): Prepare environment and verify injection scripts
+  - GameDay Day: Create communication channels and briefing materials
+  - Pre-GameDay (4 weeks): Set up monitoring dashboards for GameDay metrics
+  - Pre-GameDay (2 weeks): Brief observers on their role and expectations
+  - Pre-GameDay (1 week): Test rollback procedures and abort mechanisms
+  - Pre-GameDay (1 day): Prepare retrospective template and action item tracker
+  - GameDay Day: Document lessons learned from previous GameDays
+  - Pre-GameDay (4 weeks): Define learning objectives for GameDay scenario #30
+  - Pre-GameDay (2 weeks): Design scenario timeline with injection points
+  - Pre-GameDay (1 week): Identify participants and assign roles
+  - Pre-GameDay (1 day): Prepare environment and verify injection scripts
+  - GameDay Day: Create communication channels and briefing materials
+  - Pre-GameDay (4 weeks): Set up monitoring dashboards for GameDay metrics
+  - Pre-GameDay (2 weeks): Brief observers on their role and expectations
+  - Pre-GameDay (1 week): Test rollback procedures and abort mechanisms
+  - Pre-GameDay (1 day): Prepare retrospective template and action item tracker
+  - GameDay Day: Document lessons learned from previous GameDays
+  - Pre-GameDay (4 weeks): Define learning objectives for GameDay scenario #40
+  - Pre-GameDay (2 weeks): Design scenario timeline with injection points
+  - Pre-GameDay (1 week): Identify participants and assign roles
+  - Pre-GameDay (1 day): Prepare environment and verify injection scripts
+  - GameDay Day: Create communication channels and briefing materials
+  - Pre-GameDay (4 weeks): Set up monitoring dashboards for GameDay metrics
+  - Pre-GameDay (2 weeks): Brief observers on their role and expectations
+  - Pre-GameDay (1 week): Test rollback procedures and abort mechanisms
+  - Pre-GameDay (1 day): Prepare retrospective template and action item tracker
+  - GameDay Day: Document lessons learned from previous GameDays
+  - Pre-GameDay (4 weeks): Define learning objectives for GameDay scenario #50
+
+
+### Failure Injection Parameter Reference
+
+Detailed parameter descriptions for all failure injection techniques.
+
+  - **Network Loss - Parameter Set 1**
+  -   Duration: 35s
+  -   Target: checkout-service
+  -   Percentage: 11%
+  -   Interval: 6s
+  -   Ramp Time: 6s
+
+  - **CPU Stress - Parameter Set 1**
+  -   Duration: 40s
+  -   Target: api-gateway
+  -   Percentage: 12%
+  -   Interval: 7s
+  -   Ramp Time: 7s
+
+  - **Memory Stress - Parameter Set 1**
+  -   Duration: 45s
+  -   Target: user-service
+  -   Percentage: 13%
+  -   Interval: 8s
+  -   Ramp Time: 8s
+
+  - **Disk Fill - Parameter Set 1**
+  -   Duration: 50s
+  -   Target: inventory-service
+  -   Percentage: 14%
+  -   Interval: 9s
+  -   Ramp Time: 9s
+
+  - **Pod Delete - Parameter Set 1**
+  -   Duration: 55s
+  -   Target: payment-service
+  -   Percentage: 15%
+  -   Interval: 10s
+  -   Ramp Time: 10s
+
+  - **Container Kill - Parameter Set 1**
+  -   Duration: 60s
+  -   Target: checkout-service
+  -   Percentage: 16%
+  -   Interval: 11s
+  -   Ramp Time: 11s
+
+  - **Node Drain - Parameter Set 1**
+  -   Duration: 65s
+  -   Target: api-gateway
+  -   Percentage: 17%
+  -   Interval: 12s
+  -   Ramp Time: 12s
+
+  - **DNS Chaos - Parameter Set 1**
+  -   Duration: 70s
+  -   Target: user-service
+  -   Percentage: 18%
+  -   Interval: 13s
+  -   Ramp Time: 13s
+
+  - **HTTP Chaos - Parameter Set 1**
+  -   Duration: 75s
+  -   Target: inventory-service
+  -   Percentage: 19%
+  -   Interval: 14s
+  -   Ramp Time: 14s
+
+  - **Network Latency - Parameter Set 2**
+  -   Duration: 80s
+  -   Target: payment-service
+  -   Percentage: 20%
+  -   Interval: 15s
+  -   Ramp Time: 15s
+
+  - **Network Loss - Parameter Set 2**
+  -   Duration: 85s
+  -   Target: checkout-service
+  -   Percentage: 21%
+  -   Interval: 16s
+  -   Ramp Time: 16s
+
+  - **CPU Stress - Parameter Set 2**
+  -   Duration: 90s
+  -   Target: api-gateway
+  -   Percentage: 22%
+  -   Interval: 17s
+  -   Ramp Time: 17s
+
+  - **Memory Stress - Parameter Set 2**
+  -   Duration: 95s
+  -   Target: user-service
+  -   Percentage: 23%
+  -   Interval: 18s
+  -   Ramp Time: 18s
+
+  - **Disk Fill - Parameter Set 2**
+  -   Duration: 100s
+  -   Target: inventory-service
+  -   Percentage: 24%
+  -   Interval: 19s
+  -   Ramp Time: 19s
+
+  - **Pod Delete - Parameter Set 2**
+  -   Duration: 105s
+  -   Target: payment-service
+  -   Percentage: 25%
+  -   Interval: 20s
+  -   Ramp Time: 5s
+
+  - **Container Kill - Parameter Set 2**
+  -   Duration: 110s
+  -   Target: checkout-service
+  -   Percentage: 26%
+  -   Interval: 21s
+  -   Ramp Time: 6s
+
+  - **Node Drain - Parameter Set 2**
+  -   Duration: 115s
+  -   Target: api-gateway
+  -   Percentage: 27%
+  -   Interval: 22s
+  -   Ramp Time: 7s
+
+  - **DNS Chaos - Parameter Set 2**
+  -   Duration: 120s
+  -   Target: user-service
+  -   Percentage: 28%
+  -   Interval: 23s
+  -   Ramp Time: 8s
+
+  - **HTTP Chaos - Parameter Set 2**
+  -   Duration: 125s
+  -   Target: inventory-service
+  -   Percentage: 29%
+  -   Interval: 24s
+  -   Ramp Time: 9s
+
+  - **Network Latency - Parameter Set 3**
+  -   Duration: 130s
+  -   Target: payment-service
+  -   Percentage: 30%
+  -   Interval: 5s
+  -   Ramp Time: 10s
+
+  - **Network Loss - Parameter Set 3**
+  -   Duration: 135s
+  -   Target: checkout-service
+  -   Percentage: 31%
+  -   Interval: 6s
+  -   Ramp Time: 11s
+
+  - **CPU Stress - Parameter Set 3**
+  -   Duration: 140s
+  -   Target: api-gateway
+  -   Percentage: 32%
+  -   Interval: 7s
+  -   Ramp Time: 12s
+
+  - **Memory Stress - Parameter Set 3**
+  -   Duration: 145s
+  -   Target: user-service
+  -   Percentage: 33%
+  -   Interval: 8s
+  -   Ramp Time: 13s
+
+  - **Disk Fill - Parameter Set 3**
+  -   Duration: 150s
+  -   Target: inventory-service
+  -   Percentage: 34%
+  -   Interval: 9s
+  -   Ramp Time: 14s
+
+  - **Pod Delete - Parameter Set 3**
+  -   Duration: 155s
+  -   Target: payment-service
+  -   Percentage: 35%
+  -   Interval: 10s
+  -   Ramp Time: 15s
+
+  - **Container Kill - Parameter Set 3**
+  -   Duration: 160s
+  -   Target: checkout-service
+  -   Percentage: 36%
+  -   Interval: 11s
+  -   Ramp Time: 16s
+
+  - **Node Drain - Parameter Set 3**
+  -   Duration: 165s
+  -   Target: api-gateway
+  -   Percentage: 37%
+  -   Interval: 12s
+  -   Ramp Time: 17s
+
+  - **DNS Chaos - Parameter Set 3**
+  -   Duration: 170s
+  -   Target: user-service
+  -   Percentage: 38%
+  -   Interval: 13s
+  -   Ramp Time: 18s
+
+  - **HTTP Chaos - Parameter Set 3**
+  -   Duration: 175s
+  -   Target: inventory-service
+  -   Percentage: 39%
+  -   Interval: 14s
+  -   Ramp Time: 19s
+
+  - **Network Latency - Parameter Set 4**
+  -   Duration: 180s
+  -   Target: payment-service
+  -   Percentage: 40%
+  -   Interval: 15s
+  -   Ramp Time: 5s
+
+  - **Network Loss - Parameter Set 4**
+  -   Duration: 185s
+  -   Target: checkout-service
+  -   Percentage: 41%
+  -   Interval: 16s
+  -   Ramp Time: 6s
+
+  - **CPU Stress - Parameter Set 4**
+  -   Duration: 190s
+  -   Target: api-gateway
+  -   Percentage: 42%
+  -   Interval: 17s
+  -   Ramp Time: 7s
+
+  - **Memory Stress - Parameter Set 4**
+  -   Duration: 195s
+  -   Target: user-service
+  -   Percentage: 43%
+  -   Interval: 18s
+  -   Ramp Time: 8s
+
+  - **Disk Fill - Parameter Set 4**
+  -   Duration: 200s
+  -   Target: inventory-service
+  -   Percentage: 44%
+  -   Interval: 19s
+  -   Ramp Time: 9s
+
+  - **Pod Delete - Parameter Set 4**
+  -   Duration: 205s
+  -   Target: payment-service
+  -   Percentage: 45%
+  -   Interval: 20s
+  -   Ramp Time: 10s
+
+  - **Container Kill - Parameter Set 4**
+  -   Duration: 210s
+  -   Target: checkout-service
+  -   Percentage: 46%
+  -   Interval: 21s
+  -   Ramp Time: 11s
+
+  - **Node Drain - Parameter Set 4**
+  -   Duration: 215s
+  -   Target: api-gateway
+  -   Percentage: 47%
+  -   Interval: 22s
+  -   Ramp Time: 12s
+
+  - **DNS Chaos - Parameter Set 4**
+  -   Duration: 220s
+  -   Target: user-service
+  -   Percentage: 48%
+  -   Interval: 23s
+  -   Ramp Time: 13s
+
+  - **HTTP Chaos - Parameter Set 4**
+  -   Duration: 225s
+  -   Target: inventory-service
+  -   Percentage: 49%
+  -   Interval: 24s
+  -   Ramp Time: 14s
+
+  - **Network Latency - Parameter Set 5**
+  -   Duration: 230s
+  -   Target: payment-service
+  -   Percentage: 10%
+  -   Interval: 5s
+  -   Ramp Time: 15s
+
+  - **Network Loss - Parameter Set 5**
+  -   Duration: 235s
+  -   Target: checkout-service
+  -   Percentage: 11%
+  -   Interval: 6s
+  -   Ramp Time: 16s
+
+  - **CPU Stress - Parameter Set 5**
+  -   Duration: 240s
+  -   Target: api-gateway
+  -   Percentage: 12%
+  -   Interval: 7s
+  -   Ramp Time: 17s
+
+  - **Memory Stress - Parameter Set 5**
+  -   Duration: 245s
+  -   Target: user-service
+  -   Percentage: 13%
+  -   Interval: 8s
+  -   Ramp Time: 18s
+
+  - **Disk Fill - Parameter Set 5**
+  -   Duration: 250s
+  -   Target: inventory-service
+  -   Percentage: 14%
+  -   Interval: 9s
+  -   Ramp Time: 19s
+
+  - **Pod Delete - Parameter Set 5**
+  -   Duration: 255s
+  -   Target: payment-service
+  -   Percentage: 15%
+  -   Interval: 10s
+  -   Ramp Time: 5s
+
+  - **Container Kill - Parameter Set 5**
+  -   Duration: 260s
+  -   Target: checkout-service
+  -   Percentage: 16%
+  -   Interval: 11s
+  -   Ramp Time: 6s
+
+  - **Node Drain - Parameter Set 5**
+  -   Duration: 265s
+  -   Target: api-gateway
+  -   Percentage: 17%
+  -   Interval: 12s
+  -   Ramp Time: 7s
+
+  - **DNS Chaos - Parameter Set 5**
+  -   Duration: 270s
+  -   Target: user-service
+  -   Percentage: 18%
+  -   Interval: 13s
+  -   Ramp Time: 8s
+
+  - **HTTP Chaos - Parameter Set 5**
+  -   Duration: 275s
+  -   Target: inventory-service
+  -   Percentage: 19%
+  -   Interval: 14s
+  -   Ramp Time: 9s
+
+  - **Network Latency - Parameter Set 6**
+  -   Duration: 280s
+  -   Target: payment-service
+  -   Percentage: 20%
+  -   Interval: 15s
+  -   Ramp Time: 10s
+
+  - **Network Loss - Parameter Set 6**
+  -   Duration: 285s
+  -   Target: checkout-service
+  -   Percentage: 21%
+  -   Interval: 16s
+  -   Ramp Time: 11s
+
+  - **CPU Stress - Parameter Set 6**
+  -   Duration: 290s
+  -   Target: api-gateway
+  -   Percentage: 22%
+  -   Interval: 17s
+  -   Ramp Time: 12s
+
+  - **Memory Stress - Parameter Set 6**
+  -   Duration: 295s
+  -   Target: user-service
+  -   Percentage: 23%
+  -   Interval: 18s
+  -   Ramp Time: 13s
+
+  - **Disk Fill - Parameter Set 6**
+  -   Duration: 300s
+  -   Target: inventory-service
+  -   Percentage: 24%
+  -   Interval: 19s
+  -   Ramp Time: 14s
+
+  - **Pod Delete - Parameter Set 6**
+  -   Duration: 305s
+  -   Target: payment-service
+  -   Percentage: 25%
+  -   Interval: 20s
+  -   Ramp Time: 15s
+
+  - **Container Kill - Parameter Set 6**
+  -   Duration: 310s
+  -   Target: checkout-service
+  -   Percentage: 26%
+  -   Interval: 21s
+  -   Ramp Time: 16s
+
+  - **Node Drain - Parameter Set 6**
+  -   Duration: 315s
+  -   Target: api-gateway
+  -   Percentage: 27%
+  -   Interval: 22s
+  -   Ramp Time: 17s
+
+  - **DNS Chaos - Parameter Set 6**
+  -   Duration: 320s
+  -   Target: user-service
+  -   Percentage: 28%
+  -   Interval: 23s
+  -   Ramp Time: 18s
+
+  - **HTTP Chaos - Parameter Set 6**
+  -   Duration: 325s
+  -   Target: inventory-service
+  -   Percentage: 29%
+  -   Interval: 24s
+  -   Ramp Time: 19s
+
+  - **Network Latency - Parameter Set 7**
+  -   Duration: 330s
+  -   Target: payment-service
+  -   Percentage: 30%
+  -   Interval: 5s
+  -   Ramp Time: 5s
+
+
+### Infrastructure Chaos Experiment Configurations
+
+
+  - **Azure VM Experiment #1**
+  -   Action: stop
+  -   Scope: percentage
+  -   Count/Percent: 2
+  -   Duration: 150s
+  -   Failover Expected: No
+
+  - **GCP Compute Experiment #2**
+  -   Action: reboot
+  -   Scope: tag-based
+  -   Count/Percent: 3
+  -   Duration: 180s
+  -   Failover Expected: Within 60s
+
+  - **K8s Node Experiment #3**
+  -   Action: isolate
+  -   Scope: single
+  -   Count/Percent: 4
+  -   Duration: 210s
+  -   Failover Expected: Within 120s
+
+  - **Bare Metal Experiment #4**
+  -   Action: drain
+  -   Scope: percentage
+  -   Count/Percent: 5
+  -   Duration: 240s
+  -   Failover Expected: Manual
+
+  - **VMware Experiment #5**
+  -   Action: terminate
+  -   Scope: tag-based
+  -   Count/Percent: 1
+  -   Duration: 270s
+  -   Failover Expected: Yes
+
+  - **OpenStack Experiment #6**
+  -   Action: stop
+  -   Scope: single
+  -   Count/Percent: 2
+  -   Duration: 300s
+  -   Failover Expected: No
+
+  - **DigitalOcean Experiment #7**
+  -   Action: reboot
+  -   Scope: percentage
+  -   Count/Percent: 3
+  -   Duration: 330s
+  -   Failover Expected: Within 60s
+
+  - **Linode Experiment #8**
+  -   Action: isolate
+  -   Scope: tag-based
+  -   Count/Percent: 4
+  -   Duration: 360s
+  -   Failover Expected: Within 120s
+
+  - **Hetzner Experiment #9**
+  -   Action: drain
+  -   Scope: single
+  -   Count/Percent: 5
+  -   Duration: 390s
+  -   Failover Expected: Manual
+
+  - **AWS EC2 Experiment #10**
+  -   Action: terminate
+  -   Scope: percentage
+  -   Count/Percent: 1
+  -   Duration: 420s
+  -   Failover Expected: Yes
+
+  - **Azure VM Experiment #11**
+  -   Action: stop
+  -   Scope: tag-based
+  -   Count/Percent: 2
+  -   Duration: 450s
+  -   Failover Expected: No
+
+  - **GCP Compute Experiment #12**
+  -   Action: reboot
+  -   Scope: single
+  -   Count/Percent: 3
+  -   Duration: 480s
+  -   Failover Expected: Within 60s
+
+  - **K8s Node Experiment #13**
+  -   Action: isolate
+  -   Scope: percentage
+  -   Count/Percent: 4
+  -   Duration: 510s
+  -   Failover Expected: Within 120s
+
+  - **Bare Metal Experiment #14**
+  -   Action: drain
+  -   Scope: tag-based
+  -   Count/Percent: 5
+  -   Duration: 540s
+  -   Failover Expected: Manual
+
+  - **VMware Experiment #15**
+  -   Action: terminate
+  -   Scope: single
+  -   Count/Percent: 1
+  -   Duration: 570s
+  -   Failover Expected: Yes
+
+  - **OpenStack Experiment #16**
+  -   Action: stop
+  -   Scope: percentage
+  -   Count/Percent: 2
+  -   Duration: 600s
+  -   Failover Expected: No
+
+  - **DigitalOcean Experiment #17**
+  -   Action: reboot
+  -   Scope: tag-based
+  -   Count/Percent: 3
+  -   Duration: 630s
+  -   Failover Expected: Within 60s
+
+  - **Linode Experiment #18**
+  -   Action: isolate
+  -   Scope: single
+  -   Count/Percent: 4
+  -   Duration: 660s
+  -   Failover Expected: Within 120s
+
+  - **Hetzner Experiment #19**
+  -   Action: drain
+  -   Scope: percentage
+  -   Count/Percent: 5
+  -   Duration: 690s
+  -   Failover Expected: Manual
+
+  - **AWS EC2 Experiment #20**
+  -   Action: terminate
+  -   Scope: tag-based
+  -   Count/Percent: 1
+  -   Duration: 720s
+  -   Failover Expected: Yes
+
+  - **Azure VM Experiment #21**
+  -   Action: stop
+  -   Scope: single
+  -   Count/Percent: 2
+  -   Duration: 750s
+  -   Failover Expected: No
+
+  - **GCP Compute Experiment #22**
+  -   Action: reboot
+  -   Scope: percentage
+  -   Count/Percent: 3
+  -   Duration: 780s
+  -   Failover Expected: Within 60s
+
+  - **K8s Node Experiment #23**
+  -   Action: isolate
+  -   Scope: tag-based
+  -   Count/Percent: 4
+  -   Duration: 810s
+  -   Failover Expected: Within 120s
+
+  - **Bare Metal Experiment #24**
+  -   Action: drain
+  -   Scope: single
+  -   Count/Percent: 5
+  -   Duration: 840s
+  -   Failover Expected: Manual
+
+  - **VMware Experiment #25**
+  -   Action: terminate
+  -   Scope: percentage
+  -   Count/Percent: 1
+  -   Duration: 870s
+  -   Failover Expected: Yes
+
+  - **OpenStack Experiment #26**
+  -   Action: stop
+  -   Scope: tag-based
+  -   Count/Percent: 2
+  -   Duration: 900s
+  -   Failover Expected: No
+
+  - **DigitalOcean Experiment #27**
+  -   Action: reboot
+  -   Scope: single
+  -   Count/Percent: 3
+  -   Duration: 930s
+  -   Failover Expected: Within 60s
+
+  - **Linode Experiment #28**
+  -   Action: isolate
+  -   Scope: percentage
+  -   Count/Percent: 4
+  -   Duration: 960s
+  -   Failover Expected: Within 120s
+
+  - **Hetzner Experiment #29**
+  -   Action: drain
+  -   Scope: tag-based
+  -   Count/Percent: 5
+  -   Duration: 990s
+  -   Failover Expected: Manual
+
+  - **AWS EC2 Experiment #30**
+  -   Action: terminate
+  -   Scope: single
+  -   Count/Percent: 1
+  -   Duration: 1020s
+  -   Failover Expected: Yes
+
+  - **Azure VM Experiment #31**
+  -   Action: stop
+  -   Scope: percentage
+  -   Count/Percent: 2
+  -   Duration: 1050s
+  -   Failover Expected: No
+
+  - **GCP Compute Experiment #32**
+  -   Action: reboot
+  -   Scope: tag-based
+  -   Count/Percent: 3
+  -   Duration: 1080s
+  -   Failover Expected: Within 60s
+
+  - **K8s Node Experiment #33**
+  -   Action: isolate
+  -   Scope: single
+  -   Count/Percent: 4
+  -   Duration: 1110s
+  -   Failover Expected: Within 120s
+
+  - **Bare Metal Experiment #34**
+  -   Action: drain
+  -   Scope: percentage
+  -   Count/Percent: 5
+  -   Duration: 1140s
+  -   Failover Expected: Manual
+
+  - **VMware Experiment #35**
+  -   Action: terminate
+  -   Scope: tag-based
+  -   Count/Percent: 1
+  -   Duration: 1170s
+  -   Failover Expected: Yes
+
+  - **OpenStack Experiment #36**
+  -   Action: stop
+  -   Scope: single
+  -   Count/Percent: 2
+  -   Duration: 1200s
+  -   Failover Expected: No
+
+  - **DigitalOcean Experiment #37**
+  -   Action: reboot
+  -   Scope: percentage
+  -   Count/Percent: 3
+  -   Duration: 1230s
+  -   Failover Expected: Within 60s
+
+  - **Linode Experiment #38**
+  -   Action: isolate
+  -   Scope: tag-based
+  -   Count/Percent: 4
+  -   Duration: 1260s
+  -   Failover Expected: Within 120s
+
+  - **Hetzner Experiment #39**
+  -   Action: drain
+  -   Scope: single
+  -   Count/Percent: 5
+  -   Duration: 1290s
+  -   Failover Expected: Manual
+
+  - **AWS EC2 Experiment #40**
+  -   Action: terminate
+  -   Scope: percentage
+  -   Count/Percent: 1
+  -   Duration: 1320s
+  -   Failover Expected: Yes
+
+  - **Azure VM Experiment #41**
+  -   Action: stop
+  -   Scope: tag-based
+  -   Count/Percent: 2
+  -   Duration: 1350s
+  -   Failover Expected: No
+
+  - **GCP Compute Experiment #42**
+  -   Action: reboot
+  -   Scope: single
+  -   Count/Percent: 3
+  -   Duration: 1380s
+  -   Failover Expected: Within 60s
+
+  - **K8s Node Experiment #43**
+  -   Action: isolate
+  -   Scope: percentage
+  -   Count/Percent: 4
+  -   Duration: 1410s
+  -   Failover Expected: Within 120s
+
+  - **Bare Metal Experiment #44**
+  -   Action: drain
+  -   Scope: tag-based
+  -   Count/Percent: 5
+  -   Duration: 1440s
+  -   Failover Expected: Manual
+
+  - **VMware Experiment #45**
+  -   Action: terminate
+  -   Scope: single
+  -   Count/Percent: 1
+  -   Duration: 1470s
+  -   Failover Expected: Yes
+
+  - **OpenStack Experiment #46**
+  -   Action: stop
+  -   Scope: percentage
+  -   Count/Percent: 2
+  -   Duration: 1500s
+  -   Failover Expected: No
+
+  - **DigitalOcean Experiment #47**
+  -   Action: reboot
+  -   Scope: tag-based
+  -   Count/Percent: 3
+  -   Duration: 1530s
+  -   Failover Expected: Within 60s
+
+  - **Linode Experiment #48**
+  -   Action: isolate
+  -   Scope: single
+  -   Count/Percent: 4
+  -   Duration: 1560s
+  -   Failover Expected: Within 120s
+
+  - **Hetzner Experiment #49**
+  -   Action: drain
+  -   Scope: percentage
+  -   Count/Percent: 5
+  -   Duration: 1590s
+  -   Failover Expected: Manual
+
+  - **AWS EC2 Experiment #50**
+  -   Action: terminate
+  -   Scope: tag-based
+  -   Count/Percent: 1
+  -   Duration: 1620s
+  -   Failover Expected: Yes
+
+
+### Application Chaos Test Cases
+
+
+  - **Test Case 1: Checkout service when another-service is slow**
+  -   Failure mode: timeout
+  -   Expected behavior: retry with backoff
+  -   Fallback time: 150ms
+  -   Error rate impact: 0.2%
+  -   Latency impact: 75ms
+
+  - **Test Case 2: Order service when file-storage is unavailable**
+  -   Failure mode: slow response
+  -   Expected behavior: fallback response
+  -   Fallback time: 200ms
+  -   Error rate impact: 0.30000000000000004%
+  -   Latency impact: 100ms
+
+  - **Test Case 3: Inventory service when email-service is slow**
+  -   Failure mode: error response
+  -   Expected behavior: degraded mode
+  -   Fallback time: 250ms
+  -   Error rate impact: 0.4%
+  -   Latency impact: 125ms
+
+  - **Test Case 4: User service when sms-service is unavailable**
+  -   Failure mode: connection reset
+  -   Expected behavior: queue for later processing
+  -   Fallback time: 300ms
+  -   Error rate impact: 0.5%
+  -   Latency impact: 150ms
+
+  - **Test Case 5: Notification service when push-service is slow**
+  -   Failure mode: connection refused
+  -   Expected behavior: circuit breaker opens
+  -   Fallback time: 350ms
+  -   Error rate impact: 0.6%
+  -   Latency impact: 175ms
+
+  - **Test Case 6: Search service when cdn is unavailable**
+  -   Failure mode: timeout
+  -   Expected behavior: retry with backoff
+  -   Fallback time: 400ms
+  -   Error rate impact: 0.7000000000000001%
+  -   Latency impact: 200ms
+
+  - **Test Case 7: Analytics service when database is slow**
+  -   Failure mode: slow response
+  -   Expected behavior: fallback response
+  -   Fallback time: 450ms
+  -   Error rate impact: 0.8%
+  -   Latency impact: 225ms
+
+  - **Test Case 8: Auth service when cache is unavailable**
+  -   Failure mode: error response
+  -   Expected behavior: degraded mode
+  -   Fallback time: 500ms
+  -   Error rate impact: 0.9%
+  -   Latency impact: 250ms
+
+  - **Test Case 9: Cart service when message-queue is slow**
+  -   Failure mode: connection reset
+  -   Expected behavior: queue for later processing
+  -   Fallback time: 550ms
+  -   Error rate impact: 1.0%
+  -   Latency impact: 275ms
+
+  - **Test Case 10: Payment service when external-api is unavailable**
+  -   Failure mode: connection refused
+  -   Expected behavior: circuit breaker opens
+  -   Fallback time: 600ms
+  -   Error rate impact: 1.1%
+  -   Latency impact: 300ms
+
+  - **Test Case 11: Checkout service when another-service is slow**
+  -   Failure mode: timeout
+  -   Expected behavior: retry with backoff
+  -   Fallback time: 650ms
+  -   Error rate impact: 1.2000000000000002%
+  -   Latency impact: 325ms
+
+  - **Test Case 12: Order service when file-storage is unavailable**
+  -   Failure mode: slow response
+  -   Expected behavior: fallback response
+  -   Fallback time: 700ms
+  -   Error rate impact: 1.3000000000000003%
+  -   Latency impact: 350ms
+
+  - **Test Case 13: Inventory service when email-service is slow**
+  -   Failure mode: error response
+  -   Expected behavior: degraded mode
+  -   Fallback time: 750ms
+  -   Error rate impact: 1.4000000000000001%
+  -   Latency impact: 375ms
+
+  - **Test Case 14: User service when sms-service is unavailable**
+  -   Failure mode: connection reset
+  -   Expected behavior: queue for later processing
+  -   Fallback time: 800ms
+  -   Error rate impact: 1.5000000000000002%
+  -   Latency impact: 400ms
+
+  - **Test Case 15: Notification service when push-service is slow**
+  -   Failure mode: connection refused
+  -   Expected behavior: circuit breaker opens
+  -   Fallback time: 850ms
+  -   Error rate impact: 1.6%
+  -   Latency impact: 425ms
+
+  - **Test Case 16: Search service when cdn is unavailable**
+  -   Failure mode: timeout
+  -   Expected behavior: retry with backoff
+  -   Fallback time: 900ms
+  -   Error rate impact: 1.7000000000000002%
+  -   Latency impact: 450ms
+
+  - **Test Case 17: Analytics service when database is slow**
+  -   Failure mode: slow response
+  -   Expected behavior: fallback response
+  -   Fallback time: 950ms
+  -   Error rate impact: 1.8000000000000003%
+  -   Latency impact: 475ms
+
+  - **Test Case 18: Auth service when cache is unavailable**
+  -   Failure mode: error response
+  -   Expected behavior: degraded mode
+  -   Fallback time: 1000ms
+  -   Error rate impact: 1.9000000000000001%
+  -   Latency impact: 500ms
+
+  - **Test Case 19: Cart service when message-queue is slow**
+  -   Failure mode: connection reset
+  -   Expected behavior: queue for later processing
+  -   Fallback time: 1050ms
+  -   Error rate impact: 2.0%
+  -   Latency impact: 525ms
+
+  - **Test Case 20: Payment service when external-api is unavailable**
+  -   Failure mode: connection refused
+  -   Expected behavior: circuit breaker opens
+  -   Fallback time: 1100ms
+  -   Error rate impact: 2.1%
+  -   Latency impact: 550ms
+
+  - **Test Case 21: Checkout service when another-service is slow**
+  -   Failure mode: timeout
+  -   Expected behavior: retry with backoff
+  -   Fallback time: 1150ms
+  -   Error rate impact: 2.2%
+  -   Latency impact: 575ms
+
+  - **Test Case 22: Order service when file-storage is unavailable**
+  -   Failure mode: slow response
+  -   Expected behavior: fallback response
+  -   Fallback time: 1200ms
+  -   Error rate impact: 2.3000000000000003%
+  -   Latency impact: 600ms
+
+  - **Test Case 23: Inventory service when email-service is slow**
+  -   Failure mode: error response
+  -   Expected behavior: degraded mode
+  -   Fallback time: 1250ms
+  -   Error rate impact: 2.4000000000000004%
+  -   Latency impact: 625ms
+
+  - **Test Case 24: User service when sms-service is unavailable**
+  -   Failure mode: connection reset
+  -   Expected behavior: queue for later processing
+  -   Fallback time: 1300ms
+  -   Error rate impact: 2.5000000000000004%
+  -   Latency impact: 650ms
+
+  - **Test Case 25: Notification service when push-service is slow**
+  -   Failure mode: connection refused
+  -   Expected behavior: circuit breaker opens
+  -   Fallback time: 1350ms
+  -   Error rate impact: 2.6%
+  -   Latency impact: 675ms
+
+  - **Test Case 26: Search service when cdn is unavailable**
+  -   Failure mode: timeout
+  -   Expected behavior: retry with backoff
+  -   Fallback time: 1400ms
+  -   Error rate impact: 2.7%
+  -   Latency impact: 700ms
+
+  - **Test Case 27: Analytics service when database is slow**
+  -   Failure mode: slow response
+  -   Expected behavior: fallback response
+  -   Fallback time: 1450ms
+  -   Error rate impact: 2.8000000000000003%
+  -   Latency impact: 725ms
+
+  - **Test Case 28: Auth service when cache is unavailable**
+  -   Failure mode: error response
+  -   Expected behavior: degraded mode
+  -   Fallback time: 1500ms
+  -   Error rate impact: 2.9000000000000004%
+  -   Latency impact: 750ms
+
+  - **Test Case 29: Cart service when message-queue is slow**
+  -   Failure mode: connection reset
+  -   Expected behavior: queue for later processing
+  -   Fallback time: 1550ms
+  -   Error rate impact: 3.0000000000000004%
+  -   Latency impact: 775ms
+
+  - **Test Case 30: Payment service when external-api is unavailable**
+  -   Failure mode: connection refused
+  -   Expected behavior: circuit breaker opens
+  -   Fallback time: 1600ms
+  -   Error rate impact: 3.1%
+  -   Latency impact: 800ms
+
+  - **Test Case 31: Checkout service when another-service is slow**
+  -   Failure mode: timeout
+  -   Expected behavior: retry with backoff
+  -   Fallback time: 1650ms
+  -   Error rate impact: 3.2%
+  -   Latency impact: 825ms
+
+  - **Test Case 32: Order service when file-storage is unavailable**
+  -   Failure mode: slow response
+  -   Expected behavior: fallback response
+  -   Fallback time: 1700ms
+  -   Error rate impact: 3.3000000000000003%
+  -   Latency impact: 850ms
+
+  - **Test Case 33: Inventory service when email-service is slow**
+  -   Failure mode: error response
+  -   Expected behavior: degraded mode
+  -   Fallback time: 1750ms
+  -   Error rate impact: 3.4000000000000004%
+  -   Latency impact: 875ms
+
+  - **Test Case 34: User service when sms-service is unavailable**
+  -   Failure mode: connection reset
+  -   Expected behavior: queue for later processing
+  -   Fallback time: 1800ms
+  -   Error rate impact: 3.5000000000000004%
+  -   Latency impact: 900ms
+
+  - **Test Case 35: Notification service when push-service is slow**
+  -   Failure mode: connection refused
+  -   Expected behavior: circuit breaker opens
+  -   Fallback time: 1850ms
+  -   Error rate impact: 3.6%
+  -   Latency impact: 925ms
+
+  - **Test Case 36: Search service when cdn is unavailable**
+  -   Failure mode: timeout
+  -   Expected behavior: retry with backoff
+  -   Fallback time: 1900ms
+  -   Error rate impact: 3.7%
+  -   Latency impact: 950ms
+
+  - **Test Case 37: Analytics service when database is slow**
+  -   Failure mode: slow response
+  -   Expected behavior: fallback response
+  -   Fallback time: 1950ms
+  -   Error rate impact: 3.8000000000000003%
+  -   Latency impact: 975ms
+
+  - **Test Case 38: Auth service when cache is unavailable**
+  -   Failure mode: error response
+  -   Expected behavior: degraded mode
+  -   Fallback time: 2000ms
+  -   Error rate impact: 3.9000000000000004%
+  -   Latency impact: 1000ms
+
+  - **Test Case 39: Cart service when message-queue is slow**
+  -   Failure mode: connection reset
+  -   Expected behavior: queue for later processing
+  -   Fallback time: 2050ms
+  -   Error rate impact: 4.0%
+  -   Latency impact: 1025ms
+
+  - **Test Case 40: Payment service when external-api is unavailable**
+  -   Failure mode: connection refused
+  -   Expected behavior: circuit breaker opens
+  -   Fallback time: 2100ms
+  -   Error rate impact: 4.1%
+  -   Latency impact: 1050ms
+
+  - **Test Case 41: Checkout service when another-service is slow**
+  -   Failure mode: timeout
+  -   Expected behavior: retry with backoff
+  -   Fallback time: 2150ms
+  -   Error rate impact: 4.2%
+  -   Latency impact: 1075ms
+
+  - **Test Case 42: Order service when file-storage is unavailable**
+  -   Failure mode: slow response
+  -   Expected behavior: fallback response
+  -   Fallback time: 2200ms
+  -   Error rate impact: 4.3%
+  -   Latency impact: 1100ms
+
+  - **Test Case 43: Inventory service when email-service is slow**
+  -   Failure mode: error response
+  -   Expected behavior: degraded mode
+  -   Fallback time: 2250ms
+  -   Error rate impact: 4.3999999999999995%
+  -   Latency impact: 1125ms
+
+  - **Test Case 44: User service when sms-service is unavailable**
+  -   Failure mode: connection reset
+  -   Expected behavior: queue for later processing
+  -   Fallback time: 2300ms
+  -   Error rate impact: 4.5%
+  -   Latency impact: 1150ms
+
+  - **Test Case 45: Notification service when push-service is slow**
+  -   Failure mode: connection refused
+  -   Expected behavior: circuit breaker opens
+  -   Fallback time: 2350ms
+  -   Error rate impact: 4.6%
+  -   Latency impact: 1175ms
+
+  - **Test Case 46: Search service when cdn is unavailable**
+  -   Failure mode: timeout
+  -   Expected behavior: retry with backoff
+  -   Fallback time: 2400ms
+  -   Error rate impact: 4.7%
+  -   Latency impact: 1200ms
+
+  - **Test Case 47: Analytics service when database is slow**
+  -   Failure mode: slow response
+  -   Expected behavior: fallback response
+  -   Fallback time: 2450ms
+  -   Error rate impact: 4.8%
+  -   Latency impact: 1225ms
+
+  - **Test Case 48: Auth service when cache is unavailable**
+  -   Failure mode: error response
+  -   Expected behavior: degraded mode
+  -   Fallback time: 2500ms
+  -   Error rate impact: 4.9%
+  -   Latency impact: 1250ms
+
+  - **Test Case 49: Cart service when message-queue is slow**
+  -   Failure mode: connection reset
+  -   Expected behavior: queue for later processing
+  -   Fallback time: 2550ms
+  -   Error rate impact: 5.0%
+  -   Latency impact: 1275ms
+
+  - **Test Case 50: Payment service when external-api is unavailable**
+  -   Failure mode: connection refused
+  -   Expected behavior: circuit breaker opens
+  -   Fallback time: 2600ms
+  -   Error rate impact: 5.1%
+  -   Latency impact: 1300ms
+
+  - **Test Case 51: Checkout service when another-service is slow**
+  -   Failure mode: timeout
+  -   Expected behavior: retry with backoff
+  -   Fallback time: 2650ms
+  -   Error rate impact: 5.2%
+  -   Latency impact: 1325ms
+
+  - **Test Case 52: Order service when file-storage is unavailable**
+  -   Failure mode: slow response
+  -   Expected behavior: fallback response
+  -   Fallback time: 2700ms
+  -   Error rate impact: 5.3%
+  -   Latency impact: 1350ms
+
+  - **Test Case 53: Inventory service when email-service is slow**
+  -   Failure mode: error response
+  -   Expected behavior: degraded mode
+  -   Fallback time: 2750ms
+  -   Error rate impact: 5.4%
+  -   Latency impact: 1375ms
+
+  - **Test Case 54: User service when sms-service is unavailable**
+  -   Failure mode: connection reset
+  -   Expected behavior: queue for later processing
+  -   Fallback time: 2800ms
+  -   Error rate impact: 5.5%
+  -   Latency impact: 1400ms
+
+  - **Test Case 55: Notification service when push-service is slow**
+  -   Failure mode: connection refused
+  -   Expected behavior: circuit breaker opens
+  -   Fallback time: 2850ms
+  -   Error rate impact: 5.6%
+  -   Latency impact: 1425ms
+
+  - **Test Case 56: Search service when cdn is unavailable**
+  -   Failure mode: timeout
+  -   Expected behavior: retry with backoff
+  -   Fallback time: 2900ms
+  -   Error rate impact: 5.7%
+  -   Latency impact: 1450ms
+
+  - **Test Case 57: Analytics service when database is slow**
+  -   Failure mode: slow response
+  -   Expected behavior: fallback response
+  -   Fallback time: 2950ms
+  -   Error rate impact: 5.8%
+  -   Latency impact: 1475ms
+
+  - **Test Case 58: Auth service when cache is unavailable**
+  -   Failure mode: error response
+  -   Expected behavior: degraded mode
+  -   Fallback time: 3000ms
+  -   Error rate impact: 5.9%
+  -   Latency impact: 1500ms
+
+  - **Test Case 59: Cart service when message-queue is slow**
+  -   Failure mode: connection reset
+  -   Expected behavior: queue for later processing
+  -   Fallback time: 3050ms
+  -   Error rate impact: 6.0%
+  -   Latency impact: 1525ms
+
+  - **Test Case 60: Payment service when external-api is unavailable**
+  -   Failure mode: connection refused
+  -   Expected behavior: circuit breaker opens
+  -   Fallback time: 3100ms
+  -   Error rate impact: 6.1%
+  -   Latency impact: 1550ms
+
+
+### Database Chaos Experiment Catalog
+
+
+  - **PostgreSQL Experiment #1**
+  -   Failure: replication lag
+  -   Impact metric: connection count
+  -   Recovery action: failover
+  -   RTO: 45s
+  -   RPO: 5s
+
+  - **MongoDB Experiment #2**
+  -   Failure: failover
+  -   Impact metric: replication lag
+  -   Recovery action: restore from backup
+  -   RTO: 60s
+  -   RPO: 30s
+
+  - **Redis Experiment #3**
+  -   Failure: slow query
+  -   Impact metric: error rate
+  -   Recovery action: repair index
+  -   RTO: 75s
+  -   RPO: 5m
+
+  - **Cassandra Experiment #4**
+  -   Failure: data corruption
+  -   Impact metric: throughput
+  -   Recovery action: increase pool
+  -   RTO: 90s
+  -   RPO: 1h
+
+  - **DynamoDB Experiment #5**
+  -   Failure: index corruption
+  -   Impact metric: query latency
+  -   Recovery action: restart service
+  -   RTO: 105s
+  -   RPO: 0 (no loss)
+
+  - **CockroachDB Experiment #6**
+  -   Failure: deadlock
+  -   Impact metric: connection count
+  -   Recovery action: failover
+  -   RTO: 120s
+  -   RPO: 5s
+
+  - **Elasticsearch Experiment #7**
+  -   Failure: disk full
+  -   Impact metric: replication lag
+  -   Recovery action: restore from backup
+  -   RTO: 135s
+  -   RPO: 30s
+
+  - **Aurora Experiment #8**
+  -   Failure: connection timeout
+  -   Impact metric: error rate
+  -   Recovery action: repair index
+  -   RTO: 150s
+  -   RPO: 5m
+
+  - **Spanner Experiment #9**
+  -   Failure: query timeout
+  -   Impact metric: throughput
+  -   Recovery action: increase pool
+  -   RTO: 165s
+  -   RPO: 1h
+
+  - **MySQL Experiment #10**
+  -   Failure: connection pool exhaustion
+  -   Impact metric: query latency
+  -   Recovery action: restart service
+  -   RTO: 180s
+  -   RPO: 0 (no loss)
+
+  - **PostgreSQL Experiment #11**
+  -   Failure: replication lag
+  -   Impact metric: connection count
+  -   Recovery action: failover
+  -   RTO: 195s
+  -   RPO: 5s
+
+  - **MongoDB Experiment #12**
+  -   Failure: failover
+  -   Impact metric: replication lag
+  -   Recovery action: restore from backup
+  -   RTO: 210s
+  -   RPO: 30s
+
+  - **Redis Experiment #13**
+  -   Failure: slow query
+  -   Impact metric: error rate
+  -   Recovery action: repair index
+  -   RTO: 225s
+  -   RPO: 5m
+
+  - **Cassandra Experiment #14**
+  -   Failure: data corruption
+  -   Impact metric: throughput
+  -   Recovery action: increase pool
+  -   RTO: 240s
+  -   RPO: 1h
+
+  - **DynamoDB Experiment #15**
+  -   Failure: index corruption
+  -   Impact metric: query latency
+  -   Recovery action: restart service
+  -   RTO: 255s
+  -   RPO: 0 (no loss)
+
+  - **CockroachDB Experiment #16**
+  -   Failure: deadlock
+  -   Impact metric: connection count
+  -   Recovery action: failover
+  -   RTO: 270s
+  -   RPO: 5s
+
+  - **Elasticsearch Experiment #17**
+  -   Failure: disk full
+  -   Impact metric: replication lag
+  -   Recovery action: restore from backup
+  -   RTO: 285s
+  -   RPO: 30s
+
+  - **Aurora Experiment #18**
+  -   Failure: connection timeout
+  -   Impact metric: error rate
+  -   Recovery action: repair index
+  -   RTO: 300s
+  -   RPO: 5m
+
+  - **Spanner Experiment #19**
+  -   Failure: query timeout
+  -   Impact metric: throughput
+  -   Recovery action: increase pool
+  -   RTO: 315s
+  -   RPO: 1h
+
+  - **MySQL Experiment #20**
+  -   Failure: connection pool exhaustion
+  -   Impact metric: query latency
+  -   Recovery action: restart service
+  -   RTO: 330s
+  -   RPO: 0 (no loss)
+
+  - **PostgreSQL Experiment #21**
+  -   Failure: replication lag
+  -   Impact metric: connection count
+  -   Recovery action: failover
+  -   RTO: 345s
+  -   RPO: 5s
+
+  - **MongoDB Experiment #22**
+  -   Failure: failover
+  -   Impact metric: replication lag
+  -   Recovery action: restore from backup
+  -   RTO: 360s
+  -   RPO: 30s
+
+  - **Redis Experiment #23**
+  -   Failure: slow query
+  -   Impact metric: error rate
+  -   Recovery action: repair index
+  -   RTO: 375s
+  -   RPO: 5m
+
+  - **Cassandra Experiment #24**
+  -   Failure: data corruption
+  -   Impact metric: throughput
+  -   Recovery action: increase pool
+  -   RTO: 390s
+  -   RPO: 1h
+
+  - **DynamoDB Experiment #25**
+  -   Failure: index corruption
+  -   Impact metric: query latency
+  -   Recovery action: restart service
+  -   RTO: 405s
+  -   RPO: 0 (no loss)
+
+  - **CockroachDB Experiment #26**
+  -   Failure: deadlock
+  -   Impact metric: connection count
+  -   Recovery action: failover
+  -   RTO: 420s
+  -   RPO: 5s
+
+  - **Elasticsearch Experiment #27**
+  -   Failure: disk full
+  -   Impact metric: replication lag
+  -   Recovery action: restore from backup
+  -   RTO: 435s
+  -   RPO: 30s
+
+  - **Aurora Experiment #28**
+  -   Failure: connection timeout
+  -   Impact metric: error rate
+  -   Recovery action: repair index
+  -   RTO: 450s
+  -   RPO: 5m
+
+  - **Spanner Experiment #29**
+  -   Failure: query timeout
+  -   Impact metric: throughput
+  -   Recovery action: increase pool
+  -   RTO: 465s
+  -   RPO: 1h
+
+  - **MySQL Experiment #30**
+  -   Failure: connection pool exhaustion
+  -   Impact metric: query latency
+  -   Recovery action: restart service
+  -   RTO: 480s
+  -   RPO: 0 (no loss)
+
+  - **PostgreSQL Experiment #31**
+  -   Failure: replication lag
+  -   Impact metric: connection count
+  -   Recovery action: failover
+  -   RTO: 495s
+  -   RPO: 5s
+
+  - **MongoDB Experiment #32**
+  -   Failure: failover
+  -   Impact metric: replication lag
+  -   Recovery action: restore from backup
+  -   RTO: 510s
+  -   RPO: 30s
+
+  - **Redis Experiment #33**
+  -   Failure: slow query
+  -   Impact metric: error rate
+  -   Recovery action: repair index
+  -   RTO: 525s
+  -   RPO: 5m
+
+  - **Cassandra Experiment #34**
+  -   Failure: data corruption
+  -   Impact metric: throughput
+  -   Recovery action: increase pool
+  -   RTO: 540s
+  -   RPO: 1h
+
+  - **DynamoDB Experiment #35**
+  -   Failure: index corruption
+  -   Impact metric: query latency
+  -   Recovery action: restart service
+  -   RTO: 555s
+  -   RPO: 0 (no loss)
+
+  - **CockroachDB Experiment #36**
+  -   Failure: deadlock
+  -   Impact metric: connection count
+  -   Recovery action: failover
+  -   RTO: 570s
+  -   RPO: 5s
+
+  - **Elasticsearch Experiment #37**
+  -   Failure: disk full
+  -   Impact metric: replication lag
+  -   Recovery action: restore from backup
+  -   RTO: 585s
+  -   RPO: 30s
+
+  - **Aurora Experiment #38**
+  -   Failure: connection timeout
+  -   Impact metric: error rate
+  -   Recovery action: repair index
+  -   RTO: 600s
+  -   RPO: 5m
+
+  - **Spanner Experiment #39**
+  -   Failure: query timeout
+  -   Impact metric: throughput
+  -   Recovery action: increase pool
+  -   RTO: 615s
+  -   RPO: 1h
+
+  - **MySQL Experiment #40**
+  -   Failure: connection pool exhaustion
+  -   Impact metric: query latency
+  -   Recovery action: restart service
+  -   RTO: 630s
+  -   RPO: 0 (no loss)
+
+  - **PostgreSQL Experiment #41**
+  -   Failure: replication lag
+  -   Impact metric: connection count
+  -   Recovery action: failover
+  -   RTO: 645s
+  -   RPO: 5s
+
+  - **MongoDB Experiment #42**
+  -   Failure: failover
+  -   Impact metric: replication lag
+  -   Recovery action: restore from backup
+  -   RTO: 660s
+  -   RPO: 30s
+
+  - **Redis Experiment #43**
+  -   Failure: slow query
+  -   Impact metric: error rate
+  -   Recovery action: repair index
+  -   RTO: 675s
+  -   RPO: 5m
+
+  - **Cassandra Experiment #44**
+  -   Failure: data corruption
+  -   Impact metric: throughput
+  -   Recovery action: increase pool
+  -   RTO: 690s
+  -   RPO: 1h
+
+  - **DynamoDB Experiment #45**
+  -   Failure: index corruption
+  -   Impact metric: query latency
+  -   Recovery action: restart service
+  -   RTO: 705s
+  -   RPO: 0 (no loss)
+
+  - **CockroachDB Experiment #46**
+  -   Failure: deadlock
+  -   Impact metric: connection count
+  -   Recovery action: failover
+  -   RTO: 720s
+  -   RPO: 5s
+
+  - **Elasticsearch Experiment #47**
+  -   Failure: disk full
+  -   Impact metric: replication lag
+  -   Recovery action: restore from backup
+  -   RTO: 735s
+  -   RPO: 30s
+
+  - **Aurora Experiment #48**
+  -   Failure: connection timeout
+  -   Impact metric: error rate
+  -   Recovery action: repair index
+  -   RTO: 750s
+  -   RPO: 5m
+
+  - **Spanner Experiment #49**
+  -   Failure: query timeout
+  -   Impact metric: throughput
+  -   Recovery action: increase pool
+  -   RTO: 765s
+  -   RPO: 1h
+
+  - **MySQL Experiment #50**
+  -   Failure: connection pool exhaustion
+  -   Impact metric: query latency
+  -   Recovery action: restart service
+  -   RTO: 780s
+  -   RPO: 0 (no loss)
+
+
+### Network Chaos Experiment Catalog
+
+
+  - **Network Experiment #1**
+  -   Type: loss
+  -   Scope: pod-to-pod
+  -   Severity: medium
+  -   Duration: 90s
+  -   Impact: +200ms latency
+  -   Expected degradation: noticeable
+
+  - **Network Experiment #2**
+  -   Type: corruption
+  -   Scope: node-to-node
+  -   Severity: high
+  -   Duration: 120s
+  -   Impact: +500ms latency
+  -   Expected degradation: severe
+
+  - **Network Experiment #3**
+  -   Type: duplication
+  -   Scope: AZ-to-AZ
+  -   Severity: critical
+  -   Duration: 150s
+  -   Impact: 5% loss
+  -   Expected degradation: complete failure
+
+  - **Network Experiment #4**
+  -   Type: reordering
+  -   Scope: region-to-region
+  -   Severity: low
+  -   Duration: 180s
+  -   Impact: 25% loss
+  -   Expected degradation: minimal
+
+  - **Network Experiment #5**
+  -   Type: bandwidth
+  -   Scope: service-to-service
+  -   Severity: medium
+  -   Duration: 210s
+  -   Impact: +50ms latency
+  -   Expected degradation: noticeable
+
+  - **Network Experiment #6**
+  -   Type: partition
+  -   Scope: pod-to-pod
+  -   Severity: high
+  -   Duration: 240s
+  -   Impact: +200ms latency
+  -   Expected degradation: severe
+
+  - **Network Experiment #7**
+  -   Type: dns
+  -   Scope: node-to-node
+  -   Severity: critical
+  -   Duration: 270s
+  -   Impact: +500ms latency
+  -   Expected degradation: complete failure
+
+  - **Network Experiment #8**
+  -   Type: tls
+  -   Scope: AZ-to-AZ
+  -   Severity: low
+  -   Duration: 300s
+  -   Impact: 5% loss
+  -   Expected degradation: minimal
+
+  - **Network Experiment #9**
+  -   Type: proxy
+  -   Scope: region-to-region
+  -   Severity: medium
+  -   Duration: 330s
+  -   Impact: 25% loss
+  -   Expected degradation: noticeable
+
+  - **Network Experiment #10**
+  -   Type: latency
+  -   Scope: service-to-service
+  -   Severity: high
+  -   Duration: 360s
+  -   Impact: +50ms latency
+  -   Expected degradation: severe
+
+  - **Network Experiment #11**
+  -   Type: loss
+  -   Scope: pod-to-pod
+  -   Severity: critical
+  -   Duration: 390s
+  -   Impact: +200ms latency
+  -   Expected degradation: complete failure
+
+  - **Network Experiment #12**
+  -   Type: corruption
+  -   Scope: node-to-node
+  -   Severity: low
+  -   Duration: 420s
+  -   Impact: +500ms latency
+  -   Expected degradation: minimal
+
+  - **Network Experiment #13**
+  -   Type: duplication
+  -   Scope: AZ-to-AZ
+  -   Severity: medium
+  -   Duration: 450s
+  -   Impact: 5% loss
+  -   Expected degradation: noticeable
+
+  - **Network Experiment #14**
+  -   Type: reordering
+  -   Scope: region-to-region
+  -   Severity: high
+  -   Duration: 480s
+  -   Impact: 25% loss
+  -   Expected degradation: severe
+
+  - **Network Experiment #15**
+  -   Type: bandwidth
+  -   Scope: service-to-service
+  -   Severity: critical
+  -   Duration: 510s
+  -   Impact: +50ms latency
+  -   Expected degradation: complete failure
+
+  - **Network Experiment #16**
+  -   Type: partition
+  -   Scope: pod-to-pod
+  -   Severity: low
+  -   Duration: 540s
+  -   Impact: +200ms latency
+  -   Expected degradation: minimal
+
+  - **Network Experiment #17**
+  -   Type: dns
+  -   Scope: node-to-node
+  -   Severity: medium
+  -   Duration: 570s
+  -   Impact: +500ms latency
+  -   Expected degradation: noticeable
+
+  - **Network Experiment #18**
+  -   Type: tls
+  -   Scope: AZ-to-AZ
+  -   Severity: high
+  -   Duration: 600s
+  -   Impact: 5% loss
+  -   Expected degradation: severe
+
+  - **Network Experiment #19**
+  -   Type: proxy
+  -   Scope: region-to-region
+  -   Severity: critical
+  -   Duration: 630s
+  -   Impact: 25% loss
+  -   Expected degradation: complete failure
+
+  - **Network Experiment #20**
+  -   Type: latency
+  -   Scope: service-to-service
+  -   Severity: low
+  -   Duration: 660s
+  -   Impact: +50ms latency
+  -   Expected degradation: minimal
+
+  - **Network Experiment #21**
+  -   Type: loss
+  -   Scope: pod-to-pod
+  -   Severity: medium
+  -   Duration: 690s
+  -   Impact: +200ms latency
+  -   Expected degradation: noticeable
+
+  - **Network Experiment #22**
+  -   Type: corruption
+  -   Scope: node-to-node
+  -   Severity: high
+  -   Duration: 720s
+  -   Impact: +500ms latency
+  -   Expected degradation: severe
+
+  - **Network Experiment #23**
+  -   Type: duplication
+  -   Scope: AZ-to-AZ
+  -   Severity: critical
+  -   Duration: 750s
+  -   Impact: 5% loss
+  -   Expected degradation: complete failure
+
+  - **Network Experiment #24**
+  -   Type: reordering
+  -   Scope: region-to-region
+  -   Severity: low
+  -   Duration: 780s
+  -   Impact: 25% loss
+  -   Expected degradation: minimal
+
+  - **Network Experiment #25**
+  -   Type: bandwidth
+  -   Scope: service-to-service
+  -   Severity: medium
+  -   Duration: 810s
+  -   Impact: +50ms latency
+  -   Expected degradation: noticeable
+
+  - **Network Experiment #26**
+  -   Type: partition
+  -   Scope: pod-to-pod
+  -   Severity: high
+  -   Duration: 840s
+  -   Impact: +200ms latency
+  -   Expected degradation: severe
+
+  - **Network Experiment #27**
+  -   Type: dns
+  -   Scope: node-to-node
+  -   Severity: critical
+  -   Duration: 870s
+  -   Impact: +500ms latency
+  -   Expected degradation: complete failure
+
+  - **Network Experiment #28**
+  -   Type: tls
+  -   Scope: AZ-to-AZ
+  -   Severity: low
+  -   Duration: 900s
+  -   Impact: 5% loss
+  -   Expected degradation: minimal
+
+  - **Network Experiment #29**
+  -   Type: proxy
+  -   Scope: region-to-region
+  -   Severity: medium
+  -   Duration: 930s
+  -   Impact: 25% loss
+  -   Expected degradation: noticeable
+
+  - **Network Experiment #30**
+  -   Type: latency
+  -   Scope: service-to-service
+  -   Severity: high
+  -   Duration: 960s
+  -   Impact: +50ms latency
+  -   Expected degradation: severe
+
+  - **Network Experiment #31**
+  -   Type: loss
+  -   Scope: pod-to-pod
+  -   Severity: critical
+  -   Duration: 990s
+  -   Impact: +200ms latency
+  -   Expected degradation: complete failure
+
+  - **Network Experiment #32**
+  -   Type: corruption
+  -   Scope: node-to-node
+  -   Severity: low
+  -   Duration: 1020s
+  -   Impact: +500ms latency
+  -   Expected degradation: minimal
+
+  - **Network Experiment #33**
+  -   Type: duplication
+  -   Scope: AZ-to-AZ
+  -   Severity: medium
+  -   Duration: 1050s
+  -   Impact: 5% loss
+  -   Expected degradation: noticeable
+
+  - **Network Experiment #34**
+  -   Type: reordering
+  -   Scope: region-to-region
+  -   Severity: high
+  -   Duration: 1080s
+  -   Impact: 25% loss
+  -   Expected degradation: severe
+
+  - **Network Experiment #35**
+  -   Type: bandwidth
+  -   Scope: service-to-service
+  -   Severity: critical
+  -   Duration: 1110s
+  -   Impact: +50ms latency
+  -   Expected degradation: complete failure
+
+  - **Network Experiment #36**
+  -   Type: partition
+  -   Scope: pod-to-pod
+  -   Severity: low
+  -   Duration: 1140s
+  -   Impact: +200ms latency
+  -   Expected degradation: minimal
+
+  - **Network Experiment #37**
+  -   Type: dns
+  -   Scope: node-to-node
+  -   Severity: medium
+  -   Duration: 1170s
+  -   Impact: +500ms latency
+  -   Expected degradation: noticeable
+
+  - **Network Experiment #38**
+  -   Type: tls
+  -   Scope: AZ-to-AZ
+  -   Severity: high
+  -   Duration: 1200s
+  -   Impact: 5% loss
+  -   Expected degradation: severe
+
+  - **Network Experiment #39**
+  -   Type: proxy
+  -   Scope: region-to-region
+  -   Severity: critical
+  -   Duration: 1230s
+  -   Impact: 25% loss
+  -   Expected degradation: complete failure
+
+  - **Network Experiment #40**
+  -   Type: latency
+  -   Scope: service-to-service
+  -   Severity: low
+  -   Duration: 1260s
+  -   Impact: +50ms latency
+  -   Expected degradation: minimal
+
+  - **Network Experiment #41**
+  -   Type: loss
+  -   Scope: pod-to-pod
+  -   Severity: medium
+  -   Duration: 1290s
+  -   Impact: +200ms latency
+  -   Expected degradation: noticeable
+
+  - **Network Experiment #42**
+  -   Type: corruption
+  -   Scope: node-to-node
+  -   Severity: high
+  -   Duration: 1320s
+  -   Impact: +500ms latency
+  -   Expected degradation: severe
+
+  - **Network Experiment #43**
+  -   Type: duplication
+  -   Scope: AZ-to-AZ
+  -   Severity: critical
+  -   Duration: 1350s
+  -   Impact: 5% loss
+  -   Expected degradation: complete failure
+
+  - **Network Experiment #44**
+  -   Type: reordering
+  -   Scope: region-to-region
+  -   Severity: low
+  -   Duration: 1380s
+  -   Impact: 25% loss
+  -   Expected degradation: minimal
+
+  - **Network Experiment #45**
+  -   Type: bandwidth
+  -   Scope: service-to-service
+  -   Severity: medium
+  -   Duration: 1410s
+  -   Impact: +50ms latency
+  -   Expected degradation: noticeable
+
+  - **Network Experiment #46**
+  -   Type: partition
+  -   Scope: pod-to-pod
+  -   Severity: high
+  -   Duration: 1440s
+  -   Impact: +200ms latency
+  -   Expected degradation: severe
+
+  - **Network Experiment #47**
+  -   Type: dns
+  -   Scope: node-to-node
+  -   Severity: critical
+  -   Duration: 1470s
+  -   Impact: +500ms latency
+  -   Expected degradation: complete failure
+
+  - **Network Experiment #48**
+  -   Type: tls
+  -   Scope: AZ-to-AZ
+  -   Severity: low
+  -   Duration: 1500s
+  -   Impact: 5% loss
+  -   Expected degradation: minimal
+
+  - **Network Experiment #49**
+  -   Type: proxy
+  -   Scope: region-to-region
+  -   Severity: medium
+  -   Duration: 1530s
+  -   Impact: 25% loss
+  -   Expected degradation: noticeable
+
+  - **Network Experiment #50**
+  -   Type: latency
+  -   Scope: service-to-service
+  -   Severity: high
+  -   Duration: 1560s
+  -   Impact: +50ms latency
+  -   Expected degradation: severe
+
+
+### Resilience Pattern Implementation Details
+
+
+  - **Retry - Configuration 1**
+  -   Parameters: maxRetries, backoff, jitter
+  -   Testing strategy: inject errors
+  -   Validation metric: response time
+
+  - **Timeout - Configuration 2**
+  -   Parameters: connectTimeout, readTimeout
+  -   Testing strategy: simulate slow response
+  -   Validation metric: error rate
+
+  - **Bulkhead - Configuration 3**
+  -   Parameters: maxConcurrent, queueSize
+  -   Testing strategy: kill service
+  -   Validation metric: resource utilization
+
+  - **Cache-Aside - Configuration 4**
+  -   Parameters: ttl, refreshAhead, fallback
+  -   Testing strategy: exhaust resource
+  -   Validation metric: queue depth
+
+  - **Queue-Based Load Leveling - Configuration 5**
+  -   Parameters: queueDepth, consumerCount
+  -   Testing strategy: inject latency
+  -   Validation metric: state transitions
+
+  - **Health Endpoint Monitoring - Configuration 6**
+  -   Parameters: endpoint, interval, threshold
+  -   Testing strategy: inject errors
+  -   Validation metric: response time
+
+  - **Leader Election - Configuration 7**
+  -   Parameters: leaseDuration, renewDeadline
+  -   Testing strategy: simulate slow response
+  -   Validation metric: error rate
+
+  - **Competing Consumers - Configuration 8**
+  -   Parameters: instanceCount, prefetchCount
+  -   Testing strategy: kill service
+  -   Validation metric: resource utilization
+
+  - **Scheduler Agent Supervisor - Configuration 9**
+  -   Parameters: interval, maxFailures
+  -   Testing strategy: exhaust resource
+  -   Validation metric: queue depth
+
+  - **Circuit Breaker - Configuration 10**
+  -   Parameters: threshold, timeout, fallback
+  -   Testing strategy: inject latency
+  -   Validation metric: state transitions
+
+  - **Retry - Configuration 11**
+  -   Parameters: maxRetries, backoff, jitter
+  -   Testing strategy: inject errors
+  -   Validation metric: response time
+
+  - **Timeout - Configuration 12**
+  -   Parameters: connectTimeout, readTimeout
+  -   Testing strategy: simulate slow response
+  -   Validation metric: error rate
+
+  - **Bulkhead - Configuration 13**
+  -   Parameters: maxConcurrent, queueSize
+  -   Testing strategy: kill service
+  -   Validation metric: resource utilization
+
+  - **Cache-Aside - Configuration 14**
+  -   Parameters: ttl, refreshAhead, fallback
+  -   Testing strategy: exhaust resource
+  -   Validation metric: queue depth
+
+  - **Queue-Based Load Leveling - Configuration 15**
+  -   Parameters: queueDepth, consumerCount
+  -   Testing strategy: inject latency
+  -   Validation metric: state transitions
+
+  - **Health Endpoint Monitoring - Configuration 16**
+  -   Parameters: endpoint, interval, threshold
+  -   Testing strategy: inject errors
+  -   Validation metric: response time
+
+  - **Leader Election - Configuration 17**
+  -   Parameters: leaseDuration, renewDeadline
+  -   Testing strategy: simulate slow response
+  -   Validation metric: error rate
+
+  - **Competing Consumers - Configuration 18**
+  -   Parameters: instanceCount, prefetchCount
+  -   Testing strategy: kill service
+  -   Validation metric: resource utilization
+
+  - **Scheduler Agent Supervisor - Configuration 19**
+  -   Parameters: interval, maxFailures
+  -   Testing strategy: exhaust resource
+  -   Validation metric: queue depth
+
+  - **Circuit Breaker - Configuration 20**
+  -   Parameters: threshold, timeout, fallback
+  -   Testing strategy: inject latency
+  -   Validation metric: state transitions
+
+  - **Retry - Configuration 21**
+  -   Parameters: maxRetries, backoff, jitter
+  -   Testing strategy: inject errors
+  -   Validation metric: response time
+
+  - **Timeout - Configuration 22**
+  -   Parameters: connectTimeout, readTimeout
+  -   Testing strategy: simulate slow response
+  -   Validation metric: error rate
+
+  - **Bulkhead - Configuration 23**
+  -   Parameters: maxConcurrent, queueSize
+  -   Testing strategy: kill service
+  -   Validation metric: resource utilization
+
+  - **Cache-Aside - Configuration 24**
+  -   Parameters: ttl, refreshAhead, fallback
+  -   Testing strategy: exhaust resource
+  -   Validation metric: queue depth
+
+  - **Queue-Based Load Leveling - Configuration 25**
+  -   Parameters: queueDepth, consumerCount
+  -   Testing strategy: inject latency
+  -   Validation metric: state transitions
+
+  - **Health Endpoint Monitoring - Configuration 26**
+  -   Parameters: endpoint, interval, threshold
+  -   Testing strategy: inject errors
+  -   Validation metric: response time
+
+  - **Leader Election - Configuration 27**
+  -   Parameters: leaseDuration, renewDeadline
+  -   Testing strategy: simulate slow response
+  -   Validation metric: error rate
+
+  - **Competing Consumers - Configuration 28**
+  -   Parameters: instanceCount, prefetchCount
+  -   Testing strategy: kill service
+  -   Validation metric: resource utilization
+
+  - **Scheduler Agent Supervisor - Configuration 29**
+  -   Parameters: interval, maxFailures
+  -   Testing strategy: exhaust resource
+  -   Validation metric: queue depth
+
+  - **Circuit Breaker - Configuration 30**
+  -   Parameters: threshold, timeout, fallback
+  -   Testing strategy: inject latency
+  -   Validation metric: state transitions
+
+  - **Retry - Configuration 31**
+  -   Parameters: maxRetries, backoff, jitter
+  -   Testing strategy: inject errors
+  -   Validation metric: response time
+
+  - **Timeout - Configuration 32**
+  -   Parameters: connectTimeout, readTimeout
+  -   Testing strategy: simulate slow response
+  -   Validation metric: error rate
+
+  - **Bulkhead - Configuration 33**
+  -   Parameters: maxConcurrent, queueSize
+  -   Testing strategy: kill service
+  -   Validation metric: resource utilization
+
+  - **Cache-Aside - Configuration 34**
+  -   Parameters: ttl, refreshAhead, fallback
+  -   Testing strategy: exhaust resource
+  -   Validation metric: queue depth
+
+  - **Queue-Based Load Leveling - Configuration 35**
+  -   Parameters: queueDepth, consumerCount
+  -   Testing strategy: inject latency
+  -   Validation metric: state transitions
+
+  - **Health Endpoint Monitoring - Configuration 36**
+  -   Parameters: endpoint, interval, threshold
+  -   Testing strategy: inject errors
+  -   Validation metric: response time
+
+  - **Leader Election - Configuration 37**
+  -   Parameters: leaseDuration, renewDeadline
+  -   Testing strategy: simulate slow response
+  -   Validation metric: error rate
+
+  - **Competing Consumers - Configuration 38**
+  -   Parameters: instanceCount, prefetchCount
+  -   Testing strategy: kill service
+  -   Validation metric: resource utilization
+
+  - **Scheduler Agent Supervisor - Configuration 39**
+  -   Parameters: interval, maxFailures
+  -   Testing strategy: exhaust resource
+  -   Validation metric: queue depth
+
+  - **Circuit Breaker - Configuration 40**
+  -   Parameters: threshold, timeout, fallback
+  -   Testing strategy: inject latency
+  -   Validation metric: state transitions
+
+### Prometheus Queries for Chaos Experiment Monitoring
+
+
+  - 1. **p99 latency for checkout-service**
+  -    PromQL: `histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{job="checkout-service"}[5m])) by (le))`
+  -    Type: latency
+  -    Alert threshold: 2000
+  -    Severity: warning
+
+  - 2. **p95 latency for api-gateway**
+  -    PromQL: `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job="api-gateway"}[5m])) by (le))`
+  -    Type: latency
+  -    Alert threshold: 1000
+  -    Severity: warning
+
+  - 3. **Request rate for order-service**
+  -    PromQL: `sum(rate(http_requests_total{job="order-service"}[5m]))`
+  -    Type: throughput
+  -    Alert threshold: 500
+  -    Severity: info
+
+  - 4. **CPU utilization for user-service pods**
+  -    PromQL: `avg(rate(container_cpu_usage_seconds_total{pod=~"user-service-.*"}[5m])) * 100`
+  -    Type: utilization
+  -    Alert threshold: 80
+  -    Severity: critical
+
+  - 5. **Memory utilization for payment-service pods**
+  -    PromQL: `avg(container_memory_working_set_bytes{pod=~"payment-service-.*"} / 1024 / 1024)`
+  -    Type: utilization
+  -    Alert threshold: 80
+  -    Severity: warning
+
+  - 6. **Active connections for checkout-service**
+  -    PromQL: `sum(http_connections_active{job="checkout-service"})`
+  -    Type: connections
+  -    Alert threshold: 100
+  -    Severity: critical
+
+  - 7. **Circuit breaker state for calls to api-gateway**
+  -    PromQL: `resilience4j_circuitbreaker_state{name="paymentService"}`
+  -    Type: state
+  -    Alert threshold: 1
+  -    Severity: critical
+
+  - 8. **Retry rate for calls to order-service**
+  -    PromQL: `rate(application_retry_calls_total{target="order-service"}[5m])`
+  -    Type: rate
+  -    Alert threshold: 10
+  -    Severity: warning
+
+  - 9. **Fallback invocation rate for user-service**
+  -    PromQL: `rate(application_fallback_calls_total{target="user-service"}[5m])`
+  -    Type: rate
+  -    Alert threshold: 10
+  -    Severity: info
+
+  - 10. **Rate of HTTP 5xx errors for payment-service**
+  -    PromQL: `sum(rate(http_requests_total{job="payment-service",status=~"5.."}[5m])) / sum(rate(http_requests_total{job="payment-service"}[5m])) * 100`
+  -    Type: error rate
+  -    Alert threshold: 5
+  -    Severity: critical
+
+  - 11. **p99 latency for checkout-service**
+  -    PromQL: `histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{job="checkout-service"}[5m])) by (le))`
+  -    Type: latency
+  -    Alert threshold: 2000
+  -    Severity: warning
+
+  - 12. **p95 latency for api-gateway**
+  -    PromQL: `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job="api-gateway"}[5m])) by (le))`
+  -    Type: latency
+  -    Alert threshold: 1000
+  -    Severity: warning
+
+  - 13. **Request rate for order-service**
+  -    PromQL: `sum(rate(http_requests_total{job="order-service"}[5m]))`
+  -    Type: throughput
+  -    Alert threshold: 500
+  -    Severity: info
+
+  - 14. **CPU utilization for user-service pods**
+  -    PromQL: `avg(rate(container_cpu_usage_seconds_total{pod=~"user-service-.*"}[5m])) * 100`
+  -    Type: utilization
+  -    Alert threshold: 80
+  -    Severity: critical
+
+  - 15. **Memory utilization for payment-service pods**
+  -    PromQL: `avg(container_memory_working_set_bytes{pod=~"payment-service-.*"} / 1024 / 1024)`
+  -    Type: utilization
+  -    Alert threshold: 80
+  -    Severity: warning
+
+  - 16. **Active connections for checkout-service**
+  -    PromQL: `sum(http_connections_active{job="checkout-service"})`
+  -    Type: connections
+  -    Alert threshold: 100
+  -    Severity: critical
+
+  - 17. **Circuit breaker state for calls to api-gateway**
+  -    PromQL: `resilience4j_circuitbreaker_state{name="paymentService"}`
+  -    Type: state
+  -    Alert threshold: 1
+  -    Severity: critical
+
+  - 18. **Retry rate for calls to order-service**
+  -    PromQL: `rate(application_retry_calls_total{target="order-service"}[5m])`
+  -    Type: rate
+  -    Alert threshold: 10
+  -    Severity: warning
+
+  - 19. **Fallback invocation rate for user-service**
+  -    PromQL: `rate(application_fallback_calls_total{target="user-service"}[5m])`
+  -    Type: rate
+  -    Alert threshold: 10
+  -    Severity: info
+
+  - 20. **Rate of HTTP 5xx errors for payment-service**
+  -    PromQL: `sum(rate(http_requests_total{job="payment-service",status=~"5.."}[5m])) / sum(rate(http_requests_total{job="payment-service"}[5m])) * 100`
+  -    Type: error rate
+  -    Alert threshold: 5
+  -    Severity: critical
+
+  - 21. **p99 latency for checkout-service**
+  -    PromQL: `histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{job="checkout-service"}[5m])) by (le))`
+  -    Type: latency
+  -    Alert threshold: 2000
+  -    Severity: warning
+
+  - 22. **p95 latency for api-gateway**
+  -    PromQL: `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job="api-gateway"}[5m])) by (le))`
+  -    Type: latency
+  -    Alert threshold: 1000
+  -    Severity: warning
+
+  - 23. **Request rate for order-service**
+  -    PromQL: `sum(rate(http_requests_total{job="order-service"}[5m]))`
+  -    Type: throughput
+  -    Alert threshold: 500
+  -    Severity: info
+
+  - 24. **CPU utilization for user-service pods**
+  -    PromQL: `avg(rate(container_cpu_usage_seconds_total{pod=~"user-service-.*"}[5m])) * 100`
+  -    Type: utilization
+  -    Alert threshold: 80
+  -    Severity: critical
+
+  - 25. **Memory utilization for payment-service pods**
+  -    PromQL: `avg(container_memory_working_set_bytes{pod=~"payment-service-.*"} / 1024 / 1024)`
+  -    Type: utilization
+  -    Alert threshold: 80
+  -    Severity: warning
+
+  - 26. **Active connections for checkout-service**
+  -    PromQL: `sum(http_connections_active{job="checkout-service"})`
+  -    Type: connections
+  -    Alert threshold: 100
+  -    Severity: critical
+
+  - 27. **Circuit breaker state for calls to api-gateway**
+  -    PromQL: `resilience4j_circuitbreaker_state{name="paymentService"}`
+  -    Type: state
+  -    Alert threshold: 1
+  -    Severity: critical
+
+  - 28. **Retry rate for calls to order-service**
+  -    PromQL: `rate(application_retry_calls_total{target="order-service"}[5m])`
+  -    Type: rate
+  -    Alert threshold: 10
+  -    Severity: warning
+
+  - 29. **Fallback invocation rate for user-service**
+  -    PromQL: `rate(application_fallback_calls_total{target="user-service"}[5m])`
+  -    Type: rate
+  -    Alert threshold: 10
+  -    Severity: info
+
+  - 30. **Rate of HTTP 5xx errors for payment-service**
+  -    PromQL: `sum(rate(http_requests_total{job="payment-service",status=~"5.."}[5m])) / sum(rate(http_requests_total{job="payment-service"}[5m])) * 100`
+  -    Type: error rate
+  -    Alert threshold: 5
+  -    Severity: critical
+
+  - 31. **p99 latency for checkout-service**
+  -    PromQL: `histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{job="checkout-service"}[5m])) by (le))`
+  -    Type: latency
+  -    Alert threshold: 2000
+  -    Severity: warning
+
+  - 32. **p95 latency for api-gateway**
+  -    PromQL: `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job="api-gateway"}[5m])) by (le))`
+  -    Type: latency
+  -    Alert threshold: 1000
+  -    Severity: warning
+
+  - 33. **Request rate for order-service**
+  -    PromQL: `sum(rate(http_requests_total{job="order-service"}[5m]))`
+  -    Type: throughput
+  -    Alert threshold: 500
+  -    Severity: info
+
+  - 34. **CPU utilization for user-service pods**
+  -    PromQL: `avg(rate(container_cpu_usage_seconds_total{pod=~"user-service-.*"}[5m])) * 100`
+  -    Type: utilization
+  -    Alert threshold: 80
+  -    Severity: critical
+
+  - 35. **Memory utilization for payment-service pods**
+  -    PromQL: `avg(container_memory_working_set_bytes{pod=~"payment-service-.*"} / 1024 / 1024)`
+  -    Type: utilization
+  -    Alert threshold: 80
+  -    Severity: warning
+
+  - 36. **Active connections for checkout-service**
+  -    PromQL: `sum(http_connections_active{job="checkout-service"})`
+  -    Type: connections
+  -    Alert threshold: 100
+  -    Severity: critical
+
+  - 37. **Circuit breaker state for calls to api-gateway**
+  -    PromQL: `resilience4j_circuitbreaker_state{name="paymentService"}`
+  -    Type: state
+  -    Alert threshold: 1
+  -    Severity: critical
+
+  - 38. **Retry rate for calls to order-service**
+  -    PromQL: `rate(application_retry_calls_total{target="order-service"}[5m])`
+  -    Type: rate
+  -    Alert threshold: 10
+  -    Severity: warning
+
+  - 39. **Fallback invocation rate for user-service**
+  -    PromQL: `rate(application_fallback_calls_total{target="user-service"}[5m])`
+  -    Type: rate
+  -    Alert threshold: 10
+  -    Severity: info
+
+  - 40. **Rate of HTTP 5xx errors for payment-service**
+  -    PromQL: `sum(rate(http_requests_total{job="payment-service",status=~"5.."}[5m])) / sum(rate(http_requests_total{job="payment-service"}[5m])) * 100`
+  -    Type: error rate
+  -    Alert threshold: 5
+  -    Severity: critical
+
+  - 41. **p99 latency for checkout-service**
+  -    PromQL: `histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{job="checkout-service"}[5m])) by (le))`
+  -    Type: latency
+  -    Alert threshold: 2000
+  -    Severity: warning
+
+  - 42. **p95 latency for api-gateway**
+  -    PromQL: `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job="api-gateway"}[5m])) by (le))`
+  -    Type: latency
+  -    Alert threshold: 1000
+  -    Severity: warning
+
+  - 43. **Request rate for order-service**
+  -    PromQL: `sum(rate(http_requests_total{job="order-service"}[5m]))`
+  -    Type: throughput
+  -    Alert threshold: 500
+  -    Severity: info
+
+  - 44. **CPU utilization for user-service pods**
+  -    PromQL: `avg(rate(container_cpu_usage_seconds_total{pod=~"user-service-.*"}[5m])) * 100`
+  -    Type: utilization
+  -    Alert threshold: 80
+  -    Severity: critical
+
+  - 45. **Memory utilization for payment-service pods**
+  -    PromQL: `avg(container_memory_working_set_bytes{pod=~"payment-service-.*"} / 1024 / 1024)`
+  -    Type: utilization
+  -    Alert threshold: 80
+  -    Severity: warning
+
+  - 46. **Active connections for checkout-service**
+  -    PromQL: `sum(http_connections_active{job="checkout-service"})`
+  -    Type: connections
+  -    Alert threshold: 100
+  -    Severity: critical
+
+  - 47. **Circuit breaker state for calls to api-gateway**
+  -    PromQL: `resilience4j_circuitbreaker_state{name="paymentService"}`
+  -    Type: state
+  -    Alert threshold: 1
+  -    Severity: critical
+
+  - 48. **Retry rate for calls to order-service**
+  -    PromQL: `rate(application_retry_calls_total{target="order-service"}[5m])`
+  -    Type: rate
+  -    Alert threshold: 10
+  -    Severity: warning
+
+  - 49. **Fallback invocation rate for user-service**
+  -    PromQL: `rate(application_fallback_calls_total{target="user-service"}[5m])`
+  -    Type: rate
+  -    Alert threshold: 10
+  -    Severity: info
+
+  - 50. **Rate of HTTP 5xx errors for payment-service**
+  -    PromQL: `sum(rate(http_requests_total{job="payment-service",status=~"5.."}[5m])) / sum(rate(http_requests_total{job="payment-service"}[5m])) * 100`
+  -    Type: error rate
+  -    Alert threshold: 5
+  -    Severity: critical
+
+
+### Datadog Query Examples for Chaos Monitoring
+
+
+  - 1. **error rate for checkout-service**
+  -    Query: `sum:trace.servlet.request.errors{service:checkout-service}.as_count() / sum:trace.servlet.request.hits{service:checkout-service}.as_count() * 100`
+  -    Aggregation: avg
+
+  - 2. **request rate for order-service**
+  -    Query: `sum:trace.servlet.request.hits{service:order-service}.as_rate()`
+  -    Aggregation: sum
+
+  - 3. **apdex score for user-service**
+  -    Query: `apdex:trace.servlet.request{service:user-service}.as_count()`
+  -    Aggregation: max
+
+  - 4. **trace count for inventory-service**
+  -    Query: `trace.servlet.request.count{service:inventory-service}`
+  -    Aggregation: min
+
+  - 5. **dependency latency for payment-service -> downstream**
+  -    Query: `avg:trace.payment-service.duration{destination_service:*}`
+  -    Aggregation: count
+
+  - 6. **cache hit ratio for checkout-service cache**
+  -    Query: `avg:redis.checkout-service.hit_ratio`
+  -    Aggregation: rate
+
+  - 7. **database query performance for order-service**
+  -    Query: `avg:ddb.order-service.query_duration.avg`
+  -    Aggregation: distinct
+
+  - 8. **message queue depth for user-service queue**
+  -    Query: `avg:sqs.user-service.approximate_age_of_oldest_message`
+  -    Aggregation: median
+
+  - 9. **infrastructure metrics for inventory-service hosts**
+  -    Query: `avg:system.cpu.user{service:inventory-service}`
+  -    Aggregation: stddev
+
+  - 10. **p99 by service for payment-service**
+  -    Query: `p99:trace.servlet.request.duration{service:payment-service}`
+  -    Aggregation: p99
+
+  - 11. **error rate for checkout-service**
+  -    Query: `sum:trace.servlet.request.errors{service:checkout-service}.as_count() / sum:trace.servlet.request.hits{service:checkout-service}.as_count() * 100`
+  -    Aggregation: avg
+
+  - 12. **request rate for order-service**
+  -    Query: `sum:trace.servlet.request.hits{service:order-service}.as_rate()`
+  -    Aggregation: sum
+
+  - 13. **apdex score for user-service**
+  -    Query: `apdex:trace.servlet.request{service:user-service}.as_count()`
+  -    Aggregation: max
+
+  - 14. **trace count for inventory-service**
+  -    Query: `trace.servlet.request.count{service:inventory-service}`
+  -    Aggregation: min
+
+  - 15. **dependency latency for payment-service -> downstream**
+  -    Query: `avg:trace.payment-service.duration{destination_service:*}`
+  -    Aggregation: count
+
+  - 16. **cache hit ratio for checkout-service cache**
+  -    Query: `avg:redis.checkout-service.hit_ratio`
+  -    Aggregation: rate
+
+  - 17. **database query performance for order-service**
+  -    Query: `avg:ddb.order-service.query_duration.avg`
+  -    Aggregation: distinct
+
+  - 18. **message queue depth for user-service queue**
+  -    Query: `avg:sqs.user-service.approximate_age_of_oldest_message`
+  -    Aggregation: median
+
+  - 19. **infrastructure metrics for inventory-service hosts**
+  -    Query: `avg:system.cpu.user{service:inventory-service}`
+  -    Aggregation: stddev
+
+  - 20. **p99 by service for payment-service**
+  -    Query: `p99:trace.servlet.request.duration{service:payment-service}`
+  -    Aggregation: p99
+
+  - 21. **error rate for checkout-service**
+  -    Query: `sum:trace.servlet.request.errors{service:checkout-service}.as_count() / sum:trace.servlet.request.hits{service:checkout-service}.as_count() * 100`
+  -    Aggregation: avg
+
+  - 22. **request rate for order-service**
+  -    Query: `sum:trace.servlet.request.hits{service:order-service}.as_rate()`
+  -    Aggregation: sum
+
+  - 23. **apdex score for user-service**
+  -    Query: `apdex:trace.servlet.request{service:user-service}.as_count()`
+  -    Aggregation: max
+
+  - 24. **trace count for inventory-service**
+  -    Query: `trace.servlet.request.count{service:inventory-service}`
+  -    Aggregation: min
+
+  - 25. **dependency latency for payment-service -> downstream**
+  -    Query: `avg:trace.payment-service.duration{destination_service:*}`
+  -    Aggregation: count
+
+  - 26. **cache hit ratio for checkout-service cache**
+  -    Query: `avg:redis.checkout-service.hit_ratio`
+  -    Aggregation: rate
+
+  - 27. **database query performance for order-service**
+  -    Query: `avg:ddb.order-service.query_duration.avg`
+  -    Aggregation: distinct
+
+  - 28. **message queue depth for user-service queue**
+  -    Query: `avg:sqs.user-service.approximate_age_of_oldest_message`
+  -    Aggregation: median
+
+  - 29. **infrastructure metrics for inventory-service hosts**
+  -    Query: `avg:system.cpu.user{service:inventory-service}`
+  -    Aggregation: stddev
+
+  - 30. **p99 by service for payment-service**
+  -    Query: `p99:trace.servlet.request.duration{service:payment-service}`
+  -    Aggregation: p99
+
+  - 31. **error rate for checkout-service**
+  -    Query: `sum:trace.servlet.request.errors{service:checkout-service}.as_count() / sum:trace.servlet.request.hits{service:checkout-service}.as_count() * 100`
+  -    Aggregation: avg
+
+  - 32. **request rate for order-service**
+  -    Query: `sum:trace.servlet.request.hits{service:order-service}.as_rate()`
+  -    Aggregation: sum
+
+  - 33. **apdex score for user-service**
+  -    Query: `apdex:trace.servlet.request{service:user-service}.as_count()`
+  -    Aggregation: max
+
+  - 34. **trace count for inventory-service**
+  -    Query: `trace.servlet.request.count{service:inventory-service}`
+  -    Aggregation: min
+
+  - 35. **dependency latency for payment-service -> downstream**
+  -    Query: `avg:trace.payment-service.duration{destination_service:*}`
+  -    Aggregation: count
+
+  - 36. **cache hit ratio for checkout-service cache**
+  -    Query: `avg:redis.checkout-service.hit_ratio`
+  -    Aggregation: rate
+
+  - 37. **database query performance for order-service**
+  -    Query: `avg:ddb.order-service.query_duration.avg`
+  -    Aggregation: distinct
+
+  - 38. **message queue depth for user-service queue**
+  -    Query: `avg:sqs.user-service.approximate_age_of_oldest_message`
+  -    Aggregation: median
+
+  - 39. **infrastructure metrics for inventory-service hosts**
+  -    Query: `avg:system.cpu.user{service:inventory-service}`
+  -    Aggregation: stddev
+
+  - 40. **p99 by service for payment-service**
+  -    Query: `p99:trace.servlet.request.duration{service:payment-service}`
+  -    Aggregation: p99
+
+  - 41. **error rate for checkout-service**
+  -    Query: `sum:trace.servlet.request.errors{service:checkout-service}.as_count() / sum:trace.servlet.request.hits{service:checkout-service}.as_count() * 100`
+  -    Aggregation: avg
+
+  - 42. **request rate for order-service**
+  -    Query: `sum:trace.servlet.request.hits{service:order-service}.as_rate()`
+  -    Aggregation: sum
+
+  - 43. **apdex score for user-service**
+  -    Query: `apdex:trace.servlet.request{service:user-service}.as_count()`
+  -    Aggregation: max
+
+  - 44. **trace count for inventory-service**
+  -    Query: `trace.servlet.request.count{service:inventory-service}`
+  -    Aggregation: min
+
+  - 45. **dependency latency for payment-service -> downstream**
+  -    Query: `avg:trace.payment-service.duration{destination_service:*}`
+  -    Aggregation: count
+
+  - 46. **cache hit ratio for checkout-service cache**
+  -    Query: `avg:redis.checkout-service.hit_ratio`
+  -    Aggregation: rate
+
+  - 47. **database query performance for order-service**
+  -    Query: `avg:ddb.order-service.query_duration.avg`
+  -    Aggregation: distinct
+
+  - 48. **message queue depth for user-service queue**
+  -    Query: `avg:sqs.user-service.approximate_age_of_oldest_message`
+  -    Aggregation: median
+
+  - 49. **infrastructure metrics for inventory-service hosts**
+  -    Query: `avg:system.cpu.user{service:inventory-service}`
+  -    Aggregation: stddev
+
+  - 50. **p99 by service for payment-service**
+  -    Query: `p99:trace.servlet.request.duration{service:payment-service}`
+  -    Aggregation: p99
+
+
+### Grafana Dashboard Panel Definitions for Chaos Experiments
+
+
+  - **Panel 1: Stat - Error Rate**
+  -   Target: checkout-service
+  -   Visualization: single stat
+  -   Refresh: 10s
+  -   Time range: last 15 minutes
+  -   Thresholds: {'warning': 2, 'critical': 5}
+
+  - **Panel 2: Gauge - Throughput**
+  -   Target: api-gateway
+  -   Visualization: gauge
+  -   Refresh: 30s
+  -   Time range: last 30 minutes
+  -   Thresholds: {'warning': 80, 'critical': 95}
+
+  - **Panel 3: Table - Circuit Breakers**
+  -   Target: all services
+  -   Visualization: table
+  -   Refresh: 1m
+  -   Time range: last 1 hour
+  -   Thresholds: {'warning': 60, 'critical': 80}
+
+  - **Panel 4: Bar Gauge - Resource Usage**
+  -   Target: experiment-wide
+  -   Visualization: bar gauge
+  -   Refresh: 5m
+  -   Time range: last 6 hours
+  -   Thresholds: {'warning': 10, 'critical': 20}
+
+  - **Panel 5: Heatmap - Blast Radius**
+  -   Target: payment-service
+  -   Visualization: graph
+  -   Refresh: 5s
+  -   Time range: last 5 minutes
+  -   Thresholds: {'warning': 500, 'critical': 2000}
+
+  - **Panel 6: Logs - Dependency Health**
+  -   Target: checkout-service
+  -   Visualization: single stat
+  -   Refresh: 10s
+  -   Time range: last 15 minutes
+  -   Thresholds: {'warning': 2, 'critical': 5}
+
+  - **Panel 7: Traces - Cache Performance**
+  -   Target: api-gateway
+  -   Visualization: gauge
+  -   Refresh: 30s
+  -   Time range: last 30 minutes
+  -   Thresholds: {'warning': 80, 'critical': 95}
+
+  - **Panel 8: Node Graph - Queue Depth**
+  -   Target: all services
+  -   Visualization: table
+  -   Refresh: 1m
+  -   Time range: last 1 hour
+  -   Thresholds: {'warning': 60, 'critical': 80}
+
+  - **Panel 9: Status History - Experiment Status**
+  -   Target: experiment-wide
+  -   Visualization: bar gauge
+  -   Refresh: 5m
+  -   Time range: last 6 hours
+  -   Thresholds: {'warning': 10, 'critical': 20}
+
+  - **Panel 10: Time Series - Latency Overview**
+  -   Target: payment-service
+  -   Visualization: graph
+  -   Refresh: 5s
+  -   Time range: last 5 minutes
+  -   Thresholds: {'warning': 500, 'critical': 2000}
+
+  - **Panel 11: Stat - Error Rate**
+  -   Target: checkout-service
+  -   Visualization: single stat
+  -   Refresh: 10s
+  -   Time range: last 15 minutes
+  -   Thresholds: {'warning': 2, 'critical': 5}
+
+  - **Panel 12: Gauge - Throughput**
+  -   Target: api-gateway
+  -   Visualization: gauge
+  -   Refresh: 30s
+  -   Time range: last 30 minutes
+  -   Thresholds: {'warning': 80, 'critical': 95}
+
+  - **Panel 13: Table - Circuit Breakers**
+  -   Target: all services
+  -   Visualization: table
+  -   Refresh: 1m
+  -   Time range: last 1 hour
+  -   Thresholds: {'warning': 60, 'critical': 80}
+
+  - **Panel 14: Bar Gauge - Resource Usage**
+  -   Target: experiment-wide
+  -   Visualization: bar gauge
+  -   Refresh: 5m
+  -   Time range: last 6 hours
+  -   Thresholds: {'warning': 10, 'critical': 20}
+
+  - **Panel 15: Heatmap - Blast Radius**
+  -   Target: payment-service
+  -   Visualization: graph
+  -   Refresh: 5s
+  -   Time range: last 5 minutes
+  -   Thresholds: {'warning': 500, 'critical': 2000}
+
+  - **Panel 16: Logs - Dependency Health**
+  -   Target: checkout-service
+  -   Visualization: single stat
+  -   Refresh: 10s
+  -   Time range: last 15 minutes
+  -   Thresholds: {'warning': 2, 'critical': 5}
+
+  - **Panel 17: Traces - Cache Performance**
+  -   Target: api-gateway
+  -   Visualization: gauge
+  -   Refresh: 30s
+  -   Time range: last 30 minutes
+  -   Thresholds: {'warning': 80, 'critical': 95}
+
+  - **Panel 18: Node Graph - Queue Depth**
+  -   Target: all services
+  -   Visualization: table
+  -   Refresh: 1m
+  -   Time range: last 1 hour
+  -   Thresholds: {'warning': 60, 'critical': 80}
+
+  - **Panel 19: Status History - Experiment Status**
+  -   Target: experiment-wide
+  -   Visualization: bar gauge
+  -   Refresh: 5m
+  -   Time range: last 6 hours
+  -   Thresholds: {'warning': 10, 'critical': 20}
+
+  - **Panel 20: Time Series - Latency Overview**
+  -   Target: payment-service
+  -   Visualization: graph
+  -   Refresh: 5s
+  -   Time range: last 5 minutes
+  -   Thresholds: {'warning': 500, 'critical': 2000}
+
+  - **Panel 21: Stat - Error Rate**
+  -   Target: checkout-service
+  -   Visualization: single stat
+  -   Refresh: 10s
+  -   Time range: last 15 minutes
+  -   Thresholds: {'warning': 2, 'critical': 5}
+
+  - **Panel 22: Gauge - Throughput**
+  -   Target: api-gateway
+  -   Visualization: gauge
+  -   Refresh: 30s
+  -   Time range: last 30 minutes
+  -   Thresholds: {'warning': 80, 'critical': 95}
+
+  - **Panel 23: Table - Circuit Breakers**
+  -   Target: all services
+  -   Visualization: table
+  -   Refresh: 1m
+  -   Time range: last 1 hour
+  -   Thresholds: {'warning': 60, 'critical': 80}
+
+  - **Panel 24: Bar Gauge - Resource Usage**
+  -   Target: experiment-wide
+  -   Visualization: bar gauge
+  -   Refresh: 5m
+  -   Time range: last 6 hours
+  -   Thresholds: {'warning': 10, 'critical': 20}
+
+  - **Panel 25: Heatmap - Blast Radius**
+  -   Target: payment-service
+  -   Visualization: graph
+  -   Refresh: 5s
+  -   Time range: last 5 minutes
+  -   Thresholds: {'warning': 500, 'critical': 2000}
+
+  - **Panel 26: Logs - Dependency Health**
+  -   Target: checkout-service
+  -   Visualization: single stat
+  -   Refresh: 10s
+  -   Time range: last 15 minutes
+  -   Thresholds: {'warning': 2, 'critical': 5}
+
+  - **Panel 27: Traces - Cache Performance**
+  -   Target: api-gateway
+  -   Visualization: gauge
+  -   Refresh: 30s
+  -   Time range: last 30 minutes
+  -   Thresholds: {'warning': 80, 'critical': 95}
+
+  - **Panel 28: Node Graph - Queue Depth**
+  -   Target: all services
+  -   Visualization: table
+  -   Refresh: 1m
+  -   Time range: last 1 hour
+  -   Thresholds: {'warning': 60, 'critical': 80}
+
+  - **Panel 29: Status History - Experiment Status**
+  -   Target: experiment-wide
+  -   Visualization: bar gauge
+  -   Refresh: 5m
+  -   Time range: last 6 hours
+  -   Thresholds: {'warning': 10, 'critical': 20}
+
+  - **Panel 30: Time Series - Latency Overview**
+  -   Target: payment-service
+  -   Visualization: graph
+  -   Refresh: 5s
+  -   Time range: last 5 minutes
+  -   Thresholds: {'warning': 500, 'critical': 2000}
+
+  - **Panel 31: Stat - Error Rate**
+  -   Target: checkout-service
+  -   Visualization: single stat
+  -   Refresh: 10s
+  -   Time range: last 15 minutes
+  -   Thresholds: {'warning': 2, 'critical': 5}
+
+  - **Panel 32: Gauge - Throughput**
+  -   Target: api-gateway
+  -   Visualization: gauge
+  -   Refresh: 30s
+  -   Time range: last 30 minutes
+  -   Thresholds: {'warning': 80, 'critical': 95}
+
+  - **Panel 33: Table - Circuit Breakers**
+  -   Target: all services
+  -   Visualization: table
+  -   Refresh: 1m
+  -   Time range: last 1 hour
+  -   Thresholds: {'warning': 60, 'critical': 80}
+
+  - **Panel 34: Bar Gauge - Resource Usage**
+  -   Target: experiment-wide
+  -   Visualization: bar gauge
+  -   Refresh: 5m
+  -   Time range: last 6 hours
+  -   Thresholds: {'warning': 10, 'critical': 20}
+
+  - **Panel 35: Heatmap - Blast Radius**
+  -   Target: payment-service
+  -   Visualization: graph
+  -   Refresh: 5s
+  -   Time range: last 5 minutes
+  -   Thresholds: {'warning': 500, 'critical': 2000}
+
+  - **Panel 36: Logs - Dependency Health**
+  -   Target: checkout-service
+  -   Visualization: single stat
+  -   Refresh: 10s
+  -   Time range: last 15 minutes
+  -   Thresholds: {'warning': 2, 'critical': 5}
+
+  - **Panel 37: Traces - Cache Performance**
+  -   Target: api-gateway
+  -   Visualization: gauge
+  -   Refresh: 30s
+  -   Time range: last 30 minutes
+  -   Thresholds: {'warning': 80, 'critical': 95}
+
+  - **Panel 38: Node Graph - Queue Depth**
+  -   Target: all services
+  -   Visualization: table
+  -   Refresh: 1m
+  -   Time range: last 1 hour
+  -   Thresholds: {'warning': 60, 'critical': 80}
+
+  - **Panel 39: Status History - Experiment Status**
+  -   Target: experiment-wide
+  -   Visualization: bar gauge
+  -   Refresh: 5m
+  -   Time range: last 6 hours
+  -   Thresholds: {'warning': 10, 'critical': 20}
+
+  - **Panel 40: Time Series - Latency Overview**
+  -   Target: payment-service
+  -   Visualization: graph
+  -   Refresh: 5s
+  -   Time range: last 5 minutes
+  -   Thresholds: {'warning': 500, 'critical': 2000}
+
+  - **Panel 41: Stat - Error Rate**
+  -   Target: checkout-service
+  -   Visualization: single stat
+  -   Refresh: 10s
+  -   Time range: last 15 minutes
+  -   Thresholds: {'warning': 2, 'critical': 5}
+
+  - **Panel 42: Gauge - Throughput**
+  -   Target: api-gateway
+  -   Visualization: gauge
+  -   Refresh: 30s
+  -   Time range: last 30 minutes
+  -   Thresholds: {'warning': 80, 'critical': 95}
+
+  - **Panel 43: Table - Circuit Breakers**
+  -   Target: all services
+  -   Visualization: table
+  -   Refresh: 1m
+  -   Time range: last 1 hour
+  -   Thresholds: {'warning': 60, 'critical': 80}
+
+  - **Panel 44: Bar Gauge - Resource Usage**
+  -   Target: experiment-wide
+  -   Visualization: bar gauge
+  -   Refresh: 5m
+  -   Time range: last 6 hours
+  -   Thresholds: {'warning': 10, 'critical': 20}
+
+  - **Panel 45: Heatmap - Blast Radius**
+  -   Target: payment-service
+  -   Visualization: graph
+  -   Refresh: 5s
+  -   Time range: last 5 minutes
+  -   Thresholds: {'warning': 500, 'critical': 2000}
+
+  - **Panel 46: Logs - Dependency Health**
+  -   Target: checkout-service
+  -   Visualization: single stat
+  -   Refresh: 10s
+  -   Time range: last 15 minutes
+  -   Thresholds: {'warning': 2, 'critical': 5}
+
+  - **Panel 47: Traces - Cache Performance**
+  -   Target: api-gateway
+  -   Visualization: gauge
+  -   Refresh: 30s
+  -   Time range: last 30 minutes
+  -   Thresholds: {'warning': 80, 'critical': 95}
+
+  - **Panel 48: Node Graph - Queue Depth**
+  -   Target: all services
+  -   Visualization: table
+  -   Refresh: 1m
+  -   Time range: last 1 hour
+  -   Thresholds: {'warning': 60, 'critical': 80}
+
+  - **Panel 49: Status History - Experiment Status**
+  -   Target: experiment-wide
+  -   Visualization: bar gauge
+  -   Refresh: 5m
+  -   Time range: last 6 hours
+  -   Thresholds: {'warning': 10, 'critical': 20}
+
+  - **Panel 50: Time Series - Latency Overview**
+  -   Target: payment-service
+  -   Visualization: graph
+  -   Refresh: 5s
+  -   Time range: last 5 minutes
+  -   Thresholds: {'warning': 500, 'critical': 2000}
+
+
+### Python Experiment Helper Functions
+
+
+  - **Function: inject_latency**
+```python
+def inject_latency(experiment_id, parameters=None):
+    """Execute inject latency for the given experiment."""
+    logger.info(f"Starting inject_latency for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement inject_latency logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"inject_latency failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "inject_latency", result)
+    return result
+```
+
+  - **Function: inject_packet_loss**
+```python
+def inject_packet_loss(experiment_id, parameters=None):
+    """Execute inject packet loss for the given experiment."""
+    logger.info(f"Starting inject_packet_loss for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement inject_packet_loss logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"inject_packet_loss failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "inject_packet_loss", result)
+    return result
+```
+
+  - **Function: stress_cpu**
+```python
+def stress_cpu(experiment_id, parameters=None):
+    """Execute stress cpu for the given experiment."""
+    logger.info(f"Starting stress_cpu for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement stress_cpu logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"stress_cpu failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "stress_cpu", result)
+    return result
+```
+
+  - **Function: stress_memory**
+```python
+def stress_memory(experiment_id, parameters=None):
+    """Execute stress memory for the given experiment."""
+    logger.info(f"Starting stress_memory for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement stress_memory logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"stress_memory failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "stress_memory", result)
+    return result
+```
+
+  - **Function: fill_disk**
+```python
+def fill_disk(experiment_id, parameters=None):
+    """Execute fill disk for the given experiment."""
+    logger.info(f"Starting fill_disk for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement fill_disk logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"fill_disk failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "fill_disk", result)
+    return result
+```
+
+  - **Function: delete_pod**
+```python
+def delete_pod(experiment_id, parameters=None):
+    """Execute delete pod for the given experiment."""
+    logger.info(f"Starting delete_pod for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement delete_pod logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"delete_pod failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "delete_pod", result)
+    return result
+```
+
+  - **Function: kill_container**
+```python
+def kill_container(experiment_id, parameters=None):
+    """Execute kill container for the given experiment."""
+    logger.info(f"Starting kill_container for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement kill_container logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"kill_container failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "kill_container", result)
+    return result
+```
+
+  - **Function: drain_node**
+```python
+def drain_node(experiment_id, parameters=None):
+    """Execute drain node for the given experiment."""
+    logger.info(f"Starting drain_node for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement drain_node logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"drain_node failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "drain_node", result)
+    return result
+```
+
+  - **Function: fail_dns**
+```python
+def fail_dns(experiment_id, parameters=None):
+    """Execute fail dns for the given experiment."""
+    logger.info(f"Starting fail_dns for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement fail_dns logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"fail_dns failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "fail_dns", result)
+    return result
+```
+
+  - **Function: check_error_rate**
+```python
+def check_error_rate(experiment_id, parameters=None):
+    """Execute check error rate for the given experiment."""
+    logger.info(f"Starting check_error_rate for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement check_error_rate logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"check_error_rate failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "check_error_rate", result)
+    return result
+```
+
+  - **Function: check_latency**
+```python
+def check_latency(experiment_id, parameters=None):
+    """Execute check latency for the given experiment."""
+    logger.info(f"Starting check_latency for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement check_latency logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"check_latency failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "check_latency", result)
+    return result
+```
+
+  - **Function: check_circuit_breaker**
+```python
+def check_circuit_breaker(experiment_id, parameters=None):
+    """Execute check circuit breaker for the given experiment."""
+    logger.info(f"Starting check_circuit_breaker for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement check_circuit_breaker logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"check_circuit_breaker failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "check_circuit_breaker", result)
+    return result
+```
+
+  - **Function: check_pod_health**
+```python
+def check_pod_health(experiment_id, parameters=None):
+    """Execute check pod health for the given experiment."""
+    logger.info(f"Starting check_pod_health for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement check_pod_health logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"check_pod_health failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "check_pod_health", result)
+    return result
+```
+
+  - **Function: check_queue_depth**
+```python
+def check_queue_depth(experiment_id, parameters=None):
+    """Execute check queue depth for the given experiment."""
+    logger.info(f"Starting check_queue_depth for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement check_queue_depth logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"check_queue_depth failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "check_queue_depth", result)
+    return result
+```
+
+  - **Function: rollback_experiment**
+```python
+def rollback_experiment(experiment_id, parameters=None):
+    """Execute rollback experiment for the given experiment."""
+    logger.info(f"Starting rollback_experiment for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement rollback_experiment logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"rollback_experiment failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "rollback_experiment", result)
+    return result
+```
+
+  - **Function: notify_stakeholders**
+```python
+def notify_stakeholders(experiment_id, parameters=None):
+    """Execute notify stakeholders for the given experiment."""
+    logger.info(f"Starting notify_stakeholders for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement notify_stakeholders logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"notify_stakeholders failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "notify_stakeholders", result)
+    return result
+```
+
+  - **Function: log_experiment_event**
+```python
+def log_experiment_event(experiment_id, parameters=None):
+    """Execute log experiment event for the given experiment."""
+    logger.info(f"Starting log_experiment_event for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement log_experiment_event logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"log_experiment_event failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "log_experiment_event", result)
+    return result
+```
+
+  - **Function: record_metric**
+```python
+def record_metric(experiment_id, parameters=None):
+    """Execute record metric for the given experiment."""
+    logger.info(f"Starting record_metric for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement record_metric logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"record_metric failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "record_metric", result)
+    return result
+```
+
+  - **Function: analyze_results**
+```python
+def analyze_results(experiment_id, parameters=None):
+    """Execute analyze results for the given experiment."""
+    logger.info(f"Starting analyze_results for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement analyze_results logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"analyze_results failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "analyze_results", result)
+    return result
+```
+
+  - **Function: calculate_blast_radius**
+```python
+def calculate_blast_radius(experiment_id, parameters=None):
+    """Execute calculate blast radius for the given experiment."""
+    logger.info(f"Starting calculate_blast_radius for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement calculate_blast_radius logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"calculate_blast_radius failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "calculate_blast_radius", result)
+    return result
+```
+
+  - **Function: validate_hypothesis**
+```python
+def validate_hypothesis(experiment_id, parameters=None):
+    """Execute validate hypothesis for the given experiment."""
+    logger.info(f"Starting validate_hypothesis for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement validate_hypothesis logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"validate_hypothesis failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "validate_hypothesis", result)
+    return result
+```
+
+  - **Function: generate_report**
+```python
+def generate_report(experiment_id, parameters=None):
+    """Execute generate report for the given experiment."""
+    logger.info(f"Starting generate_report for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement generate_report logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"generate_report failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "generate_report", result)
+    return result
+```
+
+  - **Function: track_remediation**
+```python
+def track_remediation(experiment_id, parameters=None):
+    """Execute track remediation for the given experiment."""
+    logger.info(f"Starting track_remediation for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement track_remediation logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"track_remediation failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "track_remediation", result)
+    return result
+```
+
+  - **Function: schedule_game_day**
+```python
+def schedule_game_day(experiment_id, parameters=None):
+    """Execute schedule game day for the given experiment."""
+    logger.info(f"Starting schedule_game_day for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement schedule_game_day logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"schedule_game_day failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "schedule_game_day", result)
+    return result
+```
+
+  - **Function: check_steady_state**
+```python
+def check_steady_state(experiment_id, parameters=None):
+    """Execute check steady state for the given experiment."""
+    logger.info(f"Starting check_steady_state for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement check_steady_state logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"check_steady_state failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "check_steady_state", result)
+    return result
+```
+
+  - **Function: inject_latency**
+```python
+def inject_latency(experiment_id, parameters=None):
+    """Execute inject latency for the given experiment."""
+    logger.info(f"Starting inject_latency for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement inject_latency logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"inject_latency failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "inject_latency", result)
+    return result
+```
+
+  - **Function: inject_packet_loss**
+```python
+def inject_packet_loss(experiment_id, parameters=None):
+    """Execute inject packet loss for the given experiment."""
+    logger.info(f"Starting inject_packet_loss for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement inject_packet_loss logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"inject_packet_loss failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "inject_packet_loss", result)
+    return result
+```
+
+  - **Function: stress_cpu**
+```python
+def stress_cpu(experiment_id, parameters=None):
+    """Execute stress cpu for the given experiment."""
+    logger.info(f"Starting stress_cpu for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement stress_cpu logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"stress_cpu failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "stress_cpu", result)
+    return result
+```
+
+  - **Function: stress_memory**
+```python
+def stress_memory(experiment_id, parameters=None):
+    """Execute stress memory for the given experiment."""
+    logger.info(f"Starting stress_memory for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement stress_memory logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"stress_memory failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "stress_memory", result)
+    return result
+```
+
+  - **Function: fill_disk**
+```python
+def fill_disk(experiment_id, parameters=None):
+    """Execute fill disk for the given experiment."""
+    logger.info(f"Starting fill_disk for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement fill_disk logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"fill_disk failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "fill_disk", result)
+    return result
+```
+
+  - **Function: delete_pod**
+```python
+def delete_pod(experiment_id, parameters=None):
+    """Execute delete pod for the given experiment."""
+    logger.info(f"Starting delete_pod for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement delete_pod logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"delete_pod failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "delete_pod", result)
+    return result
+```
+
+  - **Function: kill_container**
+```python
+def kill_container(experiment_id, parameters=None):
+    """Execute kill container for the given experiment."""
+    logger.info(f"Starting kill_container for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement kill_container logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"kill_container failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "kill_container", result)
+    return result
+```
+
+  - **Function: drain_node**
+```python
+def drain_node(experiment_id, parameters=None):
+    """Execute drain node for the given experiment."""
+    logger.info(f"Starting drain_node for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement drain_node logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"drain_node failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "drain_node", result)
+    return result
+```
+
+  - **Function: fail_dns**
+```python
+def fail_dns(experiment_id, parameters=None):
+    """Execute fail dns for the given experiment."""
+    logger.info(f"Starting fail_dns for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement fail_dns logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"fail_dns failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "fail_dns", result)
+    return result
+```
+
+  - **Function: check_error_rate**
+```python
+def check_error_rate(experiment_id, parameters=None):
+    """Execute check error rate for the given experiment."""
+    logger.info(f"Starting check_error_rate for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement check_error_rate logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"check_error_rate failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "check_error_rate", result)
+    return result
+```
+
+  - **Function: check_latency**
+```python
+def check_latency(experiment_id, parameters=None):
+    """Execute check latency for the given experiment."""
+    logger.info(f"Starting check_latency for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement check_latency logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"check_latency failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "check_latency", result)
+    return result
+```
+
+  - **Function: check_circuit_breaker**
+```python
+def check_circuit_breaker(experiment_id, parameters=None):
+    """Execute check circuit breaker for the given experiment."""
+    logger.info(f"Starting check_circuit_breaker for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement check_circuit_breaker logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"check_circuit_breaker failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "check_circuit_breaker", result)
+    return result
+```
+
+  - **Function: check_pod_health**
+```python
+def check_pod_health(experiment_id, parameters=None):
+    """Execute check pod health for the given experiment."""
+    logger.info(f"Starting check_pod_health for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement check_pod_health logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"check_pod_health failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "check_pod_health", result)
+    return result
+```
+
+  - **Function: check_queue_depth**
+```python
+def check_queue_depth(experiment_id, parameters=None):
+    """Execute check queue depth for the given experiment."""
+    logger.info(f"Starting check_queue_depth for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement check_queue_depth logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"check_queue_depth failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "check_queue_depth", result)
+    return result
+```
+
+  - **Function: rollback_experiment**
+```python
+def rollback_experiment(experiment_id, parameters=None):
+    """Execute rollback experiment for the given experiment."""
+    logger.info(f"Starting rollback_experiment for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement rollback_experiment logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"rollback_experiment failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "rollback_experiment", result)
+    return result
+```
+
+  - **Function: notify_stakeholders**
+```python
+def notify_stakeholders(experiment_id, parameters=None):
+    """Execute notify stakeholders for the given experiment."""
+    logger.info(f"Starting notify_stakeholders for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement notify_stakeholders logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"notify_stakeholders failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "notify_stakeholders", result)
+    return result
+```
+
+  - **Function: log_experiment_event**
+```python
+def log_experiment_event(experiment_id, parameters=None):
+    """Execute log experiment event for the given experiment."""
+    logger.info(f"Starting log_experiment_event for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement log_experiment_event logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"log_experiment_event failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "log_experiment_event", result)
+    return result
+```
+
+  - **Function: record_metric**
+```python
+def record_metric(experiment_id, parameters=None):
+    """Execute record metric for the given experiment."""
+    logger.info(f"Starting record_metric for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement record_metric logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"record_metric failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "record_metric", result)
+    return result
+```
+
+  - **Function: analyze_results**
+```python
+def analyze_results(experiment_id, parameters=None):
+    """Execute analyze results for the given experiment."""
+    logger.info(f"Starting analyze_results for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement analyze_results logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"analyze_results failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "analyze_results", result)
+    return result
+```
+
+  - **Function: calculate_blast_radius**
+```python
+def calculate_blast_radius(experiment_id, parameters=None):
+    """Execute calculate blast radius for the given experiment."""
+    logger.info(f"Starting calculate_blast_radius for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement calculate_blast_radius logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"calculate_blast_radius failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "calculate_blast_radius", result)
+    return result
+```
+
+  - **Function: validate_hypothesis**
+```python
+def validate_hypothesis(experiment_id, parameters=None):
+    """Execute validate hypothesis for the given experiment."""
+    logger.info(f"Starting validate_hypothesis for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement validate_hypothesis logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"validate_hypothesis failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "validate_hypothesis", result)
+    return result
+```
+
+  - **Function: generate_report**
+```python
+def generate_report(experiment_id, parameters=None):
+    """Execute generate report for the given experiment."""
+    logger.info(f"Starting generate_report for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement generate_report logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"generate_report failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "generate_report", result)
+    return result
+```
+
+  - **Function: track_remediation**
+```python
+def track_remediation(experiment_id, parameters=None):
+    """Execute track remediation for the given experiment."""
+    logger.info(f"Starting track_remediation for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement track_remediation logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"track_remediation failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "track_remediation", result)
+    return result
+```
+
+  - **Function: schedule_game_day**
+```python
+def schedule_game_day(experiment_id, parameters=None):
+    """Execute schedule game day for the given experiment."""
+    logger.info(f"Starting schedule_game_day for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement schedule_game_day logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"schedule_game_day failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "schedule_game_day", result)
+    return result
+```
+
+  - **Function: check_steady_state**
+```python
+def check_steady_state(experiment_id, parameters=None):
+    """Execute check steady state for the given experiment."""
+    logger.info(f"Starting check_steady_state for experiment {experiment_id}")
+    result = {"experiment_id": experiment_id, "status": "running"}
+    try:
+        # TODO: Implement check_steady_state logic
+        time.sleep(0.1)
+        result["status"] = "completed"
+        result["output"] = "OK"
+    except Exception as exc:
+        result["status"] = "failed"
+        result["error"] = str(exc)
+        logger.error(f"check_steady_state failed: {exc}")
+    finally:
+        log_experiment_event(experiment_id, "check_steady_state", result)
+    return result
+```
+
+
+### Kubernetes Chaos Experiment YAML Templates
+
+
+  - **Template 1: container-kill**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: container-kill-1
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: container-kill
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "70"
+  -             - name: CHAOS_INTERVAL
+  -               value: "6"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "11"
+  -             - name: RAMP_TIME
+  -               value: "6"
+```
+
+  - **Template 2: node-cpu-hog**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: node-cpu-hog-2
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: node-cpu-hog
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "80"
+  -             - name: CHAOS_INTERVAL
+  -               value: "7"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "12"
+  -             - name: RAMP_TIME
+  -               value: "7"
+```
+
+  - **Template 3: pod-network-latency**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-network-latency-3
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-network-latency
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "90"
+  -             - name: CHAOS_INTERVAL
+  -               value: "8"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "13"
+  -             - name: RAMP_TIME
+  -               value: "8"
+```
+
+  - **Template 4: pod-network-loss**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-network-loss-4
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-network-loss
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "100"
+  -             - name: CHAOS_INTERVAL
+  -               value: "9"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "14"
+  -             - name: RAMP_TIME
+  -               value: "9"
+```
+
+  - **Template 5: pod-dns-error**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-dns-error-5
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-dns-error
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "110"
+  -             - name: CHAOS_INTERVAL
+  -               value: "10"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "15"
+  -             - name: RAMP_TIME
+  -               value: "10"
+```
+
+  - **Template 6: pod-http-abort**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-http-abort-6
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-http-abort
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "120"
+  -             - name: CHAOS_INTERVAL
+  -               value: "11"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "16"
+  -             - name: RAMP_TIME
+  -               value: "11"
+```
+
+  - **Template 7: pod-memory-hog**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-memory-hog-7
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-memory-hog
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "130"
+  -             - name: CHAOS_INTERVAL
+  -               value: "12"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "17"
+  -             - name: RAMP_TIME
+  -               value: "12"
+```
+
+  - **Template 8: node-drain**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: node-drain-8
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: node-drain
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "140"
+  -             - name: CHAOS_INTERVAL
+  -               value: "13"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "18"
+  -             - name: RAMP_TIME
+  -               value: "13"
+```
+
+  - **Template 9: disk-fill**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: disk-fill-9
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: disk-fill
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "150"
+  -             - name: CHAOS_INTERVAL
+  -               value: "14"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "19"
+  -             - name: RAMP_TIME
+  -               value: "14"
+```
+
+  - **Template 10: pod-delete**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-delete-10
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-delete
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "160"
+  -             - name: CHAOS_INTERVAL
+  -               value: "15"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "20"
+  -             - name: RAMP_TIME
+  -               value: "5"
+```
+
+  - **Template 11: container-kill**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: container-kill-11
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: container-kill
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "170"
+  -             - name: CHAOS_INTERVAL
+  -               value: "16"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "21"
+  -             - name: RAMP_TIME
+  -               value: "6"
+```
+
+  - **Template 12: node-cpu-hog**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: node-cpu-hog-12
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: node-cpu-hog
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "180"
+  -             - name: CHAOS_INTERVAL
+  -               value: "17"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "22"
+  -             - name: RAMP_TIME
+  -               value: "7"
+```
+
+  - **Template 13: pod-network-latency**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-network-latency-13
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-network-latency
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "190"
+  -             - name: CHAOS_INTERVAL
+  -               value: "18"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "23"
+  -             - name: RAMP_TIME
+  -               value: "8"
+```
+
+  - **Template 14: pod-network-loss**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-network-loss-14
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-network-loss
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "200"
+  -             - name: CHAOS_INTERVAL
+  -               value: "19"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "24"
+  -             - name: RAMP_TIME
+  -               value: "9"
+```
+
+  - **Template 15: pod-dns-error**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-dns-error-15
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-dns-error
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "210"
+  -             - name: CHAOS_INTERVAL
+  -               value: "5"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "25"
+  -             - name: RAMP_TIME
+  -               value: "10"
+```
+
+  - **Template 16: pod-http-abort**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-http-abort-16
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-http-abort
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "220"
+  -             - name: CHAOS_INTERVAL
+  -               value: "6"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "26"
+  -             - name: RAMP_TIME
+  -               value: "11"
+```
+
+  - **Template 17: pod-memory-hog**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-memory-hog-17
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-memory-hog
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "230"
+  -             - name: CHAOS_INTERVAL
+  -               value: "7"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "27"
+  -             - name: RAMP_TIME
+  -               value: "12"
+```
+
+  - **Template 18: node-drain**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: node-drain-18
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: node-drain
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "240"
+  -             - name: CHAOS_INTERVAL
+  -               value: "8"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "28"
+  -             - name: RAMP_TIME
+  -               value: "13"
+```
+
+  - **Template 19: disk-fill**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: disk-fill-19
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: disk-fill
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "250"
+  -             - name: CHAOS_INTERVAL
+  -               value: "9"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "29"
+  -             - name: RAMP_TIME
+  -               value: "14"
+```
+
+  - **Template 20: pod-delete**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-delete-20
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-delete
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "260"
+  -             - name: CHAOS_INTERVAL
+  -               value: "10"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "30"
+  -             - name: RAMP_TIME
+  -               value: "5"
+```
+
+  - **Template 21: container-kill**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: container-kill-21
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: container-kill
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "270"
+  -             - name: CHAOS_INTERVAL
+  -               value: "11"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "31"
+  -             - name: RAMP_TIME
+  -               value: "6"
+```
+
+  - **Template 22: node-cpu-hog**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: node-cpu-hog-22
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: node-cpu-hog
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "280"
+  -             - name: CHAOS_INTERVAL
+  -               value: "12"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "32"
+  -             - name: RAMP_TIME
+  -               value: "7"
+```
+
+  - **Template 23: pod-network-latency**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-network-latency-23
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-network-latency
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "290"
+  -             - name: CHAOS_INTERVAL
+  -               value: "13"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "33"
+  -             - name: RAMP_TIME
+  -               value: "8"
+```
+
+  - **Template 24: pod-network-loss**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-network-loss-24
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-network-loss
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "300"
+  -             - name: CHAOS_INTERVAL
+  -               value: "14"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "34"
+  -             - name: RAMP_TIME
+  -               value: "9"
+```
+
+  - **Template 25: pod-dns-error**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-dns-error-25
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-dns-error
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "310"
+  -             - name: CHAOS_INTERVAL
+  -               value: "15"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "35"
+  -             - name: RAMP_TIME
+  -               value: "10"
+```
+
+  - **Template 26: pod-http-abort**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-http-abort-26
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-http-abort
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "320"
+  -             - name: CHAOS_INTERVAL
+  -               value: "16"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "36"
+  -             - name: RAMP_TIME
+  -               value: "11"
+```
+
+  - **Template 27: pod-memory-hog**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-memory-hog-27
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-memory-hog
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "330"
+  -             - name: CHAOS_INTERVAL
+  -               value: "17"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "37"
+  -             - name: RAMP_TIME
+  -               value: "12"
+```
+
+  - **Template 28: node-drain**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: node-drain-28
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: node-drain
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "340"
+  -             - name: CHAOS_INTERVAL
+  -               value: "18"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "38"
+  -             - name: RAMP_TIME
+  -               value: "13"
+```
+
+  - **Template 29: disk-fill**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: disk-fill-29
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: disk-fill
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "350"
+  -             - name: CHAOS_INTERVAL
+  -               value: "19"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "39"
+  -             - name: RAMP_TIME
+  -               value: "14"
+```
+
+  - **Template 30: pod-delete**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-delete-30
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-delete
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "360"
+  -             - name: CHAOS_INTERVAL
+  -               value: "5"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "40"
+  -             - name: RAMP_TIME
+  -               value: "5"
+```
+
+  - **Template 31: container-kill**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: container-kill-31
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: container-kill
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "370"
+  -             - name: CHAOS_INTERVAL
+  -               value: "6"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "41"
+  -             - name: RAMP_TIME
+  -               value: "6"
+```
+
+  - **Template 32: node-cpu-hog**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: node-cpu-hog-32
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: node-cpu-hog
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "380"
+  -             - name: CHAOS_INTERVAL
+  -               value: "7"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "42"
+  -             - name: RAMP_TIME
+  -               value: "7"
+```
+
+  - **Template 33: pod-network-latency**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-network-latency-33
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-network-latency
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "390"
+  -             - name: CHAOS_INTERVAL
+  -               value: "8"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "43"
+  -             - name: RAMP_TIME
+  -               value: "8"
+```
+
+  - **Template 34: pod-network-loss**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-network-loss-34
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-network-loss
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "400"
+  -             - name: CHAOS_INTERVAL
+  -               value: "9"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "44"
+  -             - name: RAMP_TIME
+  -               value: "9"
+```
+
+  - **Template 35: pod-dns-error**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-dns-error-35
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-dns-error
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "410"
+  -             - name: CHAOS_INTERVAL
+  -               value: "10"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "45"
+  -             - name: RAMP_TIME
+  -               value: "10"
+```
+
+  - **Template 36: pod-http-abort**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-http-abort-36
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-http-abort
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "420"
+  -             - name: CHAOS_INTERVAL
+  -               value: "11"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "46"
+  -             - name: RAMP_TIME
+  -               value: "11"
+```
+
+  - **Template 37: pod-memory-hog**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-memory-hog-37
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-memory-hog
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "430"
+  -             - name: CHAOS_INTERVAL
+  -               value: "12"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "47"
+  -             - name: RAMP_TIME
+  -               value: "12"
+```
+
+  - **Template 38: node-drain**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: node-drain-38
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: node-drain
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "440"
+  -             - name: CHAOS_INTERVAL
+  -               value: "13"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "48"
+  -             - name: RAMP_TIME
+  -               value: "13"
+```
+
+  - **Template 39: disk-fill**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: disk-fill-39
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: disk-fill
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "450"
+  -             - name: CHAOS_INTERVAL
+  -               value: "14"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "49"
+  -             - name: RAMP_TIME
+  -               value: "14"
+```
+
+  - **Template 40: pod-delete**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-delete-40
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-delete
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "460"
+  -             - name: CHAOS_INTERVAL
+  -               value: "15"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "10"
+  -             - name: RAMP_TIME
+  -               value: "5"
+```
+
+  - **Template 41: container-kill**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: container-kill-41
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: container-kill
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "470"
+  -             - name: CHAOS_INTERVAL
+  -               value: "16"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "11"
+  -             - name: RAMP_TIME
+  -               value: "6"
+```
+
+  - **Template 42: node-cpu-hog**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: node-cpu-hog-42
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: node-cpu-hog
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "480"
+  -             - name: CHAOS_INTERVAL
+  -               value: "17"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "12"
+  -             - name: RAMP_TIME
+  -               value: "7"
+```
+
+  - **Template 43: pod-network-latency**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-network-latency-43
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-network-latency
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "490"
+  -             - name: CHAOS_INTERVAL
+  -               value: "18"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "13"
+  -             - name: RAMP_TIME
+  -               value: "8"
+```
+
+  - **Template 44: pod-network-loss**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-network-loss-44
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-network-loss
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "500"
+  -             - name: CHAOS_INTERVAL
+  -               value: "19"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "14"
+  -             - name: RAMP_TIME
+  -               value: "9"
+```
+
+  - **Template 45: pod-dns-error**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-dns-error-45
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-dns-error
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "510"
+  -             - name: CHAOS_INTERVAL
+  -               value: "5"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "15"
+  -             - name: RAMP_TIME
+  -               value: "10"
+```
+
+  - **Template 46: pod-http-abort**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-http-abort-46
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-http-abort
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "520"
+  -             - name: CHAOS_INTERVAL
+  -               value: "6"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "16"
+  -             - name: RAMP_TIME
+  -               value: "11"
+```
+
+  - **Template 47: pod-memory-hog**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-memory-hog-47
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-memory-hog
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "530"
+  -             - name: CHAOS_INTERVAL
+  -               value: "7"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "17"
+  -             - name: RAMP_TIME
+  -               value: "12"
+```
+
+  - **Template 48: node-drain**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: node-drain-48
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: node-drain
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "540"
+  -             - name: CHAOS_INTERVAL
+  -               value: "8"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "18"
+  -             - name: RAMP_TIME
+  -               value: "13"
+```
+
+  - **Template 49: disk-fill**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: disk-fill-49
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: disk-fill
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "550"
+  -             - name: CHAOS_INTERVAL
+  -               value: "9"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "19"
+  -             - name: RAMP_TIME
+  -               value: "14"
+```
+
+  - **Template 50: pod-delete**
+```yaml
+  - apiVersion: litmuschaos.io/v1alpha1
+  - kind: ChaosEngine
+  - metadata:
+  -   name: pod-delete-50
+  -   namespace: litmus
+  - spec:
+  -   engineState: active
+  -   appinfo:
+  -     appns: production
+  -     applabel: app=payment-service
+  -   chaosServiceAccount: litmus-admin
+  -   experiments:
+  -     - name: pod-delete
+  -       spec:
+  -         components:
+  -           env:
+  -             - name: TOTAL_CHAOS_DURATION
+  -               value: "560"
+  -             - name: CHAOS_INTERVAL
+  -               value: "10"
+  -             - name: PODS_AFFECTED_PERC
+  -               value: "20"
+  -             - name: RAMP_TIME
+  -               value: "5"
+```
+
+
+### Experiment Finding Templates with Remediation Guidance
+
+
+  - **Finding #1: Retry storm causing cascading failure**
+  -   Severity: HIGH
+  -   Category: code
+  -   Impact: partial service degradation
+  -   Remediation: Implement circuit breaker
+  -   Effort: 2 days
+  -   Verification: unit test
+
+  - **Finding #2: DNS caching not implemented**
+  -   Severity: MEDIUM
+  -   Category: architecture
+  -   Impact: latency increase
+  -   Remediation: Add DNS caching
+  -   Effort: 3 days
+  -   Verification: integration test
+
+  - **Finding #3: Connection pool exhausted**
+  -   Severity: LOW
+  -   Category: monitoring
+  -   Impact: no customer impact
+  -   Remediation: Increase pool size
+  -   Effort: 1 week
+  -   Verification: code review
+
+  - **Finding #4: TLS certificate auto-renewal not configured**
+  -   Severity: INFO
+  -   Category: process
+  -   Impact: observability gap
+  -   Remediation: Configure cert-manager
+  -   Effort: 2 weeks
+  -   Verification: manual verification
+
+  - **Finding #5: Read replica fallback missing**
+  -   Severity: CRITICAL
+  -   Category: configuration
+  -   Impact: customer-visible errors
+  -   Remediation: Update configuration
+  -   Effort: 1 day
+  -   Verification: re-run experiment
+
+  - **Finding #6: Health check endpoint too permissive**
+  -   Severity: HIGH
+  -   Category: code
+  -   Impact: partial service degradation
+  -   Remediation: Implement circuit breaker
+  -   Effort: 2 days
+  -   Verification: unit test
+
+  - **Finding #7: Graceful shutdown not implemented**
+  -   Severity: MEDIUM
+  -   Category: architecture
+  -   Impact: latency increase
+  -   Remediation: Add DNS caching
+  -   Effort: 3 days
+  -   Verification: integration test
+
+  - **Finding #8: Configuration validation missing**
+  -   Severity: LOW
+  -   Category: monitoring
+  -   Impact: no customer impact
+  -   Remediation: Increase pool size
+  -   Effort: 1 week
+  -   Verification: code review
+
+  - **Finding #9: Load shedding threshold too high**
+  -   Severity: INFO
+  -   Category: process
+  -   Impact: observability gap
+  -   Remediation: Configure cert-manager
+  -   Effort: 2 weeks
+  -   Verification: manual verification
+
+  - **Finding #10: Circuit breaker timeout misconfigured**
+  -   Severity: CRITICAL
+  -   Category: configuration
+  -   Impact: customer-visible errors
+  -   Remediation: Update configuration
+  -   Effort: 1 day
+  -   Verification: re-run experiment
+
+  - **Finding #11: Retry storm causing cascading failure**
+  -   Severity: HIGH
+  -   Category: code
+  -   Impact: partial service degradation
+  -   Remediation: Implement circuit breaker
+  -   Effort: 2 days
+  -   Verification: unit test
+
+  - **Finding #12: DNS caching not implemented**
+  -   Severity: MEDIUM
+  -   Category: architecture
+  -   Impact: latency increase
+  -   Remediation: Add DNS caching
+  -   Effort: 3 days
+  -   Verification: integration test
+
+  - **Finding #13: Connection pool exhausted**
+  -   Severity: LOW
+  -   Category: monitoring
+  -   Impact: no customer impact
+  -   Remediation: Increase pool size
+  -   Effort: 1 week
+  -   Verification: code review
+
+  - **Finding #14: TLS certificate auto-renewal not configured**
+  -   Severity: INFO
+  -   Category: process
+  -   Impact: observability gap
+  -   Remediation: Configure cert-manager
+  -   Effort: 2 weeks
+  -   Verification: manual verification
+
+  - **Finding #15: Read replica fallback missing**
+  -   Severity: CRITICAL
+  -   Category: configuration
+  -   Impact: customer-visible errors
+  -   Remediation: Update configuration
+  -   Effort: 1 day
+  -   Verification: re-run experiment
+
+  - **Finding #16: Health check endpoint too permissive**
+  -   Severity: HIGH
+  -   Category: code
+  -   Impact: partial service degradation
+  -   Remediation: Implement circuit breaker
+  -   Effort: 2 days
+  -   Verification: unit test
+
+  - **Finding #17: Graceful shutdown not implemented**
+  -   Severity: MEDIUM
+  -   Category: architecture
+  -   Impact: latency increase
+  -   Remediation: Add DNS caching
+  -   Effort: 3 days
+  -   Verification: integration test
+
+  - **Finding #18: Configuration validation missing**
+  -   Severity: LOW
+  -   Category: monitoring
+  -   Impact: no customer impact
+  -   Remediation: Increase pool size
+  -   Effort: 1 week
+  -   Verification: code review
+
+  - **Finding #19: Load shedding threshold too high**
+  -   Severity: INFO
+  -   Category: process
+  -   Impact: observability gap
+  -   Remediation: Configure cert-manager
+  -   Effort: 2 weeks
+  -   Verification: manual verification
+
+  - **Finding #20: Circuit breaker timeout misconfigured**
+  -   Severity: CRITICAL
+  -   Category: configuration
+  -   Impact: customer-visible errors
+  -   Remediation: Update configuration
+  -   Effort: 1 day
+  -   Verification: re-run experiment
+
+  - **Finding #21: Retry storm causing cascading failure**
+  -   Severity: HIGH
+  -   Category: code
+  -   Impact: partial service degradation
+  -   Remediation: Implement circuit breaker
+  -   Effort: 2 days
+  -   Verification: unit test
+
+  - **Finding #22: DNS caching not implemented**
+  -   Severity: MEDIUM
+  -   Category: architecture
+  -   Impact: latency increase
+  -   Remediation: Add DNS caching
+  -   Effort: 3 days
+  -   Verification: integration test
+
+  - **Finding #23: Connection pool exhausted**
+  -   Severity: LOW
+  -   Category: monitoring
+  -   Impact: no customer impact
+  -   Remediation: Increase pool size
+  -   Effort: 1 week
+  -   Verification: code review
+
+  - **Finding #24: TLS certificate auto-renewal not configured**
+  -   Severity: INFO
+  -   Category: process
+  -   Impact: observability gap
+  -   Remediation: Configure cert-manager
+  -   Effort: 2 weeks
+  -   Verification: manual verification
+
+  - **Finding #25: Read replica fallback missing**
+  -   Severity: CRITICAL
+  -   Category: configuration
+  -   Impact: customer-visible errors
+  -   Remediation: Update configuration
+  -   Effort: 1 day
+  -   Verification: re-run experiment
+
+  - **Finding #26: Health check endpoint too permissive**
+  -   Severity: HIGH
+  -   Category: code
+  -   Impact: partial service degradation
+  -   Remediation: Implement circuit breaker
+  -   Effort: 2 days
+  -   Verification: unit test
+
+  - **Finding #27: Graceful shutdown not implemented**
+  -   Severity: MEDIUM
+  -   Category: architecture
+  -   Impact: latency increase
+  -   Remediation: Add DNS caching
+  -   Effort: 3 days
+  -   Verification: integration test
+
+  - **Finding #28: Configuration validation missing**
+  -   Severity: LOW
+  -   Category: monitoring
+  -   Impact: no customer impact
+  -   Remediation: Increase pool size
+  -   Effort: 1 week
+  -   Verification: code review
+
+  - **Finding #29: Load shedding threshold too high**
+  -   Severity: INFO
+  -   Category: process
+  -   Impact: observability gap
+  -   Remediation: Configure cert-manager
+  -   Effort: 2 weeks
+  -   Verification: manual verification
+
+  - **Finding #30: Circuit breaker timeout misconfigured**
+  -   Severity: CRITICAL
+  -   Category: configuration
+  -   Impact: customer-visible errors
+  -   Remediation: Update configuration
+  -   Effort: 1 day
+  -   Verification: re-run experiment
+
+  - **Finding #31: Retry storm causing cascading failure**
+  -   Severity: HIGH
+  -   Category: code
+  -   Impact: partial service degradation
+  -   Remediation: Implement circuit breaker
+  -   Effort: 2 days
+  -   Verification: unit test
+
+  - **Finding #32: DNS caching not implemented**
+  -   Severity: MEDIUM
+  -   Category: architecture
+  -   Impact: latency increase
+  -   Remediation: Add DNS caching
+  -   Effort: 3 days
+  -   Verification: integration test
+
+  - **Finding #33: Connection pool exhausted**
+  -   Severity: LOW
+  -   Category: monitoring
+  -   Impact: no customer impact
+  -   Remediation: Increase pool size
+  -   Effort: 1 week
+  -   Verification: code review
+
+  - **Finding #34: TLS certificate auto-renewal not configured**
+  -   Severity: INFO
+  -   Category: process
+  -   Impact: observability gap
+  -   Remediation: Configure cert-manager
+  -   Effort: 2 weeks
+  -   Verification: manual verification
+
+  - **Finding #35: Read replica fallback missing**
+  -   Severity: CRITICAL
+  -   Category: configuration
+  -   Impact: customer-visible errors
+  -   Remediation: Update configuration
+  -   Effort: 1 day
+  -   Verification: re-run experiment
+
+  - **Finding #36: Health check endpoint too permissive**
+  -   Severity: HIGH
+  -   Category: code
+  -   Impact: partial service degradation
+  -   Remediation: Implement circuit breaker
+  -   Effort: 2 days
+  -   Verification: unit test
+
+  - **Finding #37: Graceful shutdown not implemented**
+  -   Severity: MEDIUM
+  -   Category: architecture
+  -   Impact: latency increase
+  -   Remediation: Add DNS caching
+  -   Effort: 3 days
+  -   Verification: integration test
+
+  - **Finding #38: Configuration validation missing**
+  -   Severity: LOW
+  -   Category: monitoring
+  -   Impact: no customer impact
+  -   Remediation: Increase pool size
+  -   Effort: 1 week
+  -   Verification: code review
+
+  - **Finding #39: Load shedding threshold too high**
+  -   Severity: INFO
+  -   Category: process
+  -   Impact: observability gap
+  -   Remediation: Configure cert-manager
+  -   Effort: 2 weeks
+  -   Verification: manual verification
+
+  - **Finding #40: Circuit breaker timeout misconfigured**
+  -   Severity: CRITICAL
+  -   Category: configuration
+  -   Impact: customer-visible errors
+  -   Remediation: Update configuration
+  -   Effort: 1 day
+  -   Verification: re-run experiment
+
+  - **Finding #41: Retry storm causing cascading failure**
+  -   Severity: HIGH
+  -   Category: code
+  -   Impact: partial service degradation
+  -   Remediation: Implement circuit breaker
+  -   Effort: 2 days
+  -   Verification: unit test
+
+  - **Finding #42: DNS caching not implemented**
+  -   Severity: MEDIUM
+  -   Category: architecture
+  -   Impact: latency increase
+  -   Remediation: Add DNS caching
+  -   Effort: 3 days
+  -   Verification: integration test
+
+  - **Finding #43: Connection pool exhausted**
+  -   Severity: LOW
+  -   Category: monitoring
+  -   Impact: no customer impact
+  -   Remediation: Increase pool size
+  -   Effort: 1 week
+  -   Verification: code review
+
+  - **Finding #44: TLS certificate auto-renewal not configured**
+  -   Severity: INFO
+  -   Category: process
+  -   Impact: observability gap
+  -   Remediation: Configure cert-manager
+  -   Effort: 2 weeks
+  -   Verification: manual verification
+
+  - **Finding #45: Read replica fallback missing**
+  -   Severity: CRITICAL
+  -   Category: configuration
+  -   Impact: customer-visible errors
+  -   Remediation: Update configuration
+  -   Effort: 1 day
+  -   Verification: re-run experiment
+
+  - **Finding #46: Health check endpoint too permissive**
+  -   Severity: HIGH
+  -   Category: code
+  -   Impact: partial service degradation
+  -   Remediation: Implement circuit breaker
+  -   Effort: 2 days
+  -   Verification: unit test
+
+  - **Finding #47: Graceful shutdown not implemented**
+  -   Severity: MEDIUM
+  -   Category: architecture
+  -   Impact: latency increase
+  -   Remediation: Add DNS caching
+  -   Effort: 3 days
+  -   Verification: integration test
+
+  - **Finding #48: Configuration validation missing**
+  -   Severity: LOW
+  -   Category: monitoring
+  -   Impact: no customer impact
+  -   Remediation: Increase pool size
+  -   Effort: 1 week
+  -   Verification: code review
+
+  - **Finding #49: Load shedding threshold too high**
+  -   Severity: INFO
+  -   Category: process
+  -   Impact: observability gap
+  -   Remediation: Configure cert-manager
+  -   Effort: 2 weeks
+  -   Verification: manual verification
+
+  - **Finding #50: Circuit breaker timeout misconfigured**
+  -   Severity: CRITICAL
+  -   Category: configuration
+  -   Impact: customer-visible errors
+  -   Remediation: Update configuration
+  -   Effort: 1 day
+  -   Verification: re-run experiment
+
+---
+
+## P14 Container and Kubernetes Chaos
+
+### Kubernetes Failure Taxonomy
+
+```
+Kubernetes Chaos
++-- Pod Chaos
+|   +-- Pod Delete
+|   +-- Pod Kill
+|   +-- Pod Crash
+|   +-- Pod Resource Exhaustion
++-- Node Chaos
+|   +-- Node Cordon/Drain
+|   +-- Node Failure
+|   +-- Node Resource Exhaustion
++-- Network Chaos
+|   +-- Pod Network Latency
+|   +-- Pod Network Loss
+|   +-- Pod Network Partition
+|   +-- DNS Chaos
++-- Storage Chaos
+|   +-- Persistent Volume Failure
+|   +-- Storage Class Failure
+|   +-- PVC Deletion
++-- RBAC Chaos
+|   +-- Service Account Permission Revocation
+|   +-- Role Binding Deletion
++-- Admission Controller Chaos
+|   +-- Webhook Failure
+|   +-- Policy Engine Failure
+|   +-- Certificate Issues
++-- Cluster Chaos
+    +-- API Server Failure
+    +-- etcd Failure
+    +-- Controller Manager Failure
+    +-- Scheduler Failure
+```
+
+### Pod Chaos
+
+**Pod Delete** (Graceful):
+```yaml
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: pod-delete
+spec:
+  engineState: active
+  appinfo:
+    appns: production
+    applabel: app=payment-service
+    appkind: deployment
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: pod-delete
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "60"
+            - name: CHAOS_INTERVAL
+              value: "10"
+            - name: FORCE
+              value: "false"
+            - name: PODS_AFFECTED_PERC
+              value: "25"
+            - name: RAMP_TIME
+              value: "10"
+```
+
+**Pod Resource Exhaustion**:
+```yaml
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: pod-cpu-hog
+spec:
+  engineState: active
+  appinfo:
+    appns: production
+    applabel: app=payment-service
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: pod-cpu-hog
+      spec:
+        components:
+          env:
+            - name: CPU_CORES
+              value: "2"
+            - name: TOTAL_CHAOS_DURATION
+              value: "120"
+            - name: PODS_AFFECTED_PERC
+              value: "30"
+```
+
+### Node Chaos
+
+**Node Drain**:
+```yaml
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: node-drain
+spec:
+  engineState: active
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: node-drain
+      spec:
+        components:
+          env:
+            - name: NODE_NAME
+              value: "ip-10-0-1-45"
+            - name: DRAIN_TIMEOUT
+              value: "120"
+            - name: IGNORE_DAEMONSETS
+              value: "true"
+            - name: DELETE_EMPTYDIR_DATA
+              value: "false"
+```
+
+### Container Runtime Chaos
+
+**Container Kill**:
+```yaml
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: container-kill
+spec:
+  engineState: active
+  appinfo:
+    appns: production
+    applabel: app=payment-service
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: container-kill
+      spec:
+        components:
+          env:
+            - name: TARGET_CONTAINER
+              value: "payment-service"
+            - name: TOTAL_CHAOS_DURATION
+              value: "60"
+            - name: CHAOS_INTERVAL
+              value: "10"
+            - name: PODS_AFFECTED_PERC
+              value: "25"
+```
+
+### Admission Controller Chaos
+
+**Purpose**: Test that admission controllers fail safely and do not block critical operations.
+
+```yaml
+experiment:
+  name: admission-webhook-failure
+  hypothesis: |
+    When the admission controller webhook certificate expires:
+    - Validating webhooks fail closed (deny all) by default
+    - Mutating webhooks fail open (allow all) by default
+    - Pod creation is blocked if webhook is required
+    - Existing pods continue running unaffected
+```
+
+### etcd Chaos
+
+**Purpose**: Test etcd failure scenarios � the Kubernetes brain failing.
+
+```yaml
+experiment:
+  name: etcd-failure
+  hypothesis: |
+    When one etcd member fails:
+    - Leader election completes within 15 seconds
+    - API server remains available for read operations
+    - Write operations may briefly fail during leader election
+    - Remaining etcd members maintain quorum
+    - No data loss
+  experiment_parameters:
+    etcd_members: 3
+    etcd_members_to_fail: 1
+    failure_type: "process_kill"
+    expected_recovery_time_seconds: 15
+```
+
+### Kubernetes Network Policies
+
+**Purpose**: Test network policy enforcement and isolation.
+
+```yaml
+experiment:
+  name: network-policy-isolation
+  hypothesis: |
+    When network policies are applied to restrict payment-service traffic:
+    - Only services with matching label selectors can reach payment-service
+    - Unauthorized services receive connection refused
+    - Authorized services continue normal operation
+    - DNS resolution for blocked services still works
+  experiment_parameters:
+    namespace: production
+    target_service: payment-service
+    allowed_services:
+      - checkout-service
+      - api-gateway
+    blocked_services:
+      - analytics-service
+      - logging-service
+```
+
+### Cloud-Specific Kubernetes Chaos
+
+#### AWS EKS Chaos
+```json
+{
+  "experimentTemplate": {
+    "description": "EKS pod deletion experiment",
+    "targets": {
+      "eksPods": {
+        "resourceType": "aws:eks:pod",
+        "resourceTags": { "ChaosEnabled": "true" },
+        "selectionMode": "PERCENTAGE",
+        "percentage": 25
+      }
+    },
+    "actions": {
+      "eksPodDelete": {
+        "actionId": "aws:eks:delete-pods",
+        "parameters": {},
+        "targets": { "pods": "eksPods" }
+      }
+    },
+    "stopConditions": [{
+      "source": "aws:cloudwatch:alarm",
+      "value": "arn:aws:cloudwatch:us-east-1:123456789012:alarm/ResilienceBreach"
+    }]
+  }
+}
+```
+
+#### Azure AKS Chaos
+```json
+{
+  "name": "aks-chaos-experiment",
+  "properties": {
+    "steps": [{
+      "name": "AKS Pod Delete",
+      "branches": [{
+        "name": "Branch A",
+        "actions": [{
+          "type": "continuous",
+          "name": "pod-delete",
+          "selectorId": "aks-payment-pods",
+          "parameters": [
+            { "key": "podAffectedPercentage", "value": "25" },
+            { "key": "durationInMinutes", "value": "5" }
+          ]
+        }]
+      }]
+    }]
+  }
+}
+```
+
+#### GKE Pod Chaos
+```yaml
+experiment:
+  name: gke-pod-delete
+  provider:
+    type: python
+    module: chaosgke.pod.actions
+    func: delete_pods
+  parameters:
+    labels:
+      app: payment-service
+    namespace: production
+    project: synarc-production
+    cluster: payment-cluster
+    location: us-central1-a
+    count: 2
+  steady_state_hypothesis:
+    probes:
+      - type: probe
+        name: "checkout-healthy"
+        provider:
+          type: http
+          url: "http://checkout-service/health"
+        tolerate:
+          - type: tolerance
+            provider:
+              type: http
+              status: 200

@@ -1,0 +1,29 @@
+﻿id: performance-thinker
+version: 1.0.0
+schema: skill-pack/v1
+category: engineering-intelligence
+description: >
+  Latency analysis methodology, throughput optimization, capacity planning, performance budgeting, bottleneck identification, profiling methodology, caching strategies, performance patterns and anti-patterns. version: 2.0.0
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: Activates when user requests domain-specific engineering guidance
+
+dependencies:
+  synarc-core: ">=5.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

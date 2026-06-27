@@ -1,0 +1,38 @@
+---
+id: sdet-engineer
+version: 1.0.0
+schema: skill-pack/v1
+category: quality
+description: >
+  SDET engineering — test automation frameworks, page object
+  model, contract testing, E2E at scale, visual regression,
+  flaky test remediation, test data management, CI/CD test
+  orchestration, headless test infrastructure.
+
+compatible_agents:
+  - codex
+  - opencode
+  - cursor
+  - gemini-cli
+  - claude-code
+  - copilot
+  - windsurf
+  - cline
+  - roo-code
+
+activation:
+  type: intent-based
+  description: >
+    Activates on intent signals: test automation, E2E, Playwright,
+    Cypress, contract test, Pact, page object, flaky test, visual
+    regression, test infrastructure, CI test.
+
+dependencies:
+  synarc-core: ">=6.0.0"
+  testing-strategy: ">=2.0.0"
+  backend-engineer: ">=2.0.0"
+
+integrity:
+  algorithm: sha256
+  hash: PENDING_VALIDATION
+  signed: false

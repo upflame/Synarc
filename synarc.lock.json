@@ -1,0 +1,55 @@
+{
+  "synarc_version": "6.6.4",
+  "schema": "skill-pack/v1",
+  "node_version": "v22.12.0",
+  "installed_at": "2026-06-26T07:21:06.089Z",
+  "mode": "auto",
+  "targets": [
+    {
+      "id": "claude-code",
+      "label": "Claude Code",
+      "ok": true,
+      "action": "skipped",
+      "path": ".claude-plugin\\plugin.json",
+      "bytes": 1317
+    },
+    {
+      "id": "codex",
+      "label": "Codex CLI",
+      "ok": true,
+      "action": "skipped",
+      "path": "AGENTS.md",
+      "bytes": 471
+    },
+    {
+      "id": "opencode",
+      "label": "OpenCode",
+      "ok": true,
+      "action": "skipped",
+      "path": "AGENTS.md",
+      "bytes": 471,
+      "global": false
+    },
+    {
+      "id": "cursor",
+      "label": "Cursor",
+      "ok": true,
+      "action": "skipped",
+      "path": ".cursor\\rules\\synarc-core.mdc",
+      "bytes": 1429
+    },
+    {
+      "id": "copilot",
+      "label": "GitHub Copilot",
+      "ok": true,
+      "action": "appended",
+      "path": ".github\\copilot-instructions.md",
+      "bytes": 1823
+    }
+  ],
+  "summary": {
+    "pass": 5,
+    "fail": 0,
+    "total": 5
+  }
+}

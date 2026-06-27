@@ -1,26 +1,114 @@
 {
-  "name": "synarc-universal",
-  "version": "6.5.0",
-  "description": "Engineering Intelligence Runtime for AI-assisted software development. Intent Contracts, change classification, risk assessment, verification engine, audit trails, and session continuity across all major AI coding agents.",
-  "private": false,
-  "bin": {
-    "synarc": "./scripts/install.js"
+  "name": "synarc",
+  "version": "6.6.4",
+  "description": "Intelligence that engineers trust. 56 skills, Intent Contracts, Verification Engine, Audit & Compliance, 4-tier fallback. `npm i -g synarc` and you're live in 30 seconds.",
+  "keywords": [
+    "synarc",
+    "engineering-intelligence",
+    "cognition-mesh",
+    "intent-contracts",
+    "verification-engine",
+    "audit-compliance",
+    "change-classification",
+    "risk-assessment",
+    "ai-coding-agent",
+    "codex",
+    "opencode",
+    "cursor",
+    "windsurf",
+    "claude-code",
+    "copilot",
+    "gemini-cli",
+    "cline",
+    "skill-pack",
+    "prompt-caching",
+    "intent-activation",
+    "token-efficient",
+    "agent-runtime",
+    "multi-role",
+    "mcp",
+    "sdk",
+    "developer-tools"
+  ],
+  "homepage": "https://github.com/upflame/Synarc#readme",
+  "bugs": "https://github.com/upflame/Synarc/issues",
+  "license": "MIT",
+  "author": {
+    "name": "UpFlame Labs",
+    "email": "info@upflame.in",
+    "url": "https://upflame.in"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/upflame/Synarc.git",
+    "directory": "synarc-universal"
+  },
+  "type": "commonjs",
+  "main": "scripts/lib/index.js",
+  "exports": {
+    ".": {
+      "import": "./scripts/lib/index.js",
+      "require": "./scripts/lib/index.js",
+      "types": "./scripts/lib/index.d.ts"
+    },
+    "./cli": "./scripts/install.js",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "synarc": "scripts/install.js",
+    "synarc-universal": "scripts/install.js"
+  },
+  "man": [
+    "docs/cli-reference.md"
+  ],
   "files": [
     "AGENTS.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "!docs/README.md",
+    "SECURITY.md",
     "manifest.yaml",
-    "skills/",
-    "!skills/**/references/",
-    "!skills/*/guardrails.yaml",
-    "!skills/*/skill.yaml",
-    "!skills/*/CHANGELOG.md",
-    "shared/",
+    "package.json",
+    "SCHEMA.md",
+    "synarc.config.js",
+    "docs/cli-reference.md",
+    "docs/advanced/sdk.md",
+    "docs/advanced/README.md",
+    "!docs/*.swp",
     "scripts/install.js",
     "scripts/install.ps1",
-    "docs/",
-    "security/"
+    "scripts/postinstall.js",
+    "scripts/clean.js",
+    "scripts/format-skills.js",
+    "scripts/lib/",
+    "scripts/lib/types/",
+    "scripts/lib/templates/",
+    "skills/_index.json",
+    "skills/synarc-core/SKILL.md",
+    "skills/synarc-core/guardrails.yaml",
+    "skills/synarc-core/skill.yaml",
+    "skills/synarc-core/CHANGELOG.md",
+    ".claude-plugin/plugin.json",
+    ".cursor/rules/synarc-core.mdc",
+    "GEMINI.md",
+    "shared/",
+    "security/",
+    "scripts/strip-lean.js",
+    "scripts/restore-lean.js"
   ],
+  "directories": {
+    "bin": "scripts",
+    "doc": "docs",
+    "lib": "scripts/lib",
+    "test": "tests"
+  },
   "scripts": {
+    "synarc": "node scripts/install.js",
+    "install": "node scripts/postinstall.js || true",
+    "postinstall": "node scripts/postinstall.js || true",
+    "uninstall": "node scripts/postinstall.js --uninstall || true",
+    "preuninstall": "node scripts/postinstall.js --preuninstall || true",
     "sync": "powershell -ExecutionPolicy Bypass -File ./scripts/sync-v6.ps1",
     "validate": "powershell -ExecutionPolicy Bypass -File ./scripts/validate-skills.ps1",
     "test-fallbacks": "powershell -ExecutionPolicy Bypass -File ./scripts/test-fallbacks.ps1",
@@ -28,31 +116,66 @@
     "check-vendor-lockin": "powershell -ExecutionPolicy Bypass -File ./scripts/check-vendor-lockin.ps1",
     "check-refs": "powershell -ExecutionPolicy Bypass -File ./scripts/check-refs.ps1",
     "lint": "npm run check-vendor-lockin && npm run check-refs",
-    "test": "npm run validate && npm run test-fallbacks",
+    "test": "node --test tests/smoke.test.js tests/sdk.test.js tests/matrix.test.js tests/matrix-skills.test.js",
+    "test:smoke": "node --test tests/smoke.test.js",
+    "test:sdk": "node --test tests/sdk.test.js",
     "build": "npm run sync && npm run validate",
-    "precommit": "npm run lint && npm run test"
+    "precommit": "npm run lint && npm run test:smoke",
+    "posttest": "node scripts/clean.js",
+    "clean": "node scripts/clean.js",
+    "format:skills": "node scripts/format-skills.js",
+    "strip:lean": "node scripts/strip-lean.js --yes",
+    "restore:lean": "node scripts/restore-lean.js --yes",
+    "test:matrix": "node --test --test-reporter=./tests/matrix-tap-reporter.cjs tests/matrix.test.js tests/matrix-skills.test.js",
+    "test:coverage": "c8 --reporter=text --reporter=json-summary --check-coverage --lines=85 --branches=80 --functions=85 node --test tests/smoke.test.js tests/sdk.test.js tests/matrix.test.js tests/matrix-skills.test.js"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "ora": "^8.0.1",
+    "picocolors": "^1.0.1"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "c8": "^10.1.3"
   },
   "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0",
     "powershell": ">=5.1"
   },
-  "keywords": [
-    "synarc",
-    "engineering-intelligence",
-    "universal-skill",
-    "ai-coding-agent",
-    "codex",
-    "opencode",
-    "cursor",
-    "windsurf",
-    "claude-code",
-    "prompt-caching",
-    "intent-activation",
-    "token-efficient"
+  "os": [
+    "darwin",
+    "linux",
+    "win32",
+    "freebsd",
+    "openbsd",
+    "netbsd",
+    "aix",
+    "sunos"
   ],
-  "author": "UpFlame Labs <info@upflame.in>",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/upflame-labs/synarc"
-  }
+  "cpu": [
+    "x64",
+    "arm64",
+    "ia32",
+    "arm"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "provenance": false
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/upflame-labs"
+  },
+  "synarc": {
+    "min_agent_version": ">=6.0.0",
+    "schema": "skill-pack/v1",
+    "integrity": {
+      "algorithm": "sha256",
+      "manifest_hash": "PENDING_VALIDATION"
+    }
+  },
+  "readme": "README.md"
 }
